@@ -1,0 +1,5 @@
+E:\xpressbilling\XpressBilling\XBDataProvider\bin\Debug\XBDataProvider.dll
+E:\xpressbilling\XpressBilling\XBDataProvider\bin\Debug\XBDataProvider.pdb
+E:\xpressbilling\XpressBilling\XBDataProvider\obj\Debug\XBDataProvider.dll
+E:\xpressbilling\XpressBilling\XBDataProvider\obj\Debug\XBDataProvider.pdb
+E:\xpressbilling\XpressBilling\XBDataProvider\obj\Debug\XBDataProvider.csprojResolveAssemblyReference.cache
