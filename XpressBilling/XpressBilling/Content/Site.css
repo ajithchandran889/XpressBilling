@@ -736,3 +736,6 @@ tr.pager td {
 {
     width: 24em !important;
 }
+a {
+    text-decoration: none !important;
+}

@@ -131,7 +131,8 @@
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <button type="button" class="btn btn-primary pull-right">Cancel</button>
+                        <a href="/Account/Company.aspx" class="btn btn-primary pull-right">Cancel</a>
+                
                     </div>
 
                 </div>

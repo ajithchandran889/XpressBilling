@@ -1,6 +1,7 @@
 ﻿$(function () {
     $("#inputDate").datepicker(); 
     $("#FormationDate").datepicker();
+    $("#Date").datepicker();
 });
 
 
