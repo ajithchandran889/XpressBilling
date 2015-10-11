@@ -193,13 +193,13 @@
                         <!-- /.sidebar-shortcuts -->
 
                         <ul class="nav nav-list">
-                            <li class="active"><a href="index-2.html"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard </span></a><b class="arrow"></b></li>
+                            <li class="active"><a href="/"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard </span></a><b class="arrow"></b></li>
                             <li class="">
                             <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-list"></i><span class="menu-text">Master </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                 <ul class="submenu">
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Organization</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="company"><i class="menu-icon fa fa-caret-right"></i>Company </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/company"><i class="menu-icon fa fa-caret-right"></i>Company </a><b class="arrow"></b></li>
                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Location </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
@@ -334,7 +334,7 @@
                                     try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
                                 </script>
                                 <ul class="breadcrumb">
-                                    <li><i class="ace-icon fa fa-home home-icon"></i><a href="#">Home</a></li>
+                                    <li><i class="ace-icon fa fa-home home-icon"></i><a href="/">Home</a></li>
                                     <li class="active">Dashboard</li>
                                     <li class="active">Masrer</li>
                                     <li class="active">Organization</li>
