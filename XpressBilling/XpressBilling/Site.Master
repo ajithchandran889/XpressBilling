@@ -200,7 +200,7 @@
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Organization</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
                                             <li class=""><a href="/Account/company"><i class="menu-icon fa fa-caret-right"></i>Company </a><b class="arrow"></b></li>
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Location </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Location"><i class="menu-icon fa fa-caret-right"></i>Location </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Code</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
