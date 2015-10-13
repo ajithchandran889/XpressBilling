@@ -84,7 +84,7 @@ namespace XpressBilling.Account
                     path = Server.MapPath("~/Images/logo/") + filename;
                     logoUpload.SaveAs(path);
                 }
-                if(CompanyId.Value!="0")
+                if(CompanyId.Value!="0" && CompanyId.Value!="")
                 {
                      XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, TIN.Text, Phone.Text, path, Note.Text, true, "", User.Identity.Name,
                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
