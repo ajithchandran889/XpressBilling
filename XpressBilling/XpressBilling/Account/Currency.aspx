@@ -17,7 +17,7 @@
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="CurrencyEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
-                            <asp:BoundField DataField="CompanyCode" HeaderText="Company"></asp:BoundField>
+                            <asp:BoundField DataField="CompanyCode" HeaderText="Company" Visible="false"></asp:BoundField>
                             <asp:BoundField DataField="CurrencyCode" HeaderText="Currency"></asp:BoundField>
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Decimal" HeaderText="Decimal"></asp:BoundField>
