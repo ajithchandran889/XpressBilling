@@ -13,6 +13,15 @@ namespace XpressBilling.Account {
     public partial class CompanyEdit {
         
         /// <summary>
+        /// Message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Message;
+        
+        /// <summary>
         /// Company control.
         /// </summary>
         /// <remarks>
@@ -58,13 +67,22 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox PAN;
         
         /// <summary>
-        /// Phone control.
+        /// RegistrationNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Phone;
+        protected global::System.Web.UI.WebControls.TextBox RegistrationNo;
+        
+        /// <summary>
+        /// ContactPerson control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ContactPerson;
         
         /// <summary>
         /// Mobile control.
@@ -76,13 +94,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Mobile;
         
         /// <summary>
-        /// Fax control.
+        /// Phone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Fax;
+        protected global::System.Web.UI.WebControls.TextBox Phone;
         
         /// <summary>
         /// Email control.
@@ -94,6 +112,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Email;
         
         /// <summary>
+        /// Fax control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Fax;
+        
+        /// <summary>
         /// Web control.
         /// </summary>
         /// <remarks>
@@ -101,15 +128,6 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Web;
-        
-        /// <summary>
-        /// ContactPerson control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ContactPerson;
         
         /// <summary>
         /// Designation control.

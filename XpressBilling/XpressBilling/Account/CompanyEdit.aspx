@@ -2,6 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
+        <div>
+            <asp:Label runat="server" ID="Message"></asp:Label>
+        </div>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">Add Company Details</div>
@@ -33,11 +36,20 @@
                         <asp:TextBox runat="server" ID="PAN" class="form-control required" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
+                    <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control required" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required" placeholder="Registration No:" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
+
+                </div>
+                 <div class="form-group">
+                    <label for="ContactPerson" class="control-label col-xs-2 col-md-2">Contact Person</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:TextBox runat="server" ID="ContactPerson" class="form-control required" placeholder="Contact Person" ClientIDMode="Static"></asp:TextBox>
+                        
+                    </div>
+                    
 
                 </div>
                 <div class="form-group">
@@ -46,9 +58,9 @@
                         <asp:TextBox runat="server" ID="Mobile" class="form-control required" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="Fax" class="control-label col-xs-2 col-md-2">Fax</label>
+                    <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Fax" class="form-control required" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Phone" class="form-control required" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="Email" class="control-label col-xs-2 col-md-2">Email</label>
@@ -58,16 +70,17 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="Fax" class="control-label col-xs-2 col-md-2">Fax</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:TextBox runat="server" ID="Fax" class="form-control required" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
+                        
+                    </div>
                     <label for="Web" class="control-label col-xs-2 col-md-2">Web</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Web" class="form-control required" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="ContactPerson" class="control-label col-xs-2 col-md-2">Contact Person</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="ContactPerson" class="form-control required" placeholder="Contact Person" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>
+                    
                     <label for="Designation" class="control-label col-xs-2 col-md-2">Designation</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>

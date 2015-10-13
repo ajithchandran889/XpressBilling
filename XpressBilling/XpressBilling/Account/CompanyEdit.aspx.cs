@@ -15,7 +15,7 @@ namespace XpressBilling.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
                 DataTable dtCountries = XBDataProvider.Country.GetCountries();
 
@@ -42,7 +42,7 @@ namespace XpressBilling.Account
                     CompanyId.Value = "0";
                 }
             }
-            
+
         }
 
         public void SetCompanyDetails(DataTable companyDetails)
@@ -51,9 +51,10 @@ namespace XpressBilling.Account
             Company.Text = row["CompanyCode"].ToString();
             Company.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            string formationDate =Convert.ToDateTime(row["FormationDate"]).ToString("MM/dd/yyyy");
+            string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM/dd/yyyy");
             FormationDate.Text = formationDate;
             TIN.Text = row["TaxId"].ToString();
+            RegistrationNo.Text = row["RegistrationNumber"].ToString();
             PAN.Text = row["PermanantAccountNo"].ToString();
             Phone.Text = row["Phone"].ToString();
             Mobile.Text = row["Mobile"].ToString();
@@ -78,31 +79,48 @@ namespace XpressBilling.Account
             try
             {
                 string path = "";
-                if(logoUpload.HasFile)
+                if (logoUpload.HasFile)
                 {
                     string filename = Path.GetFileName(logoUpload.FileName);
                     path = Server.MapPath("~/Images/logo/") + filename;
                     logoUpload.SaveAs(path);
                 }
-                if(CompanyId.Value!="0" && CompanyId.Value!="")
+                bool status = false;
+                if (CompanyId.Value != "0" && CompanyId.Value != "")
                 {
-                     XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, TIN.Text, Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, path, Note.Text, true, "", User.Identity.Name,
+                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                    if (status)
+                    {
+                        Message.Text = "Successfully updated";
+                    }
+                    else
+                    {
+                        Message.Text = "Oops..Something went wrong.Please try again";
+                    }
                 }
                 else
                 {
-                    XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, TIN.Text, Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                    status = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, path, Note.Text, true, "", User.Identity.Name,
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                    if (status)
+                    {
+                        Message.Text = "Successfully added";
+                    }
+                    else
+                    {
+                        Message.Text = "Oops..Something went wrong.Please try again";
+                    }
                     ClearInputs(Page.Controls);
                 }
-                
-                
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
+
             //Label lblMsg = this.Master.FindControl("Message") as Label;
             //lblMsg.Text = "Company added successfully";
             //lblMsg.Visible = true;

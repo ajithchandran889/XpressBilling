@@ -6,7 +6,7 @@
         <h2>Use the form below to create a new account.</h2>
     </hgroup>
 
-    <asp:CreateUserWizard runat="server" ID="RegisterUser" ViewStateMode="Disabled" OnCreatedUser="RegisterUser_CreatedUser">
+    <asp:CreateUserWizard runat="server" ID="RegisterUser"  OnCreatedUser="RegisterUser_CreatedUser">
         <LayoutTemplate>
             <asp:PlaceHolder runat="server" ID="wizardStepPlaceholder" />
             <asp:PlaceHolder runat="server" ID="navigationPlaceholder" />
@@ -36,6 +36,12 @@
                                 <asp:TextBox runat="server" ID="Email" TextMode="Email" />
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
                                     CssClass="field-validation-error" ErrorMessage="The email address field is required." />
+                            </li>
+                            <li>
+                                <asp:Label runat="server" AssociatedControlID="CompanyCode">Company</asp:Label>
+                                <asp:DropDownList  runat="server" ID="CompanyCode"></asp:DropDownList>
+                                <asp:RequiredFieldValidator runat="server" InitialValue="-1" ControlToValidate="CompanyCode"
+                                    CssClass="field-validation-error" ErrorMessage="The company field is required." />
                             </li>
                             <li>
                                 <asp:Label runat="server" AssociatedControlID="Password">Password</asp:Label>
