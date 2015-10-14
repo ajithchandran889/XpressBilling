@@ -14,15 +14,15 @@ namespace XpressBilling.Account
             LoadCountryList();
         }
 
-        protected void listCurrencyPageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void listCountryPageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            listCurrency.PageIndex = e.NewPageIndex;
+            listCountry.PageIndex = e.NewPageIndex;
             LoadCountryList();
         }
         private void LoadCountryList()
         {
-            listCurrency.DataSource = XBDataProvider.Country.GetCountries();
-            listCurrency.DataBind();
+            listCountry.DataSource = XBDataProvider.Country.GetCountries();
+            listCountry.DataBind();
         }
     }
 }
