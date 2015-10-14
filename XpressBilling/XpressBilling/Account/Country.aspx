@@ -10,7 +10,7 @@
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2>List View</h2>
-                        <div class="pull-right">
+                        <div class="pull-right"> 
               <span class="icon-wrap pull-left"> <a href="CountryEdit"><i class="glyphicon glyphicon-plus "></i></a></span>
                <span class="icon-wrap pull-left"> <i class="glyphicon glyphicon-trash"></i></span>
               </div>
