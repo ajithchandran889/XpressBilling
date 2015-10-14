@@ -12,6 +12,7 @@ namespace XpressBilling
     {
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
+        //private const string AntiXsrfcompanycodeKey = "__AntiXsrfcompanycode";
         private string _antiXsrfTokenValue;
 
         protected void Page_Init(object sender, EventArgs e)

@@ -31,7 +31,11 @@ namespace XpressBilling.Account
             get { return (string)ViewState["ProviderUserName"] ?? String.Empty; }
             private set { ViewState["ProviderUserName"] = value; }
         }
-
+        protected string Providercompanycode
+        {
+            get { return (string)ViewState["Providercompanycode"] ?? String.Empty; }
+            private set { ViewState["Providercompanycode"] = value; }
+        }
         protected void Page_Load()
         {
             if (!IsPostBack)
@@ -94,6 +98,7 @@ namespace XpressBilling.Account
             ProviderName = authResult.Provider;
             ProviderUserId = authResult.ProviderUserId;
             ProviderUserName = authResult.UserName;
+            Providercompanycode = "code123";
 
             // Strip the query string from action
             Form.Action = ResolveUrl(redirectUrl);

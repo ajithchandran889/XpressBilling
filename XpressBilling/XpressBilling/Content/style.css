@@ -1,4 +1,4 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 /* CSS Document */
 .body {
 	margin:0px;
@@ -179,6 +179,8 @@ label {
     box-sizing: border-box;
 	position: relative;
 }
+.grid_header .icon-wrap{ width:26px; height:26px; margin:2px;background:#316788; padding:0 7px; border-radius:3px; color:#fff; margin-left:1px;}
+.grid_header .icon-wrap:hover{ background:#3F84AD;}
 .grid_header h2 {
 	font-size:16px;
 	color:#fff;
