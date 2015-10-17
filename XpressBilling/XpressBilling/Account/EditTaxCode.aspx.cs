@@ -55,6 +55,7 @@ namespace XpressBilling.Account
         {
             try
             {
+                int msgstatus = 0;
                 hdncompanycode.Value = "C100";
                 if (TaxId.Value != "0" && TaxId.Value != null)
                 {
@@ -63,17 +64,30 @@ namespace XpressBilling.Account
                         status = false;
                     else
                         status = true;
-                    XBDataProvider.TaxCode.UpdateTaxCode(Convert.ToInt32(TaxId.Value), Name.Text, User.Identity.Name, status);
+                    msgstatus = XBDataProvider.TaxCode.UpdateTaxCode(Convert.ToInt32(TaxId.Value), Name.Text, User.Identity.Name, status);
+                    if (msgstatus == 1)
+                    {
+                        lblMsg.InnerText = "Successfully updated";
+                    }
+                    else
+                    {
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                    }
                 }
                 else
                 {
-                    XBDataProvider.TaxCode.SaveTaxCode(hdncompanycode.Value, TaxCode.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
+                    msgstatus = XBDataProvider.TaxCode.SaveTaxCode(hdncompanycode.Value, TaxCode.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
+                    if (msgstatus == 1)
+                    {
+                        lblMsg.InnerText = "Successfully added";
+                    }
+                    else
+                    {
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                    }
                     ClearInputs(Page.Controls);
                 }
-
-                Label lblMsg = this.Master.FindControl("Message") as Label;
-                lblMsg.Text = "TaxCode added successfully";
-                lblMsg.Visible = true;
+                
             }
             catch (Exception ex)
             {

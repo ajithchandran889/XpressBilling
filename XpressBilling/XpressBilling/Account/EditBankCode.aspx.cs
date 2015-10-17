@@ -8,20 +8,19 @@ using System.Data;
 
 namespace XpressBilling.Account
 {
-    public partial class CountryEdit : System.Web.UI.Page
+    public partial class EditBankCode : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
-                if (id != null && id!=0)
+                if (id != 0)
                 {
-                    DataTable countryDetails = XBDataProvider.Country.GetCountryById(id);
-                    if (countryDetails.Rows.Count > 0)
+                    DataTable BankCodeDetails = XBDataProvider.BankCode.GetBankCodeById(id);
+                    if (BankCodeDetails.Rows.Count > 0)
                     {
-                        SetcountryDetails(countryDetails);
+                        SetBankCodeDetails(BankCodeDetails);
                     }
                 }
                 else
@@ -32,23 +31,23 @@ namespace XpressBilling.Account
                     UserName.Visible = false;
                     Date.Visible = false;
                     ddlStatus.Visible = false;
-                    CountryId.Value = "0";                    
+                    hdnBankCode.Value = "0";
                 }
             }
         }
 
-        public void SetcountryDetails(DataTable countryDetails)
+        public void SetBankCodeDetails(DataTable BankCodeDetails)
         {
-            DataRow row = countryDetails.Rows[0];
-            Country.Text = row["CountryCode"].ToString();
-            Country.ReadOnly = true;
+            DataRow row = BankCodeDetails.Rows[0];
+            BankCode.Text = row["BankCode"].ToString();
+            BankCode.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             UserName.Text = row["Reference"].ToString();
             UserName.ReadOnly = true;
             Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;           
+            Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
-            CountryId.Value = row["ID"].ToString();
+            hdnBankCode.Value = row["ID"].ToString();
 
         }
 
@@ -58,44 +57,45 @@ namespace XpressBilling.Account
             {
                 int msgstatus = 0;
                 hdncompanycode.Value = "C100";
-                if (CountryId.Value != "0" && CountryId.Value != null)
+                if (hdnBankCode.Value != "0" && hdnBankCode.Value != null)
                 {
                     bool status;
                     if (ddlStatus.SelectedValue == "0")
                         status = false;
                     else
                         status = true;
-                    msgstatus = XBDataProvider.Country.UpdateCountry(Convert.ToInt32(CountryId.Value), Name.Text, User.Identity.Name, status);
+                   msgstatus= XBDataProvider.BankCode.UpdateBankCode(Convert.ToInt32(hdnBankCode.Value), Name.Text, User.Identity.Name, status);
+                   if (msgstatus == 1)
+                   {
+                       lblMsg.InnerText = "Successfully updated";
+                   }
+                   else
+                   {
+                       lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                   }
+                }
+                else
+                {
+                    msgstatus = XBDataProvider.BankCode.SaveBankCode(hdncompanycode.Value, BankCode.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        lblMsg.InnerText = "Successfully added";
                     }
                     else
                     {
                         lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
-                }
-                else
-                {
-                    msgstatus = XBDataProvider.Country.SaveCountry(hdncompanycode.Value, Country.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
                     ClearInputs(Page.Controls);
                 }
 
-                if (msgstatus == 1)
-                {
-                    lblMsg.InnerText = "Successfully added";
-                }
-                else
-                {
-                    lblMsg.InnerText = "Oops..Something went wrong.Please try again";
-                }
+                
             }
             catch (Exception ex)
             {
 
             }
 
-            
+
         }
         private void ClearInputs(ControlCollection ctrls)
         {

@@ -10,16 +10,34 @@
 namespace XpressBilling.Account {
     
     
-    public partial class LocationEdit {
+    public partial class EditBankMst {
         
         /// <summary>
-        /// Location control.
+        /// AccountNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Location;
+        protected global::System.Web.UI.WebControls.TextBox AccountNo;
+        
+        /// <summary>
+        /// lbldate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lbldate;
+        
+        /// <summary>
+        /// Date control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Date;
         
         /// <summary>
         /// Name control.
@@ -31,220 +49,157 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Name;
         
         /// <summary>
-        /// FormationDate control.
+        /// lblusername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox FormationDate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblusername;
         
         /// <summary>
-        /// txtregno control.
+        /// UserName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtregno;
+        protected global::System.Web.UI.WebControls.TextBox UserName;
         
         /// <summary>
-        /// TIN control.
+        /// AccountType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TIN;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AccountType;
         
         /// <summary>
-        /// PAN control.
+        /// ddlAccountType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PAN;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAccountType;
         
         /// <summary>
-        /// Phone control.
+        /// txtaccounttype control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Phone;
+        protected global::System.Web.UI.WebControls.TextBox txtaccounttype;
         
         /// <summary>
-        /// Mobile control.
+        /// lblstatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Mobile;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblstatus;
         
         /// <summary>
-        /// Fax control.
+        /// ddlStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Fax;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
         
         /// <summary>
-        /// Email control.
+        /// ddlbankcode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Email;
+        protected global::System.Web.UI.WebControls.DropDownList ddlbankcode;
         
         /// <summary>
-        /// Web control.
+        /// Branch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Web;
+        protected global::System.Web.UI.WebControls.TextBox Branch;
         
         /// <summary>
-        /// ContactPerson control.
+        /// IBAN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ContactPerson;
+        protected global::System.Web.UI.WebControls.TextBox IBAN;
         
         /// <summary>
-        /// Designation control.
+        /// IFSC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Designation;
+        protected global::System.Web.UI.WebControls.TextBox IFSC;
         
         /// <summary>
-        /// Address1 control.
+        /// SWIFT control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Address1;
+        protected global::System.Web.UI.WebControls.TextBox SWIFT;
         
         /// <summary>
-        /// Address2 control.
+        /// MICR control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Address2;
+        protected global::System.Web.UI.WebControls.TextBox MICR;
         
         /// <summary>
-        /// City control.
+        /// Reference control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox City;
+        protected global::System.Web.UI.WebControls.TextBox Reference;
         
         /// <summary>
-        /// Area control.
+        /// hdnBankCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Area;
+        protected global::System.Web.UI.WebControls.HiddenField hdnBankCode;
         
         /// <summary>
-        /// State control.
+        /// hdncompanycode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox State;
+        protected global::System.Web.UI.WebControls.HiddenField hdncompanycode;
         
         /// <summary>
-        /// Country control.
+        /// saveBankMst control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Country;
-        
-        /// <summary>
-        /// Zip control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Zip;
-        
-        /// <summary>
-        /// Note control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Note;
-        
-        /// <summary>
-        /// logoUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload logoUpload;
-        
-        /// <summary>
-        /// LocationId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField LocationId;
-        
-        /// <summary>
-        /// ContactId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField ContactId;
-        
-        /// <summary>
-        /// CompanyId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField CompanyId;
-        
-        /// <summary>
-        /// saveCompany control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button saveCompany;
+        protected global::System.Web.UI.WebControls.Button saveBankMst;
         
         /// <summary>
         /// lblMsg control.

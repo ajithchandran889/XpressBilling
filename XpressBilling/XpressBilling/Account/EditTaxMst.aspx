@@ -1,14 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditTaxCode.aspx.cs" Inherits="XpressBilling.Account.EditTaxCode" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditTaxMst.aspx.cs" Inherits="XpressBilling.Account.EditTaxMst" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<div class="page-content">
+    <div class="page-content">
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
-                <div class="page-header">TaxCode Details</div>
+                <div class="page-header">Tax Master Details</div>
                 <div class="form-group">
                    
-                    <label for="TaxCode" class="control-label col-xs-2 col-md-2">TaxCode</label>
+                    <label for="Tax" class="control-label col-xs-2 col-md-2">Tax</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="TaxCode" class="form-control required" placeholder="TaxCode" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Tax" class="form-control required" placeholder="Tax" ClientIDMode="Static"></asp:TextBox>                        
                     </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Date" id="lbldate" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
@@ -31,12 +31,13 @@
                     </div>
 
                 </div>
-                 <div class="form-group">                   
+                 <div class="form-group"> 
                     
+                        <label for="Status" runat="server" id="Label1" class="control-label col-xs-2 col-md-2">Tax Code</label>
                     <div class="col-xs-10 col-md-2">
-                        
-                    </div>
-                    <div class="col-xs-10 col-md-2"></div><div class="col-xs-10 col-md-2">&nbsp;</div>
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlTaxCode" ClientIDMode="Static">                            
+                        </asp:DropDownList>
+                    </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
@@ -47,12 +48,28 @@
 
                 </div>
                 <div class="form-group">
+                   
+                    <label for="TaxPercentage" class="control-label col-xs-2 col-md-2">Tax Percentage</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:TextBox runat="server" ID="TaxPercentage" class="form-control required" placeholder="TaxPercentage" ClientIDMode="Static"></asp:TextBox>                        
+                    </div>
+                    <div class="col-xs-10 col-md-2"></div>
+                    
+                    <div class="col-xs-10 col-md-2">
+                        
+                    </div>
+
+                </div>
+
+                <div class="form-group">
                     
                     <asp:HiddenField ID="TaxId" runat="server" />
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
+                    
+                    <asp:HiddenField ID="hdnreference" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/TaxCode.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
+                        <a href="/Account/TaxMst.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
                     </div>
 
                 </div>

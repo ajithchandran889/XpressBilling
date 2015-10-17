@@ -21,7 +21,7 @@ namespace XpressBilling.Account
                 DataTable dtCountries = XBDataProvider.Country.GetCountries();
 
                 Country.DataSource = dtCountries;
-                Country.DataValueField = "name";
+                Country.DataValueField = "Id";
                 Country.DataTextField = "name";
                 Country.DataBind();
                 ListItem item = new ListItem();

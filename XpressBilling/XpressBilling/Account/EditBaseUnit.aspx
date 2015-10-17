@@ -1,14 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditTaxCode.aspx.cs" Inherits="XpressBilling.Account.EditTaxCode" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditBaseUnit.aspx.cs" Inherits="XpressBilling.Account.EditBaseUnit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<div class="page-content">
+    <div class="page-content">
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
-                <div class="page-header">TaxCode Details</div>
+                <div class="page-header">BaseUnit Details</div>
                 <div class="form-group">
                    
-                    <label for="TaxCode" class="control-label col-xs-2 col-md-2">TaxCode</label>
+                    <label for="BaseUnit" class="control-label col-xs-2 col-md-2">BaseUnit Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="TaxCode" class="form-control required" placeholder="TaxCode" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="BaseUnit" class="form-control required" placeholder="BaseUnit" ClientIDMode="Static"></asp:TextBox>                        
                     </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Date" id="lbldate" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
@@ -51,8 +51,8 @@
                     <asp:HiddenField ID="TaxId" runat="server" />
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/TaxCode.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
+                        <asp:Button ID="saveBaseUnit" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
+                        <a href="/Account/BaseUnit.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
                     </div>
 
                 </div>

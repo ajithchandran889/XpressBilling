@@ -8,20 +8,19 @@ using System.Data;
 
 namespace XpressBilling.Account
 {
-    public partial class CountryEdit : System.Web.UI.Page
+    public partial class EditBaseUnit : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
-                if (id != null && id!=0)
+                if (id != null && id != 0)
                 {
-                    DataTable countryDetails = XBDataProvider.Country.GetCountryById(id);
-                    if (countryDetails.Rows.Count > 0)
+                    DataTable BaseUnitDetails = XBDataProvider.BaseUnit.GetBaseUnitById(id);
+                    if (BaseUnitDetails.Rows.Count > 0)
                     {
-                        SetcountryDetails(countryDetails);
+                        SetBaseUnitDetails(BaseUnitDetails);
                     }
                 }
                 else
@@ -32,40 +31,40 @@ namespace XpressBilling.Account
                     UserName.Visible = false;
                     Date.Visible = false;
                     ddlStatus.Visible = false;
-                    CountryId.Value = "0";                    
+                    TaxId.Value = "0";
                 }
             }
         }
 
-        public void SetcountryDetails(DataTable countryDetails)
+        public void SetBaseUnitDetails(DataTable BaseUnitDetails)
         {
-            DataRow row = countryDetails.Rows[0];
-            Country.Text = row["CountryCode"].ToString();
-            Country.ReadOnly = true;
+            DataRow row = BaseUnitDetails.Rows[0];
+            BaseUnit.Text = row["BaseUnitCode"].ToString();
+            BaseUnit.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             UserName.Text = row["Reference"].ToString();
             UserName.ReadOnly = true;
             Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;           
+            Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
-            CountryId.Value = row["ID"].ToString();
+            TaxId.Value = row["ID"].ToString();
 
         }
 
         protected void SaveClick(object sender, EventArgs e)
         {
+            int msgstatus = 0;
             try
             {
-                int msgstatus = 0;
                 hdncompanycode.Value = "C100";
-                if (CountryId.Value != "0" && CountryId.Value != null)
+                if (TaxId.Value != "0" && TaxId.Value != null)
                 {
                     bool status;
                     if (ddlStatus.SelectedValue == "0")
                         status = false;
                     else
                         status = true;
-                    msgstatus = XBDataProvider.Country.UpdateCountry(Convert.ToInt32(CountryId.Value), Name.Text, User.Identity.Name, status);
+                    msgstatus = XBDataProvider.BaseUnit.UpdateBaseUnit(Convert.ToInt32(TaxId.Value), Name.Text, User.Identity.Name, status);
                     if (msgstatus == 1)
                     {
                         lblMsg.InnerText = "Successfully updated";
@@ -77,25 +76,24 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    msgstatus = XBDataProvider.Country.SaveCountry(hdncompanycode.Value, Country.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
+                    msgstatus = XBDataProvider.BaseUnit.SaveBaseUnit(hdncompanycode.Value, BaseUnit.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
+                    if (msgstatus == 1)
+                    {
+                        lblMsg.InnerText = "Successfully added";
+                    }
+                    else
+                    {
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                    }
                     ClearInputs(Page.Controls);
-                }
-
-                if (msgstatus == 1)
-                {
-                    lblMsg.InnerText = "Successfully added";
-                }
-                else
-                {
-                    lblMsg.InnerText = "Oops..Something went wrong.Please try again";
-                }
+                }               
             }
             catch (Exception ex)
             {
 
             }
 
-            
+
         }
         private void ClearInputs(ControlCollection ctrls)
         {

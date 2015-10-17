@@ -52,7 +52,7 @@
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Country.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" runat="server"></label>
+                        <a href="/Account/Country.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
                     </div>
 
                 </div>

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace XBDataProvider
 {
-    public static class TaxCode
+    public partial class BankCode
     {
-        public static int SaveTaxCode(string companyCode, string TaxCode, string name, string reference, string createdBy, DateTime createdDate, bool status)
+
+        public static int SaveBankCode(string companyCode, string BankCode, string name, string reference, string createdBy, DateTime createdDate, bool status)
         {
             try
             {
@@ -19,7 +20,7 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
-                cmd.Parameters.Add(new SqlParameter("@TaxCode", TaxCode));
+                cmd.Parameters.Add(new SqlParameter("@BankCode", BankCode));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
                 cmd.Parameters.Add(new SqlParameter("@Reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", createdBy));
@@ -27,7 +28,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_TaxCode_xpins", cmd);
+                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankCode_xpins", cmd);
             }
             catch (Exception ex)
             {
@@ -35,8 +36,8 @@ namespace XBDataProvider
             }
 
         }
-
-        public static int UpdateTaxCode(int id, string name, string updatedBy, bool status)
+        
+        public static int UpdateBankCode(int id, string name, string updatedBy, bool status)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", updatedBy));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_TaxCode_xpupd", cmd);
+                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankCode_xpupd", cmd);
             }
             catch (Exception ex)
             {
@@ -56,13 +57,13 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetTaxCodes()
+        public static DataTable GetBankCode()
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetTaxCode");
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetBankCode");
             }
             catch (Exception ex)
             {
@@ -72,7 +73,7 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static DataTable GetTaxCodeById(int Id)
+        public static DataTable GetBankCodeById(int Id)
         {
             DataTable dtTable = new DataTable();
             try
@@ -80,7 +81,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", Id));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_TaxCodeGetById", cmd);
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BankCodeGetById", cmd);
             }
             catch (Exception ex)
             {
@@ -89,5 +90,6 @@ namespace XBDataProvider
 
             return dtTable;
         }
+       
     }
 }
