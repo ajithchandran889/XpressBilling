@@ -739,3 +739,12 @@ tr.pager td {
 a {
     text-decoration: none !important;
 }
+
+#imgPreview {
+    width: 140px;
+    height: 155px;
+    background-position: center center;
+    background-size: cover;
+    -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+    display: inline-block;
+}

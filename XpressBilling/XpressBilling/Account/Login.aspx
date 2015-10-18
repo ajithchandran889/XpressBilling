@@ -36,6 +36,10 @@
             </LayoutTemplate>
         </asp:Login>
         <p>
+            <asp:HyperLink runat="server" ID="HyperLink1" NavigateUrl="~/Account/PasswordRecovery.aspx">Forgot Password?</asp:HyperLink>
+            
+        </p>
+        <p>
             <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
             if you don't have an account.
         </p>

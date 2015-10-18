@@ -15,18 +15,18 @@ namespace XpressBilling.Account
         {
             if(!Page.IsPostBack)
             {
+                if(!XBDataProvider.Company.IsCompanyexist())
+                {
+                    Response.Redirect("RegisterCompany");
+                }
                 CreateUserWizardStep step = (CreateUserWizardStep)RegisterUser.FindControl("RegisterUserWizardStep");
                 if (step != null)
                 {
                     DropDownList ddList = (DropDownList)step.ContentTemplateContainer.FindControl("CompanyCode");
                     ddList.DataSource = XBDataProvider.Company.GetAllCompanies();
-                    ddList.DataValueField = "ID";
+                    ddList.DataValueField = "CompanyCode";
                     ddList.DataTextField = "CompanyCode";
                     ddList.DataBind();
-                    ListItem item = new ListItem();
-                    item.Text = "Select Company";
-                    item.Value = "-1";
-                    ddList.Items.Insert(0, item);
                 }
             }
             
@@ -43,8 +43,12 @@ namespace XpressBilling.Account
             if (step != null)
             {
                 
-                DropDownList ddList = (DropDownList)step.ContentTemplateContainer.FindControl("CompanyCode");
-                XBDataProvider.UserRegistration.SaveAddlUserRegDetails(RegisterUser.UserName, ddList.SelectedValue);
+                DropDownList ddListCompany = (DropDownList)step.ContentTemplateContainer.FindControl("CompanyCode");
+                DropDownList ddListUser = (DropDownList)step.ContentTemplateContainer.FindControl("UserType");
+                Roles.AddUserToRole(RegisterUser.UserName, ddListUser.SelectedValue);
+                
+                XBDataProvider.UserRegistration.SaveAddlUserRegDetails(RegisterUser.UserName, ddListCompany.SelectedValue);
+                Session["CompanyCode"] = ddListCompany.SelectedValue;
             }
             
             if (!OpenAuth.IsLocalUrl(continueUrl))

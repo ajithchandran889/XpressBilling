@@ -17,6 +17,14 @@ namespace XpressBilling
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterOpenAuth();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+             if (!Roles.RoleExists("SuperUser"))
+             {
+                 Roles.CreateRole("SuperUser");
+             }
+             if (!Roles.RoleExists("User"))
+             {
+                 Roles.CreateRole("User");
+             }
         }
 
         void Application_End(object sender, EventArgs e)

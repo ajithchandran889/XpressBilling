@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -68,7 +69,23 @@ namespace XpressBilling
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                Panel _panelSuper = ((Panel)(this.loginViewMenu.FindControl("SuperUserMenu")));
+                Panel _panelNormal = ((Panel)(this.loginViewMenu.FindControl("NormalMenu")));
+                if (Roles.IsUserInRole("SuperUser"))
+                {
+                    _panelSuper.Visible = true;
+                    _panelNormal.Visible = false;
 
+                }
+                else if (Roles.IsUserInRole("User"))
+                {
+                    _panelNormal.Visible = true;
+                    _panelSuper.Visible = false;
+                }
+            }
+            
         }
     }
 }

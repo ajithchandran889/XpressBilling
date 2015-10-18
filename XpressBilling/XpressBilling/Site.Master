@@ -173,7 +173,7 @@
             <script type="text/javascript">
                 try { ace.settings.check('main-container', 'fixed') } catch (e) { }
             </script>
-            <asp:LoginView runat="server" ViewStateMode="Disabled">
+            <asp:LoginView runat="server" ID="loginViewMenu" ViewStateMode="Disabled">
                 <AnonymousTemplate>
                 </AnonymousTemplate>
                 <LoggedInTemplate>
@@ -191,8 +191,9 @@
                             <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"><span class="btn btn-success"></span><span class="btn btn-info"></span><span class="btn btn-warning"></span><span class="btn btn-danger"></span></div>
                         </div>
                         <!-- /.sidebar-shortcuts -->
-
-                        <ul class="nav nav-list">
+                       
+                        <asp:Panel runat="server" ID="SuperUserMenu">
+                            <ul class="nav nav-list">
                             <li class="active"><a href="/"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard </span></a><b class="arrow"></b></li>
                             <li class="">
                             <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-list"></i><span class="menu-text">Master </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
@@ -218,6 +219,7 @@
                                             <li class=""><a href="/Account/TaxMst"><i class="menu-icon fa fa-caret-right"></i>Tax </a><b class="arrow"></b></li>
                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Price Book </a><b class="arrow"></b></li>
                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Employee </a><b class="arrow"></b></li>
+                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>First Free Number </a><b class="arrow"></b></li>
                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Contacts </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
@@ -230,7 +232,7 @@
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Country</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="/Account/Country""><i class="menu-icon fa fa-caret-right"></i>Country </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Country"><i class="menu-icon fa fa-caret-right"></i>Country </a><b class="arrow"></b></li>
                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>City </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
@@ -288,27 +290,90 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-tag"></i><span class="menu-text">More Pages </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-building"></i><span class="menu-text">Tools</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                 <ul class="submenu">
-                                    <li class=""><a href="profile.html"><i class="menu-icon fa fa-caret-right"></i>User Profile </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Inbox </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Pricing Tables </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Invoice </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Timeline </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Email Templates </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Login &amp; Register </a><b class="arrow"></b></li>
-                                </ul>
-                            </li>
-                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-file-o"></i><span class="menu-text">Other Pages <span class="badge badge-primary">5</span> </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
-                                <ul class="submenu">
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>FAQ </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Error 404 </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Error 500 </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Grid </a><b class="arrow"></b></li>
-                                    <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Blank Page </a><b class="arrow"></b></li>
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">User Management</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="/Account/Users"><i class="menu-icon fa fa-caret-right"></i>User </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Licensing</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
+                        </asp:Panel>
+                        <asp:Panel runat="server" ID="NormalMenu">
+                            <ul class="nav nav-list">
+                            <li class="active"><a href="/"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard </span></a><b class="arrow"></b></li>
+                            <li class="">
+                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-list"></i><span class="menu-text">Master </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                <ul class="submenu">
+                                    
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Common</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Price Book </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Employee </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Contacts </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Item</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Item Group </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Manufacturer </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Item Data </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Country</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="/Account/Country""><i class="menu-icon fa fa-caret-right"></i>Country </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>City </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Business Partner</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Business Partner </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-list-alt"></i><span class="menu-text">Sales </span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                <ul class="submenu">
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Sales Quotation </a><b class="arrow"></b></li>
+                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Sales Order </a><b class="arrow"></b></li>
+                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Manual Invoice </a><b class="arrow"></b></li>
+                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Sales Return </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-tag"></i><span class="menu-text">Inventory</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                <ul class="submenu">
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Stock Adjustment </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Stock Register </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class=""><a href="#" class="dropdown-toggle"><i class="menu-icon fa fa-building"></i><span class="menu-text">Cash</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                <ul class="submenu">
+                                    <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        </asp:Panel>
+                        
                         <!-- /.nav-list -->
 
                         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"><i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i></div>

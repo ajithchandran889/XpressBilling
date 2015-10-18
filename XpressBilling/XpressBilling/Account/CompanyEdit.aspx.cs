@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -57,19 +58,33 @@ namespace XpressBilling.Account
             RegistrationNo.Text = row["RegistrationNumber"].ToString();
             PAN.Text = row["PermanantAccountNo"].ToString();
             Phone.Text = row["Phone"].ToString();
+            Phone.ReadOnly = true;
             Mobile.Text = row["Mobile"].ToString();
+            Mobile.ReadOnly = true;
             Fax.Text = row["Fax"].ToString();
+            Fax.ReadOnly = true;
             Email.Text = row["Email"].ToString();
+            Email.ReadOnly = true;
             Web.Text = row["Web"].ToString();
+            Web.ReadOnly = true;
             ContactPerson.Text = row["ContactPerson"].ToString();
+            ContactPerson.ReadOnly = true;
             Designation.Text = row["Designation"].ToString();
+            Designation.ReadOnly = true;
             Address1.Text = row["Address1"].ToString();
+            Address1.ReadOnly = true;
             Address2.Text = row["Address2"].ToString();
+            Address2.ReadOnly = true;
             City.Text = row["City"].ToString();
+            City.ReadOnly = true;
             Area.Text = row["Area"].ToString();
+            Area.ReadOnly = true;
             State.Text = row["State"].ToString();
+            State.ReadOnly = true;
             Country.SelectedValue = row["Country"].ToString();
+            Country.Enabled = false;
             Zip.Text = row["ZipCode"].ToString();
+            Zip.ReadOnly = true;
             Note.Text = row["Note"].ToString();
             CompanyId.Value = row["ID"].ToString();
 
@@ -79,17 +94,18 @@ namespace XpressBilling.Account
             try
             {
                 string path = "";
+                string absolutePath = "";
                 if (logoUpload.HasFile)
                 {
                     string filename = Path.GetFileName(logoUpload.FileName);
-                    path = Server.MapPath("~/Images/logo/") + filename;
+                    path = Server.MapPath("~/Images/user/") + filename;
+                    absolutePath = "/Images/logo/" + filename;
                     logoUpload.SaveAs(path);
                 }
                 bool status = false;
                 if (CompanyId.Value != "0" && CompanyId.Value != "")
                 {
-                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name);
                     if (status)
                     {
                         Message.Text = "Successfully updated";
@@ -101,7 +117,7 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    status = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, path, Note.Text, true, "", User.Identity.Name,
+                    status = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
                     if (status)
                     {

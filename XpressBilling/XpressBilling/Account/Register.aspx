@@ -44,6 +44,15 @@
                                     CssClass="field-validation-error" ErrorMessage="The company field is required." />
                             </li>
                             <li>
+                                <asp:Label runat="server" AssociatedControlID="UserType">User Type</asp:Label>
+                                <asp:DropDownList  runat="server" ID="UserType">
+                                    <asp:ListItem Value="SuperUser" Text="Super User" Selected="True"></asp:ListItem>
+                                    <asp:ListItem Value="User" Text="Normal User" Selected="False"></asp:ListItem>
+                                </asp:DropDownList>
+                                <asp:RequiredFieldValidator runat="server" InitialValue="-1" ControlToValidate="UserType"
+                                    CssClass="field-validation-error" ErrorMessage="The UserType is required." />
+                            </li>
+                            <li>
                                 <asp:Label runat="server" AssociatedControlID="Password">Password</asp:Label>
                                 <asp:TextBox runat="server" ID="Password" TextMode="Password" />
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
