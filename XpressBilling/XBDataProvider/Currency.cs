@@ -37,7 +37,7 @@ namespace XBDataProvider
            
         }
 
-        public static int UpdateCurrency(string  id,string companyCode, string currencyCode, string name, string decimalValue, string reference, string createdBy, DateTime createdDate, bool status)
+        public static int UpdateCurrency(string  id,string companyCode, string currencyCode, string name, string decimalValue, string reference, string createdBy, DateTime createdDate)
         {
             try
             {
@@ -53,7 +53,6 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", createdBy));
                 cmd.Parameters.Add(new SqlParameter("@createdDate", createdDate));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
-                cmd.Parameters.Add(new SqlParameter("@status", status));
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Currency_xpupd", cmd);
             }
@@ -96,6 +95,37 @@ namespace XBDataProvider
             }
 
             return dtTable;
+        }
+        public static void ActivateCurrency(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@CurrencyId", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Currency_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateCurrency(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@CurrencyId", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Currency_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
         }
     }
 }

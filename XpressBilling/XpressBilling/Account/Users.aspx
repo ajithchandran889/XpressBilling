@@ -5,7 +5,9 @@
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
                     Users
-                <div class="pull-right"><a href="AddUser">ADD</a></div>
+                <div class="pull-right">
+                    <span class="icon-wrap pull-left"> <a href="AddUser"><i class="glyphicon glyphicon-plus "></i></a></span>
+                </div>
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">

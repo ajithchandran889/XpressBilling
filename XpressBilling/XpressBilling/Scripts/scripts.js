@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿var countryArray = {};
+
+$(function () {
     $("#inputDate").datepicker(); 
     $("#FormationDate").datepicker();
     $("#Date").datepicker();
@@ -53,6 +55,28 @@ $(function () {
 $(document).ready(function () {
     SearchText();
 
+    $(document).on("change", "#Country", function () {
+        var obj = {};
+        obj.countryCode = $.trim($("#Country").val());
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "CompanyEdit.aspx/GetCities",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                $("#City").empty();
+                $.each(data.d, function (i, j) {
+                    $("#City").append(
+                        $('<option></option>').val(j.cityCode).html(j.cityName)
+                    );
+                });
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    });
 
     $(document).on("change", "#inputUpload", function () {
         var files = !!this.files ? this.files : [];
@@ -76,6 +100,22 @@ function SearchText() {
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "AddUser.aspx/GatAllCompanies",
+                dataType: "json",
+                success: function (data) {
+                    response(data.d);
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        }
+    });
+    $("#ContactPerson").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "CompanyEdit.aspx/GatAllContacts",
                 dataType: "json",
                 success: function (data) {
                     response(data.d);

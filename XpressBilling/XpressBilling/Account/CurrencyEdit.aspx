@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CurrencyEdit.aspx.cs" Inherits="XpressBilling.Account.CurrencyEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
+        <div>
+            <asp:Label runat="server" ID="Message"></asp:Label>
+        </div>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">Add Crrency Details</div>
@@ -27,16 +30,7 @@
                         <asp:TextBox runat="server" ID="Decimal" class="form-control required" placeholder="No. of Decimal" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="Date" class="control-label col-xs-2 col-md-2">Date</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Date" class="form-control required" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>
-                    <label for="UserName" class="control-label col-xs-2 col-md-2">User</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="UserName" class="form-control required" placeholder="User" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>
+                    
 
                 </div>
 

@@ -6,7 +6,7 @@
         </div>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
-                <div class="page-header">Add New User</div>
+                <div class="page-header">Profile Details</div>
                 <div class="form-group">
                     <label for="UserName" class="control-label col-xs-2 col-md-2">User Name</label>
                     <div class="col-xs-10 col-md-2">

@@ -41,7 +41,6 @@ namespace XpressBilling.Account
             Name.Text = row["Name"].ToString();
             Currency.Text = row["CurrencyCode"].ToString(); ;
             Decimal.Text = row["Decimal"].ToString();
-            UserName.Text = row["Reference"].ToString();
             CurrencyId.Value = row["ID"].ToString();
 
         }
@@ -50,14 +49,31 @@ namespace XpressBilling.Account
         {
             try
             {
-                if (CurrencyId.Value != "0")
+                int status = 0;
+                if (CurrencyId.Value != "0" && CurrencyId.Value!="")
                 {
-                    XBDataProvider.Currency.UpdateCurrency(CurrencyId.Value, Company.Text, Currency.Text, Name.Text, Decimal.Text, UserName.Text, User.Identity.Name, DateTime.Today, true);
+                  status =  XBDataProvider.Currency.UpdateCurrency(CurrencyId.Value, Company.Text, Currency.Text, Name.Text, Decimal.Text, User.Identity.Name, User.Identity.Name, DateTime.Today);
+                  if (status!=-1)
+                  {
+                      Message.Text = "Successfully updated";
+                  }
+                  else
+                  {
+                      Message.Text = "Oops..Something went wrong.Please try again";
+                  }
                 }
                 else
                 {
-                    XBDataProvider.Currency.SaveCurrency(Company.Text, Currency.Text, Name.Text, Decimal.Text, UserName.Text, User.Identity.Name, DateTime.Today, true);
+                  status = XBDataProvider.Currency.SaveCurrency(Company.Text, Currency.Text, Name.Text, Decimal.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
                     ClearInputs(Page.Controls);
+                    if (status != -1)
+                    {
+                        Message.Text = "Successfully added";
+                    }
+                    else
+                    {
+                        Message.Text = "Oops..Something went wrong.Please try again";
+                    }
                 }
 
 

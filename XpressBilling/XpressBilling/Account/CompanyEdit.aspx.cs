@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using XBDataProvider;
@@ -21,7 +22,7 @@ namespace XpressBilling.Account
                 DataTable dtCountries = XBDataProvider.Country.GetCountries();
 
                 Country.DataSource = dtCountries;
-                Country.DataValueField = "name";
+                Country.DataValueField = "CountryCode";
                 Country.DataTextField = "name";
                 Country.DataBind();
                 ListItem item = new ListItem();
@@ -75,8 +76,8 @@ namespace XpressBilling.Account
             Address1.ReadOnly = true;
             Address2.Text = row["Address2"].ToString();
             Address2.ReadOnly = true;
-            City.Text = row["City"].ToString();
-            City.ReadOnly = true;
+            City.SelectedValue = row["City"].ToString();
+            City.Enabled = false;
             Area.Text = row["Area"].ToString();
             Area.ReadOnly = true;
             State.Text = row["State"].ToString();
@@ -117,17 +118,23 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    status = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.Text, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
-                    if (status)
+                    int retunValue = 0;
+                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
+                    if (retunValue>=1)
                     {
+                        ClearInputs(Page.Controls);
                         Message.Text = "Successfully added";
+                    }
+                    else if(retunValue==-1)
+                    {
+                        Message.Text = "Company already exist";
                     }
                     else
                     {
                         Message.Text = "Oops..Something went wrong.Please try again";
                     }
-                    ClearInputs(Page.Controls);
+                    
                 }
 
 
@@ -141,6 +148,47 @@ namespace XpressBilling.Account
             //lblMsg.Text = "Company added successfully";
             //lblMsg.Visible = true;
         }
+
+        [WebMethod]
+        public static List<city> GetCities(string countryCode)
+        {
+            List<city> result = new List<city>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.City.GetCities(countryCode);
+                DataRow row = null;
+                for (int index = 0; index < dtTable.Rows.Count; index++)
+                {
+                    row = dtTable.Rows[index];
+                    city city = new city();
+                    city.cityCode = row["CityCode"].ToString();
+                    city.cityName = row["Name"].ToString();
+                    result.Add(city);
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+            
+
+            return result;
+        }
+
+        [WebMethod]
+        public static List<string> GatAllContacts()
+        {
+            List<string> result = new List<string>();
+            DataTable dtTable = XBDataProvider.Contact.GetAllContactCode();
+            DataRow row = null;
+            for (int index = 0; index < dtTable.Rows.Count; index++)
+            {
+                row = dtTable.Rows[index];
+                result.Add(row["Contact"].ToString());
+            }
+            return result;
+        }
+
         private void ClearInputs(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -153,5 +201,11 @@ namespace XpressBilling.Account
                 ClearInputs(ctrl.Controls);
             }
         }
+    }
+
+    public class city
+    {
+        public string cityName { get; set; }
+        public string cityCode { get; set; }
     }
 }

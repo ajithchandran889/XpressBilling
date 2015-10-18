@@ -11,7 +11,7 @@ namespace XBDataProvider
 {
     public static class Company
     {
-        public static bool SaveCompany(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
+        public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone,string mobile,string email,string web,string designation,string address1,string address2,
                                       string city,string area,string zipCode,string country,string state,String fax)
@@ -49,12 +49,12 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Country", country));
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
-                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpins", cmd);
-                return true;
+                int returnValue=DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpins", cmd);
+                return returnValue;
             }
             catch (Exception ex)
             {
-                return false;
+                return 0;
             }
 
         }
@@ -186,6 +186,38 @@ namespace XBDataProvider
             }
 
             return dtTable;
+        }
+
+        public static void ActivateCompany(int id)
+        {
+            try
+            {
+              string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+              SqlCommand cmd = new SqlCommand();
+              cmd.Parameters.Add(new SqlParameter("@CompanyId", id));
+              DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Company_Activate",cmd);
+                
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateCompany(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@CompanyId", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Company_DeActivate",cmd);
+                
+            }
+            catch (Exception ex)
+            {
+            }
+
         }
     }
 }

@@ -43,7 +43,9 @@
     <Compile Include="BankCode.cs" />
     <Compile Include="BankMst.cs" />
     <Compile Include="BaseUnit.cs" />
+    <Compile Include="City.cs" />
     <Compile Include="Company.cs" />
+    <Compile Include="Contact.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="DataProvider.cs" />

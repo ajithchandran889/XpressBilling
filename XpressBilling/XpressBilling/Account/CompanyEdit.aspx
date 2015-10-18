@@ -98,10 +98,12 @@
                         <asp:TextBox runat="server" ID="Address2" class="form-control required" placeholder="Address Street 2" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="City" class="control-label col-xs-2 col-md-2">City</label>
+                    
+                    <label  class="control-label col-xs-2 col-md-2">Country</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="City" class="form-control required" placeholder="City" ClientIDMode="Static"></asp:TextBox>
-                        
+                        <asp:DropDownList runat="server" class="form-control required" ID="Country" ClientIDMode="Static">
+                            <asp:ListItem Value="0" Text="Select Country"></asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                 </div>
 
@@ -116,11 +118,11 @@
                         <asp:TextBox runat="server" ID="State" class="form-control required" placeholder="State" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label  class="control-label col-xs-2 col-md-2">Country</label>
+                    <label for="City" class="control-label col-xs-2 col-md-2">City</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="Country" ClientIDMode="Static">
-                            <asp:ListItem Value="0" Text="Select Country"></asp:ListItem>
+                        <asp:DropDownList runat="server" class="form-control required" ID="City" ClientIDMode="Static">
                         </asp:DropDownList>
+                        
                     </div>
                 </div>
 

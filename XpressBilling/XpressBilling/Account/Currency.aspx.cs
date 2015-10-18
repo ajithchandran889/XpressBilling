@@ -33,5 +33,40 @@ namespace XpressBilling.Account
             listCurrency.DataSource = XBDataProvider.Currency.GetAllCurrencies();
             listCurrency.DataBind();
         }
+        protected void CurrencyUserDataBound(object sender, EventArgs e)
+        {
+            foreach (GridViewRow gvRow in listCurrency.Rows)
+            {
+                DropDownList ddlListUser = gvRow.FindControl("CurrencyStatusDdl") as DropDownList;
+                HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
+
+                if (ddlListUser != null && hfSelectedValue != null)
+                {
+                    ddlListUser.SelectedValue = hfSelectedValue.Value;
+                }
+            }
+        }
+
+        protected void CurrencyStatusDdlSelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddl = sender as DropDownList;
+            try
+            {
+                int currencyId = Convert.ToInt32(ddl.Attributes["currencyId"]);
+                if (ddl.SelectedValue == "1")
+                {
+                    XBDataProvider.Currency.ActivateCurrency(currencyId);
+                }
+                else
+                {
+                    XBDataProvider.Currency.DeActivateCurrency(currencyId);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
     }
 }
