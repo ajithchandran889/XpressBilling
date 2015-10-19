@@ -24,7 +24,7 @@
                         <asp:TextBox runat="server" ID="FormationDate" class="form-control required" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="FormationDate" class="control-label col-xs-2 col-md-2">Registration Number</label>
+                    <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="txtregno" class="form-control required" placeholder="Registration Number" ClientIDMode="Static"></asp:TextBox>
                         

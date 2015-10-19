@@ -49,6 +49,8 @@
     <Compile Include="Country.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="ItemGroup.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxCode.cs" />

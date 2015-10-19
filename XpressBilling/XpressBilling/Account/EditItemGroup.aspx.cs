@@ -8,15 +8,15 @@ using System.Data;
 
 namespace XpressBilling.Account
 {
-    public partial class EditTaxMst : System.Web.UI.Page
+    public partial class EditItemGroup : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                DataTable dtTaxCodes = XBDataProvider.TaxMst.GetAllTaxCodes();
+                DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTaxCodes();
 
-                ddlTaxCode.DataSource = dtTaxCodes;
+                ddlTaxCode.DataSource = dtItemGroups;
                 ddlTaxCode.DataValueField = "TaxCode";
                 ddlTaxCode.DataTextField = "name";
                 ddlTaxCode.DataBind();
@@ -27,10 +27,10 @@ namespace XpressBilling.Account
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
-                    DataTable TaxMstDetails = XBDataProvider.TaxMst.GetTaxById(id);
-                    if (TaxMstDetails.Rows.Count > 0)
+                    DataTable ItemGroupDetails = XBDataProvider.ItemGroup.GetItemGroupById(id);
+                    if (ItemGroupDetails.Rows.Count > 0)
                     {
-                        SetTaxDetails(TaxMstDetails);
+                        SetItemGroupDetails(ItemGroupDetails);
                     }
                 }
                 else
@@ -41,25 +41,24 @@ namespace XpressBilling.Account
                     UserName.Visible = false;
                     Date.Visible = false;
                     ddlStatus.Visible = false;
-                    TaxId.Value = "0";
+                    ItemId.Value = "0";
                 }
             }
         }
 
-        public void SetTaxDetails(DataTable TaxMstDetails)
+        public void SetItemGroupDetails(DataTable ItemGroupDetails)
         {
-            DataRow row = TaxMstDetails.Rows[0];
-            Tax.Text = row["Tax"].ToString();
-            Tax.ReadOnly = true;
+            DataRow row = ItemGroupDetails.Rows[0];
+            ItemGroup.Text = row["ItemGroupCode"].ToString();
+            ItemGroup.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            TaxPercentage.Text = row["TaxPercentage"].ToString();
             ddlTaxCode.SelectedValue = row["TaxCode"].ToString();
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
             Date.Text = row["CreatedDate"].ToString();
             Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
-            TaxId.Value = row["ID"].ToString();
+            ItemId.Value = row["ID"].ToString();
 
         }
 
@@ -69,14 +68,14 @@ namespace XpressBilling.Account
             {
                 int msgstatus = 0;
                 hdncompanycode.Value = "C100";
-                if (TaxId.Value != "0" && TaxId.Value != null)
+                if (ItemId.Value != "0" && ItemId.Value != null)
                 {
                     bool status;
                     if (ddlStatus.SelectedValue == "0")
                         status = false;
                     else
                         status = true;
-                    msgstatus = XBDataProvider.TaxMst.UpdateTaxMst(Convert.ToInt32(TaxId.Value), Name.Text,TaxPercentage.Text, User.Identity.Name, status);
+                    msgstatus = XBDataProvider.ItemGroup.UpdateItemGroup(Convert.ToInt32(ItemId.Value), Name.Text, User.Identity.Name, status);
                     if (msgstatus == 1)
                     {
                         lblMsg.InnerText = "Successfully updated";
@@ -89,7 +88,8 @@ namespace XpressBilling.Account
                 else
                 {
                     string reference = "";
-                    msgstatus = XBDataProvider.TaxMst.SaveTaxMst(hdncompanycode.Value, Tax.Text, Name.Text, ddlTaxCode.SelectedValue, TaxPercentage.Text, reference, User.Identity.Name, true);
+                    string cesscode = "";
+                    msgstatus = XBDataProvider.ItemGroup.SaveItemGroup(hdncompanycode.Value, ItemGroup.Text, Name.Text, ddlTaxCode.SelectedValue,cesscode, reference, User.Identity.Name, true);
                     if (msgstatus == 1)
                     {
                         lblMsg.InnerText = "Successfully added";

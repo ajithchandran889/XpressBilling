@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +9,9 @@ using System.Data;
 
 namespace XBDataProvider
 {
-    public static class City
+    public static class Employee
     {
-        public static int SaveCity(string companyCode, string CityCode, string name, string CountryCode, string reference, string createdBy, bool status)
+        public static int SaveEmployee(string companyCode, string Employee, string name, string doj, string reference, string createdBy, bool status)
         {
             try
             {
@@ -22,14 +19,14 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
-                cmd.Parameters.Add(new SqlParameter("@CityCode", CityCode));
+                cmd.Parameters.Add(new SqlParameter("@EmployeeCode", Employee));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
-                cmd.Parameters.Add(new SqlParameter("@CountryCode", CountryCode));
+                cmd.Parameters.Add(new SqlParameter("@DateofJoining", doj));
                 cmd.Parameters.Add(new SqlParameter("@Reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", createdBy));
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CityMaster_xpins", cmd);
+                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_EmployeeMaster_xpins", cmd);
             }
             catch (Exception ex)
             {
@@ -38,7 +35,7 @@ namespace XBDataProvider
 
         }
 
-        public static int UpdateCity(int id, string name, string countrycode, string updatedBy, bool status)
+        public static int UpdateEmployee(int id, string name, string updatedBy, bool status)
         {
             try
             {
@@ -47,11 +44,10 @@ namespace XBDataProvider
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
-                cmd.Parameters.Add(new SqlParameter("@CountryCode", countrycode));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", updatedBy));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CityMaster_xpupd", cmd);
+                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_EmployeeMaster_xpupd", cmd);
             }
             catch (Exception ex)
             {
@@ -59,28 +55,13 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetAllCities()
+        public static DataTable GetAllEmployee()
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllCities");
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return dtTable;
-        }
-        public static DataTable GetAllActiveCountryCodes()
-        {
-            DataTable dtTable = new DataTable();
-            try
-            {
-                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveCountries");
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllEmployees");
             }
             catch (Exception ex)
             {
@@ -90,7 +71,7 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static DataTable GetCityById(int Id)
+        public static DataTable GetEmployeeById(int Id)
         {
             DataTable dtTable = new DataTable();
             try
@@ -98,25 +79,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", Id));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_CityGetById", cmd);
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return dtTable;
-        }
-
-        public static DataTable GetCities(string countryCode)
-        {
-            DataTable dtTable = new DataTable();
-            try
-            {
-                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                SqlCommand cmd = new SqlCommand();
-                cmd.Parameters.Add(new SqlParameter("@countryCode", countryCode));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_CityGetByCountryCode",cmd);
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_EmployeeMasterGetById", cmd);
             }
             catch (Exception ex)
             {
