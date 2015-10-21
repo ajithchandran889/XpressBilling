@@ -21,12 +21,14 @@ namespace XpressBilling.Account
             }
         }
 
-        //protected void UserLoggedIn(object sender, EventArgs e)
-        //{
-        //    if (Membership.ValidateUser(LoginCtrl.UserName, LoginCtrl.Password))
-        //    {
-        //        FormsAuthentication.SetAuthCookie(LoginCtrl.UserName, true); 
-        //    }
-        //}
+
+        protected void LoginCtrl_LoggingIn(object sender, LoginCancelEventArgs e)
+        {
+            string userName = (LoginCtrl.FindControl("UserName") as TextBox).Text;
+            MembershipUser user = Membership.GetUser(userName);
+            Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(user.UserName);
+        }
+
+        
     }
 }

@@ -27,7 +27,7 @@ namespace XpressBilling.Account
                 Country.DataBind();
                 ListItem item = new ListItem();
                 item.Text = "Select Country";
-                item.Value = "0";
+                item.Value = "";
                 Country.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null)

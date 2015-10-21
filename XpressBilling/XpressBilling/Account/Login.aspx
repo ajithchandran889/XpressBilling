@@ -8,7 +8,7 @@
     </hgroup>
     <section id="loginForm">
         <h2>Use a local account to log in.</h2>
-        <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" >
+        <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" OnLoggingIn="LoginCtrl_LoggingIn">
             <LayoutTemplate>
                 <p class="validation-summary-errors">
                     <asp:Literal runat="server" ID="FailureText" />

@@ -52,6 +52,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="ItemGroup.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="PaymentMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxCode.cs" />
     <Compile Include="TaxMst.cs" />

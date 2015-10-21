@@ -102,7 +102,7 @@
                     <label  class="control-label col-xs-2 col-md-2">Country</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="Country" ClientIDMode="Static">
-                            <asp:ListItem Value="0" Text="Select Country"></asp:ListItem>
+                            <asp:ListItem Value="" Text="Select Country"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                     </div>
                     <label for="City" class="control-label col-xs-2 col-md-2">City</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="City" ClientIDMode="Static">
+                        <asp:DropDownList runat="server" class="form-control required" ID="City" ClientIDMode="Static" >
                         </asp:DropDownList>
                         
                     </div>

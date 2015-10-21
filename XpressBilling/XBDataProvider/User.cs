@@ -44,5 +44,27 @@ namespace XBDataProvider
 
             return dtTable;
         }
+
+        public static string GetCompanyCodeByUserId(string userName)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@userName", userName));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_CompanyCodeByUserId", cmd);
+                if(dtTable.Rows.Count>0)
+                {
+                    return dtTable.Rows[0]["CompanyCode"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return "";
+        }
     }
 }

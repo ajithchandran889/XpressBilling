@@ -55,6 +55,29 @@ $(function () {
 $(document).ready(function () {
     SearchText();
 
+    function DeleteConfirm()
+    {
+        var Ans = confirm("Do you want to Delete Selected Employee Record?");
+        if (Ans) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    $(document).on("change", "#Transaction", function () {
+        
+        if($("#Transaction").val()=="1")
+        {
+            $("#lblBankDetail").text("Bank Code");
+        }
+        else
+        {
+            $("#lblBankDetail").text("Bank Account");
+        }
+    });
+
     $(document).on("change", "#Country", function () {
         var obj = {};
         obj.countryCode = $.trim($("#Country").val());
