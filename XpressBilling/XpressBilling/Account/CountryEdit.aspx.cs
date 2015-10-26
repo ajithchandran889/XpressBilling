@@ -57,7 +57,7 @@ namespace XpressBilling.Account
             try
             {
                 int msgstatus = 0;
-                hdncompanycode.Value = "C100";
+                hdncompanycode.Value = Session["CompanyCode"].ToString();
                 if (CountryId.Value != "0" && CountryId.Value != null)
                 {
                     bool status;

@@ -13,7 +13,10 @@ namespace XpressBilling.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadLocationList();
+            if (!IsPostBack)
+            {
+                LoadLocationList();
+            }
         }
 
         protected void listLocationPageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -25,6 +28,58 @@ namespace XpressBilling.Account
         {
             listLocation.DataSource = XBDataProvider.Location.GetAllLocations();
             listLocation.DataBind();
+        }
+
+        protected void listLocationDataBound(object sender, EventArgs e)
+        {
+            foreach (GridViewRow gvRow in listLocation.Rows)
+            {
+                DropDownList ddlCompanyUser = gvRow.FindControl("LocationDdl") as DropDownList;
+                HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
+
+                if (ddlCompanyUser != null && hfSelectedValue != null)
+                {
+
+                    ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
+                }
+            }
+        }
+        protected void LocationDdlSelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddl = sender as DropDownList;
+            try
+            {
+                int companyId = Convert.ToInt32(ddl.Attributes["IdLocation"]);
+                if (ddl.SelectedValue == "1")
+                {
+                    XBDataProvider.Location.ActivateLocation(companyId);
+                }
+                else
+                {
+                    XBDataProvider.Location.DeActivateLocation(companyId);
+                }
+                LoadLocationList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+        protected void deleteRecordsClick(object sender, EventArgs e)
+        {
+            string ids = string.Empty;
+            foreach (GridViewRow grow in listLocation.Rows)
+            {
+                CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
+                if (chkdel.Checked)
+                {
+                    HiddenField hfSelectedId = grow.FindControl("selectedId") as HiddenField;
+                    ids += hfSelectedId.Value + ",";
+                }
+            }
+            XBDataProvider.Location.DeleteLocation(ids);
+            LoadLocationList();
         }
     }
 }

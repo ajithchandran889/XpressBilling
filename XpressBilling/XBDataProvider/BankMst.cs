@@ -119,5 +119,52 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static void ActivateBankCode(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankMst_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateBankCode(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankMst_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteBankCodes(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankMstDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
     }
 }

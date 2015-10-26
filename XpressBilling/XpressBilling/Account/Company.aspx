@@ -5,17 +5,17 @@
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
-                    Company
-                <div class="pull-right">
-                    <span class="icon-wrap pull-left"> <a href="CompanyEdit"><i class="glyphicon glyphicon-plus "></i></a></span>
-                </div>
+                    Company                
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
-                        <h2>List View</h2>
-                    </div>
+                        <h2 class="pull-left">List View</h2>
+                        <div class="pull-right"> 
+              <span class="icon-wrap pull-left"> <a href="CompanyEdit"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
+               <%--<span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>--%>
+              </div></div>
                     <asp:GridView ID="listCompany" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="listCompanyPageIndexChanging" PageSize="2" AutoGenerateColumns="false" OnDataBound="listCompanyDataBound">
+                        OnPageIndexChanging="listCompanyPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listCompanyDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="CompanyEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

@@ -89,5 +89,52 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static void ActivateCountry(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Country_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateCountry(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Country_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteCountry(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CountryDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
     }
 }

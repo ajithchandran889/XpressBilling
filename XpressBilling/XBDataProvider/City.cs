@@ -6,9 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Data;
 
 namespace XBDataProvider
 {
@@ -124,6 +121,54 @@ namespace XBDataProvider
             }
 
             return dtTable;
+        }
+
+        public static void ActivateCity(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CityMaster_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateCity(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_City_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteCity(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CityMasterDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
         }
     }
 }

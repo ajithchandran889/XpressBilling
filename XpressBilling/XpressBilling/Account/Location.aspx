@@ -9,13 +9,14 @@
             </div>
             <div class="grid_wrapper">
               <div class="grid_header">
-                <h2 class="pull-left">List View</h2><div class="pull-right">
-              <span class="icon-wrap pull-left"> <a href="LocationEdit"><i class="glyphicon glyphicon-plus "></i></a></span>
-               <span class="icon-wrap pull-left"> <i class="glyphicon glyphicon-trash"></i></span>
+                  <h2 class="pull-left">List View</h2>
+                        <div class="pull-right"> 
+              <span class="icon-wrap pull-left"> <a href="LocationEdit"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
+               <span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
               </div>
               </div>
               <asp:GridView ID="listLocation" runat="server" CssClass="table" CellPadding="0" CellSpacing="0" AllowPaging="true" 
-                  OnPageIndexChanging="listLocationPageIndexChanging" PageSize="2" AutoGenerateColumns="false" EmptyDataText="There are no Locations">
+                  OnPageIndexChanging="listLocationPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Locations" OnDataBound="listLocationDataBound">
                   <PagerStyle HorizontalAlign="Right" />
                    <columns>
                         <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="LocationEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil"/>
@@ -26,7 +27,23 @@
                         <asp:boundfield DataField="City" HeaderText="City"></asp:boundfield>
                         <asp:boundfield DataField="Country" HeaderText="Country"></asp:boundfield>
                         <asp:boundfield DataField="ZipCode" HeaderText="Zip/Postal Code" ItemStyle-Width="80"></asp:boundfield>
-                        <asp:boundfield DataField="Email" HeaderText="Email" ItemStyle-Width="150"></asp:boundfield></columns>
+                        <asp:boundfield DataField="Email" HeaderText="Email" ItemStyle-Width="150"></asp:boundfield>
+                        <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate>
+                                   <asp:dropdownlist id="LocationDdl" IdLocation='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="LocationDdlSelectedIndexChanged">
+                                        <asp:listitem value="1" text="Active"></asp:listitem>
+                                        <asp:listitem value="0" text="Inactive"></asp:listitem>
+                                    </asp:dropdownlist>
+                                    <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>  
+                                <ItemTemplate>  
+                                    <asp:CheckBox ID="chkDel"  runat="server" />  
+                                    <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
+                                </ItemTemplate>  
+                            </asp:TemplateField>
+                       </columns>
               </asp:GridView>
             </div>
             

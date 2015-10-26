@@ -4,6 +4,7 @@ $(function () {
     $("#inputDate").datepicker(); 
     $("#FormationDate").datepicker();
     $("#Date").datepicker();
+    $("#DOJ").datepicker();
 });
 
 

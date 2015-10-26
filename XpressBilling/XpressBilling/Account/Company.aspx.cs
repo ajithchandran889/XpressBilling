@@ -57,12 +57,28 @@ namespace XpressBilling.Account
                 {
                     XBDataProvider.Company.DeActivateCompany(companyId);
                 }
+                LoadCompanyList();
             }
             catch(Exception ex)
             {
 
             }
             
+        }
+        protected void deleteRecordsClick(object sender, EventArgs e)
+        {
+            string ids = string.Empty;
+            foreach (GridViewRow grow in listCompany.Rows)
+            {
+                CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
+                if (chkdel.Checked)
+                {
+                    HiddenField hfSelectedId = grow.FindControl("selectedId") as HiddenField;
+                    ids += hfSelectedId.Value + ",";
+                }
+            }
+            XBDataProvider.Company.DeleteCompany(ids);
+            LoadCompanyList();
         }
     }
 }

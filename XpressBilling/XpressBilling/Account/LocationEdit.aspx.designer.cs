@@ -40,13 +40,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox FormationDate;
         
         /// <summary>
-        /// txtregno control.
+        /// RegistrationNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtregno;
+        protected global::System.Web.UI.WebControls.TextBox RegistrationNo;
         
         /// <summary>
         /// TIN control.
@@ -148,13 +148,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Address2;
         
         /// <summary>
-        /// City control.
+        /// CityCountry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox City;
+        protected global::System.Web.UI.WebControls.DropDownList CityCountry;
         
         /// <summary>
         /// Area control.

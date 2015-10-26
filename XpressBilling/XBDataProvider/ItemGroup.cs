@@ -106,5 +106,53 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static void ActivateItemGroup(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemGroup_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateItemGroup(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemGroup_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteItemGroup(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemGroupDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+       
     }
 }

@@ -24,9 +24,9 @@
                         <asp:TextBox runat="server" ID="FormationDate" class="form-control required" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
-                    <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
+                    <label for="lblRegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="txtregno" class="form-control required" placeholder="Registration Number" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required" placeholder="Registration Number" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                      </div>
@@ -107,9 +107,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="City" class="control-label col-xs-2 col-md-2">City</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="City" class="form-control required" placeholder="City" ClientIDMode="Static"></asp:TextBox>
+                    <label for="lblCityCountry" class="control-label col-xs-2 col-md-2">City</label>
+                    <div class="col-xs-10 col-md-2">                        
+                        <asp:DropDownList runat="server" class="form-control required" ID="CityCountry" ClientIDMode="Static" >
+                        </asp:DropDownList>
                         
                     </div>
                     <label for="Area" class="control-label col-xs-2 col-md-2">Area</label>
@@ -127,7 +128,7 @@
                     <label  class="control-label col-xs-2 col-md-2">Country</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="Country" ClientIDMode="Static">
-                            <asp:ListItem Value="0" Text="Select Country"></asp:ListItem>
+                            <%--<asp:ListItem Value="-1" Text="Select Country"></asp:ListItem>--%>
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -159,8 +160,8 @@
                     </div>
                 <div class="form-group">
                 <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" CssClass="btn btn-primary pull-right" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Company.aspx" class="btn btn-primary pull-right">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
+                        <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" CssClass="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
                 
                     </div>
                 </div>

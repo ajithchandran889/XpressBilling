@@ -20,7 +20,10 @@ namespace XpressBilling.Account
         //}
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadCurrencyList();
+            if (!IsPostBack)
+            {
+                LoadCurrencyList();
+            }
         }
 
         protected void listCurrencyPageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -61,12 +64,29 @@ namespace XpressBilling.Account
                 {
                     XBDataProvider.Currency.DeActivateCurrency(currencyId);
                 }
+                 LoadCurrencyList();
             }
+            
             catch (Exception ex)
             {
 
             }
 
+        }
+        protected void deleteRecordsClick(object sender, EventArgs e)
+        {
+            string ids = string.Empty;
+            foreach (GridViewRow grow in listCurrency.Rows)
+            {
+                CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
+                if (chkdel.Checked)
+                {
+                    HiddenField hfSelectedId = grow.FindControl("selectedId") as HiddenField;
+                    ids += hfSelectedId.Value + ",";
+                }
+            }
+            XBDataProvider.Currency.DeleteCurrency(ids);
+            LoadCurrencyList();
         }
     }
 }

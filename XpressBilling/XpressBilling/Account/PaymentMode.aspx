@@ -15,7 +15,7 @@
                         <h2>List View</h2>
                     </div>
                     <asp:GridView ID="ListPaymentMode" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="PaymentModePageIndexChanging" PageSize="3" AutoGenerateColumns="false" OnDataBound="listPaymentModeDataBound">
+                        OnPageIndexChanging="PaymentModePageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listPaymentModeDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="PaymentMode" DataNavigateUrlFormatString="PaymentModeEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

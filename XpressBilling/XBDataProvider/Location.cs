@@ -58,7 +58,7 @@ namespace XBDataProvider
 
         }
 
-        public static int UpdateLocation(string locationId, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
+        public static bool UpdateLocation(string locationId, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
                                       string ContactCode, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone, string mobile, string email, string web, string contactPerson, string designation, string address1, string address2,
                                       string city, string area, string zipCode, string country, string state, String fax)
@@ -97,11 +97,12 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Country", country));
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_LocationMst_xpupd", cmd);
+                 DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_LocationMst_xpupd", cmd);
+                return true;
             }
             catch (Exception ex)
             {
-                return -1;
+                return false;
             }
 
         }
@@ -137,5 +138,53 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static void ActivateLocation(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Location_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateLocation(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Location_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteLocation(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_LocationDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+       
     }
 }

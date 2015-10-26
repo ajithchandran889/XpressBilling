@@ -49,6 +49,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox FormationDate;
         
         /// <summary>
+        /// RegistrationNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox RegistrationNo;
+        
+        /// <summary>
         /// TIN control.
         /// </summary>
         /// <remarks>
@@ -67,15 +76,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox PAN;
         
         /// <summary>
-        /// RegistrationNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox RegistrationNo;
-        
-        /// <summary>
         /// ContactPerson control.
         /// </summary>
         /// <remarks>
@@ -83,15 +83,6 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ContactPerson;
-        
-        /// <summary>
-        /// Mobile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Mobile;
         
         /// <summary>
         /// Phone control.
@@ -103,13 +94,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Phone;
         
         /// <summary>
-        /// Email control.
+        /// Mobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Email;
+        protected global::System.Web.UI.WebControls.TextBox Mobile;
         
         /// <summary>
         /// Fax control.
@@ -119,6 +110,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Fax;
+        
+        /// <summary>
+        /// Email control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Email;
         
         /// <summary>
         /// Web control.
@@ -157,15 +157,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Address2;
         
         /// <summary>
-        /// Country control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Country;
-        
-        /// <summary>
         /// Area control.
         /// </summary>
         /// <remarks>
@@ -173,6 +164,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Area;
+        
+        /// <summary>
+        /// Country control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList Country;
         
         /// <summary>
         /// State control.

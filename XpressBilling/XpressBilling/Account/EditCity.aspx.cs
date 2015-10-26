@@ -67,7 +67,7 @@ namespace XpressBilling.Account
             try
             {
                 int msgstatus = 0;
-                hdncompanycode.Value = "C100";
+                hdncompanycode.Value = Session["CompanyCode"].ToString();
                 if (CityId.Value != "0" && CityId.Value != null)
                 {
                     bool status;
@@ -88,7 +88,6 @@ namespace XpressBilling.Account
                 else
                 {
                     string reference = "";
-                    string cesscode = "";
                     msgstatus = XBDataProvider.City.SaveCity(hdncompanycode.Value, City.Text, Name.Text, ddlCountry.SelectedValue, reference, User.Identity.Name, true);
                     if (msgstatus == 1)
                     {
