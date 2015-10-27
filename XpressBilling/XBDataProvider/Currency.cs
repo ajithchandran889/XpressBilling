@@ -143,5 +143,25 @@ namespace XBDataProvider
             }
 
         }
+        public static string GetCurrencyCodeByCompany(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetCurrencyCodeByCompany", cmd);
+                if (dtTable.Rows.Count > 0)
+                {
+                    return dtTable.Rows[0]["CurrencyCode"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return "";
+        }
     }
 }

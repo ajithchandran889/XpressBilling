@@ -119,5 +119,158 @@ namespace XBDataProvider
 
             return dtTable;
         }
+
+        public static bool SaveItemMaster(string companyCode, string itemCode, string name, int itemType, string barCode, string searchKey,
+                                      string itemGroupCode, string manufacturerCode, string baseUnitCode, int mrp, int retailPrice, int purchasePrice,
+                                      int cost,int inverntoryValuation, int safetyStock, int reorderQuantity, string createdBy)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
+                cmd.Parameters.Add(new SqlParameter("@Name", name));
+                cmd.Parameters.Add(new SqlParameter("@ItemCode", itemCode));
+                cmd.Parameters.Add(new SqlParameter("@ItemType", itemType));
+                cmd.Parameters.Add(new SqlParameter("@SupplierBarcode", barCode));
+                cmd.Parameters.Add(new SqlParameter("@SearchKey", searchKey));
+                cmd.Parameters.Add(new SqlParameter("@ItemGroupCode", itemGroupCode));
+                cmd.Parameters.Add(new SqlParameter("@ManufacturerCode", manufacturerCode));
+                cmd.Parameters.Add(new SqlParameter("@BaseUnitCode", baseUnitCode));
+                cmd.Parameters.Add(new SqlParameter("@MRP", mrp));
+                cmd.Parameters.Add(new SqlParameter("@RetailPrice", retailPrice));
+                cmd.Parameters.Add(new SqlParameter("@PurchasePrice", purchasePrice));
+                cmd.Parameters.Add(new SqlParameter("@ItemCost", cost));
+                cmd.Parameters.Add(new SqlParameter("@InventoryValuation", inverntoryValuation));
+                cmd.Parameters.Add(new SqlParameter("@SafetyStock", safetyStock));
+                cmd.Parameters.Add(new SqlParameter("@ReorderQty", reorderQuantity));
+                cmd.Parameters.Add(new SqlParameter("@CreatedBy", createdBy));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedBy", createdBy));
+                cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemMaster_xpins", cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public static bool UpdateItemMaster( string itemMasterId, string name, string barCode, string searchKey,
+                                      string itemGroupCode, string manufacturerCode, int mrp, int retailPrice, int purchasePrice,
+                                      int cost, int inverntoryValuation, int safetyStock, int reorderQuantity, string updatedBy)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@itemMasterId", itemMasterId));
+                cmd.Parameters.Add(new SqlParameter("@Name", name));
+                cmd.Parameters.Add(new SqlParameter("@SupplierBarcode", barCode));
+                cmd.Parameters.Add(new SqlParameter("@SearchKey", searchKey));
+                cmd.Parameters.Add(new SqlParameter("@ItemGroupCode", itemGroupCode));
+                cmd.Parameters.Add(new SqlParameter("@ManufacturerCode", manufacturerCode));
+                cmd.Parameters.Add(new SqlParameter("@MRP", mrp));
+                cmd.Parameters.Add(new SqlParameter("@RetailPrice", retailPrice));
+                cmd.Parameters.Add(new SqlParameter("@PurchasePrice", purchasePrice));
+                cmd.Parameters.Add(new SqlParameter("@ItemCost", cost));
+                cmd.Parameters.Add(new SqlParameter("@InventoryValuation", inverntoryValuation));
+                cmd.Parameters.Add(new SqlParameter("@SafetyStock", safetyStock));
+                cmd.Parameters.Add(new SqlParameter("@ReorderQty", reorderQuantity));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedBy", updatedBy));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemMaster_xpupd", cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+        public static DataTable GetAllItemMaster()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ItemMasterGetAll");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+        public static DataTable GetItemMasterById(int Id)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", Id));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ItemMasterById", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
+        public static void ActivateItemMaster(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemMaster_Activate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeActivateItemMaster(int id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemMaster_DeActivate", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public static void DeleteItemMasters(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ItemMasterDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
     }
 }
