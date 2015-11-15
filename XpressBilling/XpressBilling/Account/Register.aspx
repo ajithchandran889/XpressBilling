@@ -1,9 +1,10 @@
 ﻿<%@ Page Title="Register" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="XpressBilling.Account.Register" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
+    
     <hgroup class="title">
-        <h1><%: Title %>.</h1>
-        <h2>Use the form below to create a new account.</h2>
+        <h1 class="page-header"><%: Title %>.</h1>
+        <h2 class="page-header">Use the form below to create a new account.</h2>
     </hgroup>
 
     <asp:CreateUserWizard runat="server" ID="RegisterUser"  OnCreatedUser="RegisterUser_CreatedUser">

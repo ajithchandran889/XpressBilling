@@ -15,7 +15,7 @@
                <%--<span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>--%>
               </div></div>
                     <asp:GridView ID="listCompany" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="listCompanyPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listCompanyDataBound">
+                        OnPageIndexChanging="listCompanyPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no records listing" OnDataBound="listCompanyDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="CompanyEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

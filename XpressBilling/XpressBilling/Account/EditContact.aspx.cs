@@ -26,6 +26,15 @@ namespace XpressBilling.Account
                 item.Text = "Select Country";
                 item.Value = "";
                 Country.Items.Insert(0, item);
+                DataTable dtCompanies = XBDataProvider.Company.GetAllActiveCompany();
+                ddlCompany.DataSource = dtCompanies;
+                ddlCompany.DataValueField = "CompanyCode";
+                ddlCompany.DataTextField = "Name";
+                ddlCompany.DataBind();
+                ListItem itemcompany = new ListItem();
+                itemcompany.Text = "Select Company";
+                itemcompany.Value = "";
+                ddlCompany.Items.Insert(0, itemcompany);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null)
                 {
@@ -51,43 +60,35 @@ namespace XpressBilling.Account
             Name.Text = row["Name"].ToString();
             string formationDate = Convert.ToDateTime(row["CreatedDate"]).ToString("MM/dd/yyyy");
             Date.Text = formationDate;
+            Username.Text = row["UpdatedBy"].ToString();
             Phone.Text = row["Phone"].ToString();
-           // Phone.ReadOnly = true;
             Mobile.Text = row["Mobile"].ToString();
-            //Mobile.ReadOnly = true;
             Fax.Text = row["Fax"].ToString();
-            //Fax.ReadOnly = true;
             Email.Text = row["Email"].ToString();
-            //Email.ReadOnly = true;
             Web.Text = row["Web"].ToString();
-            //Web.ReadOnly = true;
             Designation.Text = row["Designation"].ToString();
-            //Designation.ReadOnly = true;
             Address1.Text = row["Address1"].ToString();
-            //Address1.ReadOnly = true;
             Address2.Text = row["Address2"].ToString();
-            //Address2.ReadOnly = true;
             Citycontact.SelectedValue = row["CityCode"].ToString();
-           // Citycontact.Enabled = false;
             Area.Text = row["Area"].ToString();
-           // Area.ReadOnly = true;
             State.Text = row["State"].ToString();
-            //State.ReadOnly = true;
             Country.SelectedValue = row["CountryCode"].ToString();
             ddlCompany.SelectedValue = row["CompanyCode"].ToString();
-            //Country.Enabled = false;
+            ddlCompany.Enabled = false;
             Zip.Text = row["ZipPostalCode"].ToString();
-           // Zip.ReadOnly = true;
             ContactId.Value = row["ID"].ToString();
         }
         protected void SaveClick(object sender, EventArgs e)
         {
             try
-            {               
+            {
+                int zipcode = Convert.ToInt16(Zip.Text);
                 bool status = false;
-                if (CompanyId.Value != "0" && CompanyId.Value != "")
+                string note = "";
+                string errmsg = "";
+                if (ContactId.Value != "0" && ContactId.Value != "")
                 {
-                    status = XBDataProvider.Company.UpdateCompany(ContactId.Value, Name.Text, User.Identity.Name);
+                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Citycontact.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(zipcode), true, User.Identity.Name);
                     if (status)
                     {
                         lblMsg.InnerText = "Successfully updated";
@@ -99,15 +100,14 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    int retunValue = 0;
-                    retunValue = XBDataProvider.Company.SaveCompany(ddlCompany.Text, Name.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Citycontact.SelectedValue, Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
-                    if (retunValue>=1)
+                    int retunValue = 0;                    
+                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Citycontact.SelectedValue, Area.Text, State.Text, Country.SelectedValue,Convert.ToInt32( zipcode), true, note, errmsg, User.Identity.Name);
+                    if (retunValue >= 1)
                     {
                         ClearInputs(Page.Controls);
                         lblMsg.InnerText = "Successfully added";
                     }
-                    else if(retunValue==-1)
+                    else if (retunValue == -1)
                     {
                         lblMsg.InnerText = "Contact already exist";
                     }
@@ -124,9 +124,9 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<citypages> GetCities(string countryCode)
+        public static List<Citycontact> GetCities(string countryCode)
         {
-            List<citypages> result = new List<citypages>();
+            List<Citycontact> result = new List<Citycontact>();
             try
             {
                 DataTable dtTable = XBDataProvider.City.GetCities(countryCode);
@@ -134,10 +134,10 @@ namespace XpressBilling.Account
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {
                     row = dtTable.Rows[index];
-                    citypages citypages = new citypages();
-                    citypages.cityCodethis = row["CityCode"].ToString();
-                    citypages.cityNamethis = row["Name"].ToString();
-                    result.Add(citypages);
+                    Citycontact Citycontact = new Citycontact();
+                    Citycontact.CityCode = row["CityCode"].ToString();
+                    Citycontact.Name = row["Name"].ToString();
+                    result.Add(Citycontact);
                 }
             }
             catch(Exception e)
@@ -175,9 +175,9 @@ namespace XpressBilling.Account
         }
     }
 
-    public class citypages
+    public class Citycontact
     {
-        public string cityNamethis { get; set; }
-        public string cityCodethis { get; set; }
+        public string Name { get; set; }
+        public string CityCode { get; set; }
     }
 }

@@ -13,6 +13,7 @@
               <span class="icon-wrap pull-left"> <a href="EditContact"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
                <span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
               </div></div>
+
                     <asp:GridView ID="listContact" runat="server" CssClass="table" AllowPaging="true"
                         OnPageIndexChanging="listContactPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listContactDataBound">
                         <PagerStyle HorizontalAlign="Right" />

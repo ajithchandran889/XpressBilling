@@ -294,9 +294,9 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<citypages> GetCities(string countryCode)
+        public static List<cityLocation> GetCities(string countryCode)
         {
-            List<citypages> result = new List<citypages>();
+            List<cityLocation> result = new List<cityLocation>();
             try
             {
                 DataTable dtTable = XBDataProvider.City.GetCities(countryCode);
@@ -304,10 +304,10 @@ namespace XpressBilling.Account
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {
                     row = dtTable.Rows[index];
-                    citypages citypages = new citypages();
-                    citypages.cityCode = row["CityCode"].ToString();
-                    citypages.cityName = row["Name"].ToString();
-                   result.Add(citypages);
+                    cityLocation cityLocation = new cityLocation();
+                    cityLocation.cityCode = row["CityCode"].ToString();
+                    cityLocation.cityName = row["Name"].ToString();
+                    result.Add(cityLocation);
                 }
             }
             catch (Exception e)
@@ -347,7 +347,7 @@ namespace XpressBilling.Account
         }
     }
 
-    public class citypages
+    public class cityLocation
     {
         public string cityName { get; set; }
         public string cityCode { get; set; }

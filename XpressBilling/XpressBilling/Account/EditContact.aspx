@@ -15,13 +15,15 @@
                         
                     </div>
                 </div>
+
                 <div class="form-group">
                 <label for="Designation" class="control-label col-xs-2 col-md-2">Designation</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>
                     </div>
+                    <label for="Date" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Date" class="form-control required" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Date" class="form-control" ReadOnly="true" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>    
                 </div>
@@ -29,16 +31,18 @@
                 <div class="form-group">
                     <label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="ddlCompany" ClientIDMode="Static">
+                        <asp:DropDownList runat="server" class="form-control" ID="ddlCompany" ClientIDMode="Static">
                         </asp:DropDownList>                        
                     </div>
-                    <label  class="control-label col-xs-2 col-md-2">User</label>
+                    <label for="UserName" runat="server" ID="lblusername" placeholder="UserName"  class="control-label col-xs-2 col-md-2">User</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="User" class="form-control required" placeholder="User" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Username" class="form-control" ReadOnly="true" placeholder="User" ClientIDMode="Static"></asp:TextBox>
                     </div>
                   </div>
-                 <div class="form-group"><div></div><div></div></div>
-                <div class="form-group"><div></div><div></div></div>
+
+                
+                 <div class="form-group"><div></div></div>
+                <div class="form-group"><div></div></div>
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
@@ -108,23 +112,18 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Zip" class="form-control required" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>                    
-                </div>                
-                <%--<div class="form-group">
-                    <label for="input-1" class="control-label col-xs-2 col-md-2">Upload Logo</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:FileUpload id="logoUpload" runat="server" class="required" />
-                    </div>
-                    </div>--%>
+                </div> 
                     <div class="form-group">
                         <asp:HiddenField ID="ContactId" runat="server" />
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a>
+                        <a href="/Account/Contact.aspx" class="btn btn-primary pull-left">Cancel</a>
             <label id="lblMsg" style="color:red;" runat="server"></label>
                 
                     </div>
 
+                </div>
                 </div>
             </div>
         </div>

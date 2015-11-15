@@ -43,6 +43,7 @@
     <Compile Include="BankCode.cs" />
     <Compile Include="BankMst.cs" />
     <Compile Include="BaseUnit.cs" />
+    <Compile Include="BusinessPartner_riju.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Contact.cs" />
