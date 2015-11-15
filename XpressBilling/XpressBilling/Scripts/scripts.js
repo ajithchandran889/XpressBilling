@@ -66,7 +66,36 @@ $(document).ready(function () {
             return false;
         }
     }
+    $(document).on("click", "#saveItemMaster", function () {
+        if ($("#SafetStock").val() < $("#ReorderQty").val()) {
+            alert("Reorder quantity should be lesser or equal to safety stock");
+            return false;
+        }
+        else {
+            return true;
+        }
 
+    });
+
+
+
+    $(document).on("keyup", "#Currency", function () {
+        if (this.id == "Currency") {
+
+        }
+    });
+
+    $(document).on("change", "#Type", function () {
+
+        if ($("#Type").val() == "0") {
+            $("#OrderType_0").show();
+            $("#OrderType_1").hide();
+        }
+        else if ($("#Type").val() == "1") {
+            $("#OrderType_0").hide();
+            $("#OrderType_1").show();
+        }
+    });
     $(document).on("change", "#Transaction", function () {
         
         if($("#Transaction").val()=="1")
@@ -134,12 +163,35 @@ function SearchText() {
             });
         }
     });
+    $(document).on("keydown", "#Price", function (e) {
+        if (e.keyCode == 9) {
+            //e.preventDefault();
+            $('#ButtonAdd').click();
+        }
+    });
+
     $("#ContactPerson").autocomplete({
         source: function (request, response) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "CompanyEdit.aspx/GatAllContacts",
+                dataType: "json",
+                success: function (data) {
+                    response(data.d);
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        }
+    });
+    $("#Item").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "PriceBookEdit.aspx/GetItemMasters",
                 dataType: "json",
                 success: function (data) {
                     response(data.d);
