@@ -32,7 +32,7 @@ namespace XpressBilling.Account
                 {
                     ItemMasterId.Value = "0";
                     CreatedUser.Visible = false;
-                    Date.Visible = false;
+                    CreatedDate.Visible = false;
                     lblDate.Visible = false;
                     lblUser.Visible = false;
                 }
@@ -51,8 +51,8 @@ namespace XpressBilling.Account
             SupplierBarcode.Text = row["SupplierBarcode"].ToString();
             CreatedUser.Text = row["CreatedBy"].ToString();
             CreatedUser.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;
+            CreatedDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            CreatedDate.ReadOnly = true;
             SearchKey.Text = row["SearchKey"].ToString();
             ItemGroup.Text = row["ItemGroupCode"].ToString();
             InventoryValuation.SelectedValue = row["InventoryValuation"].ToString();

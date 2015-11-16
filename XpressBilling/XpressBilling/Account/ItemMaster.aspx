@@ -23,7 +23,9 @@
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="SupplierBarcode" HeaderText="Supplier Barcode"></asp:BoundField>
                             <asp:BoundField DataField="BaseUnitCode" HeaderText="Unit Of Measure"></asp:BoundField>
-                            <asp:BoundField DataField="ItemType" HeaderText="Item Type"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Item Type">
+                                <ItemTemplate><%# Eval("ItemType").ToString()=="0" ? "Cost" : "Purchase" %></ItemTemplate>
+                            </asp:TemplateField>
                             <asp:BoundField DataField="ItemGroupCode" HeaderText="Item Group"></asp:BoundField>
                             <asp:BoundField DataField="MRP" HeaderText="MRP"></asp:BoundField>
                             <asp:BoundField DataField="RetailPrice" HeaderText="Retail Price"></asp:BoundField>

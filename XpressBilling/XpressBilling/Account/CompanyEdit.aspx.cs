@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 DataTable dtCountries = XBDataProvider.Country.GetCountries();
 
                 Country.DataSource = dtCountries;
@@ -30,13 +35,17 @@ namespace XpressBilling.Account
                 item.Value = "";
                 Country.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
-                if (id != null)
+                if (id != null && id != 0)
                 {
                     DataTable companyDetails = XBDataProvider.Company.GetCompanyById(id);
                     if (companyDetails.Rows.Count > 0)
                     {
+                        DataTable dtTable = XBDataProvider.City.GetCitiesByCompany(Session["CompanyCode"].ToString());
+                        City.DataSource = dtTable;
+                        City.DataValueField = "CityCode";
+                        City.DataTextField = "Name";
+                        City.DataBind();
                         SetCompanyDetails(companyDetails);
-
                     }
                 }
                 else
@@ -53,7 +62,7 @@ namespace XpressBilling.Account
             Company.Text = row["CompanyCode"].ToString();
             Company.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM/dd/yyyy");
+            string formationDate =  Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
             FormationDate.Text = formationDate;
             TIN.Text = row["TaxId"].ToString();
             RegistrationNo.Text = row["RegistrationNumber"].ToString();
@@ -104,9 +113,10 @@ namespace XpressBilling.Account
                     logoUpload.SaveAs(path);
                 }
                 bool status = false;
+                DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 if (CompanyId.Value != "0" && CompanyId.Value != "")
                 {
-                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name);
+                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name);
                     if (status)
                     {
                         Message.Text = "Successfully updated";
@@ -119,8 +129,8 @@ namespace XpressBilling.Account
                 else
                 {
                     int retunValue = 0;
-                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
+                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
                     if (retunValue>=1)
                     {
                         ClearInputs(Page.Controls);

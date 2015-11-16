@@ -61,6 +61,43 @@ namespace XBDataProvider
             return dtTable;
         }
 
+        public static DataTable GetPriceBookDtlById(int Id)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", Id));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetPriceBookDtlByMasterId", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
+        public static DataTable GetPriceBookDtlByIdAndSearchKey(int Id,string searchKey)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", Id));
+                cmd.Parameters.Add(new SqlParameter("@SearchKey", searchKey));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetPriceBookDtlByMasterIdSerachKey", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
         public static void DeActivatePriceBook(int id)
         {
             try
@@ -115,8 +152,26 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@DocumentDate", DateTime.Now.Date));
-                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_PriceBookMaster_xpins", cmd);
+                return DataProvider.ExecuteScalarInt(connString, "dbo.sp_PriceBookMaster_xpins", cmd);
                 
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+
+        }
+
+        public static int SavePriceBookMasterDetail(DataTable dtPriceBookDetails)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@tblPriceBookDtl", dtPriceBookDetails));
+                return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_PriceBookDtl_xpins", cmd);
+
             }
             catch (Exception ex)
             {

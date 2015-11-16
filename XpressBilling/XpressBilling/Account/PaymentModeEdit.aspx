@@ -14,7 +14,7 @@
                     </div>
                     <label id="lblCreatedDate" runat="server" for="Date" class="control-label col-xs-2 col-md-2">Created Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Date" name="Date" class="form-control" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="CreatedDate" name="Date" class="form-control" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
                     </div>
 
                 </div>

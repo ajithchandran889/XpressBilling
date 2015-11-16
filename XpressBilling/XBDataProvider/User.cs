@@ -11,13 +11,15 @@ namespace XBDataProvider
 {
     public static class User
     {
-        public static DataTable GetAllUsers()
+        public static DataTable GetAllUsers(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_UsersGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_UsersGetAll",cmd);
             }
             catch (Exception ex)
             {

@@ -29,7 +29,7 @@ namespace XpressBilling.Account
                     lblstatus.Visible = false;
                     lblusername.Visible = false;
                     UserName.Visible = false;
-                    Date.Visible = false;
+                    CreatedDate.Visible = false;
                     ddlStatus.Visible = false;
                     TaxId.Value = "0";
                 }
@@ -44,8 +44,8 @@ namespace XpressBilling.Account
             Name.Text = row["Name"].ToString();
             UserName.Text = row["Reference"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;
+            CreatedDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            CreatedDate.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
             TaxId.Value = row["ID"].ToString();
 

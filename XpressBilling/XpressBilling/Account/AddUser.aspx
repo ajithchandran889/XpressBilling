@@ -74,7 +74,7 @@
                     <div class="col-xs-10 col-md-2">
                         <%--<input id="input-1" type="file" class="file">--%>
                         <asp:Image ID="imgPreview" ClientIDMode="Static" runat="server" ImageUrl="/Images/user/preview.png" />
-                        <asp:FileUpload id="inputUpload" ClientIDMode="Static" runat="server" class="required file" data-show-upload="false" data-show-caption="true" />
+                        <asp:FileUpload id="inputUpload" ClientIDMode="Static" runat="server" class="file" data-show-upload="false" data-show-caption="true" />
                     </div>
                     <asp:HiddenField ID="UserId" runat="server" ClientIDMode="Static" />
                     <div class="col-xs-10 col-md-8">

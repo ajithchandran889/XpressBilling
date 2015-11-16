@@ -31,7 +31,7 @@ namespace XpressBilling.Account
                     lblPaymentMode.Visible = false;
                     CreatedUser.Visible = false;
                     lblCreatedUser.Visible = false;
-                    Date.Visible = false;
+                    CreatedDate.Visible = false;
                     lblCreatedDate.Visible = false;
                 }
             }
@@ -43,8 +43,8 @@ namespace XpressBilling.Account
             PaymentModeId.Value = row["PaymentMode"].ToString();
             PaymentMode.Text = row["PaymentMode"].ToString();
             PaymentMode.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;
+            CreatedDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            CreatedDate.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             CreatedUser.Text = row["CreatedBy"].ToString();
             CreatedUser.ReadOnly = true;

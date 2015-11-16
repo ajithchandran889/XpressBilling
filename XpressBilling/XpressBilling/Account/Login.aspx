@@ -1,47 +1,81 @@
-﻿
-<%@ Page Title="Log in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="XpressBilling.Account.Login" %>
-<%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="XpressBilling.Account.Login" %>
 
-<asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <hgroup class="title">
-        <h1><%: Title %>.</h1>
-    </hgroup>
-    <section id="loginForm">
-        <h2>Use a local account to log in.</h2>
-        <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" OnLoggingIn="LoginCtrl_LoggingIn">
-            <LayoutTemplate>
-                <p class="validation-summary-errors">
-                    <asp:Literal runat="server" ID="FailureText" />
-                </p>
-                <fieldset>
-                    <legend>Log in Form</legend>
-                    <ol>
-                        <li>
-                            <asp:Label runat="server" AssociatedControlID="UserName">User name</asp:Label>
-                            <asp:TextBox runat="server"  ID="UserName" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
-                        </li>
-                        <li>
-                            <asp:Label runat="server" AssociatedControlID="Password">Password</asp:Label>
-                            <asp:TextBox runat="server" ID="Password" TextMode="Password" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
-                        </li>
-                        <li>
-                            <asp:CheckBox runat="server" ID="RememberMe" />
-                            <asp:Label runat="server" AssociatedControlID="RememberMe" CssClass="checkbox">Remember me?</asp:Label>
-                        </li>
-                    </ol>
-                    <asp:Button runat="server" CommandName="Login" Text="Log in" />
-                </fieldset>
-            </LayoutTemplate>
-        </asp:Login>
-        <p>
-            <asp:HyperLink runat="server" ID="HyperLink1" NavigateUrl="~/Account/PasswordRecovery.aspx">Forgot Password?</asp:HyperLink>
-            
-        </p>
-        <p>
-            <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
-            if you don't have an account.
-        </p>
-    </section>
-</asp:Content>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="../images/img/favicon.ico" type="image/x-icon">
+    <title></title>
+    <link href="../Content/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+        <div class="application-login"></div>
+        <div class="log-wrap">
+
+            <div class="log-container">
+                <form runat="server">
+                    <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" OnLoggingIn="LoginCtrl_LoggingIn">
+                        <LayoutTemplate>
+                            <ul>
+                                <li>
+                                    <label>User Name</label></li>
+                                <li>
+                                    <asp:TextBox runat="server" ID="UserName" placeholder="User Name" class="text-log" />
+                                    
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="UserName"
+                                        CssClass="field-validation-error" ErrorMessage="The user name field is required." />
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <label>Password</label>
+
+                                </li>
+                                <li>
+                                    <asp:TextBox runat="server" ID="Password" class="text-log" placeholder="Password" TextMode="Password" />
+                                    
+                                </li>
+                            </ul>
+                             <ul>
+                                <li>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
+                                        CssClass="field-validation-error" ErrorMessage="The password field is required." />
+                                </li>
+                            </ul>
+                            <ul>
+                                <li></li>
+                                <li>
+                                    <asp:CheckBox runat="server" ID="RememberMe" />
+                                    <span>Remember Me</span>
+
+                                </li>
+                            </ul>
+                            <ul>
+                                <li></li>
+                                <li>
+                                    <asp:Button runat="server" class="log_button" CommandName="Login" Text="Log in" />
+                                </li>
+                            </ul>
+                            <ul>
+                                <li></li>
+                                <li><a href="~/Account/PasswordRecovery" class="left">Forgot Password?</a></li>
+                            </ul>
+                        </LayoutTemplate>
+                    </asp:Login>
+                </form>
+            </div>
+            <div class="log-footer">
+
+                <span>Copyright 2016</span>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

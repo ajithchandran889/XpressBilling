@@ -106,13 +106,15 @@ namespace XBDataProvider
             }
 
         }
-        public static DataTable GetAllLocations()
+        public static DataTable GetAllLocations(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_LocationGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_LocationGetAll", cmd);
             }
             catch (Exception ex)
             {

@@ -36,7 +36,7 @@
                     </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Date" id="lbldate" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Date" class="form-control" ReadOnly="true" placeholder="Date" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="CreatedDate" class="form-control" ReadOnly="true" placeholder="Date" ClientIDMode="Static"></asp:TextBox>                        
                     </div> 
                 </div>
                 <div class="form-group">
@@ -60,7 +60,7 @@
                     </div>--%>
                     <label for="Decimal" class="control-label col-xs-2 col-md-2">No. Of Decimal</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Decimal" class="form-control required" placeholder="No. of Decimal" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Decimal" class="form-control required txtNumeric" placeholder="No. of Decimal" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                      <div class="col-xs-10 col-md-2">&nbsp;</div>

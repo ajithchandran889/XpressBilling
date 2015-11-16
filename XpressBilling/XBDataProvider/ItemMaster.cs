@@ -272,5 +272,21 @@ namespace XBDataProvider
             }
 
         }
+        public static DataTable GetItemMasters()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMasters", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
     }
 }

@@ -120,7 +120,7 @@ namespace XBDataProvider
         //    try
         //    {
         //        string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        //        dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_CompanyGetAll");
+        //        dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ContactGetAll");
         //    }
         //    catch (Exception ex)
         //    {

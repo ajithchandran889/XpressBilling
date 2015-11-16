@@ -31,13 +31,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lbldate;
         
         /// <summary>
-        /// Date control.
+        /// CretdDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Date;
+        protected global::System.Web.UI.WebControls.TextBox CretdDate;
         
         /// <summary>
         /// Name control.

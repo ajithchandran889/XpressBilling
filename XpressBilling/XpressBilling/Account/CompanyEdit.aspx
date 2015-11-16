@@ -123,7 +123,7 @@
                 <div class="form-group">
                     <label for="Zip" class="control-label col-xs-2 col-md-2">Zip/Postal Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Zip" class="form-control required" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>                    
                 </div>
                 <div class="form-group">
@@ -136,7 +136,7 @@
                     <label for="input-1" class="control-label col-xs-2 col-md-2">Upload Logo</label>
                     <div class="col-xs-10 col-md-2">
                         <%--<input id="input-1" type="file" class="file">--%>
-                        <asp:FileUpload id="logoUpload" runat="server" class="required" />
+                        <asp:FileUpload id="logoUpload" runat="server" class="" />
                     </div>
                     </div>
                     <div class="form-group">

@@ -14,6 +14,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 DataTable dtCountries = XBDataProvider.BankMst.GetAllActiveBankCode();
 
                 ddlbankcode.DataSource = dtCountries;
@@ -40,7 +44,7 @@ namespace XpressBilling.Account
                     lblstatus.Visible = false;
                     lblusername.Visible = false;
                     UserName.Visible = false;
-                    Date.Visible = false;
+                    CreatedDate.Visible = false;
                     ddlStatus.Visible = false;
                     hdnBankCode.Value = "0";
                 }
@@ -69,8 +73,8 @@ namespace XpressBilling.Account
             Reference.Text = row["Reference"].ToString();
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("dd/MM/yyyy");
-            Date.ReadOnly = true;
+            CreatedDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            CreatedDate.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
             hdnBankCode.Value = row["ID"].ToString();
 

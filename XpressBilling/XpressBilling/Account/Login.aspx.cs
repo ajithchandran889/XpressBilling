@@ -8,19 +8,12 @@ using System.Web.UI.WebControls;
 
 namespace XpressBilling.Account
 {
-    public partial class Login : Page
+    public partial class Login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "Register";
 
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            if (!String.IsNullOrEmpty(returnUrl))
-            {
-                RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
-            }
         }
-
 
         protected void LoginCtrl_LoggingIn(object sender, LoginCancelEventArgs e)
         {
@@ -28,7 +21,5 @@ namespace XpressBilling.Account
             MembershipUser user = Membership.GetUser(userName);
             Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(user.UserName);
         }
-
-        
     }
 }

@@ -15,6 +15,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadLocationList();
             }
         }
@@ -26,7 +30,7 @@ namespace XpressBilling.Account
         }
         private void LoadLocationList()
         {
-            listLocation.DataSource = XBDataProvider.Location.GetAllLocations();
+            listLocation.DataSource = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
             listLocation.DataBind();
         }
 

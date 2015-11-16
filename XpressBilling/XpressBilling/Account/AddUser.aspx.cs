@@ -17,7 +17,11 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtLocation = XBDataProvider.Location.GetAllLocations();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
 
                 Location.DataSource = dtLocation;
                 Location.DataValueField = "LocationCode";
@@ -36,13 +40,7 @@ namespace XpressBilling.Account
                 string id = Request.QueryString["ID"];
                 if (id != null)
                 {
-                    
-                    DataTable userDetails = XBDataProvider.User.GetUserById(id);
-                    if (userDetails.Rows.Count > 0)
-                    {
-                        SetUserDetails(userDetails);
-
-                    }
+                    SetUserDetails(id); 
                 }
                 else
                 {
@@ -51,28 +49,33 @@ namespace XpressBilling.Account
             }
         }
 
-        public void SetUserDetails(DataTable userDetails)
+        public void SetUserDetails(string id)
         {
-            DataRow row = userDetails.Rows[0];
-            UserId.Value = row["Id"].ToString(); ;
-            UserName.Text = row["UserName"].ToString();
-            UserName.ReadOnly = true;
-            Email.Text = row["Email"].ToString();
-            Email.ReadOnly = true;
-            EmployeeId.Text = row["EmployeeId"].ToString();
-            Company.Text = row["CompanyCode"].ToString();
-            Company.ReadOnly = true;
-            Location.SelectedValue = row["LocationCode"].ToString();
-            DefLocation.SelectedValue = row["DefaultLocation"].ToString();
-            string status =Convert.ToBoolean(row["Status"].ToString())?"1":"0";
-            Status.SelectedValue = status;
-            UserType.SelectedValue = row["UserType"].ToString();
-            Password.ReadOnly = true;
-            ConfPassword.ReadOnly = true;
-            Password.Attributes.Add("class", Password.Attributes["class"].ToString().Replace("required", ""));
-            ConfPassword.Attributes.Add("class", ConfPassword.Attributes["class"].ToString().Replace("required", ""));
-            imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["path"].ToString());
-
+            DataTable userDetails = XBDataProvider.User.GetUserById(id);
+            if (userDetails.Rows.Count > 0)
+            {
+                DataRow row = userDetails.Rows[0];
+                UserId.Value = row["Id"].ToString(); ;
+                UserName.Text = row["UserName"].ToString();
+                UserName.ReadOnly = true;
+                Email.Text = row["Email"].ToString();
+                Email.ReadOnly = true;
+                EmployeeId.Text = row["EmployeeId"].ToString();
+                Company.Text = row["CompanyCode"].ToString();
+                Company.ReadOnly = true;
+                Location.SelectedValue = row["LocationCode"].ToString();
+                DefLocation.SelectedValue = row["DefaultLocation"].ToString();
+                string status = Convert.ToBoolean(row["Status"].ToString()) ? "1" : "0";
+                Status.SelectedValue = status;
+                UserType.SelectedValue = row["UserType"].ToString();
+                Password.ReadOnly = true;
+                ConfPassword.ReadOnly = true;
+                Password.Attributes.Add("class", Password.Attributes["class"].ToString().Replace("required", ""));
+                ConfPassword.Attributes.Add("class", ConfPassword.Attributes["class"].ToString().Replace("required", ""));
+                imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["path"].ToString());
+                inputUpload.Attributes.Clear();
+            }
+            
         }
 
         [WebMethod]
@@ -118,6 +121,7 @@ namespace XpressBilling.Account
                     status = XBDataProvider.UserRegistration.UpdateUserRegDetails(UserId.Value,Location.SelectedValue,EmployeeId.Text,DefLocation.SelectedValue,User.Identity.Name,absolutePath);
                     if (status)
                     {
+                        SetUserDetails(user.ProviderUserKey.ToString()); 
                         Message.Text = "Successfully updated";
                     }
                     else

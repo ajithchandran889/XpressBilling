@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Globalization;
 
 namespace XpressBilling.Account
 {
@@ -14,6 +15,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != 0)
                 {
@@ -29,7 +34,7 @@ namespace XpressBilling.Account
                     lblstatus.Visible = false;
                     lblusername.Visible = false;
                     UserName.Visible = false;
-                    Date.Visible = false;
+                    CretdDate.Visible = false;
                     ddlStatus.Visible = false;
                     hdnBankCode.Value = "0";
                 }
@@ -44,8 +49,8 @@ namespace XpressBilling.Account
             Name.Text = row["Name"].ToString();
             UserName.Text = row["Reference"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
-            Date.ReadOnly = true;
+            CretdDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            CretdDate.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
             hdnBankCode.Value = row["ID"].ToString();
 

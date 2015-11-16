@@ -27,7 +27,7 @@
                     </div>
                     <label id="lblDate" for="Date" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Date" class="form-control required" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="CreatedDate" class="form-control required" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                     </div>
                     <label for="SafetStock" class="control-label col-xs-2 col-md-2">Safety Stock</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="SafetStock" class="form-control required" placeholder="Safet Stock" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="SafetStock" class="form-control required txtNumeric" placeholder="Safet Stock" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                     </div>
                     <label for="ReorderQty" class="control-label col-xs-2 col-md-2">Reorder Quantity</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="ReorderQty"  class="form-control required" placeholder="Reorder Qty" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="ReorderQty"  class="form-control required txtNumeric" placeholder="Reorder Qty" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                 </div>
@@ -108,27 +108,27 @@
                 <div class="form-group">
                     <label for="MRP" class="control-label col-xs-2 col-md-2">MRP</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="MRP" class="form-control required" placeholder="MRP" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="MRP" class="form-control required txtNumeric" placeholder="MRP" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="RetailPrice" class="control-label col-xs-2 col-md-2">Retail Price</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="RetailPrice" class="form-control required" placeholder="Retail Price" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RetailPrice" class="form-control required txtNumeric" placeholder="Retail Price" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="PurchasePrice" class="control-label col-xs-2 col-md-2">Purchase Price</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="PurchasePrice" class="form-control required" placeholder="PurchasePrice" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="PurchasePrice" class="form-control required txtNumeric" placeholder="PurchasePrice" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                  <div class="form-group">
                     <label for="Cost" class="control-label col-xs-2 col-md-2">Cost</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Cost" class="form-control required" placeholder="Cost" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Cost" class="form-control required txtNumeric" placeholder="Cost" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
