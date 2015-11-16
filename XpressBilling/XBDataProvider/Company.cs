@@ -146,7 +146,21 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static DataTable GetAllActiveCompany()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveCompany");
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return dtTable;
+        }
         public static bool IsCompanyexist()
         {
             DataTable dtTable = new DataTable();
