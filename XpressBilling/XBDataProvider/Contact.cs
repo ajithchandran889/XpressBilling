@@ -11,6 +11,102 @@ namespace XBDataProvider
 {
     public static class Contact
     {
+
+        public static int SaveContact(string Contact, string Name, string CompanyCode, string Designation, string CompanyName, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, bool status, string note, string errmsg, string username)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Contact", Contact));
+                cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                cmd.Parameters.Add(new SqlParameter("@CompanyCode", CompanyCode));
+                cmd.Parameters.Add(new SqlParameter("@Designation", Designation));
+                cmd.Parameters.Add(new SqlParameter("@CompanyName", CompanyName));
+                cmd.Parameters.Add(new SqlParameter("@Phone", Phone));
+                cmd.Parameters.Add(new SqlParameter("@Mobile", Mobile));
+                cmd.Parameters.Add(new SqlParameter("@Fax", Fax));
+                cmd.Parameters.Add(new SqlParameter("@Email", Email));
+                cmd.Parameters.Add(new SqlParameter("@Web", Web));
+                cmd.Parameters.Add(new SqlParameter("@Address1", Address1));
+                cmd.Parameters.Add(new SqlParameter("@Address2", Address2));
+                cmd.Parameters.Add(new SqlParameter("@CityCode", Citycontact));
+                cmd.Parameters.Add(new SqlParameter("@Area", Area));
+                cmd.Parameters.Add(new SqlParameter("@State", State));
+                cmd.Parameters.Add(new SqlParameter("@CountryCode", Country));
+                cmd.Parameters.Add(new SqlParameter("@ZipPostalCode", Zip));
+                cmd.Parameters.Add(new SqlParameter("@Note", note));
+                cmd.Parameters.Add(new SqlParameter("@Status", status));
+                cmd.Parameters.Add(new SqlParameter("@ErrorMsg", errmsg));
+                cmd.Parameters.Add(new SqlParameter("@CreatedBy", username));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedBy", username));
+                cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Contact_xpins", cmd);
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+        }
+
+
+        public static bool UpdateContact(string Contact, string Name, string Designation, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, bool status, string username)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Contact", Contact));
+                cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                cmd.Parameters.Add(new SqlParameter("@Designation", Designation));
+                cmd.Parameters.Add(new SqlParameter("@Phone", Phone));
+                cmd.Parameters.Add(new SqlParameter("@Mobile", Mobile));
+                cmd.Parameters.Add(new SqlParameter("@Fax", Fax));
+                cmd.Parameters.Add(new SqlParameter("@Email", Email));
+                cmd.Parameters.Add(new SqlParameter("@Web", Web));
+                cmd.Parameters.Add(new SqlParameter("@Address1", Address1));
+                cmd.Parameters.Add(new SqlParameter("@Address2", Address2));
+                cmd.Parameters.Add(new SqlParameter("@CityCode", Citycontact));
+                cmd.Parameters.Add(new SqlParameter("@Area", Area));
+                cmd.Parameters.Add(new SqlParameter("@State", State));
+                cmd.Parameters.Add(new SqlParameter("@CountryCode", Country));
+                cmd.Parameters.Add(new SqlParameter("@ZipPostalCode", Zip));
+                cmd.Parameters.Add(new SqlParameter("@Status", status));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedBy", username));
+                cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ContactMst_xpupd", cmd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        
+
+        //public static DataTable GetContactCodeById(int Id)
+        //{
+        //    DataTable dtTable = new DataTable();
+        //    try
+        //    {
+        //        string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        //        SqlCommand cmd = new SqlCommand();
+        //        cmd.Parameters.Add(new SqlParameter("@Id", Id));
+        //        dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ContactGetById", cmd);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+
+        //    return dtTable;
+        //}
+
         public static int SaveContactCode(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone, string mobile, string email, string web, string designation, string address1, string address2,

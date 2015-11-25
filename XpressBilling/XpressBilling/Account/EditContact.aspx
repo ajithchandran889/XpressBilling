@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control required" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Phone" class="form-control" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <label for="Mobile" class="control-label col-xs-2 col-md-2">Mobile</label>
                     <div class="col-xs-10 col-md-2">
@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <label for="Fax" class="control-label col-xs-2 col-md-2">Fax</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Fax" class="form-control required" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Fax" class="form-control" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Email" class="control-label col-xs-2 col-md-2">Email</label>
                     <div class="col-xs-10 col-md-2">
@@ -66,7 +66,7 @@
                 <div class="form-group">
                     <label for="Web" class="control-label col-xs-2 col-md-2">Web</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Web" class="form-control required" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Web" class="form-control" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
                     </div>                        
                     </div>
                 <div class="form-group"><div></div><div></div></div>
@@ -74,12 +74,12 @@
                 <div class="form-group">
                     <label for="Address1" class="control-label col-xs-2 col-md-2">Address Street 1</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Address1" class="form-control required" placeholder="Address Street 1" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Address1" class="form-control" placeholder="Address Street 1" ClientIDMode="Static"></asp:TextBox>
                        
                     </div>
                     <label for="Address2" class="control-label col-xs-2 col-md-2">Address Street 2</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Address2" class="form-control required" placeholder="Address Street 2" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Address2" class="form-control" placeholder="Address Street 2" ClientIDMode="Static"></asp:TextBox>
                      </div>
                 </div>
                 <div class="form-group">
@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <label for="State" class="control-label col-xs-2 col-md-2">State</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="State" class="form-control required" placeholder="State" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="State" class="form-control" placeholder="State" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="City" class="control-label col-xs-2 col-md-2">City</label>
@@ -117,9 +117,8 @@
                         <asp:HiddenField ID="ContactId" runat="server" />
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Contact.aspx" class="btn btn-primary pull-left">Cancel</a>
-            <label id="lblMsg" style="color:red;" runat="server"></label>
+                        <a href="/Account/Contact.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+             <label id="lblMsg" style="color:red;" runat="server"></label>
                 
                     </div>
 

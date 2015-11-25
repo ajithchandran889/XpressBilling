@@ -53,8 +53,8 @@
                     <asp:HiddenField ID="hdnBankCode" runat="server" />
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveBankCode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/BankCode.aspx" class="btn btn-primary pull-left">Cancel</a><label id="lblMsg" style="color: red;" runat="server"></label>
+                        <a href="/Account/BankCode.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveBankCode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <label id="lblMsg" style="color: red;" runat="server"></label>
                     </div>
 
                 </div>

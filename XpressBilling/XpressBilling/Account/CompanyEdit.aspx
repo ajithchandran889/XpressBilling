@@ -2,9 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
-        <div>
+        <%--<div>
             <asp:Label runat="server" ID="Message"></asp:Label>
-        </div>
+        </div>--%>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">Company Details</div>
@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="FormationDate" class="control-label col-xs-2 col-md-2">Formation Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="FormationDate" class="form-control required" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="FormationDate" class="form-control" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
@@ -42,6 +42,17 @@
                         <asp:TextBox runat="server" ID="PAN" class="form-control required" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="Currency" class="control-label col-xs-2 col-md-2">Currency</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlCurrency" ClientIDMode="Static">
+                           <%-- <asp:ListItem Value="" Text="Select Currency"></asp:ListItem>--%>
+                        </asp:DropDownList>
+                        
+                    </div>                   
+                    <div class="col-xs-10 col-md-2">                                               
+                    </div>
+                </div>
                 <div class="form-group"><div></div><div></div></div>
                  <div class="form-group">
                     <label for="ContactPerson" class="control-label col-xs-2 col-md-2">Contact Person</label>
@@ -52,7 +63,7 @@
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control required" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Phone" class="form-control" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <label for="Mobile" class="control-label col-xs-2 col-md-2">Mobile</label>
                     <div class="col-xs-10 col-md-2">
@@ -62,7 +73,7 @@
                 <div class="form-group">
                     <label for="Fax" class="control-label col-xs-2 col-md-2">Fax</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Fax" class="form-control required" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Fax" class="form-control" placeholder="Fax" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Email" class="control-label col-xs-2 col-md-2">Email</label>
                     <div class="col-xs-10 col-md-2">
@@ -72,7 +83,7 @@
                     <div class="form-group">
                     <label for="Web" class="control-label col-xs-2 col-md-2">Web</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Web" class="form-control required" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Web" class="form-control" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
                     </div>
                         <label for="Designation" class="control-label col-xs-2 col-md-2">Designation</label>
                     <div class="col-xs-10 col-md-2">
@@ -114,7 +125,7 @@
                     </div>
                     <label for="City" class="control-label col-xs-2 col-md-2">City</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control" ID="City" ClientIDMode="Static" >
+                        <asp:DropDownList runat="server" class="form-control required" ID="City" ClientIDMode="Static" >
                         </asp:DropDownList>
                         
                     </div>
@@ -129,7 +140,7 @@
                 <div class="form-group">
                 <label for="Note" class="control-label col-xs-2 col-md-2">Note</label>
                     <div class="col-xs-10 col-md-6">
-                        <asp:TextBox runat="server" ID="Note" class="form-control required" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Note" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     </div>
                 <div class="form-group">
@@ -139,11 +150,24 @@
                         <asp:FileUpload id="logoUpload" runat="server" class="" />
                     </div>
                     </div>
+                <div class="form-group">                    
+                    <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
+                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
+                            <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                    <div class="col-xs-10 col-md-2">
+                    </div>
+                    <div class="col-xs-10 col-md-2"></div>
+                    <div class="col-xs-10 col-md-2">&nbsp;</div>
+                </div>
                     <div class="form-group">
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a>
+                       <a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a> <asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <label id="lblMsg" style="color:red;" runat="server"></label>
                 
                     </div>
 

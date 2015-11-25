@@ -15,7 +15,7 @@
                         <h2>List View</h2>
                     </div>
                     <asp:GridView ID="ListPriceBook" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="PriceBookPageIndexChanging" PageSize="3" AutoGenerateColumns="false" OnDataBound="listPriceBookDataBound">
+                        OnPageIndexChanging="PriceBookPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listPriceBookDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="PriceBookEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
@@ -31,7 +31,7 @@
                             <asp:TemplateField HeaderText="Approval Status">
                                 <ItemTemplate><%# Eval("ApprovalStatus").ToString()=="0" ? "Un Approved" : "Approved" %></ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="PriceBookDdl" IdPriceBook='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="PriceBookDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="active"></asp:listitem>
@@ -39,7 +39,7 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

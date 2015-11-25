@@ -78,8 +78,8 @@
                    
                     <asp:HiddenField ID="CurrencyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/Currency.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Label runat="server" style="color:red;" ID="Message"></asp:Label>
+                        <a href="/Account/Currency.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <asp:Label runat="server" style="color:red;" ID="Message"></asp:Label>
                     </div>
 
                 </div>

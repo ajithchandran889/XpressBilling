@@ -23,7 +23,7 @@
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>  
                             <asp:BoundField DataField="CountryName" HeaderText="Country"></asp:BoundField> 
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="CityDdl" IdCity='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="CityDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="active"></asp:listitem>
@@ -31,7 +31,7 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

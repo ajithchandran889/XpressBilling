@@ -2,15 +2,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" class="loginbody">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="shortcut icon" href="../images/img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
+     <link rel="shortcut icon" href="../Images/img/favicon.ico" type="image/x-icon">
+
+<%--    <link rel="shortcut icon" href="../images/img/favicon.ico" type="image/x-icon">--%>
     <title></title>
+    <link href="../Content/login.css" rel="stylesheet" type="text/css" />
     <link href="../Content/style.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <div>
+<body class="loginbody">
+    <div class="wrapper">
         <div class="application-login"></div>
         <div class="log-wrap">
 
@@ -76,6 +79,7 @@
             </div>
 
         </div>
-    </div>
+            
+        </div>
 </body>
 </html>

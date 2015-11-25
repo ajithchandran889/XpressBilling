@@ -79,6 +79,21 @@ namespace XBDataProvider
             
             return dtTable;
         }
+        public static DataTable GetAllActiveCurrencies()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ActiveCurrencyGetAll");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
 
         public static DataTable GetCurrencyById(int Id)
         {

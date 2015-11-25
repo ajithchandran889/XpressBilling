@@ -145,8 +145,8 @@
 
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">
-                    <asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
-                    <a id="CancelFirstFreeDetails" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a>
+                    <a id="CancelFirstFreeDetails" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a><asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
+                    
                 </div>
             </div>
             <br />

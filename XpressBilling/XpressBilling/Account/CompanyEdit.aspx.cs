@@ -27,13 +27,24 @@ namespace XpressBilling.Account
                 DataTable dtCountries = XBDataProvider.Country.GetCountries();
 
                 Country.DataSource = dtCountries;
-                Country.DataValueField = "CountryCode";
+                Country.DataValueField = "ID";
                 Country.DataTextField = "name";
                 Country.DataBind();
                 ListItem item = new ListItem();
                 item.Text = "Select Country";
                 item.Value = "";
                 Country.Items.Insert(0, item);
+
+                DataTable dtCurrency = XBDataProvider.Currency.GetAllActiveCurrencies();
+
+                ddlCurrency.DataSource = dtCurrency;
+                ddlCurrency.DataValueField = "CurrencyCode";
+                ddlCurrency.DataTextField = "Name";
+                ddlCurrency.DataBind();
+                ListItem itemcurrency = new ListItem();
+                itemcurrency.Text = "Select Currency";
+                itemcurrency.Value = "";
+                ddlCurrency.Items.Insert(0, itemcurrency);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -51,6 +62,10 @@ namespace XpressBilling.Account
                 else
                 {
                     CompanyId.Value = "0";
+                    lblstatus.Visible = false;
+                    ddlStatus.Visible = false;
+                    FormationDate.Text =  Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
+                    FormationDate.ReadOnly = true;
                 }
             }
 
@@ -62,8 +77,9 @@ namespace XpressBilling.Account
             Company.Text = row["CompanyCode"].ToString();
             Company.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            string formationDate =  Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
-            FormationDate.Text = formationDate;
+            DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            //string formationDate =  Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
+            FormationDate.Text = formationDate.ToString();
             TIN.Text = row["TaxId"].ToString();
             RegistrationNo.Text = row["RegistrationNumber"].ToString();
             PAN.Text = row["PermanantAccountNo"].ToString();
@@ -85,6 +101,7 @@ namespace XpressBilling.Account
             Address1.ReadOnly = true;
             Address2.Text = row["Address2"].ToString();
             Address2.ReadOnly = true;
+            ddlCurrency.SelectedValue = row["CurrencyCode"].ToString();
             City.SelectedValue = row["City"].ToString();
             City.Enabled = false;
             Area.Text = row["Area"].ToString();
@@ -97,6 +114,7 @@ namespace XpressBilling.Account
             Zip.ReadOnly = true;
             Note.Text = row["Note"].ToString();
             CompanyId.Value = row["ID"].ToString();
+            ddlStatus.SelectedValue = row["Status"].ToString();
 
         }
         protected void SaveClick(object sender, EventArgs e)
@@ -113,36 +131,47 @@ namespace XpressBilling.Account
                     logoUpload.SaveAs(path);
                 }
                 bool status = false;
+                bool dbstatus;
+                    if (ddlStatus.SelectedValue == "0")
+                        dbstatus = false;
+                    else
+                        dbstatus = true;
                 DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 if (CompanyId.Value != "0" && CompanyId.Value != "")
                 {
-                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name);
+                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name, dbstatus,ddlCurrency.SelectedValue);
                     if (status)
                     {
-                        Message.Text = "Successfully updated";
+                        //Message.Text 
+                        lblMsg.InnerText = "Successfully updated";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        //Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
                 }
                 else
                 {
-                    int retunValue = 0;
+                    int retunValue = 0; 
+                    dbstatus = true;
                     retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
                     if (retunValue>=1)
                     {
                         ClearInputs(Page.Controls);
-                        Message.Text = "Successfully added";
+                        //Message.Text 
+                        lblMsg.InnerText = "Successfully added";
                     }
                     else if(retunValue==-1)
                     {
-                        Message.Text = "Company already exist";
+                       // Message.Text 
+                        lblMsg.InnerText = "Company already exist";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                       // Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
                     
                 }

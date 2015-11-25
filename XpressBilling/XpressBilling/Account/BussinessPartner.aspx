@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListBussnessPartner" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="BussinessPartnerPageIndexChanging" PageSize="3" AutoGenerateColumns="false" OnDataBound="listBussnessPartnerDataBound">
+                        OnPageIndexChanging="BussinessPartnerPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listBussnessPartnerDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="BussinessPartnerEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
@@ -30,7 +30,7 @@
                             <asp:BoundField DataField="Mobile" HeaderText="Mobile"></asp:BoundField>
                             <asp:BoundField DataField="CityCode" HeaderText="City"></asp:BoundField>
                             <asp:BoundField DataField="CountryCode" HeaderText="Country"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="BussinessPartnerDdl" IdBussinessPartner='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="BussinessPartnerDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="active"></asp:listitem>
@@ -38,7 +38,7 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

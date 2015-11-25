@@ -121,11 +121,13 @@ namespace XpressBilling.Account
                     status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name,Convert.ToInt32(ddlStatus.SelectedValue));
                     if (status)
                     {
-                        Message.Text = "Successfully updated";
+                        //Message.Text 
+                        lblMsg.InnerText = "Successfully updated";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        //Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
                 }
                 else
@@ -153,7 +155,8 @@ namespace XpressBilling.Account
                     //}
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        //Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
 
                 }

@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ItemMasterEdit.aspx.cs" Inherits="XpressBilling.Account.ItemMasterEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <div class="page-content">
-        <div>
+        <%--<div>
             <asp:Label runat="server" ID="Message"></asp:Label>
-        </div>
+        </div>--%>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">Item Master Details</div>
@@ -44,14 +44,14 @@
                 <div class="form-group">
                     <label for="SupplierBarcode" class="control-label col-xs-2 col-md-2">Supplier Barcode</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="SupplierBarcode" class="form-control required" placeholder="Supplier Barcode" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="SupplierBarcode" class="form-control" placeholder="Supplier Barcode" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="SearchKey" class="control-label col-xs-2 col-md-2">Search Key</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="SearchKey" class="form-control required" placeholder="Search Key" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="SearchKey" class="form-control" placeholder="Search Key" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label for="Manufacturer" class="control-label col-xs-2 col-md-2">Manufacturer</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Manufacturer" class="form-control required" placeholder="Manufacturer" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Manufacturer" class="form-control" placeholder="Manufacturer" ClientIDMode="Static"></asp:TextBox>
                        
                     </div>
                     <label for="SafetStock" class="control-label col-xs-2 col-md-2">Safety Stock</label>
@@ -134,8 +134,8 @@
                 <div class="form-group">
                     <asp:HiddenField ID="ItemMasterId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveItemMaster" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/ItemMaster.aspx" class="btn btn-primary pull-right">Cancel</a>
+                       <a href="/Account/ItemMaster.aspx" class="btn btn-primary pull-left">Cancel</a> <asp:Button ID="saveItemMaster" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <label id="lblMsg" style="color:red;" runat="server"></label>
                 
                     </div>
 
