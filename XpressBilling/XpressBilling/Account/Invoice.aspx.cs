@@ -7,32 +7,36 @@ using System.Web.UI.WebControls;
 
 namespace XpressBilling.Account
 {
-    public partial class StockEntry : System.Web.UI.Page
+    public partial class Invoice : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LoadStockEntryList();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                LoadInvoiceList();
             }
         }
 
-        private void LoadStockEntryList()
+        private void LoadInvoiceList()
         {
-            ListStockEntry.DataSource = XBDataProvider.StockEntry.GetAllStockEntry();
-            ListStockEntry.DataBind();
+            ListInvoice.DataSource = XBDataProvider.Invoice.GetAllInvoice(Session["CompanyCode"].ToString());
+            ListInvoice.DataBind();
         }
 
-        protected void StockEntryPageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void InvoicePageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            ListStockEntry.PageIndex = e.NewPageIndex;
-            LoadStockEntryList();
+            ListInvoice.PageIndex = e.NewPageIndex;
+            LoadInvoiceList();
         }
 
         protected void deleteRecordsClick(object sender, EventArgs e)
         {
             string ids = string.Empty;
-            foreach (GridViewRow grow in ListStockEntry.Rows)
+            foreach (GridViewRow grow in ListInvoice.Rows)
             {
                 CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
                 if (chkdel.Checked)
@@ -41,8 +45,8 @@ namespace XpressBilling.Account
                     ids += hfSelectedId.Value + ",";
                 }
             }
-            XBDataProvider.StockEntry.DeleteStockEntry(ids);
-            LoadStockEntryList();
+            XBDataProvider.Invoice.DeleteInvoice(ids);
+            LoadInvoiceList();
         }
     }
 }

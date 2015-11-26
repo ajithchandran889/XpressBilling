@@ -199,7 +199,9 @@ namespace XpressBilling.Account
                     itemMasteDetails.supplierBarcode = row["SupplierBarcode"].ToString();
                     itemMasteDetails.mrp = Convert.ToInt32(row["MRP"].ToString());
                     itemMasteDetails.retailPrice = Convert.ToInt32(row["RetailPrice"].ToString());
-
+                    itemMasteDetails.TaxCode = row["TaxCode"].ToString();
+                    itemMasteDetails.TaxPer = Convert.ToInt32(row["TaxPercentage"].ToString());
+                    itemMasteDetails.Qnty=row["Qnty"].ToString()!=""?Convert.ToInt32(row["Qnty"].ToString()):0;
                     result.Add(itemMasteDetails);
                 }
             }
@@ -447,5 +449,8 @@ namespace XpressBilling.Account
         public int mrp { get; set; }
         public int retailPrice { get; set; }
         public string BaseUnitCode { get; set; }
+        public string TaxCode { get; set; }
+        public int TaxPer { get; set; }
+        public int Qnty { get; set; }
     }
 }

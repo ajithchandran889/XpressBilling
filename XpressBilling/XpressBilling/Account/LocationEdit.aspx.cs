@@ -148,6 +148,11 @@ namespace XpressBilling.Account
                     DataTable companyDetails = XBDataProvider.Company.GetCompanyById(id);
                     if (companyDetails.Rows.Count > 0)
                     {
+                        DataTable dtTable = XBDataProvider.City.GetCitiesByCompany(Session["CompanyCode"].ToString());
+                        City.DataSource = dtTable;
+                        City.DataValueField = "CityCode";
+                        City.DataTextField = "Name";
+                        City.DataBind();
                         SetCompanyDetails(companyDetails);
 
                     }
@@ -189,8 +194,8 @@ namespace XpressBilling.Account
             Address1.ReadOnly = true;
             Address2.Text = row["Address2"].ToString();
             Address2.ReadOnly = true;
-           // CityCountry.SelectedValue = row["City"].ToString();
-           // CityCountry.Enabled = false;
+            City.SelectedValue = row["City"].ToString();
+            City.Enabled = false;
             Area.Text = row["Area"].ToString();
             Area.ReadOnly = true;
             State.Text = row["State"].ToString();
@@ -222,7 +227,7 @@ namespace XpressBilling.Account
                  if (LocationId.Value != "0" && LocationId.Value != "")
                  {
                      status = XBDataProvider.Location.UpdateLocation(LocationId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, "fsd", Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, CityCountry.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
                  if (status)
                  {
                      lblMsg.InnerText = "Successfully updated";
@@ -236,7 +241,7 @@ namespace XpressBilling.Account
                  {
                      int retunValue = 0;
                      retunValue = XBDataProvider.Location.SaveLocation(Location.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, "fsd", Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, CityCountry.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
                      if (retunValue >= 1)
                      {
                          ClearInputs(Page.Controls);

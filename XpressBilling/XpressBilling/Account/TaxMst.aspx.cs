@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -79,5 +81,36 @@ namespace XpressBilling.Account
             XBDataProvider.TaxMst.DeleteTaxMst(ids);
             LoadTaxList();
         }
+
+        [WebMethod]
+        public static List<TaxItemDetail> GetAllTaxDetails()
+        {
+            List<TaxItemDetail> result = new List<TaxItemDetail>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.TaxMst.GetAllTaxDetails();
+                DataRow row = null;
+                for (int index = 0; index < dtTable.Rows.Count; index++)
+                {
+                    row = dtTable.Rows[index];
+                    TaxItemDetail itemTax = new TaxItemDetail();
+                    itemTax.code = row["TaxCode"].ToString();
+                    itemTax.Per = Convert.ToInt32(row["TaxPercentage"].ToString());
+                    result.Add(itemTax);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+    }
+    public class TaxItemDetail
+    {
+        public string code { get; set; }
+        public int Per { get; set; }
     }
 }

@@ -192,13 +192,15 @@ namespace XBDataProvider
             }
 
         }
-        public static DataTable GetAllItemMaster()
+        public static DataTable GetAllItemMaster(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ItemMasterGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ItemMasterGetAll",cmd);
             }
             catch (Exception ex)
             {

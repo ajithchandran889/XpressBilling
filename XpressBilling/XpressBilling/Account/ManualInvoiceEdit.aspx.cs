@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace XpressBilling.Account
 {
-    public partial class InvoiceEdit : System.Web.UI.Page
+    public partial class ManualInvoiceEdit : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -45,17 +45,17 @@ namespace XpressBilling.Account
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
-                    DataTable InvoiceDetails = XBDataProvider.Invoice.GetInvoiceById(id);
-                    if (InvoiceDetails.Rows.Count > 0)
+                    DataTable ManualinvoiceDetails = XBDataProvider.ManualInvoice.GetManualInvoiceById(id);
+                    if (ManualinvoiceDetails.Rows.Count > 0)
                     {
-                        SetInvoiceDetails(InvoiceDetails);
+                        SetManualInvoiceDetails(ManualinvoiceDetails);
                         PageStatus.Value = "edit";
                     }
                 }
                 else
                 {
                     Date.Text = DateTime.Now.Date.ToString("MM'/'dd'/'yyyy");
-                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetInvoiceCashCreditSequenceDetails(Session["CompanyCode"].ToString());
+                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetManualInvoiceCashCreditSequenceDetails(Session["CompanyCode"].ToString());
                     for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
                     {
                         row = dtTableSequenceDetails.Rows[i];
@@ -76,19 +76,18 @@ namespace XpressBilling.Account
                     Invoice.ReadOnly = true;
                     SetInitialRows();
                     PageStatus.Value = "create";
-                    SalesInvoiceId.Value = "0";
+                    InvoiceId.Value = "0";
                 }
             }
         }
 
-        public void SetInvoiceDetails(DataTable InvoiceDetails)
+        public void SetManualInvoiceDetails(DataTable ManualinvoiceDetails)
         {
             try
             {
                 btnPrint.Visible = true;
-                
-                DataRow row = InvoiceDetails.Rows[0];
-                SalesInvoiceId.Value = row["ID"].ToString();
+                DataRow row = ManualinvoiceDetails.Rows[0];
+                InvoiceId.Value = row["ID"].ToString();
                 CustomerId.SelectedValue = row["BusinessPartnerCode"].ToString();
                 CustomerId.Enabled = false;
                 Invoice.Text = row["SalesOrderNo"].ToString();
@@ -111,13 +110,13 @@ namespace XpressBilling.Account
                 Reference.ReadOnly = true;
                 Amount.Text = row["Amount"].ToString();
                 Amount.ReadOnly = true;
-                IPayTerms.Text = row["PaymentTerms"].ToString();
-                IDeliveryTerms.Text = row["DeliveryTerms"].ToString();
-                IShipToAddress.Text = row["ShiptoAddress"].ToString();
-                ITotalAmount.Text = row["Amount"].ToString();
-                ITotalDiscountAmt.Text = row["DiscountAmount"].ToString();
-                ITotalTaxAmt.Text = row["TaxAmount"].ToString();
-                ITotalOrderAmt.Text = row["OrderAmount"].ToString();
+                MIPayTerms.Text = row["PaymentTerms"].ToString();
+                MIDeliveryTerms.Text = row["DeliveryTerms"].ToString();
+                MIShipToAddress.Text = row["ShiptoAddress"].ToString();
+                MITotalAmount.Text = row["Amount"].ToString();
+                MITotalDiscountAmt.Text = row["DiscountAmount"].ToString();
+                MITotalTaxAmt.Text = row["TaxAmount"].ToString();
+                MITotalOrderAmt.Text = row["OrderAmount"].ToString();
                 //CreatedUser.Text = row["CreatedBy"].ToString();
                 //CreatedUser.Enabled = false;
                 //Amount.Text = row["Amount"].ToString();
@@ -125,16 +124,8 @@ namespace XpressBilling.Account
                 //Currency.Text = row["Currency"].ToString();
                 //Currency.ReadOnly = true;
                 AddNewRow.Visible = false;
-                if (row["Status"].ToString()=="2")
-                {
-                    btnFinalize.Visible = false;
-                    btnSaveDtl.Visible=false;
-                }
-                else
-                {
-                    btnFinalize.Visible = true;
-                }
-                SetInvoiceChildGrid();
+
+                SetManualInvoiceChildGrid();
             }
             catch (Exception e)
             {
@@ -142,15 +133,15 @@ namespace XpressBilling.Account
             }
         }
 
-        public void SetInvoiceChildGrid()
+        public void SetManualInvoiceChildGrid()
         {
             DataTable dt = new DataTable();
-            dt = XBDataProvider.Invoice.GetInvoiceDtlById(Convert.ToInt32(SalesInvoiceId.Value));
+            dt = XBDataProvider.ManualInvoice.GetManualInvoiceDtlById(Convert.ToInt32(InvoiceId.Value));
 
             if (dt.Rows.Count > 0)
             {
-                InvoiceDetail.DataSource = dt;
-                InvoiceDetail.DataBind();
+                ManualInvoiceDetail.DataSource = dt;
+                ManualInvoiceDetail.DataBind();
             }
             AddNewRow.Visible = false;
         }
@@ -199,7 +190,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("DiscountPercentage", typeof(string)));
                 dt.Columns.Add(new DataColumn("DiscountAmt", typeof(int)));
-                dt.Columns.Add(new DataColumn("Tax", typeof(string)));
                 dt.Columns.Add(new DataColumn("TaxPercentage", typeof(string)));
                 dt.Columns.Add(new DataColumn("TaxAmount", typeof(int)));
                 dt.Columns.Add(new DataColumn("NetAmount", typeof(string)));
@@ -214,7 +204,6 @@ namespace XpressBilling.Account
                     dr["BaseUnitCode"] = string.Empty;
                     dr["DiscountPercentage"] = string.Empty;
                     dr["DiscountAmt"] = DBNull.Value;
-                    dr["Tax"] = string.Empty;
                     dr["TaxPercentage"] = string.Empty;
                     dr["TaxAmount"] = DBNull.Value;
                     dr["NetAmount"] = string.Empty;
@@ -226,8 +215,8 @@ namespace XpressBilling.Account
                 //Store the DataTable in ViewState
                 ViewState["CurrentTable"] = dt;
 
-                InvoiceDetail.DataSource = dt;
-                InvoiceDetail.DataBind();
+                ManualInvoiceDetail.DataSource = dt;
+                ManualInvoiceDetail.DataBind();
             }
             catch (Exception e)
             {
@@ -246,17 +235,16 @@ namespace XpressBilling.Account
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        TextBox box2 = (TextBox)InvoiceDetail.Rows[i].Cells[1].FindControl("IItem");
-                        TextBox box3 = (TextBox)InvoiceDetail.Rows[i].Cells[2].FindControl("IItemName");
-                        TextBox box4 = (TextBox)InvoiceDetail.Rows[i].Cells[3].FindControl("IItemRate");
-                        TextBox box5 = (TextBox)InvoiceDetail.Rows[i].Cells[4].FindControl("IQuantity");
-                        TextBox box6 = (TextBox)InvoiceDetail.Rows[i].Cells[5].FindControl("IUnit");
-                        TextBox box7 = (TextBox)InvoiceDetail.Rows[i].Cells[6].FindControl("IDiscPer");
-                        TextBox box8 = (TextBox)InvoiceDetail.Rows[i].Cells[7].FindControl("IDiscAmt");
-                        TextBox box9 = (TextBox)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxPer");
-                        TextBox box10 = (TextBox)InvoiceDetail.Rows[i].Cells[9].FindControl("ITaxAmt");
-                        TextBox box11 = (TextBox)InvoiceDetail.Rows[i].Cells[10].FindControl("INetAmt");
-                        HiddenField hdFld = (HiddenField)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxCode");
+                        TextBox box2 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[1].FindControl("MIItem");
+                        TextBox box3 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[2].FindControl("MIItemName");
+                        TextBox box4 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[3].FindControl("MIItemRate");
+                        TextBox box5 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[4].FindControl("MIQuantity");
+                        TextBox box6 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[5].FindControl("MIUnit");
+                        TextBox box7 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[6].FindControl("MIDiscPer");
+                        TextBox box8 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[7].FindControl("MIDiscAmt");
+                        TextBox box9 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[8].FindControl("MITaxPer");
+                        TextBox box10 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[9].FindControl("MITaxAmt");
+                        TextBox box11 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[10].FindControl("MINetAmt");
                         box2.Text = dt.Rows[i]["ItemCode"].ToString();
                         box3.Text = dt.Rows[i]["ItemName"].ToString();
                         box4.Text = dt.Rows[i]["Rate"].ToString();
@@ -265,7 +253,6 @@ namespace XpressBilling.Account
                         box7.Text = dt.Rows[i]["DiscountPercentage"].ToString();
                         box8.Text = dt.Rows[i]["DiscountAmt"].ToString();
                         box9.Text = dt.Rows[i]["TaxPercentage"].ToString();
-                        hdFld.Value = dt.Rows[i]["Tax"].ToString();
                         box10.Text = dt.Rows[i]["TaxAmount"].ToString();
                         box11.Text = dt.Rows[i]["NetAmount"].ToString();
 
@@ -288,20 +275,20 @@ namespace XpressBilling.Account
                 {
                     for (int i = 0; i < dtCurrentTable.Rows.Count; i++)
                     {
-                        TextBox box2 = (TextBox)InvoiceDetail.Rows[i].Cells[1].FindControl("IItem");
-                        TextBox box3 = (TextBox)InvoiceDetail.Rows[i].Cells[2].FindControl("IItemName");
-                        TextBox box4 = (TextBox)InvoiceDetail.Rows[i].Cells[3].FindControl("IItemRate");
-                        TextBox box5 = (TextBox)InvoiceDetail.Rows[i].Cells[4].FindControl("IQuantity");
-                        TextBox box6 = (TextBox)InvoiceDetail.Rows[i].Cells[5].FindControl("IUnit");
-                        TextBox box7 = (TextBox)InvoiceDetail.Rows[i].Cells[6].FindControl("IDiscPer");
-                        TextBox box8 = (TextBox)InvoiceDetail.Rows[i].Cells[7].FindControl("IDiscAmt");
-                        TextBox box9 = (TextBox)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxPer");
-                        TextBox box10 = (TextBox)InvoiceDetail.Rows[i].Cells[9].FindControl("ITaxAmt");
-                        TextBox box11 = (TextBox)InvoiceDetail.Rows[i].Cells[10].FindControl("INetAmt");
-                        HiddenField hdFld = (HiddenField)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxCode");
+                        TextBox box2 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[1].FindControl("MIItem");
+                        TextBox box3 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[2].FindControl("MIItemName");
+                        TextBox box4 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[3].FindControl("MIItemRate");
+                        TextBox box5 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[4].FindControl("MIQuantity");
+                        TextBox box6 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[5].FindControl("MIUnit");
+                        TextBox box7 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[6].FindControl("MIDiscPer");
+                        TextBox box8 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[7].FindControl("MIDiscAmt");
+                        TextBox box9 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[8].FindControl("MITaxPer");
+                        TextBox box10 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[9].FindControl("MITaxAmt");
+                        TextBox box11 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[10].FindControl("MINetAmt");
+
 
                         //drCurrentRow["RowNumber"] = i + 1;
-                        dtCurrentTable.Rows[i]["ID"] = Convert.ToInt32(InvoiceDetail.DataKeys[i]["ID"]); ;
+                        dtCurrentTable.Rows[i]["ID"] = Convert.ToInt32(ManualInvoiceDetail.DataKeys[i]["ID"]); ;
                         dtCurrentTable.Rows[i]["ItemCode"] = box2.Text;
                         dtCurrentTable.Rows[i]["ItemName"] = box3.Text;
                         if (box4.Text != "")
@@ -323,7 +310,6 @@ namespace XpressBilling.Account
                         dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
                         dtCurrentTable.Rows[i]["DiscountPercentage"] = box7.Text;
                         dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
-                        dtCurrentTable.Rows[i]["Tax"] = hdFld.Value;
                         dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
                         rowIndex++;
                     }
@@ -335,8 +321,8 @@ namespace XpressBilling.Account
 
                     ViewState["CurrentTable"] = dtCurrentTable;
 
-                    InvoiceDetail.DataSource = dtCurrentTable;
-                    InvoiceDetail.DataBind();
+                    ManualInvoiceDetail.DataSource = dtCurrentTable;
+                    ManualInvoiceDetail.DataBind();
                 }
             }
             else
@@ -385,34 +371,33 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
-                foreach (GridViewRow row in InvoiceDetail.Rows)
+                foreach (GridViewRow row in ManualInvoiceDetail.Rows)
                 {
-                    TextBox box2 = (TextBox)InvoiceDetail.Rows[i].Cells[1].FindControl("IItem");
-                    TextBox box3 = (TextBox)InvoiceDetail.Rows[i].Cells[2].FindControl("IItemName");
-                    TextBox box4 = (TextBox)InvoiceDetail.Rows[i].Cells[3].FindControl("IItemRate");
-                    TextBox box5 = (TextBox)InvoiceDetail.Rows[i].Cells[4].FindControl("IQuantity");
-                    TextBox box6 = (TextBox)InvoiceDetail.Rows[i].Cells[5].FindControl("IUnit");
-                    TextBox box7 = (TextBox)InvoiceDetail.Rows[i].Cells[6].FindControl("IDiscPer");
-                    TextBox box8 = (TextBox)InvoiceDetail.Rows[i].Cells[7].FindControl("IDiscAmt");
-                    TextBox box9 = (TextBox)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxPer");
-                    TextBox box10 = (TextBox)InvoiceDetail.Rows[i].Cells[9].FindControl("ITaxAmt");
-                    TextBox box11 = (TextBox)InvoiceDetail.Rows[i].Cells[10].FindControl("INetAmt");
-                    HiddenField hdnFld = (HiddenField)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxCode");
+                    TextBox box2 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[1].FindControl("MIItem");
+                    TextBox box3 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[2].FindControl("MIItemName");
+                    TextBox box4 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[3].FindControl("MIItemRate");
+                    TextBox box5 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[4].FindControl("MIQuantity");
+                    TextBox box6 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[5].FindControl("MIUnit");
+                    TextBox box7 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[6].FindControl("MIDiscPer");
+                    TextBox box8 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[7].FindControl("MIDiscAmt");
+                    TextBox box9 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[8].FindControl("MITaxPer");
+                    TextBox box10 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[9].FindControl("MITaxAmt");
+                    TextBox box11 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[10].FindControl("MINetAmt");
                     if (box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
-                        if (string.IsNullOrEmpty(InvoiceDetail.DataKeys[i]["ID"].ToString()))
+                        if (string.IsNullOrEmpty(ManualInvoiceDetail.DataKeys[i]["ID"].ToString()))
                         {
                             dr["ID"] = DBNull.Value;
                         }
                         else
                         {
-                            dr["ID"] = Convert.ToInt32(InvoiceDetail.DataKeys[i]["ID"]);
+                            dr["ID"] = Convert.ToInt32(ManualInvoiceDetail.DataKeys[i]["ID"]);
                         }
 
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["LocationCode"] = Location.Text;
-                        dr["SalesOrderMstId"] = Convert.ToInt32(SalesInvoiceId.Value);
+                        dr["SalesOrderMstId"] =Convert.ToInt32(InvoiceId.Value);
                         dr["ItemCode"] = box2.Text;
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
@@ -422,7 +407,7 @@ namespace XpressBilling.Account
                         dr["TotalRate"] = Convert.ToInt32(Request.Form[Amount.UniqueID]);
                         dr["DiscountPercentage"] = box7.Text;
                         dr["DiscountAmt"] = Convert.ToInt32(box8.Text);
-                        dr["Tax"] = hdnFld.Value;
+                        dr["Tax"] = box9.Text;
                         dr["TaxPercentage"] = box9.Text;
                         dr["TaxAmount"] = Convert.ToInt32(box10.Text);
                         dr["NetAmount"] = box11.Text;
@@ -439,60 +424,43 @@ namespace XpressBilling.Account
 
                 }
                 #endregion
-                
-                if (SalesInvoiceId.Value != "" && SalesInvoiceId.Value != "0")
+                int selectedSequenceId = 0;
+                if (InvoiceType.SelectedValue == "0")
                 {
-                    if (XBDataProvider.Invoice.UpdateInvoiceDetails(Convert.ToInt32(SalesInvoiceId.Value), IPayTerms.Text, IDeliveryTerms.Text, IShipToAddress.Text, Convert.ToInt32(ITotalAmount.Text), Convert.ToInt32(ITotalDiscountAmt.Text), Convert.ToInt32(ITotalTaxAmt.Text), Convert.ToInt32(ITotalOrderAmt.Text), User.Identity.Name, dt))
+                    selectedSequenceId = Convert.ToInt32(CashSequenceNoID.Value);
+                }
+                else if (InvoiceType.SelectedValue == "1")
+                {
+                    selectedSequenceId = Convert.ToInt32(CreditSequenceNoID.Value);
+                }
+                if (InvoiceId.Value!="" && InvoiceId.Value !="0")
+                {
+                    if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, Convert.ToInt32(MITotalAmount.Text), Convert.ToInt32(MITotalDiscountAmt.Text), Convert.ToInt32(MITotalTaxAmt.Text), Convert.ToInt32(MITotalOrderAmt.Text),User.Identity.Name,dt))
                     {
                         Amount.Text = Request.Form[Amount.UniqueID];
                     }
                 }
                 else
                 {
-                    int selectedSequenceId = 0;
-                    if (InvoiceType.SelectedValue == "0")
-                    {
-                        selectedSequenceId = Convert.ToInt32(CashSequenceNoID.Value);
-                    }
-                    else if (InvoiceType.SelectedValue == "1")
-                    {
-                        selectedSequenceId = Convert.ToInt32(CreditSequenceNoID.Value);
-                    }
                     int returnValue = 0;
                     DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                    returnValue = XBDataProvider.Invoice.AddInvoiceWithDetails(Session["CompanyCode"].ToString(), CustomerId.SelectedValue, Invoice.Text, 1,
+                    returnValue=XBDataProvider.ManualInvoice.AddManualInvoiceWithDetails(Session["CompanyCode"].ToString(),CustomerId.SelectedValue, Invoice.Text,1,
                                                Convert.ToInt32(InvoiceType.SelectedValue), date, Name.Text, Location.Text, SalesMan.Text, Telephone.Text, Reference.Text,
-                                                IPayTerms.Text, IDeliveryTerms.Text, IShipToAddress.Text, Convert.ToInt32(ITotalAmount.Text), Convert.ToInt32(ITotalDiscountAmt.Text), Convert.ToInt32(ITotalTaxAmt.Text), Convert.ToInt32(ITotalOrderAmt.Text), User.Identity.Name, selectedSequenceId, dt);
+                                                MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, Convert.ToInt32(MITotalAmount.Text), Convert.ToInt32(MITotalDiscountAmt.Text), Convert.ToInt32(MITotalTaxAmt.Text), Convert.ToInt32(MITotalOrderAmt.Text), User.Identity.Name, selectedSequenceId, dt);
                     if (returnValue>0)
                     {
-                        SalesInvoiceId.Value = returnValue.ToString();
+                        InvoiceId.Value = returnValue.ToString();
                         btnPrint.Visible = true;
-                        SetInvoiceChildGrid();
+                        SetManualInvoiceChildGrid();
                         PageStatus.Value = "edit";
                         Status.SelectedValue = "1";
                         Amount.Text = Request.Form[Amount.UniqueID];
-                        btnFinalize.Visible = true;
                     }
                 }
             }
             catch(Exception ex)
             {
 
-            }
-        }
-
-        protected void btnFinalizeClick(object sender, EventArgs e)
-        {
-            if (XBDataProvider.Invoice.FinlizeInvoice(Convert.ToInt32(SalesInvoiceId.Value)))
-            {
-                Status.SelectedValue = "2";
-                SalesInvoiceId.Value = SalesInvoiceId.Value;
-                btnPrint.Visible = true;
-                SetInvoiceChildGrid();
-                PageStatus.Value = "edit";
-                Amount.Text = Request.Form[Amount.UniqueID];
-                btnFinalize.Visible = false;
-                btnSaveDtl.Visible = false;
             }
         }
     }

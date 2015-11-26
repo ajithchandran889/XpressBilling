@@ -43,6 +43,7 @@
     <Compile Include="BankCode.cs" />
     <Compile Include="BankMst.cs" />
     <Compile Include="BaseUnit.cs" />
+    <Compile Include="BussinessPartner.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Contact.cs" />
@@ -54,12 +55,15 @@
     <Compile Include="ItemGroup.cs" />
     <Compile Include="ItemMaster.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="ManualInvoice.cs" />
     <Compile Include="Manufacturer.cs" />
     <Compile Include="PaymentMode.cs" />
     <Compile Include="PriceBook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockEntry.cs" />
     <Compile Include="SalesQuotation.cs" />
+    <Compile Include="StockRegister.cs" />
     <Compile Include="TaxCode.cs" />
     <Compile Include="TaxMst.cs" />
     <Compile Include="User.cs" />

@@ -89,7 +89,7 @@ namespace XpressBilling.Account
             {
                 SaveBtn.Visible = false;
                 CancelBtn.Visible = false;
-                btnSaveDtl.Visible = false;
+                btnSaveDtl.Visible = true;
                 btnConvertStockRegister.Visible = true;
                 btnPrint.Visible = true;
                 DataRow row = stockEntryDetails.Rows[0];
@@ -115,9 +115,10 @@ namespace XpressBilling.Account
                 AddNewRow.Visible = false;
                 
                 SetStockEntryChildGrid();
+                int i = 0;
                 if (row["Status"].ToString() == "2")
                 {
-                    int i = 0;
+                    
                     foreach (GridViewRow gvr in StockEntryDetail.Rows)
                     {
                         TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
@@ -130,6 +131,21 @@ namespace XpressBilling.Account
                         box3.Enabled = false;
                         box4.Enabled = false;
                         box5.Enabled = false;
+                        box6.Enabled = false;
+                        box7.Enabled = false;
+                        i++;
+                    }
+                }
+                else if (row["Status"].ToString() == "1")
+                {
+                    foreach (GridViewRow gvr in StockEntryDetail.Rows)
+                    {
+                        TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
+                        TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
+                        TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
+                        TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
+                        box2.Enabled = false;
+                        box3.Enabled = false;
                         box6.Enabled = false;
                         box7.Enabled = false;
                         i++;
@@ -238,7 +254,35 @@ namespace XpressBilling.Account
             {
                 StockEntryDetail.DataSource = dt;
                 StockEntryDetail.DataBind();
-                return;
+                int i = 0;
+                foreach (GridViewRow gvr in StockEntryDetail.Rows)
+                {
+                    TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
+                    TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
+                    TextBox box4 = (TextBox)StockEntryDetail.Rows[i].Cells[3].FindControl("SERate");
+                    TextBox box5 = (TextBox)StockEntryDetail.Rows[i].Cells[4].FindControl("SEQuantity");
+                    TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
+                    TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
+                    
+                    if (Status.SelectedValue=="1")
+                    {
+                        box2.Enabled = false;
+                        box3.Enabled = false;
+                        box6.Enabled = false;
+                        box7.Enabled = false;
+                    }
+                    else if (Status.SelectedValue == "2")
+                    {
+                        box2.Enabled = false;
+                        box3.Enabled = false;
+                        box4.Enabled = false;
+                        box5.Enabled = false;
+                        box6.Enabled = false;
+                        box7.Enabled = false;
+                        btnConvertStockRegister.Visible = false;
+                    }
+                    i++;
+                }
             }
             AddNewRow.Visible = false;
         }
@@ -317,11 +361,13 @@ namespace XpressBilling.Account
                     XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value), Convert.ToInt32(Request.Form[Amount.UniqueID]), User.Identity.Name, dt);
                      btnConvertStockRegister.Visible = true;
                      btnPrint.Visible = true;
-                     btnSaveDtl.Visible = false;
                      Amount.Text = Request.Form[Amount.UniqueID].ToString();
                      AddNewRow.Visible = false;
+                     Status.SelectedValue = "1";
+                     SetStockEntryChildGrid();
+                     PageStatus.Value = "edit";
                 }
-                SetStockEntryChildGrid();
+                
             }
             catch(Exception ex)
             {

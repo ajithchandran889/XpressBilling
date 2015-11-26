@@ -148,15 +148,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Address2;
         
         /// <summary>
-        /// CityCountry control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CityCountry;
-        
-        /// <summary>
         /// Area control.
         /// </summary>
         /// <remarks>
@@ -164,6 +155,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Area;
+        
+        /// <summary>
+        /// Country control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList Country;
         
         /// <summary>
         /// State control.
@@ -175,13 +175,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox State;
         
         /// <summary>
-        /// Country control.
+        /// City control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Country;
+        protected global::System.Web.UI.WebControls.DropDownList City;
         
         /// <summary>
         /// Zip control.

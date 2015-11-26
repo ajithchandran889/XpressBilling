@@ -10,7 +10,7 @@
 namespace XpressBilling.Account {
     
     
-    public partial class Invoice {
+    public partial class ManualInvoice {
         
         /// <summary>
         /// deleteRecords control.
@@ -22,12 +22,12 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.LinkButton deleteRecords;
         
         /// <summary>
-        /// ListInvoice control.
+        /// ListManualInvoice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ListInvoice;
+        protected global::System.Web.UI.WebControls.GridView ListManualInvoice;
     }
 }

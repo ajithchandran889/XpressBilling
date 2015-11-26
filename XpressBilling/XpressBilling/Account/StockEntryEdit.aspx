@@ -9,9 +9,9 @@
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Adjustment Type</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
                         <asp:DropDownList runat="server" ID="AdjustmentType" class="form-control required" ClientIDMode="Static">
-                            <asp:ListItem Value="0" Text="Addition"></asp:ListItem>
-                            <asp:ListItem Value="1" Text="Deduction"></asp:ListItem>
-                            <asp:ListItem Value="2" Text="Opening"></asp:ListItem>
+                            <asp:ListItem Value="2" Text="Addition"></asp:ListItem>
+                            <asp:ListItem Value="3" Text="Deduction"></asp:ListItem>
+                            <asp:ListItem Value="1" Text="Opening"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Document</label>
@@ -93,32 +93,32 @@
                                        <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>'  />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Item">
+                                <asp:TemplateField HeaderText="Item" ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="Item" class="form-control StockItem"  ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Name">
+                                <asp:TemplateField HeaderText="Name" ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="Name" class="form-control StockName" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rate">
+                                <asp:TemplateField HeaderText="Rate"  ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SERate" class="form-control StockRate txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Quantity">
+                                <asp:TemplateField HeaderText="Quantity"  ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SEQuantity" class="form-control StockQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Unit">
+                                <asp:TemplateField HeaderText="Unit"  ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="Unit" class="form-control StockUnit" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Amount">
+                                <asp:TemplateField HeaderText="Amount"  ControlStyle-Width="100">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SEAmount" class="form-control StockAmount" ClientIDMode="Static" runat="server" Text='<%# Bind("Amount") %>'></asp:TextBox>
                                     </ItemTemplate>

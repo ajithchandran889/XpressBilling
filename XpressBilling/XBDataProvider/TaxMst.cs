@@ -154,6 +154,21 @@ namespace XBDataProvider
             }
 
         }
-       
+        public static DataTable GetAllTaxDetails()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllTaxDetails", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
     }
 }
