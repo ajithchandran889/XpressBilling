@@ -54,7 +54,7 @@ namespace XpressBilling.Account
                     {
                         DataRow row = null;
                         DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
-                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue" };
+                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice" };
                         if(dtTable.Rows.Count>0 && Type.SelectedValue=="0")
                         {
                             Transaction.Items.Clear();

@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadItemMasterList();
               
             }
@@ -26,7 +30,7 @@ namespace XpressBilling.Account
         }
         private void LoadItemMasterList()
         {
-            ListItemMaster.DataSource = XBDataProvider.ItemMaster.GetAllItemMaster();
+            ListItemMaster.DataSource = XBDataProvider.ItemMaster.GetAllItemMaster(Session["CompanyCode"].ToString());
             ListItemMaster.DataBind();
         }
         protected void ItemMasterModeDataBound(object sender, EventArgs e)
