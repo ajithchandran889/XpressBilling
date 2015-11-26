@@ -30,17 +30,17 @@ namespace XpressBilling.Account
         }
         protected void listCompanyDataBound(object sender, EventArgs e)
         {
-            foreach (GridViewRow gvRow in listCompany.Rows)
-            {
-                DropDownList ddlCompanyUser = gvRow.FindControl("CompanyStatusDdl") as DropDownList;
-                HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
+            //foreach (GridViewRow gvRow in listCompany.Rows)
+            //{
+            //    DropDownList ddlCompanyUser = gvRow.FindControl("CompanyStatusDdl") as DropDownList;
+            //    HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
 
-                if (ddlCompanyUser != null && hfSelectedValue != null)
-                {
+            //    if (ddlCompanyUser != null && hfSelectedValue != null)
+            //    {
                     
-                    ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
-                }
-            }
+            //        ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
+            //    }
+            //}
         }
 
         protected void CompanyStatusDdlSelectedIndexChanged(object sender, EventArgs e)

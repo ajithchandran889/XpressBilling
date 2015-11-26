@@ -5,6 +5,7 @@
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
                     TaxCode               
+
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
@@ -22,8 +23,8 @@
                             <asp:BoundField DataField="TaxCode" HeaderText="TaxCode"></asp:BoundField>                            
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="User"></asp:BoundField>
-                            <asp:BoundField DataField="Status" HeaderText="Status"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:BoundField DataField="Status" HeaderText="Status"></asp:BoundField>--%>
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="TaxCodeDdl" IdTaxCode='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="TaxCodeDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="Active"></asp:listitem>
@@ -31,7 +32,7 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

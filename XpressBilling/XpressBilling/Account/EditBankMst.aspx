@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <label for="IBAN" class="control-label col-xs-2 col-md-2">IBAN</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="IBAN" class="form-control required" placeholder="IBAN" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="IBAN" class="form-control" placeholder="IBAN" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <div class="col-xs-10 col-md-2"></div>
                     <div class="col-xs-10 col-md-2"></div>  
@@ -94,7 +94,7 @@
                 <div class="form-group">
                     <label for="SWIFT" class="control-label col-xs-2 col-md-2">SWIFT</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="SWIFT" class="form-control required" placeholder="SWIFT" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="SWIFT" class="form-control" placeholder="SWIFT" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <div class="col-xs-10 col-md-2"></div>
                     <div class="col-xs-10 col-md-2"></div>  
@@ -103,7 +103,7 @@
                 <div class="form-group">
                     <label for="MICR" class="control-label col-xs-2 col-md-2">MICR</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="MICR" class="form-control required" placeholder="MICR" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="MICR" class="form-control" placeholder="MICR" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <div class="col-xs-10 col-md-2"></div>
                     <div class="col-xs-10 col-md-2"></div>  
@@ -112,7 +112,7 @@
                 <div class="form-group">
                     <label for="Reference" class="control-label col-xs-2 col-md-2">Reference</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Reference" class="form-control required" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Reference" class="form-control" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <div class="col-xs-10 col-md-2"></div>
                     <div class="col-xs-10 col-md-2"></div>  
@@ -122,8 +122,8 @@
                     <asp:HiddenField ID="hdnBankCode" runat="server" />
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="saveBankMst" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/BankMst.aspx" class="btn btn-primary pull-left">Cancel</a><label id="lblMsg" style="color:red;" runat="server"></label>
+                        <a href="/Account/BankMst.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveBankMst" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <label id="lblMsg" style="color:red;" runat="server"></label>
                     </div>
                 </div>
 

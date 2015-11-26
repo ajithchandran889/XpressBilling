@@ -74,11 +74,13 @@ namespace XpressBilling.Account
                     status = XBDataProvider.PaymentMode.UpdatePaymentMode(PaymentModeId.Value, Name.Text,Convert.ToInt32(Transaction.SelectedValue),BankAccount.Text, User.Identity.Name);
                     if (status)
                     {
-                        Message.Text = "Successfully updated";
+                       // Message.Text 
+                        lblMsg.InnerText = "Successfully updated";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                       // Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
                 }
                 else
@@ -87,11 +89,13 @@ namespace XpressBilling.Account
                     if (status)
                     {
                         ClearInputs(Page.Controls);
-                        Message.Text = "Successfully added";
+                        //Message.Text 
+                        lblMsg.InnerText = "Successfully added";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        //Message.Text 
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
 
                 }

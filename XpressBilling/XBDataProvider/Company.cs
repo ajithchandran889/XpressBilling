@@ -14,7 +14,7 @@ namespace XBDataProvider
         public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone,string mobile,string email,string web,string designation,string address1,string address2,
-                                      string city,string area,string zipCode,string country,string state,String fax)
+                                      string city, string area, string zipCode, string country, string state, String fax, bool dbstatus, string Currency)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@RegistrationNumber", RegistrationNumber));
                 cmd.Parameters.Add(new SqlParameter("@Logo", Logo));
                 cmd.Parameters.Add(new SqlParameter("@Note", Note));
-                cmd.Parameters.Add(new SqlParameter("@Status", status));
+               // cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@ErrorMsg", ErrorMsg));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBy", userName));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", userName));
@@ -49,6 +49,8 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Country", country));
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
+                cmd.Parameters.Add(new SqlParameter("@Status", dbstatus));
+                cmd.Parameters.Add(new SqlParameter("@CurrencyCode", Currency));
                 int returnValue=DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpins", cmd);
                 return returnValue;
             }
@@ -88,7 +90,7 @@ namespace XBDataProvider
         }
 
         public static bool UpdateCompany(string companyId, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
-                                      string Logo, string Note, string userName)
+                                      string Logo, string Note, string userName, bool dbstatus, string Currency)
         {
             try
             {
@@ -105,6 +107,8 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Note", Note));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", userName));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@Status", dbstatus));
+                cmd.Parameters.Add(new SqlParameter("@CurrencyCode", Currency));
                 DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpupd", cmd);
                 return true;
             }

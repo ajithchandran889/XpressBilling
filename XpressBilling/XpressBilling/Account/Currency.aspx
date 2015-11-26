@@ -26,7 +26,7 @@
                             <asp:BoundField DataField="CurrencyCode" HeaderText="Currency"></asp:BoundField>
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Decimal" HeaderText="Decimal"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                     <asp:dropdownlist id="CurrencyStatusDdl" currencyId='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="CurrencyStatusDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="active"></asp:listitem>
@@ -34,7 +34,7 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

@@ -79,11 +79,11 @@ namespace XpressBilling.Account
                                ,Convert.ToInt32(PurchasePrice.Text), Convert.ToInt32(Cost.Text), Convert.ToInt32(InventoryValuation.SelectedValue), Convert.ToInt32(SafetStock.Text),Convert.ToInt32(ReorderQty.Text), User.Identity.Name);
                     if (status)
                     {
-                        Message.Text = "Successfully updated";
+                        lblMsg.InnerText = "Successfully updated";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
                 }
                 else
@@ -94,11 +94,11 @@ namespace XpressBilling.Account
                     if (status)
                     {
                         ClearInputs(Page.Controls);
-                        Message.Text = "Successfully added";
+                        lblMsg.InnerText = "Successfully added";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
                     }
 
                 }

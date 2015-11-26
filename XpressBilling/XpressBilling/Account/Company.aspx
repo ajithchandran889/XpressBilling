@@ -27,7 +27,7 @@
                             <asp:BoundField DataField="Country" HeaderText="Country"></asp:BoundField>
                             <asp:BoundField DataField="ZipCode" HeaderText="Zip/Postal Code" ItemStyle-Width="80"></asp:BoundField>
                             <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Status">
+                            <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="CompanyStatusDdl" IdCompany='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="CompanyStatusDdlSelectedIndexChanged">
                                         <asp:listitem value="1" text="active"></asp:listitem>
@@ -35,7 +35,13 @@
                                     </asp:dropdownlist>
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
+                            <%--<asp:TemplateField>  
+                                <ItemTemplate>  
+                                    <asp:CheckBox ID="chkDel"  runat="server" />  
+                                    <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
+                                </ItemTemplate>  
+                            </asp:TemplateField>--%>
                         </Columns>
                     </asp:GridView>
                 </div>

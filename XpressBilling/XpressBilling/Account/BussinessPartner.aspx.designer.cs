@@ -10,24 +10,24 @@
 namespace XpressBilling.Account {
     
     
-    public partial class PaymentMode {
+    public partial class BussinessPartner {
         
         /// <summary>
-        /// LinkButton1 control.
+        /// deleteRecords control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        protected global::System.Web.UI.WebControls.LinkButton deleteRecords;
         
         /// <summary>
-        /// ListPaymentMode control.
+        /// ListBussnessPartner control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ListPaymentMode;
+        protected global::System.Web.UI.WebControls.GridView ListBussnessPartner;
     }
 }

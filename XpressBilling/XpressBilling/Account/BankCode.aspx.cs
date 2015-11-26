@@ -29,40 +29,40 @@ namespace XpressBilling.Account
         }
         protected void listBankCodeDataBound(object sender, EventArgs e)
         {
-            foreach (GridViewRow gvRow in listBankCode.Rows)
-            {
-                DropDownList ddlCompanyUser = gvRow.FindControl("BankCodeDdl") as DropDownList;
-                HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
+            //foreach (GridViewRow gvRow in listBankCode.Rows)
+            //{
+            //    DropDownList ddlCompanyUser = gvRow.FindControl("BankCodeDdl") as DropDownList;
+            //    HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
 
-                if (ddlCompanyUser != null && hfSelectedValue != null)
-                {
+            //    if (ddlCompanyUser != null && hfSelectedValue != null)
+            //    {
 
-                    ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
-                }
-            }
+            //        ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
+            //    }
+           // }
         }
-        protected void BankCodeDdlSelectedIndexChanged(object sender, EventArgs e)
-        {
-            DropDownList ddl = sender as DropDownList;
-            try
-            {
-               int companyId = Convert.ToInt32(ddl.Attributes["IdBankCode"]);
-                if (ddl.SelectedValue == "1")
-                {
-                    XBDataProvider.BankCode.ActivateBankCode(companyId);
-                }
-                else
-                {
-                    XBDataProvider.BankCode.DeActivateBankCode(companyId);
-                }
-                LoadBankCodeList();
-            }
-            catch (Exception ex)
-            {
+        //protected void BankCodeDdlSelectedIndexChanged(object sender, EventArgs e)
+        //{
+            //DropDownList ddl = sender as DropDownList;
+            //try
+            //{
+            //   int companyId = Convert.ToInt32(ddl.Attributes["IdBankCode"]);
+            //    if (ddl.SelectedValue == "1")
+            //    {
+            //        XBDataProvider.BankCode.ActivateBankCode(companyId);
+            //    }
+            //    else
+            //    {
+            //        XBDataProvider.BankCode.DeActivateBankCode(companyId);
+            //    }
+            //    LoadBankCodeList();
+            //}
+            //catch (Exception ex)
+            //{
 
-            }
+            //}
 
-        }
+        //}
         protected void deleteRecordsClick(object sender, EventArgs e)
         {
             string ids = string.Empty;

@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PaymentModeEdit.aspx.cs" Inherits="XpressBilling.Account.PaymentModeEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
-        <div>
+       <%-- <div>
             <asp:Label runat="server" ID="Message"></asp:Label>
-        </div>
+        </div>--%>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">Add Payment Mode Details</div>
@@ -54,8 +54,8 @@
                     
                     <asp:HiddenField ID="PaymentModeId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <asp:Button ID="savePaymentMode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveClick" />
-                        <a href="/Account/PaymentMode.aspx" class="btn btn-primary pull-right">Cancel</a>
+                        <a href="/Account/PaymentMode.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="savePaymentMode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <label id="lblMsg" style="color: red;" runat="server"></label>
                 
                     </div>
 
