@@ -30,7 +30,6 @@
                             <asp:ListItem Value="0" Text="Free" ></asp:ListItem>
                             <asp:ListItem Value="1" Text="Open"></asp:ListItem>
                             <asp:ListItem Value="2" Text="Finalized"></asp:ListItem>
-                            <asp:ListItem Value="3" Text="Error"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                 </div>

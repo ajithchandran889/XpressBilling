@@ -30,7 +30,9 @@
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="Amount" HeaderText="Amount"></asp:BoundField>
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
-                            
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized")  %></ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

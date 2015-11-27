@@ -219,7 +219,7 @@
                                             <li class=""><a href="/Account/TaxMst"><i class="menu-icon fa fa-caret-right"></i>Tax </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/PriceBook"><i class="menu-icon fa fa-caret-right"></i>Price Book </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/Employee"><i class="menu-icon fa fa-caret-right"></i>Employee </a><b class="arrow"></b></li>
-                                             <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>First Free Number </a><b class="arrow"></b></li>
+                                             <li class=""><a href="/Account/FirstFreeNumber"><i class="menu-icon fa fa-caret-right"></i>First Free Number </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/Contact"><i class="menu-icon fa fa-caret-right"></i>Contacts </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
@@ -254,8 +254,8 @@
                                         <ul class="submenu">
                                             <li class=""><a href="/Account/SalesQuotation"><i class="menu-icon fa fa-caret-right"></i>Sales Quotation </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/Invoice"><i class="menu-icon fa fa-caret-right"></i>Sales Order </a><b class="arrow"></b></li>
-                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Manual Invoice </a><b class="arrow"></b></li>
-                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Sales Return </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/ManualInvoice"><i class="menu-icon fa fa-caret-right"></i>Manual Invoice </a><b class="arrow"></b></li>
+                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Sales Return </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -270,7 +270,7 @@
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
                                             <li class=""><a href="/Account/StockEntry"><i class="menu-icon fa fa-caret-right"></i>Stock Adjustment </a><b class="arrow"></b></li>
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Stock Register </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/StockRegister"><i class="menu-icon fa fa-caret-right"></i>Stock Register </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -345,8 +345,8 @@
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
                                             <li class=""><a href="/Account/SalesQuotation"><i class="menu-icon fa fa-caret-right"></i>Sales Quotation </a><b class="arrow"></b></li>
-                                            <li class=""><a href="/Account/invoice"><i class="menu-icon fa fa-caret-right"></i>Sales Order </a><b class="arrow"></b></li>
-                                            <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Manual Invoice </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Invoice"><i class="menu-icon fa fa-caret-right"></i>Sales Order </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/ManualInvoice"><i class="menu-icon fa fa-caret-right"></i>Manual Invoice </a><b class="arrow"></b></li>
                                             <li class=""><a href="enterprise unit.html"><i class="menu-icon fa fa-caret-right"></i>Sales Return </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
@@ -357,7 +357,7 @@
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
                                             <li class=""><a href="/Account/StockEntry"><i class="menu-icon fa fa-caret-right"></i>Stock Adjustment </a><b class="arrow"></b></li>
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Stock Register </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/StockRegister"><i class="menu-icon fa fa-caret-right"></i>Stock Register </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>

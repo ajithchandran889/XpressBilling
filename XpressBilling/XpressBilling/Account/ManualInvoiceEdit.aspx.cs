@@ -424,15 +424,7 @@ namespace XpressBilling.Account
 
                 }
                 #endregion
-                int selectedSequenceId = 0;
-                if (InvoiceType.SelectedValue == "0")
-                {
-                    selectedSequenceId = Convert.ToInt32(CashSequenceNoID.Value);
-                }
-                else if (InvoiceType.SelectedValue == "1")
-                {
-                    selectedSequenceId = Convert.ToInt32(CreditSequenceNoID.Value);
-                }
+                
                 if (InvoiceId.Value!="" && InvoiceId.Value !="0")
                 {
                     if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, Convert.ToInt32(MITotalAmount.Text), Convert.ToInt32(MITotalDiscountAmt.Text), Convert.ToInt32(MITotalTaxAmt.Text), Convert.ToInt32(MITotalOrderAmt.Text),User.Identity.Name,dt))
@@ -442,6 +434,15 @@ namespace XpressBilling.Account
                 }
                 else
                 {
+                    int selectedSequenceId = 0;
+                    if (InvoiceType.SelectedValue == "0")
+                    {
+                        selectedSequenceId = Convert.ToInt32(CashSequenceNoID.Value);
+                    }
+                    else if (InvoiceType.SelectedValue == "1")
+                    {
+                        selectedSequenceId = Convert.ToInt32(CreditSequenceNoID.Value);
+                    }
                     int returnValue = 0;
                     DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     returnValue=XBDataProvider.ManualInvoice.AddManualInvoiceWithDetails(Session["CompanyCode"].ToString(),CustomerId.SelectedValue, Invoice.Text,1,

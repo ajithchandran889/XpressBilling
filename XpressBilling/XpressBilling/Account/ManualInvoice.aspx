@@ -30,7 +30,7 @@
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
                              <asp:TemplateField HeaderText="Status">
-                                <ItemTemplate><%# Eval("Status").ToString()=="1" ? "Active" :"InActive" %></ItemTemplate>
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Paid")  %></ItemTemplate>
                             </asp:TemplateField>
                             
                             <asp:TemplateField>  
