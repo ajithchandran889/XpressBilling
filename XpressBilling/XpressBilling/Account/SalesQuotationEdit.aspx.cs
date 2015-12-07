@@ -21,6 +21,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                CompanyCode.Value = Session["CompanyCode"].ToString();
                 DataTable dtTable = XBDataProvider.BussinessPartner.GetAllBussinessPartnerCodes(Session["CompanyCode"].ToString());
                 Session["BPDetails"] = dtTable;
                 DataRow row = null;
@@ -160,6 +161,14 @@ namespace XpressBilling.Account
                         Telephone.ReadOnly = true;
                         QuotationType.SelectedValue = dtTable.Rows[0]["OrderType"].ToString();
                         QuotationType.Enabled = false;
+                        if (row["OrderType"].ToString() == "0")
+                        {
+                            Quotation.Text = CashSequenceNo.Value;
+                        }
+                        else if (row["OrderType"].ToString() == "1")
+                        {
+                            Quotation.Text = CreditSequenceNo.Value;
+                        }
                     }
                 }
 
@@ -262,12 +271,12 @@ namespace XpressBilling.Account
                     SaveBtn.Visible = false;
                     CancelBtn.Visible = false;
                     SetInitialRows();
-                    //ClearInputs(Page.Controls);
-                    //Message.Text = "Successfully added";
+                    SaveSuccess.Visible = true;
+                    failure.Visible = false;
                 }
                 else
                 {
-                    //Message.Text = "Oops..Something went wrong.Please try again";
+                    failure.Visible = true;
                 }
 
 
@@ -375,6 +384,15 @@ namespace XpressBilling.Account
                     btnPrint.Visible = true;
                     PageStatus.Value = "edit";
                     Status.SelectedValue = "1";
+                    SaveSuccess.Visible = false;
+                    UpdateSuccess.Visible = true;
+                    failure.Visible = false;
+                }
+                else
+                {
+                    SaveSuccess.Visible = false;
+                    UpdateSuccess.Visible = false;
+                    failure.Visible = true;
                 }
                 SetSalesQuotationChildGrid();
 
@@ -449,6 +467,17 @@ namespace XpressBilling.Account
             {
                 SalesOrder.Text = orderNo;
                 btnConverOrder.Visible = false;
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                FinalizeSuccess.Visible = true;
+                failure.Visible = false;
+            }
+            else
+            {
+                failure.Visible = true;
+                FinalizeSuccess.Visible = false;
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
             }
         }
 

@@ -13,6 +13,51 @@ namespace XpressBilling.Account {
     public partial class StokeEntryEdit {
         
         /// <summary>
+        /// SaveSuccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SaveSuccess;
+        
+        /// <summary>
+        /// UpdateSuccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UpdateSuccess;
+        
+        /// <summary>
+        /// FinalizeSuccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FinalizeSuccess;
+        
+        /// <summary>
+        /// failure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl failure;
+        
+        /// <summary>
+        /// failureMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl failureMessage;
+        
+        /// <summary>
         /// AdjustmentType control.
         /// </summary>
         /// <remarks>
@@ -211,15 +256,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Button AddNewRow;
         
         /// <summary>
-        /// btnCencelDtl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
-        
-        /// <summary>
         /// btnSaveDtl control.
         /// </summary>
         /// <remarks>
@@ -238,6 +274,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Button btnConvertStockRegister;
         
         /// <summary>
+        /// btnCencelDtl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
+        
+        /// <summary>
         /// btnPrint control.
         /// </summary>
         /// <remarks>
@@ -245,5 +290,14 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnPrint;
+        
+        /// <summary>
+        /// CompanyCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField CompanyCode;
     }
 }

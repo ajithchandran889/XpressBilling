@@ -238,7 +238,7 @@
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Business Partner</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="/Account/BusinessPartner"><i class="menu-icon fa fa-caret-right"></i>Business Partner </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/BussinessPartner"><i class="menu-icon fa fa-caret-right"></i>Business Partner </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -335,7 +335,7 @@
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Business Partner</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="/Account/BusinessPartner"><i class="menu-icon fa fa-caret-right"></i>Business Partner </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/BussinessPartner"><i class="menu-icon fa fa-caret-right"></i>Business Partner </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>

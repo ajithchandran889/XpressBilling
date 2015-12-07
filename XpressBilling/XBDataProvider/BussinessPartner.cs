@@ -62,7 +62,7 @@ namespace XBDataProvider
         }
 
         public static bool UpdateBP(string bpId, int discount, int creditLimit, string tin, string cst,
-                                      string Note, string userName,int status)
+                                      string Note, string userName,int status,int orderType)
         {
             try
             {
@@ -76,6 +76,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Cst", cst));
                 cmd.Parameters.Add(new SqlParameter("@Note", Note));
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
+                cmd.Parameters.Add(new SqlParameter("@orderType", orderType));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", userName));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BusinessPartnerMst_xpupd", cmd);
@@ -188,5 +189,22 @@ namespace XBDataProvider
             return dtTable;
         }
 
+        public static DataTable GetAllSupplierCodes(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BussinessPartnerGetAllSupplierCodes", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
     }
 }

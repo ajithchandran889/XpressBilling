@@ -19,6 +19,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                CompanyCode.Value = Session["CompanyCode"].ToString();
                 DataTable dtTable = XBDataProvider.BussinessPartner.GetAllBussinessPartnerCodes(Session["CompanyCode"].ToString());
                 Session["BPDetails"] = dtTable;
                 DataRow row = null;
@@ -175,6 +176,15 @@ namespace XpressBilling.Account
                         InvoiceType.Enabled = false;
                         Telephone.Text = row["Phone"].ToString();
                         Telephone.ReadOnly = true;
+                        if (row["OrderType"].ToString() == "0")
+                        {
+                            Invoice.Text =CashSequenceNo.Value;
+                        }
+                        else if (row["OrderType"].ToString() == "1")
+                        {
+                            Invoice.Text = CreditSequenceNo.Value;
+                        }
+
                     }
                 }
 
@@ -445,6 +455,15 @@ namespace XpressBilling.Account
                     if (XBDataProvider.Invoice.UpdateInvoiceDetails(Convert.ToInt32(SalesInvoiceId.Value), IPayTerms.Text, IDeliveryTerms.Text, IShipToAddress.Text, Convert.ToInt32(ITotalAmount.Text), Convert.ToInt32(ITotalDiscountAmt.Text), Convert.ToInt32(ITotalTaxAmt.Text), Convert.ToInt32(ITotalOrderAmt.Text), User.Identity.Name, dt))
                     {
                         Amount.Text = Request.Form[Amount.UniqueID];
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
+                    }
+                    else
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
@@ -472,6 +491,12 @@ namespace XpressBilling.Account
                         Status.SelectedValue = "1";
                         Amount.Text = Request.Form[Amount.UniqueID];
                         btnFinalize.Visible = true;
+                        SaveSuccess.Visible = true;
+                        failure.Visible = false;
+                    }
+                    else
+                    {
+                        failure.Visible = true;
                     }
                 }
             }
@@ -493,6 +518,17 @@ namespace XpressBilling.Account
                 Amount.Text = Request.Form[Amount.UniqueID];
                 btnFinalize.Visible = false;
                 btnSaveDtl.Visible = false;
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                FinalizeSuccess.Visible = true;
+                failure.Visible = false;
+            }
+            else
+            {
+                failure.Visible = true;
+                FinalizeSuccess.Visible = false;
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
             }
         }
     }

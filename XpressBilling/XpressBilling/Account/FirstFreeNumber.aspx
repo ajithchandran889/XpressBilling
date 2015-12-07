@@ -24,9 +24,7 @@
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="FirstFreeNumberEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="DocumentNo" HeaderText="Number Group"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Type">
-                                <ItemTemplate><%# Eval("Transactions").ToString()=="0" ? "Cost" : "Purchase" %></ItemTemplate>
-                            </asp:TemplateField>
+                            <asp:BoundField DataField="TransactionType" HeaderText="Type"></asp:BoundField>
                             <asp:BoundField DataField="DocumentDate" HeaderText="Date"></asp:BoundField>
                             <%--<asp:TemplateField HeaderText="OrderType">
                                 <ItemTemplate><%# Eval("SeqType").ToString()=="0" ? (Eval("OrderType").ToString()=="0" ? "Local":"Import"):(Eval("OrderType").ToString()=="0" ? "Cash":"Credit") %></ItemTemplate>

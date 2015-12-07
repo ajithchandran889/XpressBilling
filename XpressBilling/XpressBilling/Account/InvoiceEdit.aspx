@@ -3,7 +3,22 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
         <div class="row content-holder">
-            <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12" >
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="FinalizeSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Finalized Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
                 <div class="page-header">Sales Invoice Edit</div>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Customer ID</label>
@@ -63,7 +78,7 @@
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Amount</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:TextBox runat="server" ID="Amount" class="form-control required" ReadOnly="true" placeholder="Validity" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Amount" class="form-control required" ReadOnly="true" placeholder="101" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -108,12 +123,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Rate"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="IItemRate" class="form-control IItemRate " ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
+                                        <asp:TextBox ID="IItemRate" class="form-control IItemRate txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Quantity"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="IQuantity" class="form-control IQuantity " ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="IQuantity" class="form-control IQuantity txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Unit"  ControlStyle-Width="70">
@@ -123,12 +138,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc%"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="IDiscPer" class="form-control IDiscPer" ClientIDMode="Static" runat="server" Text='<%# Bind("DiscountPercentage") %>'></asp:TextBox>
+                                        <asp:TextBox ID="IDiscPer" class="form-control IDiscPer txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("DiscountPercentage") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc Amt"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="IDiscAmt" class="form-control IDiscAmt" ClientIDMode="Static" runat="server" Text='<%# Bind("DiscountAmt") %>'></asp:TextBox>
+                                        <asp:TextBox ID="IDiscAmt" class="form-control IDiscAmt txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("DiscountAmt") %>'></asp:TextBox>
                                         
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -243,15 +258,15 @@
                         <div class="row">
                             <asp:HiddenField ID="SalesInvoiceId" runat="server" ClientIDMode="Static"/>
                             <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
-                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveBtnDetailClick" />
-                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary pull-right">Cancel</a>
-                            <asp:Button ID="btnFinalize" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Finalize" Visible="false" OnClick="btnFinalizeClick" />
+                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
+                            <asp:Button ID="btnFinalize" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Finalize" Visible="false" OnClick="btnFinalizeClick" />
+                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();"/>
                         </div>
 
                     </div>
                 </asp:Panel>
-
+                <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static"/>
             </div>
         </div>
     </div>

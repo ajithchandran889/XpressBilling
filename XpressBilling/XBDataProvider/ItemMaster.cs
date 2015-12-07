@@ -274,13 +274,14 @@ namespace XBDataProvider
             }
 
         }
-        public static DataTable GetItemMasters()
+        public static DataTable GetItemMasters(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
                 dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMasters", cmd);
             }
             catch (Exception ex)

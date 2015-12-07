@@ -183,12 +183,12 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<ItemMasteDetails> GetItemMasters()
+        public static List<ItemMasteDetails> GetItemMasters(string companyCode)
         {
             List<ItemMasteDetails> result = new List<ItemMasteDetails>();
             try
             {
-                DataTable dtTable = XBDataProvider.ItemMaster.GetItemMasters();
+                DataTable dtTable = XBDataProvider.ItemMaster.GetItemMasters(companyCode);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

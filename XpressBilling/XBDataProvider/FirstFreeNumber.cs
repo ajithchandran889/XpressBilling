@@ -277,6 +277,45 @@ namespace XBDataProvider
             }
             return dtTable;
         }
+
+        public static DataTable GetGRNSequenceDetails(string companyCode)
+        {
+
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetGRNSequenceDetails", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return dtTable;
+        }
+
+        public static DataTable GetPurchaseOrderSequenceDetails(string companyCode)
+        {
+
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetPurchaseOrderSequenceDetails", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return dtTable;
+        }
+
         public static string FormatSequence(string prefix, int seqNo, int length)
         {
             int prefixLength = prefix.Length;

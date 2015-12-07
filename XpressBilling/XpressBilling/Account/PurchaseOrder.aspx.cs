@@ -7,32 +7,32 @@ using System.Web.UI.WebControls;
 
 namespace XpressBilling.Account
 {
-    public partial class SalesQuotation : System.Web.UI.Page
+    public partial class PurchaseOrder : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LoadSalesQuotationList();
+                LoadPurchaseOrderList();
             }
         }
 
-        private void LoadSalesQuotationList()
+        private void LoadPurchaseOrderList()
         {
-            ListSalesQuotation.DataSource = XBDataProvider.SalesQuotation.GetAllSalesQuotation();
-            ListSalesQuotation.DataBind();
+            ListPurchaseOrder.DataSource = XBDataProvider.PurchaseOrder.GetAllPurchaseOrder();
+            ListPurchaseOrder.DataBind();
         }
 
-        protected void SalesQuotationPageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void PurchaseOrderPageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            ListSalesQuotation.PageIndex = e.NewPageIndex;
-            LoadSalesQuotationList();
+            ListPurchaseOrder.PageIndex = e.NewPageIndex;
+            LoadPurchaseOrderList();
         }
 
         protected void deleteRecordsClick(object sender, EventArgs e)
         {
             string ids = string.Empty;
-            foreach (GridViewRow grow in ListSalesQuotation.Rows)
+            foreach (GridViewRow grow in ListPurchaseOrder.Rows)
             {
                 CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
                 if (chkdel.Checked)
@@ -42,7 +42,7 @@ namespace XpressBilling.Account
                 }
             }
             XBDataProvider.SalesQuotation.DeleteSalesQuotation(ids);
-            LoadSalesQuotationList();
+            LoadPurchaseOrderList();
         }
     }
 }

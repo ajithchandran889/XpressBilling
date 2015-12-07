@@ -20,6 +20,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                CompanyCode.Value = Session["CompanyCode"].ToString();
                 DataTable dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
                 Location.DataSource = dtLocation;
                 Location.DataValueField = "LocationCode";
@@ -235,6 +236,12 @@ namespace XpressBilling.Account
                     SaveBtn.Visible = false;
                     CancelBtn.Visible = false;
                     SetInitialRows();
+                    SaveSuccess.Visible = true;
+                    failure.Visible = false;
+                }
+                else
+                {
+                    failure.Visible = true;
                 }
                 #endregion
             }
@@ -366,12 +373,19 @@ namespace XpressBilling.Account
                      Status.SelectedValue = "1";
                      SetStockEntryChildGrid();
                      PageStatus.Value = "edit";
+                     SaveSuccess.Visible = false;
+                     UpdateSuccess.Visible = true;
+                     failure.Visible = false;
+                    
+                        
                 }
                 
             }
             catch(Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
             }
         }
 
@@ -489,6 +503,19 @@ namespace XpressBilling.Account
                     box7.Enabled = false;
                     i++;
                 }
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                FinalizeSuccess.Visible = true;
+                failure.Visible = false;
+                btnSaveDtl.Visible = false;
+                btnConvertStockRegister.Visible = false;
+            }
+            else
+            {
+                failure.Visible = true;
+                FinalizeSuccess.Visible = false;
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
             }
         }
 

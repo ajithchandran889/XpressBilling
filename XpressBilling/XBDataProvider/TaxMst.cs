@@ -154,13 +154,14 @@ namespace XBDataProvider
             }
 
         }
-        public static DataTable GetAllTaxDetails()
+        public static DataTable GetAllTaxDetails(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
                 dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllTaxDetails", cmd);
             }
             catch (Exception ex)

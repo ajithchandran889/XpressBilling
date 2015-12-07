@@ -54,7 +54,7 @@ namespace XpressBilling.Account
                     {
                         DataRow row = null;
                         DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
-                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice" };
+                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
                         if(dtTable.Rows.Count>0 && Type.SelectedValue=="0")
                         {
                             Transaction.Items.Clear();
@@ -221,6 +221,72 @@ namespace XpressBilling.Account
 
         }
 
+        private void SetInitialRowWithLocalImportOptions()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataRow dr = null;
+                dt.Columns.Add(new DataColumn("ID", typeof(int)));
+                dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
+                dt.Columns.Add(new DataColumn("Digits", typeof(int)));
+                dt.Columns.Add(new DataColumn("EnterpriseUnitCode", typeof(string)));
+                dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
+                //dt.Columns.Add(new DataColumn("Description", typeof(string)));
+                dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
+                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
+                dt.Columns.Add(new DataColumn("Status", typeof(int)));
+
+                dr = dt.NewRow();
+                dr["OrderType"] = "Local";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["OrderType"] = "Import";
+                dt.Rows.Add(dr);
+
+                FirstFreeDetail.DataSource = dt;
+                FirstFreeDetail.DataBind();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
+
+        private void SetInitialRowWithManualGoodsOptions()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataRow dr = null;
+                dt.Columns.Add(new DataColumn("ID", typeof(int)));
+                dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
+                dt.Columns.Add(new DataColumn("Digits", typeof(int)));
+                dt.Columns.Add(new DataColumn("EnterpriseUnitCode", typeof(string)));
+                dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
+                //dt.Columns.Add(new DataColumn("Description", typeof(string)));
+                dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
+                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
+                dt.Columns.Add(new DataColumn("Status", typeof(int)));
+
+                dr = dt.NewRow();
+                dr["OrderType"] = "Manual Goods Receipt";
+                dt.Rows.Add(dr);
+
+                dr = dt.NewRow();
+                dr["OrderType"] = "Goods Receipt Auto";
+                dt.Rows.Add(dr);
+
+                FirstFreeDetail.DataSource = dt;
+                FirstFreeDetail.DataBind();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
         protected void saveFirstFreeNumber(object sender, EventArgs e)
         {
             try
@@ -238,7 +304,7 @@ namespace XpressBilling.Account
                     NumberGroup.Text = newDocumentNumber;
                     FirstFreeNumberId.Value = id.ToString();
                     FirstFreeDetail.Visible = true;
-                    if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "4")
+                    if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
                     {
                         SetInitialRowWithCashCreditOptions();
                     }
@@ -250,7 +316,14 @@ namespace XpressBilling.Account
                     {
                         SetInitialRowWithAddtionDeductionOpeningOptions();
                     }
-                    
+                    else if (Transaction.SelectedValue == "4")
+                    {
+                        SetInitialRowWithLocalImportOptions();
+                    }
+                    else if (Transaction.SelectedValue == "8")
+                    {
+                        SetInitialRowWithManualGoodsOptions();
+                    }
                 }
             }
             catch (Exception ex)
@@ -383,7 +456,7 @@ namespace XpressBilling.Account
 
         protected void TypeSelectedIndexChanged(object sender, EventArgs e)
         {
-            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue" };
+            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
             if (Type.SelectedValue == "0")
             {
                 DataRow row = null;

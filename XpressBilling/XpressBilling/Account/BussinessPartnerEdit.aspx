@@ -40,7 +40,7 @@
                             <asp:ListItem Value="0" Text="Local"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Import"></asp:ListItem>
                         </asp:DropDownList>
-                        <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required" Style="display: none" ClientIDMode="Static">
+                        <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required"  ClientIDMode="Static">
                             <asp:ListItem Value="0" Text="Cash"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Credit"></asp:ListItem>
                         </asp:DropDownList>
@@ -142,7 +142,7 @@
                     <label for="City" class="control-label col-xs-2 col-md-2">City</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control" ID="City" ClientIDMode="Static" >
-                            <asp:ListItem Value="" Text="Select Country"></asp:ListItem>
+                            <asp:ListItem Value="" Text="Select City"></asp:ListItem>
                         </asp:DropDownList>
 
                     </div>

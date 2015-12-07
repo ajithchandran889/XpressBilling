@@ -65,10 +65,12 @@ namespace XpressBilling.Account
             if (row["BusinessPartnerType"].ToString()=="0")
             {
                 OrderType_0.SelectedValue = row["OrderType"].ToString();
+                OrderType_1.Attributes.Add("class", "hideElement");
             }
             else if (row["BusinessPartnerType"].ToString() == "1")
             {
                 OrderType_1.SelectedValue = row["OrderType"].ToString();
+                OrderType_0.Attributes.Add("class", "hideElement");
             }
             Discount.Text = row["Discount"].ToString();
             CreditLimit.Text = row["CreditLimit"].ToString();
@@ -114,11 +116,19 @@ namespace XpressBilling.Account
         {
             try
             {
-                
+                int orderType = 0;
+                if (BusinessPartnerType.SelectedValue == "0")
+                {
+                    orderType = Convert.ToInt32(OrderType_0.SelectedValue);
+                }
+                else
+                {
+                    orderType = Convert.ToInt32(OrderType_1.SelectedValue);
+                }
                 bool status = false;
                 if (BPId.Value != "0" && BPId.Value != "")
                 {
-                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name,Convert.ToInt32(ddlStatus.SelectedValue));
+                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name, Convert.ToInt32(ddlStatus.SelectedValue), orderType);
                     if (status)
                     {
                         //Message.Text 
@@ -132,15 +142,7 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    int orderType = 0;
-                    if(BusinessPartnerType.SelectedValue=="0")
-                    {
-                        orderType = Convert.ToInt32(OrderType_0.SelectedValue);
-                    }
-                    else
-                    {
-                        orderType = Convert.ToInt32(OrderType_1.SelectedValue);
-                    }
+                    
                     int retunValue = 0;
                     retunValue = XBDataProvider.BussinessPartner.SaveBP(Session["CompanyCode"].ToString(), BussinessPartner.Text, Name.Text,Convert.ToInt32(BusinessPartnerType.SelectedValue), orderType,Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), ContactPerson.Text, Tin.Text, Cst.Text, Note.Text,  User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text,Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);

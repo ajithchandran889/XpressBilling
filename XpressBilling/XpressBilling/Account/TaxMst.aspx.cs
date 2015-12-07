@@ -83,12 +83,12 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<TaxItemDetail> GetAllTaxDetails()
+        public static List<TaxItemDetail> GetAllTaxDetails(string companyCode)
         {
             List<TaxItemDetail> result = new List<TaxItemDetail>();
             try
             {
-                DataTable dtTable = XBDataProvider.TaxMst.GetAllTaxDetails();
+                DataTable dtTable = XBDataProvider.TaxMst.GetAllTaxDetails(companyCode);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

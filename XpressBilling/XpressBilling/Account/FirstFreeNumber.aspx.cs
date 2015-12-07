@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -19,7 +20,51 @@ namespace XpressBilling.Account
 
         private void LoadFirstFreeNumberList()
         {
-            ListFirstFreeNumber.DataSource = XBDataProvider.FirstFreeNumber.GetAllFirstFreeNumber();
+            DataTable dtTable = XBDataProvider.FirstFreeNumber.GetAllFirstFreeNumber();
+            DataColumn column = new DataColumn("TransactionType", typeof(String));
+            dtTable.Columns.Add(column);
+            DataRow row = null;
+            for (int index = 0; index < dtTable.Rows.Count;index++ )
+            {
+                row = dtTable.Rows[index];
+                if (row["Transactions"].ToString() == "0")
+                {
+                    row["TransactionType"] = "Sales Quotation";
+                }
+                else if (row["Transactions"].ToString() == "1")
+                {
+                    row["TransactionType"] = "Sales Order";
+                }
+                else if (row["Transactions"].ToString() == "2")
+                {
+                    row["TransactionType"] = "Manual Invoice";
+                }
+                else if (row["Transactions"].ToString() == "3")
+                {
+                    row["TransactionType"] = "Sales Return";
+                }
+                else if (row["Transactions"].ToString() == "4")
+                {
+                    row["TransactionType"] = "Purchase Order";
+                }
+                else if (row["Transactions"].ToString() == "5")
+                {
+                    row["TransactionType"] = "Stock Adjustment";
+                }
+                else if (row["Transactions"].ToString() == "6")
+                {
+                    row["TransactionType"] = "Material Issue";
+                }
+                else if (row["Transactions"].ToString() == "7")
+                {
+                    row["TransactionType"] = "Sales Invoice";
+                }
+                else if (row["Transactions"].ToString() == "8")
+                {
+                    row["TransactionType"] = "Goods Receipt";
+                }
+            }
+            ListFirstFreeNumber.DataSource = dtTable;
             ListFirstFreeNumber.DataBind();
         }
 
