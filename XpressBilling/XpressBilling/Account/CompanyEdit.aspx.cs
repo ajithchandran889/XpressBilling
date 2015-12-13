@@ -27,7 +27,7 @@ namespace XpressBilling.Account
                 DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
 
                 Country.DataSource = dtCountries;
-                Country.DataValueField = "ID";
+                Country.DataValueField = "CountryCode";
                 Country.DataTextField = "name";
                 Country.DataBind();
                 ListItem item = new ListItem();
@@ -35,7 +35,7 @@ namespace XpressBilling.Account
                 item.Value = "";
                 Country.Items.Insert(0, item);
 
-                DataTable dtCurrency = XBDataProvider.Currency.GetAllActiveCurrencies();
+                DataTable dtCurrency = XBDataProvider.Currency.GetAllActiveCurrencies(Session["CompanyCode"].ToString());
 
                 ddlCurrency.DataSource = dtCurrency;
                 ddlCurrency.DataValueField = "CurrencyCode";

@@ -40,7 +40,7 @@
                             <asp:ListItem Value="0" Text="Local"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Import"></asp:ListItem>
                         </asp:DropDownList>
-                        <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required"  ClientIDMode="Static">
+                        <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required"  Style="display: none"  ClientIDMode="Static">
                             <asp:ListItem Value="0" Text="Cash"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Credit"></asp:ListItem>
                         </asp:DropDownList>

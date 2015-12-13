@@ -73,7 +73,7 @@ namespace XpressBilling.Account
             Designation.Text = row["Designation"].ToString();
             Address1.Text = row["Address1"].ToString();
             Address2.Text = row["Address2"].ToString();
-            Citycontact.SelectedValue = row["CityCode"].ToString();
+            City.SelectedValue = row["CityCode"].ToString();
             Area.Text = row["Area"].ToString();
             State.Text = row["State"].ToString();
             Country.SelectedValue = row["CountryCode"].ToString();
@@ -92,7 +92,7 @@ namespace XpressBilling.Account
                 string errmsg = "";
                 if (ContactId.Value != "0" && ContactId.Value != "")
                 {
-                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Citycontact.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(zipcode), true, User.Identity.Name);
+                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(zipcode), true, User.Identity.Name);
                     if (status)
                     {
                         lblMsg.InnerText = "Successfully updated";
@@ -105,7 +105,7 @@ namespace XpressBilling.Account
                 else
                 {
                     int retunValue = 0;                    
-                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Citycontact.SelectedValue, Area.Text, State.Text, Country.SelectedValue,Convert.ToInt32( zipcode), true, note, errmsg, User.Identity.Name);
+                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue,Convert.ToInt32( zipcode), true, note, errmsg, User.Identity.Name);
                     if (retunValue >= 1)
                     {
                         ClearInputs(Page.Controls);

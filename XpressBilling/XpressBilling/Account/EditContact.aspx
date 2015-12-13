@@ -101,7 +101,7 @@
                     </div>
                     <label for="City" class="control-label col-xs-2 col-md-2">City</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control" ID="Citycontact" ClientIDMode="Static" >
+                        <asp:DropDownList runat="server" class="form-control" ID="City" ClientIDMode="Static" >
                         </asp:DropDownList>
                         
                     </div>

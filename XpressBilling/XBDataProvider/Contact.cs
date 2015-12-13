@@ -303,6 +303,7 @@ namespace XBDataProvider
 
             return dtTable;
         }
+
         public static void ActivateContact(int id)
         {
             try
