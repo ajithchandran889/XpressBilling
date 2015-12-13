@@ -23,22 +23,15 @@
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>  
                             <asp:BoundField DataField="CountryName" HeaderText="Country"></asp:BoundField> 
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
-                            <%--<asp:TemplateField HeaderText="Status">
-                                <ItemTemplate>
-                                   <asp:dropdownlist id="CityDdl" IdCity='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="CityDdlSelectedIndexChanged">
-                                        <asp:listitem value="1" text="active"></asp:listitem>
-                                        <asp:listitem value="0" text="inactive"></asp:listitem>
-                                    </asp:dropdownlist>
-                                    <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
-                            <asp:TemplateField>  
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>
+                            </asp:TemplateField>
+                           <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  
                                     <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
                                 </ItemTemplate>  
                             </asp:TemplateField>
-                            <%--<asp:BoundField DataField="Status" HeaderText="Status"></asp:BoundField>--%>
                         </Columns>
                     </asp:GridView>
                 </div>

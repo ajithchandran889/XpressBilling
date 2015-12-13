@@ -13,6 +13,60 @@ namespace XpressBilling.Account {
     public partial class ItemMasterEdit {
         
         /// <summary>
+        /// SaveSuccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SaveSuccess;
+        
+        /// <summary>
+        /// UpdateSuccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UpdateSuccess;
+        
+        /// <summary>
+        /// failure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl failure;
+        
+        /// <summary>
+        /// failureMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl failureMessage;
+        
+        /// <summary>
+        /// alreadyexist control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl alreadyexist;
+        
+        /// <summary>
+        /// alreadyexistmsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl alreadyexistmsg;
+        
+        /// <summary>
         /// ItemCode control.
         /// </summary>
         /// <remarks>
@@ -76,6 +130,24 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.DropDownList ItemType;
         
         /// <summary>
+        /// lblstatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblstatus;
+        
+        /// <summary>
+        /// ddlStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+        
+        /// <summary>
         /// SupplierBarcode control.
         /// </summary>
         /// <remarks>
@@ -94,13 +166,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox SearchKey;
         
         /// <summary>
-        /// ItemGroup control.
+        /// ddlItemGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ItemGroup;
+        protected global::System.Web.UI.WebControls.DropDownList ddlItemGroup;
         
         /// <summary>
         /// InventoryValuation control.
@@ -112,13 +184,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.DropDownList InventoryValuation;
         
         /// <summary>
-        /// Manufacturer control.
+        /// ddlManufacturer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Manufacturer;
+        protected global::System.Web.UI.WebControls.DropDownList ddlManufacturer;
         
         /// <summary>
         /// SafetStock control.
@@ -130,13 +202,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox SafetStock;
         
         /// <summary>
-        /// BaseUnit control.
+        /// ddlBaseUnit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox BaseUnit;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBaseUnit;
         
         /// <summary>
         /// ReorderQty control.
@@ -200,14 +272,5 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveItemMaster;
-        
-        /// <summary>
-        /// lblMsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMsg;
     }
 }

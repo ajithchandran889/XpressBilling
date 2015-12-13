@@ -14,8 +14,11 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTaxCodes();
-
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTaxCodes(Session["CompanyCode"].ToString());
                 ddlTaxCode.DataSource = dtItemGroups;
                 ddlTaxCode.DataValueField = "TaxCode";
                 ddlTaxCode.DataTextField = "name";
@@ -76,13 +79,17 @@ namespace XpressBilling.Account
                     else
                         status = true;
                     msgstatus = XBDataProvider.ItemGroup.UpdateItemGroup(Convert.ToInt32(ItemId.Value), Name.Text, User.Identity.Name, status);
-                    if (msgstatus == 1)
+                    if (msgstatus != -1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
@@ -90,21 +97,37 @@ namespace XpressBilling.Account
                     string reference = "";
                     string cesscode = "";
                     msgstatus = XBDataProvider.ItemGroup.SaveItemGroup(hdncompanycode.Value, ItemGroup.Text, Name.Text, ddlTaxCode.SelectedValue,cesscode, reference, User.Identity.Name, true);
+                    ClearInputs(Page.Controls);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
                 }
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
 

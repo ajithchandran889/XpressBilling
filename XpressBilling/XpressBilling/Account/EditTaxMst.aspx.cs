@@ -14,7 +14,11 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtTaxCodes = XBDataProvider.TaxMst.GetAllTaxCodes();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtTaxCodes = XBDataProvider.TaxMst.GetAllTaxCodes(Session["CompanyCode"].ToString());
 
                 ddlTaxCode.DataSource = dtTaxCodes;
                 ddlTaxCode.DataValueField = "TaxCode";
@@ -77,34 +81,55 @@ namespace XpressBilling.Account
                     else
                         status = true;
                     msgstatus = XBDataProvider.TaxMst.UpdateTaxMst(Convert.ToInt32(TaxId.Value), Name.Text,TaxPercentage.Text, User.Identity.Name, status);
-                    if (msgstatus == 1)
+                    if (msgstatus != -1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
                 {
                     string reference = "";
                     msgstatus = XBDataProvider.TaxMst.SaveTaxMst(hdncompanycode.Value, Tax.Text, Name.Text, ddlTaxCode.SelectedValue, TaxPercentage.Text, reference, User.Identity.Name, true);
+
+                    ClearInputs(Page.Controls);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
                 }
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
 

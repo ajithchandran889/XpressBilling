@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if(!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadPaymentModeList();
             }
             
@@ -25,7 +29,7 @@ namespace XpressBilling.Account
         }
         private void LoadPaymentModeList()
         {
-            ListPaymentMode.DataSource = XBDataProvider.PaymentMode.GetAllPaymentMode();
+            ListPaymentMode.DataSource = XBDataProvider.PaymentMode.GetAllPaymentMode(Session["CompanyCode"].ToString());
             ListPaymentMode.DataBind();
         }
         protected void listPaymentModeDataBound(object sender, EventArgs e)

@@ -54,13 +54,16 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetAllManufacturer()
+        public static DataTable GetAllManufacturer(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllManufacturer");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllManufacturer", cmd);
+               // dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllManufacturer");
             }
             catch (Exception ex)
             {

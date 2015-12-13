@@ -11,13 +11,16 @@ namespace XBDataProvider
 {
     public static class PriceBook
     {
-        public static DataTable GetAllPriceBook()
+        public static DataTable GetAllPriceBook(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PriceBookGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PriceBookGetAll", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PriceBookGetAll");
             }
             catch (Exception ex)
             {

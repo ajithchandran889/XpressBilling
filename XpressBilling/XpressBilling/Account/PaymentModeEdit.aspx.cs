@@ -14,6 +14,10 @@ namespace XpressBilling.Account
         {
             if (!Page.IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id!=0)
                 {
@@ -33,6 +37,8 @@ namespace XpressBilling.Account
                     lblCreatedUser.Visible = false;
                     CreatedDate.Visible = false;
                     lblCreatedDate.Visible = false;
+                    lblstatus.Visible = false;
+                    ddlStatus.Visible = false;
                 }
             }
         }
@@ -52,6 +58,7 @@ namespace XpressBilling.Account
             if (row["Transactions"].ToString()=="1")
             {
                 lblBankDetail.Text = "Bank Code";
+                //ddlBankAccount.SelectedValue = row["BankCode"].ToString();
                 BankAccount.Text = row["BankCode"].ToString();
             }
             else
@@ -70,17 +77,24 @@ namespace XpressBilling.Account
                 bool status = false;
                 if (PaymentModeId.Value != "0" && PaymentModeId.Value != "")
                 {
+                    bool statusflag;
+                    if (ddlStatus.SelectedValue == "0")
+                        statusflag = false;
+                    else
+                        statusflag = true;
                     string hg = Transaction.SelectedValue;
-                    status = XBDataProvider.PaymentMode.UpdatePaymentMode(PaymentModeId.Value, Name.Text,Convert.ToInt32(Transaction.SelectedValue),BankAccount.Text, User.Identity.Name);
+                    status = XBDataProvider.PaymentMode.UpdatePaymentMode(PaymentModeId.Value, Name.Text, Convert.ToInt32(Transaction.SelectedValue), BankAccount.Text, User.Identity.Name, statusflag);
                     if (status)
                     {
-                       // Message.Text 
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                       // Message.Text 
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
@@ -89,27 +103,24 @@ namespace XpressBilling.Account
                     if (status)
                     {
                         ClearInputs(Page.Controls);
-                        //Message.Text 
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible =true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        //Message.Text 
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
-
                 }
-
-
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
             }
-
-            //Label lblMsg = this.Master.FindControl("Message") as Label;
-            //lblMsg.Text = "Company added successfully";
-            //lblMsg.Visible = true;
         }
 
         private void ClearInputs(ControlCollection ctrls)

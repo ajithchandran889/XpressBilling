@@ -31,9 +31,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@SWIFT", SWIFT));
                 cmd.Parameters.Add(new SqlParameter("@MICR", MICR));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", createdBy));
-                //cmd.Parameters.Add(new SqlParameter("@UpdatedBy", createdBy));
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
-                //cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankMaster_xpins", cmd);
             }
@@ -72,13 +70,16 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetAllBankMst()
+        public static DataTable GetAllBankMst(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllBankMst");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllBankMst", cmd);
+               // dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllBankMst");
             }
             catch (Exception ex)
             {
@@ -87,13 +88,16 @@ namespace XBDataProvider
 
             return dtTable;
         }
-        public static DataTable GetAllActiveBankCode()
+        public static DataTable GetAllActiveBankCode(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBankCodes");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBankCodes", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBankCodes");
             }
             catch (Exception ex)
             {

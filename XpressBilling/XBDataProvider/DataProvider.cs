@@ -78,8 +78,8 @@ namespace XBDataProvider
             catch (SqlException ex)
             {
                 // Save the Exception Code so it can be returned.
-                returnValue = ex.ErrorCode;
-
+                //returnValue = ex.ErrorCode;
+                returnValue= 0;
                 // Rethrow the exception.
                 throw ex;
             }

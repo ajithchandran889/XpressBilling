@@ -18,9 +18,9 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                DataTable dtCountries = XBDataProvider.BankMst.GetAllActiveBankCode();
+                DataTable dtbankcode = XBDataProvider.BankMst.GetAllActiveBankCode(Session["CompanyCode"].ToString());
 
-                ddlbankcode.DataSource = dtCountries;
+                ddlbankcode.DataSource = dtbankcode;
                 ddlbankcode.DataValueField = "Id";
                 ddlbankcode.DataTextField = "Name";
                 ddlbankcode.DataBind();
@@ -96,35 +96,45 @@ namespace XpressBilling.Account
                         status = true; 
                     string ContactCode = "1";
                     msgstatus = XBDataProvider.BankMst.UpdateBankMst(Convert.ToInt32(hdnBankCode.Value), AccountNo.Text, Name.Text, Branch.Text, ContactCode, Reference.Text, IBAN.Text, IFSC.Text, SWIFT.Text, MICR.Text, ddlbankcode.SelectedValue, User.Identity.Name, status);
-                    if (msgstatus == 1)
+                    if (msgstatus != -1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
                 {
                     string ContactCode="1";
                     msgstatus = XBDataProvider.BankMst.SaveBankMst(hdncompanycode.Value, AccountNo.Text, Name.Text, Branch.Text, ddlbankcode.SelectedValue, ddlAccountType.SelectedValue, ContactCode,Reference.Text, IBAN.Text, IFSC.Text, SWIFT.Text, MICR.Text, User.Identity.Name, true);
+                    ClearInputs(Page.Controls);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
-                    ClearInputs(Page.Controls);
                 }
 
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
             }
 
 

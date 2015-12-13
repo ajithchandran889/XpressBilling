@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadTaxList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadTaxList()
         {
-            listTaxCode.DataSource = XBDataProvider.TaxCode.GetTaxCodes();
+            listTaxCode.DataSource = XBDataProvider.TaxCode.GetTaxCodes(Session["CompanyCode"].ToString());
             listTaxCode.DataBind();
         }
 

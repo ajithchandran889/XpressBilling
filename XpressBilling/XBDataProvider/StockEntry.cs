@@ -11,13 +11,16 @@ namespace XBDataProvider
 {
     public static class StockEntry
     {
-        public static DataTable GetAllStockEntry()
+        public static DataTable GetAllStockEntry(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_StockEntryGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_StockEntryGetAll", cmd);
+               // dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_StockEntryGetAll");
             }
             catch (Exception ex)
             {

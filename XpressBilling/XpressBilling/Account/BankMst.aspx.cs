@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadBankMstList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadBankMstList()
         {
-            listBankMst.DataSource = XBDataProvider.BankMst.GetAllBankMst();
+            listBankMst.DataSource = XBDataProvider.BankMst.GetAllBankMst(Session["CompanyCode"].ToString());
             listBankMst.DataBind();
         }
         protected void listBankCodeDataBound(object sender, EventArgs e)

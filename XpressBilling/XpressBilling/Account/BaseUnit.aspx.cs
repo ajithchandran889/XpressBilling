@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadBaseUnitList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadBaseUnitList()
         {
-            listBaseUnit.DataSource = XBDataProvider.BaseUnit.GetBaseUnits();
+            listBaseUnit.DataSource = XBDataProvider.BaseUnit.GetBaseUnits(Session["CompanyCode"].ToString());
             listBaseUnit.DataBind();
         }
 

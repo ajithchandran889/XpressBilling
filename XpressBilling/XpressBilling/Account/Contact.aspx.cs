@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadContactList();
             }
 
@@ -25,7 +29,7 @@ namespace XpressBilling.Account
         }
         private void LoadContactList()
         {
-            listContact.DataSource = XBDataProvider.Contact.GetAllContactCode();
+            listContact.DataSource = XBDataProvider.Contact.GetAllContactCode(Session["CompanyCode"].ToString());
             listContact.DataBind();
         }
         protected void listContactDataBound(object sender, EventArgs e)

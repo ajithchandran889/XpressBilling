@@ -155,13 +155,16 @@ namespace XBDataProvider
 
         }
 
-        public static DataTable GetAllBussinessPartner()
+        public static DataTable GetAllBussinessPartner(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BussinessPartnerGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BussinessPartnerGetAll", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BussinessPartnerGetAll");
             }
             catch (Exception ex)
             {

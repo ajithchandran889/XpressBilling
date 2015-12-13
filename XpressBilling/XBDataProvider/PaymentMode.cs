@@ -43,7 +43,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool UpdatePaymentMode(string id, string name, int transaction, string bankAccount, string user)
+        public static bool UpdatePaymentMode(string id, string name, int transaction, string bankAccount, string user,bool status)
         {
             try
             {
@@ -64,6 +64,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
+                cmd.Parameters.Add(new SqlParameter("@status", status));
                 DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_PaymentMode_xpupd", cmd);
                 return true;
             }
@@ -93,13 +94,16 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static DataTable GetAllPaymentMode()
+        public static DataTable GetAllPaymentMode(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentModeGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentModeGetAll", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentModeGetAll");
             }
             catch (Exception ex)
             {

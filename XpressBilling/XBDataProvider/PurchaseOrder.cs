@@ -11,13 +11,16 @@ namespace XBDataProvider
 {
     public static class PurchaseOrder
     {
-        public static DataTable GetAllPurchaseOrder()
+        public static DataTable GetAllPurchaseOrder(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PurchaseOrderGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PurchaseOrderGetAll", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PurchaseOrderGetAll");
             }
             catch (Exception ex)
             {

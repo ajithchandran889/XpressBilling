@@ -56,13 +56,16 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetAllCities()
+        public static DataTable GetAllCities(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllCities");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllCities", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllCities");
             }
             catch (Exception ex)
             {

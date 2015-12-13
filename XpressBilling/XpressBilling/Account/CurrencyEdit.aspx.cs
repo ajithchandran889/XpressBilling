@@ -14,7 +14,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -36,16 +39,6 @@ namespace XpressBilling.Account
                     CurrencyId.Value = "0";
                 }
             }
-            //else
-            //{
-            //    lbldate.Visible = false;
-            //    lblstatus.Visible = false;
-            //    lblusername.Visible = false;
-            //    UserName.Visible = false;
-            //    Date.Visible = false;
-            //    ddlStatus.Visible = false;
-            //    CurrencyId.Value = "0";
-            //}
 
         }
 
@@ -82,24 +75,45 @@ namespace XpressBilling.Account
                     status = XBDataProvider.Currency.UpdateCurrency(CurrencyId.Value, Name.Text, Decimal.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, statusup);
                   if (status!=-1)
                   {
-                      Message.Text = "Successfully updated";
+                      SaveSuccess.Visible = false;
+                      UpdateSuccess.Visible = true;
+                      failure.Visible = false;
+                      //Message.Text = "Successfully updated";
                   }
                   else
                   {
-                      Message.Text = "Oops..Something went wrong.Please try again";
+                      SaveSuccess.Visible = false;
+                      UpdateSuccess.Visible = false;
+                      failure.Visible = true;
+                      //Message.Text = "Oops..Something went wrong.Please try again";
                   }
                 }
                 else
                 {
                     status = XBDataProvider.Currency.SaveCurrency(Session["CompanyCode"].ToString(), Currency.Text, Name.Text, Decimal.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
-                    ClearInputs(Page.Controls);
-                    if (status != -1)
+                    if (status == 1)
                     {
-                        Message.Text = "Successfully added";
+                        SaveSuccess.Visible =true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                        //Message.Text = "Successfully added";
+                    }
+                    else if (status == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
+                        //Message.Text = "Oops..Something went wrong.Please try again";
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
+                        //Message.Text = "Oops..Something went wrong.Please try again";
                     }
                     ClearInputs(Page.Controls);
                 }
@@ -108,7 +122,10 @@ namespace XpressBilling.Account
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
            

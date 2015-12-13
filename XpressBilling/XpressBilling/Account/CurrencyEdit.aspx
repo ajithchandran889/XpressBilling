@@ -6,30 +6,22 @@
         </div>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
-                <div class="page-header">Currency Details</div>
-                <div class="form-group">
-                    <%--<label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Company" name="Company" class="form-control required" placeholder="Company" ClientIDMode="Static"></asp:TextBox>
-                    </div>--%>
-                    <%--<label for="Currency" class="control-label col-xs-2 col-md-2">Currency</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Currency" class="form-control required" placeholder="Currency" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>
-                    <label for="Name" class="control-label col-xs-2 col-md-2">Name</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Name" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>
-
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
                 </div>
-                <div class="form-group">
-                    <label for="Decimal" class="control-label col-xs-2 col-md-2">No. Of Decimal</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Decimal" class="form-control required" placeholder="No. of Decimal" ClientIDMode="Static"></asp:TextBox>
-                        
-                    </div>--%>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
+                <div class="page-header">Currency Details</div>
+                <div class="form-group">                    
                     <label for="Currency" class="control-label col-xs-2 col-md-2">Currency</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Currency" class="form-control required" placeholder="Currency" ClientIDMode="Static"></asp:TextBox>                        
@@ -53,11 +45,7 @@
                     </div>
 
                 </div>
-                 <div class="form-group">                   
-                    
-                    <%--<div class="col-xs-10 col-md-2">
-                        
-                    </div>--%>
+                 <div class="form-group"> 
                     <label for="Decimal" class="control-label col-xs-2 col-md-2">No. Of Decimal</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Decimal" class="form-control required txtNumeric" placeholder="No. of Decimal" ClientIDMode="Static"></asp:TextBox>
@@ -79,7 +67,7 @@
                     <asp:HiddenField ID="CurrencyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <a href="/Account/Currency.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <asp:Label runat="server" style="color:red;" ID="Message"></asp:Label>
+                        <%--<asp:Label runat="server" style="color:red;" ID="Message"></asp:Label>--%>
                     </div>
 
                 </div>

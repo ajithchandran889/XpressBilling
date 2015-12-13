@@ -17,7 +17,11 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtCountries = XBDataProvider.Country.GetCountries();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
                 Country.DataSource = dtCountries;
                 Country.DataValueField = "CountryCode";
                 Country.DataTextField = "name";

@@ -18,6 +18,9 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                getitemgroup();
+                getmanufacturer();
+                getbaseunit();
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -25,7 +28,6 @@ namespace XpressBilling.Account
                     if (itemMasterDetails.Rows.Count > 0)
                     {
                         SetItemMasterDetails(itemMasterDetails);
-
                     }
                 }
                 else
@@ -35,10 +37,51 @@ namespace XpressBilling.Account
                     CreatedDate.Visible = false;
                     lblDate.Visible = false;
                     lblUser.Visible = false;
+                    ddlStatus.Visible = false;
+                    lblstatus.Visible = false;
+                   
                 }
             }
         }
+        public void getitemgroup()
+        {
+            DataTable dtitemgroup = XBDataProvider.ItemMaster.GetAllActiveItemGroup(Session["CompanyCode"].ToString());
 
+                ddlItemGroup.DataSource = dtitemgroup;
+                ddlItemGroup.DataValueField = "ItemGroupCode";
+                ddlItemGroup.DataTextField = "Name";
+                ddlItemGroup.DataBind();
+                ListItem item = new ListItem();
+                item.Text = "Select ItemGroup";
+                item.Value = "0";
+                ddlItemGroup.Items.Insert(0, item);
+        }
+        public void getmanufacturer()
+        {
+            DataTable dtmanufacturer = XBDataProvider.ItemMaster.GetAllActiveTManufacturer(Session["CompanyCode"].ToString());
+
+            ddlManufacturer.DataSource = dtmanufacturer;
+            ddlManufacturer.DataValueField = "ManufacturerCode";
+            ddlManufacturer.DataTextField = "Name";
+            ddlManufacturer.DataBind();
+            ListItem item = new ListItem();
+            item.Text = "Select Manufacturer";
+            item.Value = "0";
+            ddlManufacturer.Items.Insert(0, item);
+        }
+        public void getbaseunit()
+        {
+            DataTable dtbaseunit = XBDataProvider.ItemMaster.GetAllActiveTBaseUnit(Session["CompanyCode"].ToString());
+
+            ddlBaseUnit.DataSource = dtbaseunit;
+            ddlBaseUnit.DataValueField = "BaseUnitCode";
+            ddlBaseUnit.DataTextField = "Name";
+            ddlBaseUnit.DataBind();
+            ListItem item = new ListItem();
+            item.Text = "Select BaseUnit";
+            item.Value = "0";
+            ddlBaseUnit.Items.Insert(0, item);
+        }
         public void SetItemMasterDetails(DataTable itemMasterDetails)
         {
             DataRow row = itemMasterDetails.Rows[0];
@@ -54,12 +97,13 @@ namespace XpressBilling.Account
             CreatedDate.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
             CreatedDate.ReadOnly = true;
             SearchKey.Text = row["SearchKey"].ToString();
-            ItemGroup.Text = row["ItemGroupCode"].ToString();
+            ddlItemGroup.SelectedValue = row["ItemGroupCode"].ToString();
             InventoryValuation.SelectedValue = row["InventoryValuation"].ToString();
             InventoryValuation.Enabled = false;
-            Manufacturer.Text = row["ManufacturerCode"].ToString();
-            BaseUnit.Text = row["BaseUnitCode"].ToString();
-            BaseUnit.ReadOnly = true;
+            ddlManufacturer.SelectedValue = row["ManufacturerCode"].ToString();
+            ddlBaseUnit.SelectedValue = row["BaseUnitCode"].ToString();
+            ddlBaseUnit.Enabled = false;
+            ddlStatus.SelectedValue = row["Status"].ToString();
             MRP.Text = row["MRP"].ToString();
             SafetStock.Text = row["SafetyStock"].ToString();
             ReorderQty.Text = row["ReorderQty"].ToString();
@@ -72,47 +116,69 @@ namespace XpressBilling.Account
         {
             try
             {
+                int msgstatus = 0;
+                bool statusflag;
+                if (ddlStatus.SelectedValue == "0")
+                    statusflag = false;
+                else
+                    statusflag = true;
                 bool status = false;
                 if (ItemMasterId.Value != "0" && ItemMasterId.Value != "")
                 {
-                    status = XBDataProvider.ItemMaster.UpdateItemMaster(ItemMasterId.Value, Name.Text, SupplierBarcode.Text, SearchKey.Text, ItemGroup.Text, Manufacturer.Text,Convert.ToInt32(MRP.Text),Convert.ToInt32(RetailPrice.Text)
-                               ,Convert.ToInt32(PurchasePrice.Text), Convert.ToInt32(Cost.Text), Convert.ToInt32(InventoryValuation.SelectedValue), Convert.ToInt32(SafetStock.Text),Convert.ToInt32(ReorderQty.Text), User.Identity.Name);
+                    status = XBDataProvider.ItemMaster.UpdateItemMaster(ItemMasterId.Value, Name.Text, SupplierBarcode.Text, SearchKey.Text, ddlItemGroup.SelectedValue, ddlManufacturer.SelectedValue, Convert.ToInt32(MRP.Text), Convert.ToInt32(RetailPrice.Text)
+                               , Convert.ToInt32(PurchasePrice.Text), Convert.ToInt32(Cost.Text), Convert.ToInt32(InventoryValuation.SelectedValue), Convert.ToInt32(SafetStock.Text), Convert.ToInt32(ReorderQty.Text), User.Identity.Name, statusflag);
                     if (status)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
                 {
-                    status = XBDataProvider.ItemMaster.SaveItemMaster(Session["CompanyCode"].ToString(),ItemCode.Text,Name.Text,Convert.ToInt32(ItemType.SelectedValue),SupplierBarcode.Text,SearchKey.Text,
-                                                                        ItemGroup.Text,Manufacturer.Text,BaseUnit.Text,Convert.ToInt32(MRP.Text),Convert.ToInt32(RetailPrice.Text)
+                    msgstatus = XBDataProvider.ItemMaster.SaveItemMaster(Session["CompanyCode"].ToString(), ItemCode.Text, Name.Text, Convert.ToInt32(ItemType.SelectedValue), SupplierBarcode.Text, SearchKey.Text,
+                                                                        ddlItemGroup.SelectedValue.ToString(), ddlManufacturer.SelectedValue.ToString(), ddlBaseUnit.SelectedValue.ToString(), Convert.ToInt32(MRP.Text), Convert.ToInt32(RetailPrice.Text)
                                                                         ,Convert.ToInt32(PurchasePrice.Text),Convert.ToInt32(Cost.Text),Convert.ToInt32(InventoryValuation.SelectedValue),Convert.ToInt32(SafetStock.Text),Convert.ToInt32(ReorderQty.Text),User.Identity.Name);
-                    if (status)
+                    ClearInputs(Page.Controls);
+                    if (msgstatus == 1)
                     {
-                        ClearInputs(Page.Controls);
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-
                 }
 
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
-
-            //Label lblMsg = this.Master.FindControl("Message") as Label;
-            //lblMsg.Text = "Company added successfully";
-            //lblMsg.Visible = true;
+            
         }
 
         private void ClearInputs(ControlCollection ctrls)

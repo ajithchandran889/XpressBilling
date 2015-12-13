@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadCityList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadCityList()
         {
-            listCity.DataSource = XBDataProvider.City.GetAllCities();
+            listCity.DataSource = XBDataProvider.City.GetAllCities(Session["CompanyCode"].ToString());
             listCity.DataBind();
         }
         protected void listCityDataBound(object sender, EventArgs e)

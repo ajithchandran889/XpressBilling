@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadManufacturerList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadManufacturerList()
         {
-            listManufacturer.DataSource = XBDataProvider.Manufacturer.GetAllManufacturer();
+            listManufacturer.DataSource = XBDataProvider.Manufacturer.GetAllManufacturer(Session["CompanyCode"].ToString());
             listManufacturer.DataBind();
         }
 

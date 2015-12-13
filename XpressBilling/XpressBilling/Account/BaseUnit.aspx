@@ -22,6 +22,9 @@
                             <asp:BoundField DataField="BaseUnitCode" HeaderText="BaseUnitCode"></asp:BoundField>                            
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="User"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>
+                            </asp:TemplateField>
                              <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>
                                    <asp:dropdownlist id="BaseUnitDdl" IdBaseUnit='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="BaseUnitDdlSelectedIndexChanged">
@@ -37,7 +40,6 @@
                                     <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
                                 </ItemTemplate>  
                             </asp:TemplateField>
-                            <%--<asp:BoundField DataField="Status" HeaderText="Status"></asp:BoundField>--%>
                         </Columns>
                     </asp:GridView>
                 </div>

@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadBankCodeList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadBankCodeList()
         {
-            listBankCode.DataSource = XBDataProvider.BankCode.GetBankCode();
+            listBankCode.DataSource = XBDataProvider.BankCode.GetBankCode(Session["CompanyCode"].ToString());
             listBankCode.DataBind();
         }
         protected void listBankCodeDataBound(object sender, EventArgs e)

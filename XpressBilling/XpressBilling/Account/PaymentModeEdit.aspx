@@ -1,11 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PaymentModeEdit.aspx.cs" Inherits="XpressBilling.Account.PaymentModeEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="page-content">
-       <%-- <div>
-            <asp:Label runat="server" ID="Message"></asp:Label>
-        </div>--%>
+    <div class="page-content">      
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
+                 <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
                 <div class="page-header">Add Payment Mode Details</div>
                 <div class="form-group">
                    <label id="lblPaymentMode" runat="server" for="PaymentMode" class="control-label col-xs-2 col-md-2">Payment Mode</label>
@@ -39,13 +50,21 @@
                             <asp:ListItem Value="2" Text="Discount"></asp:ListItem>
                             <asp:ListItem Value="3" Text="Round-off"></asp:ListItem>
                         </asp:DropDownList>
+                    </div><%--<div class="col-xs-10 col-md-2"></div>--%>
+                    <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
+                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
+                            <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                 </div>
                  <div class="form-group">
                     <asp:Label id="lblBankDetail" runat="server"  ClientIDMode="Static"  for="BankAccount" class="control-label col-xs-2 col-md-2">Bank Account</asp:Label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="BankAccount" class="form-control required" placeholder="Bank Account" ClientIDMode="Static"></asp:TextBox>
-                        
+                        <%--<asp:DropDownList runat="server" class="form-control required" ID="ddlBankAccount" ClientIDMode="Static">                            
+                        </asp:DropDownList>--%>
                     </div>
                     
 
@@ -55,9 +74,7 @@
                     <asp:HiddenField ID="PaymentModeId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <a href="/Account/PaymentMode.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="savePaymentMode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <label id="lblMsg" style="color: red;" runat="server"></label>
-                
-                    </div>
+                </div>
 
                 </div>
             </div>

@@ -417,12 +417,12 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<ContactDetails> GetContactCodes()
+        public static List<ContactDetails> GetContactCodes(string companyCode)
         {
             List<ContactDetails> result = new List<ContactDetails>();
             try
             {
-                DataTable dtTable = XBDataProvider.Contact.GetAllContactCode();
+                DataTable dtTable = XBDataProvider.Contact.GetAllContactCode(companyCode);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

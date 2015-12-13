@@ -13,13 +13,17 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadStockEntryList();
             }
         }
 
         private void LoadStockEntryList()
         {
-            ListStockEntry.DataSource = XBDataProvider.StockEntry.GetAllStockEntry();
+            ListStockEntry.DataSource = XBDataProvider.StockEntry.GetAllStockEntry(Session["CompanyCode"].ToString());
             ListStockEntry.DataBind();
         }
 

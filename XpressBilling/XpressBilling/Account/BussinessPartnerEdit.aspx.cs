@@ -18,7 +18,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                DataTable dtCountries = XBDataProvider.Country.GetCountries();
+                DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
 
                 Country.DataSource = dtCountries;
                 Country.DataValueField = "CountryCode";

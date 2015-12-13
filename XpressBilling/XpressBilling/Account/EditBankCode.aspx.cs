@@ -72,32 +72,53 @@ namespace XpressBilling.Account
                    msgstatus= XBDataProvider.BankCode.UpdateBankCode(Convert.ToInt32(hdnBankCode.Value), Name.Text, User.Identity.Name, status);
                    if (msgstatus == 1)
                    {
-                       lblMsg.InnerText = "Successfully updated";
+                       SaveSuccess.Visible =false;
+                       UpdateSuccess.Visible = true;
+                       failure.Visible = false;
                    }
                    else
                    {
-                       lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                       SaveSuccess.Visible = false;
+                       UpdateSuccess.Visible = false;
+                       failure.Visible = true;
                    }
                 }
                 else
                 {
                     msgstatus = XBDataProvider.BankCode.SaveBankCode(hdncompanycode.Value, BankCode.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
+
+                    ClearInputs(Page.Controls); 
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
                 }
 
                 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
 

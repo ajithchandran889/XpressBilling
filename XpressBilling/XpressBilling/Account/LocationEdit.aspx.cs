@@ -132,7 +132,11 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtCountries = XBDataProvider.Country.GetCountries();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
 
                 Country.DataSource = dtCountries;
                 Country.DataValueField = "CountryCode";
@@ -325,10 +329,10 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<string> GatAllContacts()
+        public static List<string> GatAllContacts(string companyCode)
         {
             List<string> result = new List<string>();
-            DataTable dtTable = XBDataProvider.Contact.GetAllContactCode();
+            DataTable dtTable = XBDataProvider.Contact.GetAllContactCode(companyCode);
             DataRow row = null;
             for (int index = 0; index < dtTable.Rows.Count; index++)
             {

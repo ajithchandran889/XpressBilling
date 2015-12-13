@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadCountryList();
             }
         }
@@ -24,7 +28,7 @@ namespace XpressBilling.Account
         }
         private void LoadCountryList()
         {
-            listCountry.DataSource = XBDataProvider.Country.GetCountries();
+            listCountry.DataSource = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
             listCountry.DataBind();
         }
         protected void listCountryDataBound(object sender, EventArgs e)

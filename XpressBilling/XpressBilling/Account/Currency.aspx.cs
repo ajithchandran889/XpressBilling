@@ -10,18 +10,14 @@ namespace XpressBilling.Account
 {
     public partial class Currency : System.Web.UI.Page
     {
-        //protected void btnSaveCurrencyClick(object sender, EventArgs e)
-        //{
-        //    int currencyId = XBDataProvider.Currency.SaveCurrency(inputCurrency.Value,inputCurrency.Value,inputName.Value,
-        //                                                            inputDecimal.Value,inputDecimal.Value,User.Identity.Name,
-        //                                                            inputDate.Text, inputStatus.Value);
-        //    listCurrency.DataSource = XBDataProvider.Currency.GetAllCurrencies();
-        //    listCurrency.DataBind();
-        //}
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadCurrencyList();
             }
         }
@@ -33,7 +29,7 @@ namespace XpressBilling.Account
         }
         private void LoadCurrencyList()
         {
-            listCurrency.DataSource = XBDataProvider.Currency.GetAllCurrencies();
+            listCurrency.DataSource = XBDataProvider.Currency.GetAllCurrencies(Session["CompanyCode"].ToString());
             listCurrency.DataBind();
         }
         protected void CurrencyUserDataBound(object sender, EventArgs e)

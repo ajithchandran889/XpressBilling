@@ -3,6 +3,20 @@
     <div class="page-content">
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
+                 <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
                 <div class="page-header">Item Group Details</div>
                 <div class="form-group">
                    
@@ -56,8 +70,7 @@
                     <asp:HiddenField ID="hdnreference" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <a href="/Account/ItemGroup.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveItemGroup" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <label id="lblMsg" style="color:red;" runat="server"></label>
-                    </div>
+                     </div>
 
                 </div>
             </div>

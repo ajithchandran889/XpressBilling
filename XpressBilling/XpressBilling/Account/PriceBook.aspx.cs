@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadPriceBookList();
             }
 
@@ -25,7 +29,7 @@ namespace XpressBilling.Account
         }
         private void LoadPriceBookList()
         {
-            ListPriceBook.DataSource = XBDataProvider.PriceBook.GetAllPriceBook();
+            ListPriceBook.DataSource = XBDataProvider.PriceBook.GetAllPriceBook(Session["CompanyCode"].ToString());
             ListPriceBook.DataBind();
         }
         protected void listPriceBookDataBound(object sender, EventArgs e)

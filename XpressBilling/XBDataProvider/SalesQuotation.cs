@@ -29,13 +29,16 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static DataTable GetAllSalesQuotation()
+        public static DataTable GetAllSalesQuotation(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_SalesQuotationGetAll");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_SalesQuotationGetAll", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_SalesQuotationGetAll");
             }
             catch (Exception ex)
             {

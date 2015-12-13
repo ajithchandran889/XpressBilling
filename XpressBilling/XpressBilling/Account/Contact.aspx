@@ -30,15 +30,9 @@
                             <asp:BoundField DataField="Mobile" HeaderText="Mobile"></asp:BoundField>                               
                             <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150"></asp:BoundField>
                             <asp:BoundField DataField="ZipPostalCode" HeaderText="Zip/Postal Code" ItemStyle-Width="80"></asp:BoundField>
-                            <%--<asp:TemplateField HeaderText="Status">
-                                <ItemTemplate>
-                                   <asp:dropdownlist id="ContactStatusDdl" IdContact='<%# Eval("ID") %>' AutoPostBack="true" runat="server" OnSelectedIndexChanged="ContactStatusDdlSelectedIndexChanged">
-                                        <asp:listitem value="1" text="Active"></asp:listitem>
-                                        <asp:listitem value="0" text="Inactive"></asp:listitem>
-                                    </asp:dropdownlist>
-                                    <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

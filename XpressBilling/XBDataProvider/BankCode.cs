@@ -16,6 +16,7 @@ namespace XBDataProvider
         {
             try
             {
+                int rtnvalue = -1;
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
@@ -28,11 +29,12 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
+                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankCode_xpins", cmd);
             }
             catch (Exception ex)
             {
-                return -1;
+                return 0;
             }
 
         }
@@ -57,13 +59,17 @@ namespace XBDataProvider
             }
         }
 
-        public static DataTable GetBankCode()
+        public static DataTable GetBankCode(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetBankCode");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetBankCode", cmd);
+
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetBankCode");
             }
             catch (Exception ex)
             {

@@ -134,8 +134,10 @@
     <Content Include="Account\BaseUnit.aspx" />
     <Content Include="Account\BussinessPartner.aspx" />
     <Content Include="Account\BussinessPartnerEdit.aspx" />
+    <Content Include="Account\City.aspx" />
     <Content Include="Account\Company.aspx" />
     <Content Include="Account\CompanyEdit.aspx" />
+    <Content Include="Account\Contact.aspx" />
     <Content Include="Account\Country.aspx" />
     <Content Include="Account\CountryEdit.aspx" />
     <Content Include="Account\Currency.aspx" />
@@ -143,8 +145,13 @@
     <Content Include="Account\EditBankCode.aspx" />
     <Content Include="Account\EditBankMst.aspx" />
     <Content Include="Account\EditBaseUnit.aspx" />
+    <Content Include="Account\EditContact.aspx" />
+    <Content Include="Account\EditEmployeeMaster.aspx" />
+    <Content Include="Account\EditItemGroup.aspx" />
+    <Content Include="Account\EditManufacturer.aspx" />
     <Content Include="Account\EditTaxCode.aspx" />
     <Content Include="Account\EditTaxMst.aspx" />
+    <Content Include="Account\Employee.aspx" />
     <Content Include="Account\FirstFreeNumber.aspx" />
     <Content Include="Account\FirstFreeNumberEdit.aspx" />
     <Content Include="Account\GRN.aspx" />
@@ -160,6 +167,7 @@
     <Content Include="Account\ManualInvoice.aspx" />
     <Content Include="Account\InvoiceEdit.aspx" />
     <Content Include="Account\ManualInvoiceEdit.aspx" />
+    <Content Include="Account\Manufacturer.aspx" />
     <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\PasswordRecovery.aspx" />
     <Content Include="Account\PaymentMode.aspx" />
@@ -383,6 +391,13 @@
     <Compile Include="Account\BussinessPartnerEdit.aspx.designer.cs">
       <DependentUpon>BussinessPartnerEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\City.aspx.cs">
+      <DependentUpon>City.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\City.aspx.designer.cs">
+      <DependentUpon>City.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\Company.aspx.cs">
       <DependentUpon>Company.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -396,6 +411,13 @@
     </Compile>
     <Compile Include="Account\CompanyEdit.aspx.designer.cs">
       <DependentUpon>CompanyEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\Country.aspx.cs">
       <DependentUpon>Country.aspx</DependentUpon>
@@ -446,6 +468,34 @@
     <Compile Include="Account\EditBaseUnit.aspx.designer.cs">
       <DependentUpon>EditBaseUnit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\EditContact.aspx.cs">
+      <DependentUpon>EditContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\EditContact.aspx.designer.cs">
+      <DependentUpon>EditContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\EditEmployeeMaster.aspx.cs">
+      <DependentUpon>EditEmployeeMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\EditEmployeeMaster.aspx.designer.cs">
+      <DependentUpon>EditEmployeeMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\EditItemGroup.aspx.cs">
+      <DependentUpon>EditItemGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\EditItemGroup.aspx.designer.cs">
+      <DependentUpon>EditItemGroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\EditManufacturer.aspx.cs">
+      <DependentUpon>EditManufacturer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\EditManufacturer.aspx.designer.cs">
+      <DependentUpon>EditManufacturer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\EditTaxCode.aspx.cs">
       <DependentUpon>EditTaxCode.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -459,6 +509,13 @@
     </Compile>
     <Compile Include="Account\EditTaxMst.aspx.designer.cs">
       <DependentUpon>EditTaxMst.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Employee.aspx.cs">
+      <DependentUpon>Employee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Employee.aspx.designer.cs">
+      <DependentUpon>Employee.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\FirstFreeNumber.aspx.cs">
       <DependentUpon>FirstFreeNumber.aspx</DependentUpon>
@@ -557,6 +614,13 @@
     </Compile>
     <Compile Include="Account\ManualInvoiceEdit.aspx.designer.cs">
       <DependentUpon>ManualInvoiceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Manufacturer.aspx.cs">
+      <DependentUpon>Manufacturer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Manufacturer.aspx.designer.cs">
+      <DependentUpon>Manufacturer.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\PasswordRecovery.aspx.cs">
       <DependentUpon>PasswordRecovery.aspx</DependentUpon>

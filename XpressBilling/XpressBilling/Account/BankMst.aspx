@@ -21,7 +21,10 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="EditBankMst?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                            <asp:BoundField DataField="BankCode" HeaderText="BankCode" Visible="false"></asp:BoundField>
                              <asp:BoundField DataField="AccountNo" HeaderText="Account Number"></asp:BoundField>
-                            <asp:BoundField DataField="AccountType" HeaderText="Account Type"></asp:BoundField>   
+                            <asp:TemplateField HeaderText="Account Type">
+                                <ItemTemplate><%# Eval("AccountType").ToString()=="0" ? "Savings":"Current" %></ItemTemplate>
+                            </asp:TemplateField>
+                            <%--<asp:BoundField DataField="AccountType" HeaderText="Account Type"></asp:BoundField> --%>  
                             <asp:BoundField DataField="BankName" HeaderText="BANK"></asp:BoundField>                          
                             <asp:BoundField DataField="Branch" HeaderText="Branch"></asp:BoundField>
                             <asp:BoundField DataField="IBAN" HeaderText="IBAN"></asp:BoundField>
@@ -37,6 +40,10 @@
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>--%>
+                            
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  

@@ -285,13 +285,16 @@ namespace XBDataProvider
         }
 
 
-        public static DataTable GetAllContactCode()
+        public static DataTable GetAllContactCode(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllContactCode");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllContactCode", cmd);
+               // dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllContactCode");
             }
             catch (Exception ex)
             {
