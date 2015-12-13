@@ -7,6 +7,20 @@
         </div>--%>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
                 <div class="page-header">Company Details</div>
                 <div class="form-group">
                     <label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
@@ -22,12 +36,12 @@
                 <div class="form-group">
                     <label for="FormationDate" class="control-label col-xs-2 col-md-2">Formation Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="FormationDate" class="form-control" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="FormationDate" class="form-control" ReadOnly="true" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required" placeholder="Registration No:" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required txtNumeric" placeholder="Registration No:" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                </div>
@@ -63,11 +77,11 @@
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Phone" class="form-control txtNumeric" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <label for="Mobile" class="control-label col-xs-2 col-md-2">Mobile</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Mobile" class="form-control required" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Mobile" class="form-control required txtNumeric" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                 </div>
                 <div class="form-group">

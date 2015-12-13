@@ -14,11 +14,15 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
-                DataTable dtCity = XBDataProvider.City.GetAllActiveCountryCodes();
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                DataTable dtCity = XBDataProvider.City.GetAllActiveCountryCodes(Session["CompanyCode"].ToString());
 
                 ddlCountry.DataSource = dtCity;
-                ddlCountry.DataValueField = "ID";
-                ddlCountry.DataTextField = "name";
+                ddlCountry.DataValueField = "CountryCode";
+                ddlCountry.DataTextField = "Name";
                 ddlCountry.DataBind();
                 ListItem item = new ListItem();
                 item.Text = "Select Country";
@@ -78,32 +82,52 @@ namespace XpressBilling.Account
                     msgstatus = XBDataProvider.City.UpdateCity(Convert.ToInt32(CityId.Value), Name.Text, ddlCountry.SelectedValue, User.Identity.Name, status);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
                 {
                     string reference = "";
                     msgstatus = XBDataProvider.City.SaveCity(hdncompanycode.Value, City.Text, Name.Text, ddlCountry.SelectedValue, reference, User.Identity.Name, true);
+                    ClearInputs(Page.Controls);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
                 }
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
 

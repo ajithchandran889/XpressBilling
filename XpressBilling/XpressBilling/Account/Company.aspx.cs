@@ -13,6 +13,10 @@ namespace XpressBilling.Account
         {
             if(!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 LoadCompanyList();
             }
             

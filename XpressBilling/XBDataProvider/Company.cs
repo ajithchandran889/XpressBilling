@@ -18,6 +18,7 @@ namespace XBDataProvider
         {
             try
             {
+                int rtnvalue = -1;
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
@@ -51,6 +52,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
                 cmd.Parameters.Add(new SqlParameter("@Status", dbstatus));
                 cmd.Parameters.Add(new SqlParameter("@CurrencyCode", Currency));
+                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 int returnValue=DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpins", cmd);
                 return returnValue;
             }
@@ -100,7 +102,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@CompanyId", companyId));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
                 cmd.Parameters.Add(new SqlParameter("@PermanantAccountNo", PermanantAccountNo));
-                cmd.Parameters.Add(new SqlParameter("@FormationDate", FormationDate));
+                //cmd.Parameters.Add(new SqlParameter("@FormationDate", FormationDate));
                 cmd.Parameters.Add(new SqlParameter("@TaxId", TaxId));
                 cmd.Parameters.Add(new SqlParameter("@RegistrationNumber", RegistrationNumber));
                 cmd.Parameters.Add(new SqlParameter("@Logo", Logo));
