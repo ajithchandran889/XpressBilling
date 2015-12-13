@@ -382,6 +382,7 @@ namespace XpressBilling.Account
                 if (returnValue > 0)
                 {
                     PurchaseOrderId.Value = returnValue.ToString();
+                    PageStatus.Value = "creating";
                     gridDetails.Visible = true;
                     SaveBtn.Visible = false;
                     CancelBtn.Visible = false;
@@ -547,6 +548,7 @@ namespace XpressBilling.Account
             if (XBDataProvider.PurchaseOrder.ConvertToGRN(Convert.ToInt32(PurchaseOrderId.Value), OrderType.SelectedItem.Text))
             {
                 btnConverOrder.Visible = false;
+                btnSaveDtl.Visible = false;
                 SaveSuccess.Visible = false;
                 UpdateSuccess.Visible = false;
                 FinalizeSuccess.Visible = true;

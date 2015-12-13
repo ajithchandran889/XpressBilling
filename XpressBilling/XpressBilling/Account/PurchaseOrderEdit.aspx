@@ -189,7 +189,7 @@
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-4">Ship To Address</label>
                             <div class="col-xs-12 col-sm-8 col-md-8">
-                                <asp:TextBox runat="server" ID="ShipToAddress" class="form-control required" placeholder="Ship To Address" TextMode="MultiLine" ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="ShipToAddress" class="form-control" placeholder="Ship To Address" TextMode="MultiLine" ClientIDMode="Static"></asp:TextBox>
                             </div>
                         </div>
                     </div>
@@ -219,7 +219,7 @@
 
                         <div class="row">
                             <a id="btnCencelDtl" href="/Account/PurchaseOrder" runat="server" class="btn btn-primary">Cancel</a>
-                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
+                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary PurchaseOrderBtnDetail" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConverOrder" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Order" Visible="false" OnClick="BtnConvertOrderClick" />
                              <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();" />
                         </div>

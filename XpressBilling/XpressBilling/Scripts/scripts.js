@@ -645,7 +645,7 @@ $(document).ready(function () {
             var rate = parseFloat($("input[id*='PORate']", $(this)).val());
             var discountAmt = parseFloat($("input[id*='PODiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='POTaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -656,12 +656,25 @@ $(document).ready(function () {
             }
 
         });
-        
-        $(".POTaxAmt").attr('readonly', 'readonly');
-        $(".PONetAmt").attr('readonly', 'readonly');
-        $(".POUnit").attr('readonly', 'readonly');
-        $(".POItem").attr('readonly', 'readonly');
-        $(".POName").attr('readonly', 'readonly');
+        if ($("#Status").val() == "1") {
+            $(".POTaxAmt").attr('readonly', 'readonly');
+            $(".PONetAmt").attr('readonly', 'readonly');
+            $(".POUnit").attr('readonly', 'readonly');
+            $(".POItem").attr('readonly', 'readonly');
+            $(".POName").attr('readonly', 'readonly');
+        }
+        if ($("#Status").val() == "2") {
+            $(".POTaxAmt").attr('readonly', 'readonly');
+            $(".PONetAmt").attr('readonly', 'readonly');
+            $(".POUnit").attr('readonly', 'readonly');
+            $(".POItem").attr('readonly', 'readonly');
+            $(".POName").attr('readonly', 'readonly');
+            $(".PORate").attr('readonly', 'readonly');
+            $(".POQuantity").attr('readonly', 'readonly');   
+            $(".PODiscPer").attr('readonly', 'readonly');
+            $(".PODiscAmt").attr('readonly', 'readonly');
+            $(".POTaxPer").attr('readonly', 'readonly');
+        }
     }
     else if ($("#PageStatus").val() == "create") {
         $(".POTaxAmt").attr('readonly', 'readonly');
@@ -2076,6 +2089,16 @@ function SearchText() {
         }
         else {
             $("#IShipToAddress").removeClass("errorValidation");
+            return true;
+        }
+    });
+    $(document).on("click", ".PurchaseOrderBtnDetail", function (e) {
+        if ($("#ShipToAddress").val() == "") {
+            $("#ShipToAddress").addClass("errorValidation");
+            return false;
+        }
+        else {
+            $("#ShipToAddress").removeClass("errorValidation");
             return true;
         }
     });

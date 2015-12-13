@@ -11,7 +11,7 @@ namespace XBDataProvider
 {
     public static class Company
     {
-        public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
+        public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone,string mobile,string email,string web,string designation,string address1,string address2,
                                       string city, string area, string zipCode, string country, string state, String fax, bool dbstatus, string Currency)
@@ -53,7 +53,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Status", dbstatus));
                 cmd.Parameters.Add(new SqlParameter("@CurrencyCode", Currency));
                 cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
-                int returnValue=DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_CompanyMst_xpins", cmd);
+                int returnValue = DataProvider.ExecuteScalarInt(connString, "dbo.sp_CompanyMst_xpins", cmd);
                 return returnValue;
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool UpdateCompany(string companyId, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
+        public static bool UpdateCompany(string companyId, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
                                       string Logo, string Note, string userName, bool dbstatus, string Currency)
         {
             try

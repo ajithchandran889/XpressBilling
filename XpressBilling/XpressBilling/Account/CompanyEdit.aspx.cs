@@ -25,7 +25,7 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
-                DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());                
+                DataTable dtCountries = XBDataProvider.Country.GetCountries(Session["CompanyCode"].ToString());
                 Country.DataSource = dtCountries;
                 Country.DataValueField = "CountryCode";
                 Country.DataTextField = "name";
@@ -64,7 +64,7 @@ namespace XpressBilling.Account
                     CompanyId.Value = "0";
                     lblstatus.Visible = false;
                     ddlStatus.Visible = false;
-                    FormationDate.Text =  Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
+                    FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
                     FormationDate.ReadOnly = true;
                 }
             }
@@ -117,6 +117,7 @@ namespace XpressBilling.Account
             ddlStatus.SelectedValue = row["Status"].ToString();
 
         }
+
         protected void SaveClick(object sender, EventArgs e)
         {
             try
@@ -132,14 +133,14 @@ namespace XpressBilling.Account
                 }
                 bool status = false;
                 bool dbstatus;
-                    if (ddlStatus.SelectedValue == "0")
-                        dbstatus = false;
-                    else
-                        dbstatus = true;
+                if (ddlStatus.SelectedValue == "0")
+                    dbstatus = false;
+                else
+                    dbstatus = true;
                 DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 if (CompanyId.Value != "0" && CompanyId.Value != "")
                 {
-                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name, dbstatus,ddlCurrency.SelectedValue);
+                    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name, dbstatus, ddlCurrency.SelectedValue);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
@@ -155,9 +156,9 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    int retunValue = 0; 
+                    int retunValue = 0;
                     dbstatus = true;
-                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, formationDate.ToString(), TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
+                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
 
                     if (retunValue == 1)
@@ -210,11 +211,11 @@ namespace XpressBilling.Account
                     result.Add(city);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
-            
+
 
             return result;
         }

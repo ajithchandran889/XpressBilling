@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -38,7 +39,7 @@ namespace XpressBilling.Account
         //                SetLocationDetails(LocationDetails);
 
         //            }
-                    
+
         //        }
         //        else
         //        {
@@ -127,7 +128,7 @@ namespace XpressBilling.Account
         //    }
         //}
 
-   // }
+        // }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -149,7 +150,7 @@ namespace XpressBilling.Account
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null)
                 {
-                    DataTable companyDetails = XBDataProvider.Company.GetCompanyById(id);
+                    DataTable companyDetails = XBDataProvider.Location.GetLocationById(id);
                     if (companyDetails.Rows.Count > 0)
                     {
                         DataTable dtTable = XBDataProvider.City.GetCitiesByCompany(Session["CompanyCode"].ToString());
@@ -175,11 +176,11 @@ namespace XpressBilling.Account
             Location.Text = row["CompanyCode"].ToString();
             Location.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM/dd/yyyy");
+            string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
             FormationDate.Text = formationDate;
             TIN.Text = row["TaxId"].ToString();
-           //RegistrationNo.Text = row["RegistrationNumber"].ToString();
-            PAN.Text = row["PermanantAccountNo"].ToString();
+            RegistrationNo.Text = row["RegistrationNumber"].ToString();
+            PAN.Text = row["PermanentAccountNo"].ToString();
             Phone.Text = row["Phone"].ToString();
             Phone.ReadOnly = true;
             Mobile.Text = row["Mobile"].ToString();
@@ -211,8 +212,8 @@ namespace XpressBilling.Account
             Note.Text = row["Note"].ToString();
             LocationId.Value = row["LocationCode"].ToString();
             CompanyId.Value = row["CompanyCode"].ToString();
-            ContactId.Value = row["Contact"].ToString();
-
+            ContactId.Value = row["ContactCode"].ToString();
+            ddlStatus.SelectedValue = row["Status"].ToString();
         }
         protected void SaveClick(object sender, EventArgs e)
         {
@@ -227,40 +228,59 @@ namespace XpressBilling.Account
                     absolutePath = "/Images/logo/" + filename;
                     logoUpload.SaveAs(path);
                 }
+                DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 bool status = false;
-                 if (LocationId.Value != "0" && LocationId.Value != "")
-                 {
-                     status = XBDataProvider.Location.UpdateLocation(LocationId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, "fsd", Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
-                 if (status)
-                 {
-                     lblMsg.InnerText = "Successfully updated";
-                 }
-                 else
-                 {
-                     lblMsg.InnerText = "Oops..Something went wrong.Please try again";
-                 }
-                 }
-                 else
-                 {
-                     int retunValue = 0;
-                     retunValue = XBDataProvider.Location.SaveLocation(Location.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, "fsd", Phone.Text, path, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text);
-                     if (retunValue >= 1)
-                     {
-                         ClearInputs(Page.Controls);
-                         lblMsg.InnerText = "Successfully added";
-                     }
-                     else if (retunValue == -1)
-                     {
-                         lblMsg.InnerText = "Location Code already exist";
-                     }
-                     else
-                     {
-                         lblMsg.InnerText = "Oops..Something went wrong.Please try again";
-                     }
-                     ClearInputs(Page.Controls);
-                 }
+                bool dbstatus;
+                if (ddlStatus.SelectedValue == "0")
+                    dbstatus = false;
+                else
+                    dbstatus = true;
+                if (LocationId.Value != "0" && LocationId.Value != "")
+                {
+                    status = XBDataProvider.Location.UpdateLocation(LocationId.Value, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text,  path, Note.Text, User.Identity.Name, dbstatus);
+                    if (status)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
+                    }
+                    else
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                    }
+                }
+                else
+                {
+                    int retunValue = 0;
+                    retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), Location.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, Location.Text, path, Note.Text, "", User.Identity.Name,
+                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text, dbstatus);
+                    if (retunValue == 1)
+                    {
+                        ClearInputs(Page.Controls);
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                        
+                    }
+                    else if (retunValue == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
+                    }
+                    else
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
+                    }
+                    ClearInputs(Page.Controls);
+                }
                 //if (CompanyId.Value != "0" && CompanyId.Value != "")
                 //{
                 //    status = XBDataProvider.Company.UpdateCompany(CompanyId.Value, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, absolutePath, Note.Text, User.Identity.Name);
@@ -299,7 +319,7 @@ namespace XpressBilling.Account
             catch (Exception ex)
             {
 
-            }           
+            }
         }
 
         [WebMethod]
