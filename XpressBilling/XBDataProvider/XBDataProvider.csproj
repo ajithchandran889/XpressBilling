@@ -63,6 +63,7 @@
     <Compile Include="PriceBook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrder.cs" />
+    <Compile Include="SalesRetrun.cs" />
     <Compile Include="StockEntry.cs" />
     <Compile Include="SalesQuotation.cs" />
     <Compile Include="StockRegister.cs" />

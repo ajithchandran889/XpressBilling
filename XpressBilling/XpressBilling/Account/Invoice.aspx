@@ -26,7 +26,7 @@
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
                             <asp:BoundField DataField="Customer" HeaderText="Customer"></asp:BoundField>
                             <asp:BoundField DataField="Telephone" HeaderText="Telephone"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount"></asp:BoundField>
+                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
                              <asp:TemplateField HeaderText="Status">

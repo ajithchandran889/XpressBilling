@@ -100,7 +100,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SavePODetail(int POMasterId, string paymentTerms, string deliveryTerms, int totalAmount, int totalDiscountAmt, int totalTaxAmt, int totalNetAmt, string user, string shipToAddress,DataTable PODetail)
+        public static bool SavePODetail(int POMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, string shipToAddress, DataTable PODetail)
         {
             try
             {
@@ -127,7 +127,6 @@ namespace XBDataProvider
                 return false;
             }
         }
-
         public static DataTable GetPurchaseOrderDtlById(int Id)
         {
             DataTable dtTable = new DataTable();

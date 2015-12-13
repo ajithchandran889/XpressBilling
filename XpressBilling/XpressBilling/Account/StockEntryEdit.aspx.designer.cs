@@ -211,15 +211,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.HiddenField PageStatus;
         
         /// <summary>
-        /// SaveBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SaveBtn;
-        
-        /// <summary>
         /// CancelBtn control.
         /// </summary>
         /// <remarks>
@@ -227,6 +218,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor CancelBtn;
+        
+        /// <summary>
+        /// SaveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SaveBtn;
         
         /// <summary>
         /// gridDetails control.
@@ -256,6 +256,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Button AddNewRow;
         
         /// <summary>
+        /// btnCencelDtl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
+        
+        /// <summary>
         /// btnSaveDtl control.
         /// </summary>
         /// <remarks>
@@ -272,15 +281,6 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConvertStockRegister;
-        
-        /// <summary>
-        /// btnCencelDtl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
         
         /// <summary>
         /// btnPrint control.

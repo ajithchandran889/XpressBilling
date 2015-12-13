@@ -116,7 +116,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Received Qnty">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="ReceivedQuantity" class="form-control ReceivedQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Bind("OrderQty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="ReceivedQuantity" class="form-control ReceivedQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Eval("ReceivedQty").ToString() == "0"? Eval("OrderQty"): Eval("ReceivedQty")%>'></asp:TextBox>
                                         <asp:HiddenField ID="prevRecvdQnty"  ClientIDMode="Static" runat="server" Value='<%# Bind("OrderQty") %>'></asp:HiddenField>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -136,9 +136,9 @@
                         <div class="row">
                             <asp:HiddenField ID="GRNId" runat="server" ClientIDMode="Static"/>
                             <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
+                            <a id="btnCencelDtl" href="/Account/GRN" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConverGRN" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Convert" Visible="false" OnClick="BtnConvertGRNClick" />
-                            <a id="btnCencelDtl" href="/Account/GRN" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();" />
                         </div>
 

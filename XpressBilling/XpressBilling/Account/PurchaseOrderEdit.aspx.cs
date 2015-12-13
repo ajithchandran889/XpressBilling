@@ -107,14 +107,14 @@ namespace XpressBilling.Account
                 Reference.ReadOnly = true;
                 SalesMan.Text = row["Buyer"].ToString();
                 SalesMan.ReadOnly = true;
-                Amount.Text = row["Amount"].ToString(); 
+                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
                 Amount.ReadOnly = true;
                 PayTerms.Text = row["PaymentTerms"].ToString();
                 DeliveryTerms.Text = row["DeliveryTerms"].ToString();
-                POTotalAmount.Text = row["TaxAmount"].ToString();
-                POTotalDiscountAmt.Text = row["DiscountAmount"].ToString();
-                POTotalTaxAmt.Text = row["TaxAmount"].ToString();
-                POTotalOrderAmt.Text = row["OrderAmount"].ToString();
+                POTotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
+                POTotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("0.00");
+                POTotalTaxAmt.Text =  Convert.ToDecimal(row["TaxAmount"]).ToString("0.00");
+                POTotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
                 Telephone.Text = row["Telephone"].ToString();
                 ShipToAddress.Text = row["ShipToAddress"].ToString();
                 Telephone.ReadOnly = true;
@@ -278,7 +278,7 @@ namespace XpressBilling.Account
         private void AddNewRowToGrid()
         {
             int rowIndex = 0;
-
+            Amount.Text = Request.Form[Amount.UniqueID];
             if (ViewState["CurrentTable"] != null)
             {
                 DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
@@ -320,10 +320,19 @@ namespace XpressBilling.Account
                             dtCurrentTable.Rows[i]["TaxAmount"] = box10.Text;
                         }
                         dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
-                        dtCurrentTable.Rows[i]["Discount"] = box7.Text;
-                        dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
+                        if (box7.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["Discount"] = box7.Text;
+                        }
+                        if (box9.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
+                        }
                         dtCurrentTable.Rows[i]["Tax"] = hdnFld.Value;
-                        dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
+                        if (box11.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
+                        }
                         rowIndex++;
                     }
                     for (int j = 0; j < 5; j++)
@@ -489,7 +498,7 @@ namespace XpressBilling.Account
                 }
                 if (dt.Rows.Count > 0)
                 {
-                    XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value), PayTerms.Text, DeliveryTerms.Text, Convert.ToInt32(Request.Form[Amount.UniqueID]), Convert.ToInt32(POTotalDiscountAmt.Text), Convert.ToInt32(POTotalTaxAmt.Text), Convert.ToInt32(POTotalOrderAmt.Text), User.Identity.Name,ShipToAddress.Text, dt);
+                    XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value), PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, ShipToAddress.Text, dt);
                     btnConverOrder.Visible = true;
                     btnPrint.Visible = true;
                     PageStatus.Value = "edit";
@@ -497,6 +506,7 @@ namespace XpressBilling.Account
                     SaveSuccess.Visible = false;
                     UpdateSuccess.Visible = true;
                     failure.Visible = false;
+                    Amount.Text = Request.Form[Amount.UniqueID];
                 }
                 else
                 {

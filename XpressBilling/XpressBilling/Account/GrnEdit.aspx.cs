@@ -220,7 +220,7 @@ namespace XpressBilling.Account
                     {
                         selectedSequenceID = Convert.ToInt32(ManualSequenceNoID.Value);
                     }
-                    XBDataProvider.GRN.SaveGRNDetail(Convert.ToInt32(GRNId.Value), GoodsReceipt.Text, date, PackingSlip.Text, Convert.ToInt32(TotalQty.Text), Reference.Text, Convert.ToInt32(GRNType.SelectedValue), dt, selectedSequenceID);
+                    XBDataProvider.GRN.SaveGRNDetail(Convert.ToInt32(GRNId.Value), GoodsReceipt.Text, date, PackingSlip.Text, Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, Convert.ToInt32(GRNType.SelectedValue), dt, selectedSequenceID);
                     btnConverGRN.Visible = true;
                     btnPrint.Visible = true;
                     PageStatus.Value = "edit";
@@ -228,7 +228,7 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    XBDataProvider.GRN.UpdateGRNDetail(Convert.ToInt32(GRNId.Value), Convert.ToInt32(TotalQty.Text), Reference.Text, dt);
+                    XBDataProvider.GRN.UpdateGRNDetail(Convert.ToInt32(GRNId.Value), Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, dt);
                 }
                 SetGRNChildGrid(PurchaseOrderText.Text);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -15,6 +16,11 @@ namespace XpressBilling.Account
         {
             if (!Page.IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
+                CompanyCode.Value = Session["CompanyCode"].ToString();
                 string lastDocNumber=XBDataProvider.PriceBook.GetDocumentNumber();
                 if(lastDocNumber==null || lastDocNumber =="")
                 {
@@ -155,8 +161,8 @@ namespace XpressBilling.Account
                             dtCurrentTable.Rows[i - 1]["SupplierBarcode"] = box2.Text;
                             //dtCurrentTable.Rows[i - 1]["Description"] = box3.Text;
                             dtCurrentTable.Rows[i - 1]["CurrencyCode"] = box4.Text;
-                            dtCurrentTable.Rows[i - 1]["MRP"] = box5.Text;
-                            dtCurrentTable.Rows[i - 1]["Price"] = box6.Text;
+                            dtCurrentTable.Rows[i - 1]["MRP"] = float.Parse(box5.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dtCurrentTable.Rows[i - 1]["Price"] = float.Parse(box6.Text, CultureInfo.InvariantCulture.NumberFormat); 
 
                             rowIndex++;
                         }
@@ -271,8 +277,8 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SupplierBarcode", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("CurrencyCode", typeof(string)));
-                dt.Columns.Add(new DataColumn("MRP", typeof(string)));
-                dt.Columns.Add(new DataColumn("Price", typeof(string)));
+                dt.Columns.Add(new DataColumn("MRP", typeof(float)));
+                dt.Columns.Add(new DataColumn("Price", typeof(float)));
                 for (int i = 0; i <= 20;i++ )
                 {
                     dr = dt.NewRow();
@@ -281,8 +287,8 @@ namespace XpressBilling.Account
                     dr["SupplierBarcode"] = string.Empty;
                     //dr["Description"] = string.Empty;
                     dr["CurrencyCode"] = string.Empty;
-                    dr["MRP"] = string.Empty;
-                    dr["Price"] = string.Empty;
+                    dr["MRP"] = DBNull.Value;
+                    dr["Price"] = DBNull.Value;
                     dt.Rows.Add(dr);
                 }
                 
@@ -357,8 +363,8 @@ namespace XpressBilling.Account
                     dt.Columns.Add(new DataColumn("ItemCode", typeof(string)));
                     dt.Columns.Add(new DataColumn("SupplierBarcode", typeof(string)));
                     dt.Columns.Add(new DataColumn("CurrencyCode", typeof(string)));
-                    dt.Columns.Add(new DataColumn("MRP", typeof(int)));
-                    dt.Columns.Add(new DataColumn("Price", typeof(int)));
+                    dt.Columns.Add(new DataColumn("MRP", typeof(float)));
+                    dt.Columns.Add(new DataColumn("Price", typeof(float)));
                     dt.Columns.Add(new DataColumn("Reference", typeof(string)));
                     dt.Columns.Add(new DataColumn("CreatedBy", typeof(string)));
                     dt.Columns.Add(new DataColumn("UpdatedBy", typeof(string)));
@@ -395,8 +401,8 @@ namespace XpressBilling.Account
                             dr["ItemCode"] = box1.Text;
                             dr["SupplierBarcode"] = box2.Text;
                             dr["CurrencyCode"] = box4.Text;
-                            dr["MRP"] = box5.Text;
-                            dr["Price"] = box6.Text;
+                            dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat); 
+                            dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat); 
                             dr["Reference"] = null;
                             dr["CreatedBy"] = User.Identity.Name;
                             dr["UpdatedBy"] = User.Identity.Name;

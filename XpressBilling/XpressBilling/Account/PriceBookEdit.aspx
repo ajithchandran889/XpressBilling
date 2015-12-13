@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-10 col-md-8">
-                        <asp:HiddenField ID="PriceBookId" runat="server" />
+                        <asp:HiddenField ID="PriceBookId" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="LastDocumentNumber" runat="server" />
                         <asp:Button ID="savePriceBook" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="savePriceBookClick" />
                         <a id="cancelPriceBook" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a>
@@ -86,12 +86,12 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="MRP">
                         <ItemTemplate>
-                            <asp:TextBox ID="MRP" class="form-control" ClientIDMode="Static" runat="server" Text='<%# Bind("MRP") %>'></asp:TextBox>
+                            <asp:TextBox ID="MRP" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("MRP","{0:n}")%>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Price">
                         <ItemTemplate>
-                            <asp:TextBox ID="Price" class="form-control" ClientIDMode="Static" runat="server" Text='<%# Bind("Price") %>'></asp:TextBox>
+                            <asp:TextBox ID="Price" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("Price","{0:n}")%>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -108,4 +108,5 @@
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static"/>
 </asp:Content>

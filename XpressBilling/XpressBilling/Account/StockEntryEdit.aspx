@@ -85,9 +85,9 @@
                     <div class="col-xs-10 col-md-8">
                         <asp:HiddenField ID="StokeEntryMstId" runat="server" ClientIDMode="Static"/>
                         <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
-                        <asp:Button ID="SaveBtn" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnClick" />
                         <a id="CancelBtn" href="/Account/StockEntry" runat="server" class="btn btn-primary">Cancel</a>
-                    </div>
+                        <asp:Button ID="SaveBtn" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnClick" />
+                       </div>
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
@@ -134,7 +134,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Amount"  ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SEAmount" class="form-control StockAmount" ClientIDMode="Static" runat="server" Text='<%# Bind("Amount") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SEAmount" class="form-control StockAmount" ClientIDMode="Static" runat="server" Text='<%#Eval("Amount","{0:2}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -147,9 +147,9 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
+                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConvertStockRegister" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Finalize"  Visible="false" OnClick="btnConvertStockRegisterClick"/>
-                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right"  Text="Print" Visible="false" OnClientClick="javascript:window.print();"/>
                         </div>
 

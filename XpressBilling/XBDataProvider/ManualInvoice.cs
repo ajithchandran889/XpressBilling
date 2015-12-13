@@ -47,8 +47,8 @@ namespace XBDataProvider
 
         public static int AddManualInvoiceWithDetails(string CompanyCode,string CustomerId,string Invoice,int Status,
                                                 int InvoiceType,DateTime Date,string Name,string location,string SalesMan,string Telephone,string Reference,
-                                                string MIPayTerms,string MIDeliveryTerms,string MIShipToAddress,int MITotalAmount,int MITotalDiscountAmt,
-                                                int MITotalTaxAmt, int MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails)
+                                                string MIPayTerms,string MIDeliveryTerms,string MIShipToAddress,float MITotalAmount,float MITotalDiscountAmt,
+                                                float MITotalTaxAmt, float MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace XBDataProvider
             }
         }
 
-        public static bool UpdateManualInvoiceDetails(int invoiceId,string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, int MITotalAmount, int MITotalDiscountAmt, int MITotalTaxAmt, int MITotalOrderAmt, string userName, DataTable dtDetails)
+        public static bool UpdateManualInvoiceDetails(int invoiceId, string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt, float MITotalTaxAmt, float MITotalOrderAmt, string userName, DataTable dtDetails)
         {
             try
             {

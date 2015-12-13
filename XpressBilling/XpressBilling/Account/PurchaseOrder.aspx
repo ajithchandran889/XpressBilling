@@ -25,7 +25,7 @@
                             <asp:BoundField DataField="PurchaseOrderDate" HeaderText="Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
                             <asp:BoundField DataField="BussinessPartnerCode" HeaderText="Supplier"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount"></asp:BoundField>
+                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="Buyer" HeaderText="Buyer"></asp:BoundField>
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>

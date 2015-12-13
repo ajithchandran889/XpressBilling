@@ -34,6 +34,11 @@ var itemMasterDetailsPO = {};
 var itemMasterArrayPOByName = [];
 var itemMasterDetailsPOByName = {};
 var POItemRowDetails = [];
+var itemMasterArraySalesReturn = [];
+var itemMasterDetailsSalesReturn = {};
+var itemMasterArraySalesReturnByName = [];
+var itemMasterDetailsSalesReturnByName = {};
+var SRItemRowDetails = [];
 $(function () {
     $("#inputDate").datepicker(); 
     $("#FormationDate").datepicker();
@@ -210,6 +215,67 @@ $(document).ready(function () {
             }
         });
     }
+    if ($("#SalesReturnMstId").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "TaxMst.aspx/GetAllTaxDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemTaxCodes = [];
+                itemTaxDetails = {};
+                $.each(data.d, function (i, j) {
+                    itemTaxCodes.push(j.code);
+                    itemTaxDetails[j.code] = [j.Per];
+                });
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PriceBookEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArraySalesReturn = [];
+                itemMasterDetailsSalesReturn = {};
+                //itemMasterQuantityI = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArraySalesReturn.push(j.code);
+                    itemMasterDetailsSalesReturn[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
+                    //itemMasterQuantityI[j.code] = [j.Qnty];
+                });
+
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PriceBookEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArraySalesReturnByName = [];
+                itemMasterDetailsSalesReturnByName = {};
+                //itemMasterQuantityI = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArraySalesReturnByName.push(j.name);
+                    itemMasterDetailsSalesReturnByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
+                    //itemMasterQuantityI[j.code] = [j.Qnty];
+                });
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    }
     if ($("#InvoiceId").length > 0)
     {
         $.ajax({
@@ -246,6 +312,27 @@ $(document).ready(function () {
                     itemMasterArrayManualInvoiceByName.push(j.name);
                     itemMasterDetailsManualInvoiceByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
                     //itemMasterQuantityMI[j.code] = [j.Qnty];
+                });
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    }
+    if($("#PriceBookId").length>0)
+    {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PriceBookEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArray = [];
+                itemMasterDetails = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArray.push(j.code);
+                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
                 });
             },
             error: function (result) {
@@ -337,7 +424,7 @@ $(document).ready(function () {
         $("tr", $("#StockEntryDetail")).each(function () {
             var val = $("input[id*='Item']", $(this)).val();
             var qnty = parseInt($("input[id*='SEQuantity']", $(this)).val());
-            var rate = parseInt($("input[id*='SERate']", $(this)).val());
+            var rate = parseFloat($("input[id*='SERate']", $(this)).val());
             if (typeof (val) !== "undefined") {
                 SEItemRowDetails[i] = [qnty, rate, qnty * rate];
                 i++;
@@ -349,6 +436,62 @@ $(document).ready(function () {
         $(".StockUnit").attr('readonly', 'readonly');
         $(".StockAmount").attr('readonly', 'readonly');
     }
+    if (($("#SalesReturnMstId").val() != "" || $("#SalesReturnMstId").val() != "0") && $("#PageStatus").val() != "create") {
+        itemMasterArraySalesReturn = [];
+        itemMasterDetailsSalesReturn = {};
+        var i = 0;
+        $("tr", $("#SalesReturnDetail")).each(function () {
+
+            var val = $("input[id*='SRItem']", $(this)).val();
+            var qnty = parseInt($("input[id*='SRQuantity']", $(this)).val());
+            var rate = parseFloat($("input[id*='SRItemRate']", $(this)).val());
+            var discountAmt = parseFloat($("input[id*='SRDiscAmt']", $(this)).val());
+            var taxPer = parseFloat($("input[id*='SRTaxPer']", $(this)).val());
+            if (typeof (val) !== "undefined") {
+                var rowTotalRate = qnty * rate;
+                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
+                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                var orderAmount = netAmount;
+                SRItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                i++;
+            }
+
+        }); 
+        if ($("#Status").val() == "2")
+        {
+            $(".SRItem").attr('readonly', 'readonly');
+            $(".SRItemName").attr('readonly', 'readonly');
+            $(".SRItemRate").attr('readonly', 'readonly');
+            $(".SRQuantity").attr('readonly', 'readonly');
+            $(".SRUnit").attr('readonly', 'readonly');
+            $(".SRDiscPer").attr('readonly', 'readonly');
+            $(".SRDiscAmt").attr('readonly', 'readonly');
+            $(".SRTaxPer").attr('readonly', 'readonly');
+            $(".SRTaxAmt").attr('readonly', 'readonly');
+            $(".SRNetAmt").attr('readonly', 'readonly');
+            $("#SRTotalAmount").attr('readonly', 'readonly');
+            $("#SRTotalDiscountAmt").attr('readonly', 'readonly');
+            $("#SRTotalTaxAmt").attr('readonly', 'readonly');
+            $("#SRTotalOrderAmt").attr('readonly', 'readonly');
+        }
+        else
+        {
+            $(".SRItem").attr('readonly', 'readonly');
+            $(".SRItemName").attr('readonly', 'readonly');
+            $(".SRItemRate").attr('readonly', 'readonly');
+            $(".SRUnit").attr('readonly', 'readonly');
+            $(".SRDiscPer").attr('readonly', 'readonly');
+            $(".SRDiscAmt").attr('readonly', 'readonly');
+            $(".SRTaxPer").attr('readonly', 'readonly');
+            $(".SRTaxAmt").attr('readonly', 'readonly');
+            $(".SRNetAmt").attr('readonly', 'readonly');
+            $("#SRTotalAmount").attr('readonly', 'readonly');
+            $("#SRTotalDiscountAmt").attr('readonly', 'readonly');
+            $("#SRTotalTaxAmt").attr('readonly', 'readonly');
+            $("#SRTotalOrderAmt").attr('readonly', 'readonly');
+        }
+    }
     if (($("#InvoiceId").val() != "" || $("#InvoiceId").val() != "0") && $("#PageStatus").val() != "create") {
         itemMasterArrayManualInvoice = []; 
         itemMasterDetailsManualInvoice = {};
@@ -357,12 +500,12 @@ $(document).ready(function () {
             
             var val = $("input[id*='MIItem']", $(this)).val();
             var qnty = parseInt($("input[id*='MIQuantity']", $(this)).val());
-            var rate = parseInt($("input[id*='MIItemRate']", $(this)).val());
-            var discountPer = parseInt($("input[id*='MIDiscPer']", $(this)).val());
-            var taxPer = parseInt($("input[id*='MITaxPer']", $(this)).val());
+            var rate = parseFloat($("input[id*='MIItemRate']", $(this)).val());
+            var discountAmt = parseFloat($("input[id*='MIDiscAmt']", $(this)).val());
+            var taxPer = parseFloat($("input[id*='MITaxPer']", $(this)).val());
             if (typeof (val) !== "undefined") {
                 var rowTotalRate = qnty * rate;
-                var discountAmt = rowTotalRate * discountPer;
+                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
                 var netAmount = (rowTotalRate - discountAmt) + taxAmount;
                 var orderAmount = netAmount;
@@ -370,7 +513,7 @@ $(document).ready(function () {
                 i++;
             }
 
-        });
+        }); 
         $(".MITaxAmt").attr('readonly', 'readonly');
         $(".MINetAmt").attr('readonly', 'readonly');
         $(".MIUnit").attr('readonly', 'readonly');
@@ -391,12 +534,12 @@ $(document).ready(function () {
 
             var val = $("input[id*='IItem']", $(this)).val();
             var qnty = parseInt($("input[id*='IQuantity']", $(this)).val());
-            var rate = parseInt($("input[id*='IItemRate']", $(this)).val());
-            var discountPer = parseInt($("input[id*='IDiscPer']", $(this)).val());
-            var taxPer = parseInt($("input[id*='ITaxPer']", $(this)).val());
+            var rate = parseFloat($("input[id*='IItemRate']", $(this)).val());
+            var discountAmt = parseFloat($("input[id*='IDiscAmt']", $(this)).val());
+            var taxPer = parseFloat($("input[id*='ITaxPer']", $(this)).val());
             if (typeof (val) !== "undefined") {
                 var rowTotalRate = qnty * rate;
-                var discountAmt = rowTotalRate * discountPer;
+                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
                 var netAmount = (rowTotalRate - discountAmt) + taxAmount;
                 var orderAmount = netAmount;
@@ -441,12 +584,12 @@ $(document).ready(function () {
 
             var val = $("input[id*='SQItem']", $(this)).val();
             var qnty = parseInt($("input[id*='SQQuantity']", $(this)).val());
-            var rate = parseInt($("input[id*='SQRate']", $(this)).val());
-            var discountPer = parseInt($("input[id*='SQDiscPer']", $(this)).val());
-            var taxPer = parseInt($("input[id*='SQTaxPer']", $(this)).val());
+            var rate = parseFloat($("input[id*='SQRate']", $(this)).val());
+            var discountAmt = parseFloat($("input[id*='SQDiscAmt']", $(this)).val());
+            var taxPer = parseFloat($("input[id*='SQTaxPer']", $(this)).val());
             if (typeof (val) !== "undefined") {
                 var rowTotalRate = qnty * rate;
-                var discountAmt = rowTotalRate * discountPer;
+                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
                 var netAmount = (rowTotalRate - discountAmt) + taxAmount;
                 var orderAmount = netAmount;
@@ -474,12 +617,12 @@ $(document).ready(function () {
 
             var val = $("input[id*='POItem']", $(this)).val();
             var qnty = parseInt($("input[id*='POQuantity']", $(this)).val());
-            var rate = parseInt($("input[id*='PORate']", $(this)).val());
-            var discountPer = parseInt($("input[id*='PODiscPer']", $(this)).val());
-            var taxPer = parseInt($("input[id*='POTaxPer']", $(this)).val());
+            var rate = parseFloat($("input[id*='PORate']", $(this)).val());
+            var discountAmt = parseFloat($("input[id*='PODiscAmt']", $(this)).val());
+            var taxPer = parseFloat($("input[id*='POTaxPer']", $(this)).val());
             if (typeof (val) !== "undefined") {
                 var rowTotalRate = qnty * rate;
-                var discountAmt = rowTotalRate * discountPer;
+                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
                 var netAmount = (rowTotalRate - discountAmt) + taxAmount;
                 var orderAmount = netAmount;
@@ -488,6 +631,7 @@ $(document).ready(function () {
             }
 
         });
+        
         $(".POTaxAmt").attr('readonly', 'readonly');
         $(".PONetAmt").attr('readonly', 'readonly');
         $(".POUnit").attr('readonly', 'readonly');
@@ -642,11 +786,7 @@ $(document).ready(function () {
         }
     });
 
-    //if ($("#SalesQuotationDetail").length > 0) {
-
-    //    $("#SalesQuotationDetail tr:nth-child(2)").clone().appendTo("#SalesQuotationDetail");
-    //    return false;
-    //}
+    
 });
 function SearchText() {
     $("#Company").autocomplete({
@@ -700,34 +840,44 @@ function SearchText() {
         row.cells[4].getElementsByTagName("input")[0].value = itemArr[3];
         return false;
     }
-
-    $(".ItemCode").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "PriceBookEdit.aspx/GetItemMasters",
-                dataType: "json",
-                success: function (data) {
-                    itemMasterArray = [];
-                    itemMasterDetails = {};
-                    $.each(data.d, function (i, j) {
-                        itemMasterArray.push(j.code);
-                        itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
-                    });
-                    response(itemMasterArray);
-                },
-                error: function (result) {
-                    alert("Error");
-                }
-            });
-        },
-        select: function (event, ui) {
-            SetSelectedRow(this, ui.item.label);
+    //var obj = {};
+    //obj.companyCode = $.trim($("#CompanyCode").val());
+    //$(".ItemCode").autocomplete({
+    //    source: function (request, response) {
+    //        $.ajax({
+    //            type: "POST",
+    //            contentType: "application/json; charset=utf-8",
+    //            url: "PriceBookEdit.aspx/GetItemMasters",
+    //            data: JSON.stringify(obj),
+    //            dataType: "json",
+    //            success: function (data) {
+    //                itemMasterArray = [];
+    //                itemMasterDetails = {};
+    //                $.each(data.d, function (i, j) {
+    //                    itemMasterArray.push(j.code);
+    //                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
+    //                });
+    //                response(itemMasterArray);
+    //            },
+    //            error: function (result) {
+    //                alert("Error");
+    //            }
+    //        });
+    //    },
+    //    select: function (event, ui) {
+    //        SetSelectedRow(this, ui.item.label);
         
-        },
-    });
+    //    },
+    //});
+    $(document).on("keydown", ".ItemCode", function (e) {
+        $(this).autocomplete({
+            source: itemMasterArray,
+            select: function (event, ui) {
+                SetSelectedRow(this, ui.item.label);
 
+            }
+        });
+    });
     $(document).on("keydown", "#SalesMan", function (e) {
         var obj = {};
         obj.companyCode = $.trim($("#CompanyCode").val());
@@ -767,37 +917,7 @@ function SearchText() {
     {
         $(".gridTxtBox").attr('readonly', 'readonly');
     }
-    var options = {
-        source: function (request, response) {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "PriceBookEdit.aspx/GetItemMasters",
-                dataType: "json",
-                success: function (data) {
-                    itemMasterArraySQ = [];
-                    itemMasterDetailsSQ = {};
-                    $.each(data.d, function (i, j) {
-                        itemMasterArraySQ.push(j.code);
-                        itemMasterDetailsSQ[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode];
-                    });
-                    response(itemMasterArraySQ);
-                },
-                error: function (result) {
-                    alert("Error");
-                }
-            });
-        },
-        select: function (event, ui) {
-            SetSelectedRowSQ(this, ui.item.label);
 
-        },
-    };
-
-
-    $(document).on("keydown", ".Item", function (e) {
-       $(this).autocomplete(options);
-    });
 
     $(document).on("keydown", ".StockItem", function (e) {
         $(this).autocomplete({
@@ -834,16 +954,16 @@ function SearchText() {
                         $("#Amount").val(amount);
                     }
                     else {
-                        $("#Amount").val(parseInt($("#Amount").val()) + parseInt(amount));
+                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(amount));
                     }
                 }
                 else {
                     //alert("okkk");
                     var itemArray = SEItemRowDetails[rowIndex];
-                    var totalAmt = parseInt($("#Amount").val());
-                    var oldAmount = parseInt(itemArray[2]);
-                    totalAmt -= oldAmount;
-                    totalAmt += amount;
+                    var totalAmt = parseFloat($("#Amount").val());
+                    var oldAmount = parseFloat(itemArray[2]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalAmt += parseFloat(amount);
                     row.cells[6].getElementsByTagName("input")[0].value = amount;
                     $("#Amount").val(totalAmt);
                     SEItemRowDetails[rowIndex] = [qnty, rate, amount];
@@ -947,39 +1067,7 @@ function SearchText() {
         return false;
     }
 
-    var optionsTax = {
-        source: function (request, response) {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "TaxMst.aspx/GetAllTaxDetails",
-                dataType: "json",
-                success: function (data) {
-                    //console.log(data.d);
-                    itemTaxCodes = [];
-                    itemTaxDetails = {};
-                    $.each(data.d, function (i, j) {
-                        itemTaxCodes.push(j.code);
-                        itemTaxDetails[j.code] = [j.Per];
-                    });
-                    //console.log(itemTaxDetails);
-                    response(itemTaxCodes);
-                },
-                error: function (result) {
-                    alert("Error");
-                }
-            });
-        },
-        select: function (event, ui) {
-            event.preventDefault();
-            setSelectedTaxCode(this, ui.item.label);
-
-        },
-        change: function (event, ui) {
-            if (ui.item === null || !ui.item)
-                $(this).val(''); /* clear the value */
-        }
-    };
+   
     $(document).on("keydown", ".MIItem", function (e) {
         $(this).autocomplete({
             source: itemMasterArrayManualInvoice,
@@ -1033,14 +1121,14 @@ function SearchText() {
                 var rowTotalRate = qnty * rate;
                 if ($(txtBox).attr("id") == "MIDiscAmt")
                 {
-                    discountPer = Math.round(discountAmt / rowTotalRate);
+                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 }
                 else
                 {
-                    discountAmt = rowTotalRate * discountPer;
+                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
                 }
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
                 //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
                 var orderAmount = netAmount;
                 if ($(txtBox).attr("id") == "MIDiscAmt")
@@ -1059,51 +1147,51 @@ function SearchText() {
                         $("#MITotalAmount").val(netAmount);
                     }
                     else {
-                        $("#MITotalAmount").val(parseInt($("#MITotalAmount").val()) + parseInt(netAmount));
+                        $("#MITotalAmount").val(parseFloat($("#MITotalAmount").val()) + parseFloat(netAmount));
                     } 
                     if ($("#Amount").val() == "") {
                         $("#Amount").val(netAmount);
                     }
                     else {
-                        $("#Amount").val(parseInt($("#Amount").val()) + parseInt(netAmount));
+                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
                     }
                     if ($("#MITotalDiscountAmt").val() == "") {
                         $("#MITotalDiscountAmt").val(discountAmt);
                     }
                     else {
-                        $("#MITotalDiscountAmt").val(parseInt($("#MITotalDiscountAmt").val()) + parseInt(discountAmt));
+                        $("#MITotalDiscountAmt").val(parseFloat($("#MITotalDiscountAmt").val()) + parseFloat(discountAmt));
                     }
                     if ($("#MITotalTaxAmt").val() == "") {
                         $("#MITotalTaxAmt").val(taxAmount);
                     }
                     else {
-                        $("#MITotalTaxAmt").val(parseInt($("#MITotalTaxAmt").val()) + parseInt(taxAmount));
+                        $("#MITotalTaxAmt").val(parseFloat($("#MITotalTaxAmt").val()) + parseFloat(taxAmount));
                     }
                     if ($("#MITotalOrderAmt").val() == "") {
                         $("#MITotalOrderAmt").val(orderAmount);
                     }
                     else {
-                        $("#MITotalOrderAmt").val(parseInt($("#MITotalOrderAmt").val()) + orderAmount);
+                        $("#MITotalOrderAmt").val(parseFloat($("#MITotalOrderAmt").val()) + parseFloat(orderAmount));
                     }
                 }
                 else {
                     var itemArray = MIItemRowDetails[rowIndex];
-                    var totalAmt = parseInt($("#Amount").val());
-                    var totalDiscount = parseInt($("#MITotalDiscountAmt").val());
-                    var totalTax = parseInt($("#MITotalTaxAmt").val());
-                    var totalOder = parseInt($("#MITotalOrderAmt").val());
-                    var oldAmount = parseInt(itemArray[6]);
-                    var oldDiscount = parseInt(itemArray[3]);
-                    var oldTax = parseInt(itemArray[5]);
-                    var oldOder = parseInt(itemArray[7]);
-                    totalAmt -= oldAmount;
-                    totalDiscount -= oldDiscount;
-                    totalTax -= oldTax;
-                    totalOder -= oldOder;
-                    totalAmt += parseInt(netAmount);
-                    totalDiscount += parseInt(discountAmt);
-                    totalTax += parseInt(taxAmount);
-                    totalOder += parseInt(orderAmount);
+                    var totalAmt = parseFloat($("#Amount").val());
+                    var totalDiscount = parseFloat($("#MITotalDiscountAmt").val());
+                    var totalTax = parseFloat($("#MITotalTaxAmt").val());
+                    var totalOder = parseFloat($("#MITotalOrderAmt").val());
+                    var oldAmount = parseFloat(itemArray[6]);
+                    var oldDiscount = parseFloat(itemArray[3]);
+                    var oldTax = parseFloat(itemArray[5]);
+                    var oldOder = parseFloat(itemArray[7]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalDiscount -= parseFloat(oldDiscount);
+                    totalTax -= parseFloat(oldTax);
+                    totalOder -= parseFloat(oldOder);
+                    totalAmt += parseFloat(netAmount);
+                    totalDiscount += parseFloat(discountAmt);
+                    totalTax += parseFloat(taxAmount);
+                    totalOder += parseFloat(orderAmount);
                     row.cells[10].getElementsByTagName("input")[0].value = netAmount;
                     $("#Amount").val(totalAmt);
                     $("#MITotalAmount").val(totalAmt);
@@ -1127,10 +1215,13 @@ function SearchText() {
             var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
             var itemArr = itemMasterQuantityI[itemCode];
             if (typeof (itemArr) === "undefined") {
+                var obj = {};
+                obj.companyCode = $.trim($("#CompanyCode").val());
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "PriceBookEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj),
                     dataType: "json",
                     success: function (data) {
                         itemMasterQuantityI = {};
@@ -1173,10 +1264,13 @@ function SearchText() {
             var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
             var itemArr = itemMasterQuantitySQ[itemCode];
             if (typeof (itemArr) === "undefined") {
+                var obj = {};
+                obj.companyCode = $.trim($("#CompanyCode").val());
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "PriceBookEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj),
                     dataType: "json",
                     success: function (data) {
                         itemMasterQuantitySQ = {};
@@ -1304,10 +1398,10 @@ function SearchText() {
                     discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 }
                 else {
-                    discountAmt = rowTotalRate * discountPer;
+                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
                 }
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
                 //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
                 var orderAmount = netAmount;
                 if ($(txtBox).attr("id") == "IDiscAmt")
@@ -1327,51 +1421,51 @@ function SearchText() {
                         $("#ITotalAmount").val(netAmount);
                     }
                     else {
-                        $("#ITotalAmount").val(parseInt($("#ITotalAmount").val()) + parseInt(netAmount));
+                        $("#ITotalAmount").val(parseFloat($("#ITotalAmount").val()) + parseFloat(netAmount));
                     }
                     if ($("#Amount").val() == "") {
                         $("#Amount").val(netAmount);
                     }
                     else {
-                        $("#Amount").val(parseInt($("#Amount").val()) + parseInt(netAmount));
+                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
                     }
                     if ($("#ITotalDiscountAmt").val() == "") {
                         $("#ITotalDiscountAmt").val(discountAmt);
                     }
                     else {
-                        $("#ITotalDiscountAmt").val(parseInt($("#ITotalDiscountAmt").val()) + parseInt(discountAmt));
+                        $("#ITotalDiscountAmt").val(parseFloat($("#ITotalDiscountAmt").val()) + parseFloat(discountAmt));
                     }
                     if ($("#ITotalTaxAmt").val() == "") {
                         $("#ITotalTaxAmt").val(taxAmount);
                     }
                     else {
-                        $("#ITotalTaxAmt").val(parseInt($("#ITotalTaxAmt").val()) + parseInt(taxAmount));
+                        $("#ITotalTaxAmt").val(parseFloat($("#ITotalTaxAmt").val()) + parseFloat(taxAmount));
                     }
                     if ($("#ITotalOrderAmt").val() == "") {
                         $("#ITotalOrderAmt").val(orderAmount);
                     }
                     else {
-                        $("#ITotalOrderAmt").val(parseInt($("#ITotalOrderAmt").val()) + orderAmount);
+                        $("#ITotalOrderAmt").val(parseFloat($("#ITotalOrderAmt").val()) + parseFloat(orderAmount));
                     }
                 }
                 else {
                     var itemArray = IItemRowDetails[rowIndex];
-                    var totalAmt = parseInt($("#Amount").val());
-                    var totalDiscount = parseInt($("#ITotalDiscountAmt").val());
-                    var totalTax = parseInt($("#ITotalTaxAmt").val());
-                    var totalOder = parseInt($("#ITotalOrderAmt").val());
-                    var oldAmount = parseInt(itemArray[6]);
-                    var oldDiscount = parseInt(itemArray[3]);
-                    var oldTax = parseInt(itemArray[5]);
-                    var oldOder = parseInt(itemArray[7]);
-                    totalAmt -= oldAmount;
-                    totalDiscount -= oldDiscount;
-                    totalTax -= oldTax;
-                    totalOder -= oldOder;
-                    totalAmt += parseInt(netAmount);
-                    totalDiscount += parseInt(discountAmt);
-                    totalTax += parseInt(taxAmount);
-                    totalOder += parseInt(orderAmount);
+                    var totalAmt = parseFloat($("#Amount").val());
+                    var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
+                    var totalTax = parseFloat($("#ITotalTaxAmt").val());
+                    var totalOder = parseFloat($("#ITotalOrderAmt").val());
+                    var oldAmount = parseFloat(itemArray[6]);
+                    var oldDiscount = parseFloat(itemArray[3]);
+                    var oldTax = parseFloat(itemArray[5]);
+                    var oldOder = parseFloat(itemArray[7]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalDiscount -= parseFloat(oldDiscount);
+                    totalTax -= parseFloat(oldTax);
+                    totalOder -= parseFloat(oldOder);
+                    totalAmt += parseFloat(netAmount);
+                    totalDiscount += parseFloat(discountAmt);
+                    totalTax += parseFloat(taxAmount);
+                    totalOder += parseFloat(orderAmount);
                     row.cells[10].getElementsByTagName("input")[0].value = netAmount;
                     $("#Amount").val(totalAmt);
                     $("#ITotalAmount").val(totalAmt);
@@ -1466,6 +1560,7 @@ function SearchText() {
     $("#TotalTaxAmt").attr('readonly', 'readonly');
     $("#TotalOrderAmt").attr('readonly', 'readonly');
     function CalculateSQAmount(txtBox) {
+        
         var row = txtBox.parentNode.parentNode;
         var rowIndex = row.rowIndex - 1;
         if (row.cells[1].getElementsByTagName("input")[0].value != "") {
@@ -1478,13 +1573,13 @@ function SearchText() {
                 var rowTotalRate = qnty * rate;
                 if ($(txtBox).attr("id") == "SQDiscAmt")
                 {
-                    discountPer = Math.round(discountAmt / rowTotalRate);
+                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 }
                 else {
-                    discountAmt = rowTotalRate * discountPer;
+                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
                 }
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
                 //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
                 var orderAmount = netAmount;
                 if ($(txtBox).attr("id") == "SQDiscAmt")
@@ -1504,45 +1599,45 @@ function SearchText() {
                         $("#TotalAmount").val(netAmount);
                     }
                     else {
-                        $("#TotalAmount").val(parseInt($("#TotalAmount").val()) + parseInt(netAmount));
+                        $("#TotalAmount").val(parseFloat($("#TotalAmount").val()) + parseFloat(netAmount));
                     }
                     if ($("#TotalDiscountAmt").val() == "") {
                         $("#TotalDiscountAmt").val(discountAmt);
                     }
                     else {
-                        $("#TotalDiscountAmt").val(parseInt($("#TotalDiscountAmt").val()) + parseInt(discountAmt));
+                        $("#TotalDiscountAmt").val(parseFloat($("#TotalDiscountAmt").val()) + parseFloat(discountAmt));
                     }
                     if ($("#TotalTaxAmt").val() == "") {
                         $("#TotalTaxAmt").val(taxAmount);
                     }
                     else {
-                        $("#TotalTaxAmt").val(parseInt($("#TotalTaxAmt").val()) + parseInt(taxAmount));
+                        $("#TotalTaxAmt").val(parseFloat($("#TotalTaxAmt").val()) + parseFloat(taxAmount));
                     }
                     if ($("#TotalOrderAmt").val() == "") {
                         $("#TotalOrderAmt").val(orderAmount);
                     }
                     else {
-                        $("#TotalOrderAmt").val(parseInt($("#TotalOrderAmt").val()) + orderAmount);
+                        $("#TotalOrderAmt").val(parseFloat($("#TotalOrderAmt").val()) + parseFloat(orderAmount));
                     }
                 }
                 else {
                     var itemArray = SQItemRowDetails[rowIndex];
-                    var totalAmt = parseInt($("#TotalAmount").val());
-                    var totalDiscount = parseInt($("#TotalDiscountAmt").val());
-                    var totalTax = parseInt($("#TotalTaxAmt").val());
-                    var totalOder = parseInt($("#TotalOrderAmt").val());
-                    var oldAmount = parseInt(itemArray[6]);
-                    var oldDiscount = parseInt(itemArray[3]);
-                    var oldTax = parseInt(itemArray[5]);
-                    var oldOder = parseInt(itemArray[7]);
-                    totalAmt -= oldAmount;
-                    totalDiscount -= oldDiscount;
-                    totalTax -= oldTax;
-                    totalOder -= oldOder;
-                    totalAmt += parseInt(netAmount);
-                    totalDiscount += parseInt(discountAmt);
-                    totalTax += parseInt(taxAmount);
-                    totalOder += parseInt(orderAmount);
+                    var totalAmt = parseFloat($("#TotalAmount").val());
+                    var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
+                    var totalTax = parseFloat($("#TotalTaxAmt").val());
+                    var totalOder = parseFloat($("#TotalOrderAmt").val());
+                    var oldAmount = parseFloat(itemArray[6]);
+                    var oldDiscount = parseFloat(itemArray[3]);
+                    var oldTax = parseFloat(itemArray[5]);
+                    var oldOder = parseFloat(itemArray[7]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalDiscount -= parseFloat(oldDiscount);
+                    totalTax -= parseFloat(oldTax);
+                    totalOder -= parseFloat(oldOder);
+                    totalAmt += parseFloat(netAmount);
+                    totalDiscount += parseFloat(discountAmt);
+                    totalTax += parseFloat(taxAmount);
+                    totalOder += parseFloat(orderAmount);
                     row.cells[10].getElementsByTagName("input")[0].value = netAmount;
                     $("#TotalAmount").val(totalAmt);
                     $("#TotalDiscountAmt").val(totalDiscount);
@@ -1565,10 +1660,13 @@ function SearchText() {
             var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
             var itemArr = itemMasterQuantityPO[itemCode];
             if (typeof (itemArr) === "undefined") {
+                var obj = {};
+                obj.companyCode = $.trim($("#CompanyCode").val()); 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "PriceBookEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj),
                     dataType: "json",
                     success: function (data) {
                         itemMasterQuantityPO = {};
@@ -1576,7 +1674,7 @@ function SearchText() {
                             itemMasterQuantityPO[j.code] = [j.Qnty];
                         });
                         itemArr = itemMasterQuantityPO[itemCode];
-                        if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                        if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
                             CalculatePOAmount(txtBox);
                         }
                         else {
@@ -1591,7 +1689,7 @@ function SearchText() {
 
             }
             else {
-                if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
                     CalculatePOAmount(txtBox);
                 }
                 else {
@@ -1692,13 +1790,13 @@ function SearchText() {
             if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
                 var rowTotalRate = qnty * rate;
                 if ($(txtBox).attr("id") == "PODiscAmt") {
-                    discountPer = Math.round(discountAmt / rowTotalRate);
+                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 }
                 else {
-                    discountAmt = rowTotalRate * discountPer;
+                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
                 }
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+                var netAmount = ((rowTotalRate - discountAmt) +parseFloat(taxAmount)).toFixed(2);
                 //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
                 var orderAmount = netAmount;
                 if ($(txtBox).attr("id") == "PODiscAmt") {
@@ -1718,46 +1816,46 @@ function SearchText() {
                         $("#Amount").val(netAmount);
                     }
                     else {
-                        $("#POTotalAmount").val(parseInt($("#POTotalAmount").val()) + parseInt(netAmount));
-                        $("#Amount").val(parseInt($("#Amount").val()) + parseInt(netAmount));
+                        $("#POTotalAmount").val(parseFloat($("#POTotalAmount").val()) + parseFloat(netAmount));
+                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
                     }
                     if ($("#POTotalDiscountAmt").val() == "") {
                         $("#POTotalDiscountAmt").val(discountAmt);
                     }
                     else {
-                        $("#POTotalDiscountAmt").val(parseInt($("#POTotalDiscountAmt").val()) + parseInt(discountAmt));
+                        $("#POTotalDiscountAmt").val(parseFloat($("#POTotalDiscountAmt").val()) + parseFloat(discountAmt));
                     }
                     if ($("#POTotalTaxAmt").val() == "") {
                         $("#POTotalTaxAmt").val(taxAmount);
                     }
                     else {
-                        $("#POTotalTaxAmt").val(parseInt($("#POTotalTaxAmt").val()) + parseInt(taxAmount));
+                        $("#POTotalTaxAmt").val(parseFloat($("#POTotalTaxAmt").val()) + parseFloat(taxAmount));
                     }
                     if ($("#POTotalOrderAmt").val() == "") {
                         $("#POTotalOrderAmt").val(orderAmount);
                     }
                     else {
-                        $("#POTotalOrderAmt").val(parseInt($("#POTotalOrderAmt").val()) + orderAmount);
+                        $("#POTotalOrderAmt").val(parseFloat($("#POTotalOrderAmt").val()) + parseFloat(orderAmount));
                     }
                 }
                 else {
-                    var itemArray = POItemRowDetails[rowIndex];
-                    var totalAmt = parseInt($("#POTotalAmount").val());
-                    var totalDiscount = parseInt($("#POTotalDiscountAmt").val());
-                    var totalTax = parseInt($("#POTotalTaxAmt").val());
-                    var totalOder = parseInt($("#POTotalOrderAmt").val());
-                    var oldAmount = parseInt(itemArray[6]);
-                    var oldDiscount = parseInt(itemArray[3]);
-                    var oldTax = parseInt(itemArray[5]);
-                    var oldOder = parseInt(itemArray[7]);
-                    totalAmt -= oldAmount;
-                    totalDiscount -= oldDiscount;
-                    totalTax -= oldTax;
-                    totalOder -= oldOder;
-                    totalAmt += parseInt(netAmount);
-                    totalDiscount += parseInt(discountAmt);
-                    totalTax += parseInt(taxAmount);
-                    totalOder += parseInt(orderAmount);
+                    var itemArray = POItemRowDetails[rowIndex]; 
+                    var totalAmt = parseFloat($("#POTotalAmount").val());
+                    var totalDiscount = parseFloat($("#POTotalDiscountAmt").val());
+                    var totalTax = parseFloat($("#POTotalTaxAmt").val());
+                    var totalOder = parseFloat($("#POTotalOrderAmt").val());
+                    var oldAmount = parseFloat(itemArray[6]);
+                    var oldDiscount = parseFloat(itemArray[3]);
+                    var oldTax = parseFloat(itemArray[5]);
+                    var oldOder = parseFloat(itemArray[7]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalDiscount -= parseFloat(oldDiscount);
+                    totalTax -= parseFloat(oldTax);
+                    totalOder -= parseFloat(oldOder);
+                    totalAmt += parseFloat(netAmount);
+                    totalDiscount += parseFloat(discountAmt);
+                    totalTax += parseFloat(taxAmount);
+                    totalOder += parseFloat(orderAmount);
                     row.cells[10].getElementsByTagName("input")[0].value = netAmount;
                     $("#POTotalAmount").val(totalAmt);
                     $("#Amount").val(totalAmt);
@@ -1780,3 +1878,170 @@ function SearchText() {
         var currentTotal = parseInt($("#TotalQty").val());
         $("#TotalQty").val((currentTotal - preQnty) + qty);
     });
+
+    function SetSelectedRowSalesReturn(lnk, selectedItem) {
+        var row = lnk.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        var itemArr = itemMasterDetailsSalesReturn[selectedItem];
+        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+        return false;
+    }
+    function SetSelectedRowSalesReturnByName(lnk, selectedItem) {
+        var row = lnk.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        var itemArr = itemMasterDetailsSalesReturnByName[selectedItem];
+        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+        return false;
+    }
+
+
+    $(document).on("keydown", ".SRItem", function (e) {
+        $(this).autocomplete({
+            source: itemMasterArraySalesReturn,
+            select: function (event, ui) {
+                SetSelectedRowSalesReturn(this, ui.item.label);
+
+            }
+        });
+    });
+    $(document).on("keydown", ".SRItemName", function (e) {
+        $(this).autocomplete({
+            source: itemMasterArraySalesReturnByName,
+            select: function (event, ui) {
+                SetSelectedRowSalesReturnByName(this, ui.item.label);
+
+            }
+        });
+    });
+    $(document).on("keydown", ".SRTaxPer", function (e) {
+        $(this).autocomplete({
+            source: itemTaxCodes,
+            select: function (event, ui) {
+                event.preventDefault();
+                setSelectedTaxCode(this, ui.item.label);
+
+            },
+            change: function (event, ui) {
+                if (ui.item === null || !ui.item)
+                    $(this).val(''); /* clear the value */
+            }
+        });
+    });
+    $(document).on("focusout", "#SRItemRate", function (e) {
+        CalculateSRAmount(this);
+    });
+    $(document).on("focusout", "#SRDiscPer", function (e) {
+        CalculateSRAmount(this);
+    });
+    $(document).on("focusout", "#SRTaxPer", function (e) {
+        CalculateSRAmount(this);
+    });
+    $(document).on("focusout", "#SRDiscAmt", function (e) {
+        CalculateSRAmount(this);
+    });
+    $(document).on("focusout", "#SRQuantity", function (e) {
+        CalculateSRAmount(this);
+    });
+    function CalculateSRAmount(txtBox) {
+        var row = txtBox.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+            var rate = row.cells[3].getElementsByTagName("input")[0].value;
+            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+            var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+                var rowTotalRate = qnty * rate;
+                if ($(txtBox).attr("id") == "SRDiscAmt") {
+                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                }
+                else {
+                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                }
+                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+                var orderAmount = netAmount;
+                if ($(txtBox).attr("id") == "SRDiscAmt") {
+                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
+
+                }
+                else {
+                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
+                }
+                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+                if (!SRItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                    SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                    if ($("#SRTotalAmount").val() == "") {
+                        $("#SRTotalAmount").val(netAmount);
+                    }
+                    else {
+                        $("#SRTotalAmount").val(parseFloat($("#SRTotalAmount").val()) + parseFloat(netAmount));
+                    }
+                    if ($("#Amount").val() == "") {
+                        $("#Amount").val(netAmount);
+                    }
+                    else {
+                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                    }
+                    if ($("#SRTotalDiscountAmt").val() == "") {
+                        $("#SRTotalDiscountAmt").val(discountAmt);
+                    }
+                    else {
+                        $("#SRTotalDiscountAmt").val(parseFloat($("#SRTotalDiscountAmt").val()) + parseFloat(discountAmt));
+                    }
+                    if ($("#SRTotalTaxAmt").val() == "") {
+                        $("#SRTotalTaxAmt").val(taxAmount);
+                    }
+                    else {
+                        $("#SRTotalTaxAmt").val(parseFloat($("#SRTotalTaxAmt").val()) + parseFloat(taxAmount));
+                    }
+                    if ($("#SRTotalOrderAmt").val() == "") {
+                        $("#SRTotalOrderAmt").val(orderAmount);
+                    }
+                    else {
+                        $("#SRTotalOrderAmt").val(parseFloat($("#SRTotalOrderAmt").val()) + parseFloat(orderAmount));
+                    }
+                }
+                else {
+                    var itemArray = SRItemRowDetails[rowIndex]; 
+                    var totalAmt = parseFloat($("#Amount").val());
+                    var totalDiscount = parseFloat($("#SRTotalDiscountAmt").val());
+                    var totalTax = parseFloat($("#SRTotalTaxAmt").val());
+                    var totalOder = parseFloat($("#SRTotalOrderAmt").val());
+                    var oldAmount = parseFloat(itemArray[6]);
+                    var oldDiscount = parseFloat(itemArray[3]);
+                    var oldTax = parseFloat(itemArray[5]);
+                    var oldOder = parseFloat(itemArray[7]);
+                    totalAmt -= parseFloat(oldAmount);
+                    totalDiscount -= parseFloat(oldDiscount);
+                    totalTax -= parseFloat(oldTax);
+                    totalOder -= parseFloat(oldOder);
+                    totalAmt += parseFloat(netAmount);
+                    totalDiscount += parseFloat(discountAmt);
+                    totalTax += parseFloat(taxAmount);
+                    totalOder += parseFloat(orderAmount);
+                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                    $("#Amount").val(totalAmt);
+                    $("#SRTotalAmount").val(totalAmt);
+                    $("#SRTotalDiscountAmt").val(totalDiscount);
+                    $("#SRTotalTaxAmt").val(totalTax);
+                    $("#SRTotalOrderAmt").val(totalOder);
+                    SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                }
+
+
+            }
+        }
+
+    }

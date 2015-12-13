@@ -10,7 +10,7 @@
 namespace XpressBilling.Account {
     
     
-    public partial class sales_quotation {
+    public partial class SalesReturnEdit {
         
         /// <summary>
         /// SaveSuccess control.
@@ -58,58 +58,58 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl failureMessage;
         
         /// <summary>
-        /// CustomerId control.
+        /// SalesReturnType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CustomerId;
+        protected global::System.Web.UI.WebControls.DropDownList SalesReturnType;
         
         /// <summary>
-        /// Quotation control.
+        /// SalesReturn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Quotation;
+        protected global::System.Web.UI.WebControls.TextBox SalesReturn;
         
         /// <summary>
-        /// CashSequenceNo control.
+        /// AgainstSequenceNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField CashSequenceNo;
+        protected global::System.Web.UI.WebControls.HiddenField AgainstSequenceNo;
         
         /// <summary>
-        /// CreditSequenceNo control.
+        /// ManualSequenceNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField CreditSequenceNo;
+        protected global::System.Web.UI.WebControls.HiddenField ManualSequenceNo;
         
         /// <summary>
-        /// CashSequenceNoID control.
+        /// AgainstSequenceNoID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField CashSequenceNoID;
+        protected global::System.Web.UI.WebControls.HiddenField AgainstSequenceNoID;
         
         /// <summary>
-        /// CreditSequenceNoID control.
+        /// ManualSequenceNoID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField CreditSequenceNoID;
+        protected global::System.Web.UI.WebControls.HiddenField ManualSequenceNoID;
         
         /// <summary>
         /// Status control.
@@ -121,22 +121,31 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.DropDownList Status;
         
         /// <summary>
-        /// QuotationType control.
+        /// CustomerId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList QuotationType;
+        protected global::System.Web.UI.WebControls.DropDownList CustomerId;
         
         /// <summary>
-        /// CreatedDate control.
+        /// CustomerIdText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CreatedDate;
+        protected global::System.Web.UI.WebControls.TextBox CustomerIdText;
+        
+        /// <summary>
+        /// Date control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Date;
         
         /// <summary>
         /// Name control.
@@ -175,13 +184,40 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Telephone;
         
         /// <summary>
-        /// Validity control.
+        /// Amount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Validity;
+        protected global::System.Web.UI.WebControls.TextBox Amount;
+        
+        /// <summary>
+        /// InvoiceNoList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList InvoiceNoList;
+        
+        /// <summary>
+        /// InvoiceNoText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox InvoiceNoText;
+        
+        /// <summary>
+        /// AvailableCredit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AvailableCredit;
         
         /// <summary>
         /// Reference control.
@@ -193,40 +229,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Reference;
         
         /// <summary>
-        /// SalesOrder control.
+        /// SalesReturnMstId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SalesOrder;
-        
-        /// <summary>
-        /// salesOrderLastIncId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField salesOrderLastIncId;
-        
-        /// <summary>
-        /// SalesQuotationId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField SalesQuotationId;
-        
-        /// <summary>
-        /// PageStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField PageStatus;
+        protected global::System.Web.UI.WebControls.HiddenField SalesReturnMstId;
         
         /// <summary>
         /// CancelBtn control.
@@ -256,13 +265,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Panel gridDetails;
         
         /// <summary>
-        /// SalesQuotationDetail control.
+        /// SalesReturnDetail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView SalesQuotationDetail;
+        protected global::System.Web.UI.WebControls.GridView SalesReturnDetail;
         
         /// <summary>
         /// AddNewRow control.
@@ -274,67 +283,112 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Button AddNewRow;
         
         /// <summary>
-        /// PayTerms control.
+        /// SRPayTerms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PayTerms;
+        protected global::System.Web.UI.WebControls.TextBox SRPayTerms;
         
         /// <summary>
-        /// DeliveryTerms control.
+        /// SRTotalAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DeliveryTerms;
+        protected global::System.Web.UI.WebControls.TextBox SRTotalAmount;
         
         /// <summary>
-        /// TotalAmount control.
+        /// SRTotalDiscountAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TotalAmount;
+        protected global::System.Web.UI.WebControls.TextBox SRTotalDiscountAmt;
         
         /// <summary>
-        /// TotalDiscountAmt control.
+        /// SRTotalTaxAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TotalDiscountAmt;
+        protected global::System.Web.UI.WebControls.TextBox SRTotalTaxAmt;
         
         /// <summary>
-        /// TotalTaxAmt control.
+        /// SRTotalOrderAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TotalTaxAmt;
+        protected global::System.Web.UI.WebControls.TextBox SRTotalOrderAmt;
         
         /// <summary>
-        /// TotalOrderAmt control.
+        /// Cash control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TotalOrderAmt;
+        protected global::System.Web.UI.WebControls.TextBox Cash;
         
         /// <summary>
-        /// btnCencelDtl control.
+        /// Demurages control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
+        protected global::System.Web.UI.WebControls.TextBox Demurages;
+        
+        /// <summary>
+        /// RoudOff control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox RoudOff;
+        
+        /// <summary>
+        /// Total control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Total;
+        
+        /// <summary>
+        /// Change control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Change;
+        
+        /// <summary>
+        /// SalesOrderDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField SalesOrderDate;
+        
+        /// <summary>
+        /// PageStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField PageStatus;
         
         /// <summary>
         /// btnSaveDtl control.
@@ -346,13 +400,22 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.Button btnSaveDtl;
         
         /// <summary>
-        /// btnConverOrder control.
+        /// btnFinalize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConverOrder;
+        protected global::System.Web.UI.WebControls.Button btnFinalize;
+        
+        /// <summary>
+        /// btnCencelDtl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnCencelDtl;
         
         /// <summary>
         /// btnPrint control.

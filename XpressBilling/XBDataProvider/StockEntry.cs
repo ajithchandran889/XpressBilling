@@ -46,8 +46,8 @@ namespace XBDataProvider
 
         }
 
-        public static int SaveSE(string companyCode, int adjustmentType, string stockEntrynNo, int status,DateTime documentDate,
-                                   string locationCode, string createdUser,string currentUser, string reference, int amount, string currencyCode, int selectedSequenceId)
+        public static int SaveSE(string companyCode, int adjustmentType, string stockEntrynNo, int status, DateTime documentDate,
+                           string locationCode, string createdUser, string currentUser, string reference, float amount, string currencyCode, int selectedSequenceId)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Transactiontype", adjustmentType));
                 cmd.Parameters.Add(new SqlParameter("@Reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@DocumentDate", documentDate));
-                cmd.Parameters.Add(new SqlParameter("@Amount",amount));
+                cmd.Parameters.Add(new SqlParameter("@Amount", amount));
                 cmd.Parameters.Add(new SqlParameter("@Currency", currencyCode));
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@Createdby", createdUser));
@@ -78,7 +78,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SaveSEDetail(int SEMasterId,  int totalAmount,  string user, DataTable SEDetail)
+        public static bool SaveSEDetail(int SEMasterId, float totalAmount, string user, DataTable SEDetail)
         {
             try
             {

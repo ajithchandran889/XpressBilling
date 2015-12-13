@@ -109,15 +109,15 @@ namespace XpressBilling.Account
                 Telephone.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
                 Reference.ReadOnly = true;
-                Amount.Text = row["Amount"].ToString();
+                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
                 Amount.ReadOnly = true;
                 MIPayTerms.Text = row["PaymentTerms"].ToString();
                 MIDeliveryTerms.Text = row["DeliveryTerms"].ToString();
                 MIShipToAddress.Text = row["ShiptoAddress"].ToString();
-                MITotalAmount.Text = row["Amount"].ToString();
-                MITotalDiscountAmt.Text = row["DiscountAmount"].ToString();
-                MITotalTaxAmt.Text = row["TaxAmount"].ToString();
-                MITotalOrderAmt.Text = row["OrderAmount"].ToString();
+                MITotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
+                MITotalDiscountAmt.Text =  Convert.ToDecimal(row["DiscountAmount"]).ToString("0.00");
+                MITotalTaxAmt.Text =  Convert.ToDecimal(row["TaxAmount"]).ToString("0.00");
+                MITotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
                 //CreatedUser.Text = row["CreatedBy"].ToString();
                 //CreatedUser.Enabled = false;
                 //Amount.Text = row["Amount"].ToString();
@@ -194,14 +194,14 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("ItemCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("ItemName", typeof(string)));
-                dt.Columns.Add(new DataColumn("Rate", typeof(int)));
+                dt.Columns.Add(new DataColumn("Rate", typeof(float)));
                 dt.Columns.Add(new DataColumn("Qty", typeof(int)));
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
-                dt.Columns.Add(new DataColumn("DiscountPercentage", typeof(string)));
-                dt.Columns.Add(new DataColumn("DiscountAmt", typeof(int)));
-                dt.Columns.Add(new DataColumn("TaxPercentage", typeof(string)));
-                dt.Columns.Add(new DataColumn("TaxAmount", typeof(int)));
-                dt.Columns.Add(new DataColumn("NetAmount", typeof(string)));
+                dt.Columns.Add(new DataColumn("DiscountPercentage", typeof(float)));
+                dt.Columns.Add(new DataColumn("DiscountAmt", typeof(float)));
+                dt.Columns.Add(new DataColumn("TaxPercentage", typeof(float)));
+                dt.Columns.Add(new DataColumn("TaxAmount", typeof(float)));
+                dt.Columns.Add(new DataColumn("NetAmount", typeof(float)));
                 for (int i = 0; i < 20; i++)
                 {
                     dr = dt.NewRow();
@@ -211,11 +211,11 @@ namespace XpressBilling.Account
                     dr["Rate"] = DBNull.Value;
                     dr["Qty"] = DBNull.Value;
                     dr["BaseUnitCode"] = string.Empty;
-                    dr["DiscountPercentage"] = string.Empty;
+                    dr["DiscountPercentage"] = DBNull.Value;
                     dr["DiscountAmt"] = DBNull.Value;
-                    dr["TaxPercentage"] = string.Empty;
+                    dr["TaxPercentage"] = DBNull.Value;
                     dr["TaxAmount"] = DBNull.Value;
-                    dr["NetAmount"] = string.Empty;
+                    dr["NetAmount"] = DBNull.Value;
                     dt.Rows.Add(dr);
                 }
 
@@ -275,7 +275,7 @@ namespace XpressBilling.Account
         private void AddNewRowToGrid()
         {
             int rowIndex = 0;
-
+            Amount.Text = Request.Form[Amount.UniqueID];
             if (ViewState["CurrentTable"] != null)
             {
                 DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
@@ -317,9 +317,18 @@ namespace XpressBilling.Account
                             dtCurrentTable.Rows[i]["TaxAmount"] = box10.Text;
                         }
                         dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
-                        dtCurrentTable.Rows[i]["DiscountPercentage"] = box7.Text;
-                        dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
-                        dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
+                        if (box7.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["DiscountPercentage"] = box7.Text;
+                        }
+                        if (box9.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
+                        }
+                        if (box11.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
+                        }
                         rowIndex++;
                     }
                     for (int j = 0; j < 5; j++)
@@ -364,14 +373,14 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("Qty", typeof(int)));
                 dt.Columns.Add(new DataColumn("Currency", typeof(string)));
-                dt.Columns.Add(new DataColumn("Rate", typeof(int)));
-                dt.Columns.Add(new DataColumn("TotalRate", typeof(int)));
-                dt.Columns.Add(new DataColumn("DiscountPercentage", typeof(string)));
-                dt.Columns.Add(new DataColumn("DiscountAmt", typeof(int)));
+                dt.Columns.Add(new DataColumn("Rate", typeof(float)));
+                dt.Columns.Add(new DataColumn("TotalRate", typeof(float)));
+                dt.Columns.Add(new DataColumn("DiscountPercentage", typeof(float)));
+                dt.Columns.Add(new DataColumn("DiscountAmt", typeof(float)));
                 dt.Columns.Add(new DataColumn("Tax", typeof(string)));
-                dt.Columns.Add(new DataColumn("TaxPercentage", typeof(string)));
-                dt.Columns.Add(new DataColumn("TaxAmount", typeof(int)));
-                dt.Columns.Add(new DataColumn("NetAmount", typeof(string)));
+                dt.Columns.Add(new DataColumn("TaxPercentage", typeof(float)));
+                dt.Columns.Add(new DataColumn("TaxAmount", typeof(float)));
+                dt.Columns.Add(new DataColumn("NetAmount", typeof(float)));
                 dt.Columns.Add(new DataColumn("Reference", typeof(string)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
                 dt.Columns.Add(new DataColumn("ErrorMsg", typeof(string)));
@@ -412,14 +421,14 @@ namespace XpressBilling.Account
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
                         dr["Currency"] = "";
-                        dr["Rate"] = Convert.ToInt32(box4.Text);
-                        dr["TotalRate"] = Convert.ToInt32(Request.Form[Amount.UniqueID]);
-                        dr["DiscountPercentage"] = box7.Text;
-                        dr["DiscountAmt"] = Convert.ToInt32(box8.Text);
+                        dr["Rate"] =  float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TotalRate"] =  float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Tax"] = box9.Text;
-                        dr["TaxPercentage"] = box9.Text;
-                        dr["TaxAmount"] = Convert.ToInt32(box10.Text);
-                        dr["NetAmount"] = box11.Text;
+                        dr["TaxPercentage"] = float.Parse(box9.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TaxAmount"] = float.Parse(box10.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["NetAmount"] = float.Parse(box11.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Status"] = 1;
                         dr["ErrorMsg"] = null;
                         dr["Reference"] = Reference.Text;
@@ -436,7 +445,7 @@ namespace XpressBilling.Account
                 
                 if (InvoiceId.Value!="" && InvoiceId.Value !="0")
                 {
-                    if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, Convert.ToInt32(MITotalAmount.Text), Convert.ToInt32(MITotalDiscountAmt.Text), Convert.ToInt32(MITotalTaxAmt.Text), Convert.ToInt32(MITotalOrderAmt.Text),User.Identity.Name,dt))
+                    if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, float.Parse(MITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt))
                     {
                         Amount.Text = Request.Form[Amount.UniqueID];
                         SaveSuccess.Visible = false;
@@ -465,7 +474,7 @@ namespace XpressBilling.Account
                     DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     returnValue=XBDataProvider.ManualInvoice.AddManualInvoiceWithDetails(Session["CompanyCode"].ToString(),CustomerId.SelectedValue, Invoice.Text,1,
                                                Convert.ToInt32(InvoiceType.SelectedValue), date, Name.Text, Location.Text, SalesMan.Text, Telephone.Text, Reference.Text,
-                                                MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, Convert.ToInt32(MITotalAmount.Text), Convert.ToInt32(MITotalDiscountAmt.Text), Convert.ToInt32(MITotalTaxAmt.Text), Convert.ToInt32(MITotalOrderAmt.Text), User.Identity.Name, selectedSequenceId, dt);
+                                                MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, float.Parse(MITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, selectedSequenceId, dt);
                     if (returnValue>0)
                     {
                         InvoiceId.Value = returnValue.ToString();

@@ -98,7 +98,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SaveSQDetail(int SQMasterId,string paymentTerms,string deliveryTerms,int totalAmount,int totalDiscountAmt,int totalTaxAmt,int totalNetAmt,string user,DataTable SQDetail)
+        public static bool SaveSQDetail(int SQMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, DataTable SQDetail)
         {
             try
             {
@@ -124,7 +124,6 @@ namespace XBDataProvider
                 return false;
             }
         }
-
         public static DataTable GetSalesQuotationDtlById(int Id)
         {
             DataTable dtTable = new DataTable();

@@ -145,6 +145,7 @@
     <Content Include="Account\EditBankCode.aspx" />
     <Content Include="Account\EditBankMst.aspx" />
     <Content Include="Account\EditBaseUnit.aspx" />
+    <Content Include="Account\EditCity.aspx" />
     <Content Include="Account\EditContact.aspx" />
     <Content Include="Account\EditEmployeeMaster.aspx" />
     <Content Include="Account\EditItemGroup.aspx" />
@@ -183,6 +184,8 @@
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Account\SalesQuotationEdit.aspx" />
     <Content Include="Account\SalesQuotation.aspx" />
+    <Content Include="Account\SalesReturn.aspx" />
+    <Content Include="Account\SalesReturnEdit.aspx" />
     <Content Include="Account\StockEntry.aspx" />
     <Content Include="Account\StockEntryEdit.aspx" />
     <Content Include="Account\StockRegister.aspx" />
@@ -468,6 +471,13 @@
     <Compile Include="Account\EditBaseUnit.aspx.designer.cs">
       <DependentUpon>EditBaseUnit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\EditCity.aspx.cs">
+      <DependentUpon>EditCity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\EditCity.aspx.designer.cs">
+      <DependentUpon>EditCity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\EditContact.aspx.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -705,6 +715,20 @@
     </Compile>
     <Compile Include="Account\SalesQuotation.aspx.designer.cs">
       <DependentUpon>SalesQuotation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SalesReturn.aspx.cs">
+      <DependentUpon>SalesReturn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SalesReturn.aspx.designer.cs">
+      <DependentUpon>SalesReturn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SalesReturnEdit.aspx.cs">
+      <DependentUpon>SalesReturnEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SalesReturnEdit.aspx.designer.cs">
+      <DependentUpon>SalesReturnEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\StockEntry.aspx.cs">
       <DependentUpon>StockEntry.aspx</DependentUpon>

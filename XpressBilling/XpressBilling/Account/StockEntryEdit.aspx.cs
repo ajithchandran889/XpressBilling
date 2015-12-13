@@ -109,7 +109,7 @@ namespace XpressBilling.Account
                 Date.ReadOnly = true;
                 CreatedUser.Text = row["CreatedBy"].ToString();
                 CreatedUser.Enabled = false;
-                Amount.Text = row["Amount"].ToString();
+                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
                 Amount.ReadOnly = true;
                 Currency.Text = row["Currency"].ToString();
                 Currency.ReadOnly = true;
@@ -170,9 +170,9 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("ItemCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("ItemName", typeof(string)));
-                dt.Columns.Add(new DataColumn("Rate", typeof(int)));
+                dt.Columns.Add(new DataColumn("Rate", typeof(float)));
                 dt.Columns.Add(new DataColumn("Qty", typeof(int)));
-                dt.Columns.Add(new DataColumn("Amount", typeof(string)));
+                dt.Columns.Add(new DataColumn("Amount", typeof(float)));
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
                 for (int i = 0; i < 20; i++)
                 {
@@ -182,7 +182,7 @@ namespace XpressBilling.Account
                     dr["ItemName"] = string.Empty;
                     dr["Rate"] = DBNull.Value;
                     dr["Qty"] = DBNull.Value;
-                    dr["Amount"] = string.Empty;
+                    dr["Amount"] = DBNull.Value;
                     dr["BaseUnitCode"] = string.Empty;
                     dt.Rows.Add(dr);
                 }
@@ -222,10 +222,10 @@ namespace XpressBilling.Account
                     selectedSequenceId = Convert.ToInt32(OpeningSequenceNoID.Value);
                 }
                 DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                int amount = 0;
+                float amount = 0;
                 if (Amount.Text!="")
                 {
-                    amount = Convert.ToInt32(Amount.Text);
+                    amount = float.Parse(Amount.Text, CultureInfo.InvariantCulture.NumberFormat);
                 }
                 returnValue = XBDataProvider.StockEntry.SaveSE(Session["CompanyCode"].ToString(),Convert.ToInt32(AdjustmentType.SelectedValue), Document.Text, 1, date, Location.SelectedValue, CreatedUser.SelectedValue,
                     User.Identity.Name, Reference.Text, amount, Currency.Text, selectedSequenceId);
@@ -310,8 +310,8 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("Qty", typeof(int)));
                 dt.Columns.Add(new DataColumn("Currency", typeof(string)));
-                dt.Columns.Add(new DataColumn("Rate", typeof(int)));
-                dt.Columns.Add(new DataColumn("Amount", typeof(int)));
+                dt.Columns.Add(new DataColumn("Rate", typeof(float)));
+                dt.Columns.Add(new DataColumn("Amount", typeof(float)));
                 dt.Columns.Add(new DataColumn("Reference", typeof(string)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
                 dt.Columns.Add(new DataColumn("ErrorMsg", typeof(string)));
@@ -349,8 +349,8 @@ namespace XpressBilling.Account
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
                         dr["Currency"] = "";
-                        dr["Rate"] = Convert.ToInt32(box4.Text);
-                        dr["Amount"] = Convert.ToInt32(box7.Text);
+                        dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Amount"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Status"] = 1;
                         dr["Reference"] = "";
                         dr["ErrorMsg"] = null;
@@ -365,7 +365,7 @@ namespace XpressBilling.Account
                 }
                 if (dt.Rows.Count > 0)
                 {
-                    XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value), Convert.ToInt32(Request.Form[Amount.UniqueID]), User.Identity.Name, dt);
+                    XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value), float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);
                      btnConvertStockRegister.Visible = true;
                      btnPrint.Visible = true;
                      Amount.Text = Request.Form[Amount.UniqueID].ToString();
@@ -452,7 +452,10 @@ namespace XpressBilling.Account
                             dtCurrentTable.Rows[i]["Qty"] = box5.Text;
                         }
                         dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
-                        dtCurrentTable.Rows[i]["Amount"] = box7.Text;
+                        if (box7.Text != "")
+                        {
+                            dtCurrentTable.Rows[i]["Amount"] = box7.Text;
+                        }
                         rowIndex++;
                     }
                     for (int j = 0; j < 5; j++)
