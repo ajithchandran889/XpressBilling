@@ -178,7 +178,7 @@
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-4">Ship To Address</label>
                             <div class="col-xs-12 col-sm-8 col-md-8">
-                                <asp:TextBox runat="server" ID="MIShipToAddress" class="form-control required" placeholder="Ship To Address" TextMode="MultiLine" ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="MIShipToAddress" class="form-control" placeholder="Ship To Address" TextMode="MultiLine" ClientIDMode="Static"></asp:TextBox>
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                             <asp:HiddenField ID="InvoiceId" runat="server" ClientIDMode="Static"/>
                             <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
                             <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
-                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
+                            <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary ManualInvoiceBtnDetail" Text="Save" OnClick="SaveBtnDetailClick" />
                             <%--<asp:Button ID="btnConverOrder" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Order" Visible="false" OnClick="BtnConvertOrderClick" />--%>
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();"/>
                         </div>

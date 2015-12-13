@@ -418,12 +418,14 @@ namespace XpressBilling.Account
                 if (dt.Rows.Count > 0)
                 {
                     XBDataProvider.FirstFreeNumber.SaveFirstFreeMasterDetail(dt);
+                    SaveSuccess.Visible = true;
                 }
                 SetFirstFreeDetailsChildGrid();
             }
             catch (Exception ex)
             {
-
+                failureMessage.Visible = true;
+                SaveSuccess.Visible = true;
             }
 
 

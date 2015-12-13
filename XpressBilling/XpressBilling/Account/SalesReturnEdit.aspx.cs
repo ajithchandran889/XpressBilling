@@ -351,7 +351,7 @@ namespace XpressBilling.Account
                 if (returnValue > 0)
                 {
                     SalesReturnMstId.Value = returnValue.ToString();
-                    PageStatus.Value = "edit";
+                    PageStatus.Value = "creating";
                     gridDetails.Visible = true;
                     SaveBtn.Visible = false;
                     CancelBtn.Visible = false;
@@ -482,7 +482,10 @@ namespace XpressBilling.Account
                 {
                     XBDataProvider.SalesRetrun.SaveSRDetail(Convert.ToInt32(SalesReturnMstId.Value), SRPayTerms.Text, float.Parse(SRTotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);
                     PageStatus.Value = "edit";
+                    Amount.Text = Request.Form[Amount.UniqueID];
                     Status.SelectedValue = "1";
+                    btnFinalize.Visible = true;
+                    btnPrint.Visible = true;
                     SaveSuccess.Visible = false;
                     UpdateSuccess.Visible = true;
                     failure.Visible = false;
@@ -570,7 +573,7 @@ namespace XpressBilling.Account
         private void AddNewRowToGrid()
         {
             int rowIndex = 0;
-
+            Amount.Text = Request.Form[Amount.UniqueID];
             if (ViewState["CurrentTable"] != null)
             {
                 DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
@@ -597,7 +600,7 @@ namespace XpressBilling.Account
                         dtCurrentTable.Rows[i]["ItemName"] = box3.Text;
                         if (box4.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["Rate"] = box4.Text;
+                            dtCurrentTable.Rows[i]["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         if (box5.Text != "")
                         {
@@ -605,25 +608,25 @@ namespace XpressBilling.Account
                         }
                         if (box8.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["DiscountAmt"] = box8.Text;
+                            dtCurrentTable.Rows[i]["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         if (box10.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["TaxAmount"] = box10.Text;
+                            dtCurrentTable.Rows[i]["TaxAmount"] = float.Parse(box10.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
                         if (box7.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["DiscountPercentage"] = box7.Text;
+                            dtCurrentTable.Rows[i]["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         if (box9.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
+                            dtCurrentTable.Rows[i]["TaxPercentage"] =  float.Parse(box9.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         dtCurrentTable.Rows[i]["Tax"] = hdnFld.Value;
                         if (box11.Text != "")
                         {
-                            dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
+                            dtCurrentTable.Rows[i]["NetAmount"] =  float.Parse(box11.Text, CultureInfo.InvariantCulture.NumberFormat);
                         }
                         rowIndex++;
                     }

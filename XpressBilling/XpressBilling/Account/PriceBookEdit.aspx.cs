@@ -59,7 +59,7 @@ namespace XpressBilling.Account
                     lblSearch.Visible = false;
                     txtSearch.Visible = false;
                     btnSearch.Visible = false;
-                    PriceBookDetail.Visible = false;
+                    gridDetails.Visible = false;
                     //SetInitialRow();
                 }
                 
@@ -334,7 +334,7 @@ namespace XpressBilling.Account
                     OrderType_1.Enabled = false;
                     PriceBookDocNo.Text = newDocumentNumber;
                     PriceBookId.Value = id.ToString();
-                    PriceBookDetail.Visible = true;
+                    gridDetails.Visible = true;
                     SetInitialRow();
                 }
             }
@@ -418,13 +418,15 @@ namespace XpressBilling.Account
                     if (dt.Rows.Count > 0)
                     {
                         XBDataProvider.PriceBook.SavePriceBookMasterDetail(dt);
+                        SaveSuccess.Visible = true;
                     }
                     SetPriceBookDetailsChildGrid();
                 
             }
             catch(Exception ex)
             {
-
+                failureMessage.Visible = true;
+                SaveSuccess.Visible = true;
             }
            
         }

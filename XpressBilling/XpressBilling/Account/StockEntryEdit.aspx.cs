@@ -231,6 +231,7 @@ namespace XpressBilling.Account
                     User.Identity.Name, Reference.Text, amount, Currency.Text, selectedSequenceId);
                 if (returnValue > 0)
                 {
+                    PageStatus.Value = "creating";
                     StokeEntryMstId.Value = returnValue.ToString();
                     gridDetails.Visible = true;
                     SaveBtn.Visible = false;
@@ -422,7 +423,7 @@ namespace XpressBilling.Account
         private void AddNewRowToGrid()
         {
             int rowIndex = 0;
-
+            Amount.Text = Request.Form[Amount.UniqueID].ToString();
             if (ViewState["CurrentTable"] != null)
             {
                 DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];

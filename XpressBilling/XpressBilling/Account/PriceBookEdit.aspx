@@ -4,6 +4,13 @@
     <div class="page-content">
         <div class="row content-holder">
             <div class="col-xs-12 col-sm-12 col-md-12">
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
                 <div class="page-header">Add Price Book Details</div>
                 <div class="form-group">
                     <div class="form-group">
@@ -62,40 +69,50 @@
             &nbsp;&nbsp;
             <asp:TextBox ID="txtSearch" runat="server" CssClass="txt"></asp:TextBox>
             <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
-            <asp:GridView ID="PriceBookDetail" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID">
-                <Columns>
-                    <asp:TemplateField HeaderText="Item">
+            <asp:Panel runat="server" ID="gridDetails">
+            <div class="grid_wrapper">
+                <div class="grid_header">
+                    <h2 class="pull-left">Transaction</h2>
+                    
+                </div>
+                <asp:GridView ID="PriceBookDetail" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID">
+                     <RowStyle CssClass="Odd" />
+                     <AlternatingRowStyle CssClass="Even" />
+                    <Columns>
+                        <asp:TemplateField HeaderText="Item">
+                            <ItemTemplate>
+                                <asp:TextBox ID="ItemCode" class="form-control ItemCode" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Supplier Barcode">
+                            <ItemTemplate>
+                                <asp:TextBox ID="SupplierBarcode" class="form-control SupplierBarcode" ClientIDMode="Static" runat="server" Text='<%# Bind("SupplierBarcode") %>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <%--<asp:TemplateField HeaderText="Description">
                         <ItemTemplate>
-                            <asp:TextBox ID="ItemCode" class="form-control ItemCode" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                             <asp:TextBox ID="Description" class="form-control" ClientIDMode="Static" runat="server"></asp:TextBox>
                         </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Supplier Barcode">
-                        <ItemTemplate>
-                            <asp:TextBox ID="SupplierBarcode" class="form-control SupplierBarcode" ClientIDMode="Static" runat="server" Text='<%# Bind("SupplierBarcode") %>'></asp:TextBox>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <%--<asp:TemplateField HeaderText="Description">
-                    <ItemTemplate>
-                         <asp:TextBox ID="Description" class="form-control" ClientIDMode="Static" runat="server"></asp:TextBox>
-                    </ItemTemplate>
-                </asp:TemplateField>--%>
-                    <asp:TemplateField HeaderText="Currency">
-                        <ItemTemplate>
-                            <asp:TextBox ID="CurrencyCode" class="form-control CurrencyCode" ClientIDMode="Static" runat="server" Text='<%# Bind("CurrencyCode") %>'></asp:TextBox>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="MRP">
-                        <ItemTemplate>
-                            <asp:TextBox ID="MRP" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("MRP","{0:n}")%>'></asp:TextBox>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Price">
-                        <ItemTemplate>
-                            <asp:TextBox ID="Price" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("Price","{0:n}")%>'></asp:TextBox>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
+                    </asp:TemplateField>--%>
+                        <asp:TemplateField HeaderText="Currency">
+                            <ItemTemplate>
+                                <asp:TextBox ID="CurrencyCode" class="form-control CurrencyCode" ClientIDMode="Static" runat="server" Text='<%# Bind("CurrencyCode") %>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="MRP">
+                            <ItemTemplate>
+                                <asp:TextBox ID="MRP" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("MRP","{0:n}")%>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Price">
+                            <ItemTemplate>
+                                <asp:TextBox ID="Price" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("Price","{0:n}")%>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+                </asp:Panel>
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">
                     <asp:Button ID="SaveDetail" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="savePriceBookClickDetails" />
@@ -106,7 +123,7 @@
             <div style="display: none;">
                 <asp:Button ID="ButtonAdd" ClientIDMode="Static" runat="server" OnClick="ButtonAddClick" Text="Add New Row" />
             </div>
-        </div>
     </div>
-    <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static"/>
+    </div>
+    <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static" />
 </asp:Content>

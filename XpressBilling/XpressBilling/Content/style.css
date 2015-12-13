@@ -372,3 +372,8 @@ label {
         }
     }
 }
+.errorValidation
+{
+    border-style: solid;
+    border-color: #ff0000 ;
+}

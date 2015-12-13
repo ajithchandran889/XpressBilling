@@ -4,6 +4,13 @@
     <div class="page-content">
         <div class="row content-holder">
             <div class="col-xs-12 col-sm-12 col-md-12">
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
                 <div class="page-header">Add First Free Number</div>
                 <div class="form-group">
                     <div class="form-group">
@@ -147,7 +154,7 @@
 
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">
-                    <a id="CancelFirstFreeDetails" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a><asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
+                    <a id="CancelFirstFreeDetails" href="/Account/FirstFreeNumber.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a><asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
                     
                 </div>
             </div>

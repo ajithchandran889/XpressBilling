@@ -267,6 +267,7 @@ namespace XpressBilling.Account
                 if (returnValue > 0)
                 {
                     SalesQuotationId.Value = returnValue.ToString();
+                    PageStatus.Value = "creating";
                     gridDetails.Visible = true;
                     SaveBtn.Visible = false;
                     CancelBtn.Visible = false;

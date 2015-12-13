@@ -2,7 +2,7 @@
 var itemMasterDetails = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
-
+var contactArray = [];
 var itemMasterArrayStockEntry = [];
 var itemMasterDetailsStockEntry = {};
 var itemMasterArrayStockEntryByName = [];
@@ -53,6 +53,24 @@ $(function () {
 $(document).ready(function () {
     var obj = {};
     obj.companyCode = $.trim($("#CompanyCode").val());
+    if ($("#SalesMan").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SalesQuotationEdit.aspx/GetContactCodes",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                contactArray = [];
+                $.each(data.d, function (i, j) {
+                    contactArray.push(j.code);
+                });
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    }
     if ($("#StokeEntryMstId").length > 0)
     {
         $.ajax({
@@ -417,7 +435,7 @@ $(document).ready(function () {
         });
         $("#TotalQty").val(totalQty);
     }
-    if ($("#StokeEntryMstId").val() != "" && $("#PageStatus").val() != "create") {
+    if ($("#StokeEntryMstId").length > 0 && $("#PageStatus").val() != "create") {
         itemMasterArrayStockEntry = [];
         itemMasterDetailsStockEntry = {};
         var i = 0;
@@ -425,14 +443,14 @@ $(document).ready(function () {
             var val = $("input[id*='Item']", $(this)).val();
             var qnty = parseInt($("input[id*='SEQuantity']", $(this)).val());
             var rate = parseFloat($("input[id*='SERate']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
                 SEItemRowDetails[i] = [qnty, rate, qnty * rate];
                 i++;
             }
 
         });
     }
-    else if ($("#PageStatus").val() == "create") {
+    if ($("#StokeEntryMstId").length > 0 && $("#PageStatus").val() == "creating") {
         $(".StockUnit").attr('readonly', 'readonly');
         $(".StockAmount").attr('readonly', 'readonly');
     }
@@ -447,7 +465,7 @@ $(document).ready(function () {
             var rate = parseFloat($("input[id*='SRItemRate']", $(this)).val());
             var discountAmt = parseFloat($("input[id*='SRDiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='SRTaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -475,7 +493,7 @@ $(document).ready(function () {
             $("#SRTotalTaxAmt").attr('readonly', 'readonly');
             $("#SRTotalOrderAmt").attr('readonly', 'readonly');
         }
-        else
+        else if ($("#Status").val() == "1")
         {
             $(".SRItem").attr('readonly', 'readonly');
             $(".SRItemName").attr('readonly', 'readonly');
@@ -492,7 +510,7 @@ $(document).ready(function () {
             $("#SRTotalOrderAmt").attr('readonly', 'readonly');
         }
     }
-    if (($("#InvoiceId").val() != "" || $("#InvoiceId").val() != "0") && $("#PageStatus").val() != "create") {
+    if ($("#InvoiceId").length > 0 && $("#PageStatus").val() != "create") {
         itemMasterArrayManualInvoice = []; 
         itemMasterDetailsManualInvoice = {};
         var i = 0;
@@ -503,7 +521,7 @@ $(document).ready(function () {
             var rate = parseFloat($("input[id*='MIItemRate']", $(this)).val());
             var discountAmt = parseFloat($("input[id*='MIDiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='MITaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -513,12 +531,14 @@ $(document).ready(function () {
                 i++;
             }
 
-        }); 
-        $(".MITaxAmt").attr('readonly', 'readonly');
-        $(".MINetAmt").attr('readonly', 'readonly');
-        $(".MIUnit").attr('readonly', 'readonly');
-        $(".MIItem").attr('readonly', 'readonly');
-        $(".MIItemName").attr('readonly', 'readonly');
+        });
+        if ($("#PageStatus").val() == "edit") {
+            $(".MITaxAmt").attr('readonly', 'readonly');
+            $(".MINetAmt").attr('readonly', 'readonly');
+            $(".MIUnit").attr('readonly', 'readonly');
+            $(".MIItem").attr('readonly', 'readonly');
+            $(".MIItemName").attr('readonly', 'readonly');
+        }
     }
     else if ($("#PageStatus").val() == "create")
     {
@@ -526,7 +546,7 @@ $(document).ready(function () {
         $(".MINetAmt").attr('readonly', 'readonly');
         $(".MIUnit").attr('readonly', 'readonly');
     }
-    if (($("#SalesInvoiceId").val() != "" || $("#SalesInvoiceId").val() != "0") && $("#PageStatus").val() != "create") {
+    if ($("#SalesInvoiceId").length > 0 && $("#PageStatus").val() != "create") {
         itemMasterArrayInvoice = [];
         itemMasterDetailsInvoice = {};
         var i = 0;
@@ -537,7 +557,7 @@ $(document).ready(function () {
             var rate = parseFloat($("input[id*='IItemRate']", $(this)).val());
             var discountAmt = parseFloat($("input[id*='IDiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='ITaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -587,7 +607,8 @@ $(document).ready(function () {
             var rate = parseFloat($("input[id*='SQRate']", $(this)).val());
             var discountAmt = parseFloat($("input[id*='SQDiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='SQTaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined") {
+            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+                
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -598,11 +619,15 @@ $(document).ready(function () {
             }
 
         });
-        $(".SQTaxAmt").attr('readonly', 'readonly');
-        $(".SQNetAmt").attr('readonly', 'readonly');
-        $(".SQUnit").attr('readonly', 'readonly');
-        $(".SQItem").attr('readonly', 'readonly');
-        $(".SQName").attr('readonly', 'readonly');
+        if ($("#PageStatus").val() == "edit")
+        {
+            $(".SQTaxAmt").attr('readonly', 'readonly');
+            $(".SQNetAmt").attr('readonly', 'readonly');
+            $(".SQUnit").attr('readonly', 'readonly');
+            $(".SQItem").attr('readonly', 'readonly');
+            $(".SQName").attr('readonly', 'readonly');
+        }
+        
     }
     else if ($("#PageStatus").val() == "create") {
         $(".SQTaxAmt").attr('readonly', 'readonly');
@@ -879,30 +904,17 @@ function SearchText() {
         });
     });
     $(document).on("keydown", "#SalesMan", function (e) {
-        var obj = {};
-        obj.companyCode = $.trim($("#CompanyCode").val());
-        var contactArray = [];
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "SalesQuotationEdit.aspx/GetContactCodes",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            success: function (data) {
-                
-                $.each(data.d, function (i, j) {
-                    contactArray.push(j.code);
-                });
-                $("#SalesMan").autocomplete({
-                    source: contactArray
-                });
-            },
-            error: function (result) {
-                alert("Error");
-            }
+        $(this).autocomplete({
+            source: contactArray
         });
-        
     });
+    //$(document).on("keydown", "#SalesMan", function (e) {
+    //    var obj = {};
+    //    obj.companyCode = $.trim($("#CompanyCode").val());
+        
+        
+        
+    //});
     
 
     $(".Name").attr('readonly', 'readonly');
@@ -1592,7 +1604,6 @@ function SearchText() {
                 }
                 row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
                 if (!SQItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-                    
                     row.cells[10].getElementsByTagName("input")[0].value = netAmount;
                     SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
                     if ($("#TotalAmount").val() == "") {
@@ -1621,7 +1632,7 @@ function SearchText() {
                     }
                 }
                 else {
-                    var itemArray = SQItemRowDetails[rowIndex];
+                    var itemArray = SQItemRowDetails[rowIndex]; 
                     var totalAmt = parseFloat($("#TotalAmount").val());
                     var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
                     var totalTax = parseFloat($("#TotalTaxAmt").val());
@@ -2045,3 +2056,26 @@ function SearchText() {
         }
 
     }
+
+    $(document).on("click", ".ManualInvoiceBtnDetail", function (e) {
+        if($("#MIShipToAddress").val()=="")
+        {
+            $("#MIShipToAddress").addClass("errorValidation");
+            return false;
+        }
+        else
+        {
+            $("#MIShipToAddress").removeClass("errorValidation");
+            return true;
+        }
+    });
+    $(document).on("click", ".SalesInvoiceBtnDetail", function (e) {
+        if ($("#IShipToAddress").val() == "") {
+            $("#IShipToAddress").addClass("errorValidation");
+            return false;
+        }
+        else {
+            $("#IShipToAddress").removeClass("errorValidation");
+            return true;
+        }
+    });

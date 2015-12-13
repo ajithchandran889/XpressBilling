@@ -275,6 +275,7 @@ namespace XpressBilling.Account
         private void AddNewRowToGrid()
         {
             int rowIndex = 0;
+            PageStatus.Value = "creating";
             Amount.Text = Request.Form[Amount.UniqueID];
             if (ViewState["CurrentTable"] != null)
             {
