@@ -74,8 +74,8 @@ namespace XpressBilling.Account
         public void SetCompanyDetails(DataTable companyDetails)
         {
             DataRow row = companyDetails.Rows[0];
-            Company.Text = row["CompanyCode"].ToString();
-            Company.ReadOnly = true;
+            AddCompany.Text = row["CompanyCode"].ToString();
+            AddCompany.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             //DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
             string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
@@ -158,7 +158,7 @@ namespace XpressBilling.Account
                 {
                     int retunValue = 0;
                     dbstatus = true;
-                    retunValue = XBDataProvider.Company.SaveCompany(Company.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
+                    retunValue = XBDataProvider.Company.SaveCompany(AddCompany.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
 
                     if (retunValue == 1)

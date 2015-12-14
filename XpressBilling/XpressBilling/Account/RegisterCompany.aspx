@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Company" name="Company" class="form-control required" placeholder="Company" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RgstCompany" name="Company" class="form-control required" placeholder="Company" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Name" class="control-label col-xs-2 col-md-2">Name</label>
                     <div class="col-xs-10 col-md-2">
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <label for="Note" class="control-label col-xs-2 col-md-2">Note</label>
                     <div class="col-xs-10 col-md-6">
-                        <asp:TextBox runat="server" ID="Note" class="form-control required" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Note" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                     </div>
 
                 </div>

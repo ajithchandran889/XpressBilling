@@ -67,13 +67,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl alreadyexistmsg;
         
         /// <summary>
-        /// Company control.
+        /// AddCompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Company;
+        protected global::System.Web.UI.WebControls.TextBox AddCompany;
         
         /// <summary>
         /// Name control.

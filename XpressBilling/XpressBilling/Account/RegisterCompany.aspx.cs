@@ -19,7 +19,7 @@ namespace XpressBilling.Account
         protected void SaveCompanyClick(object sender, EventArgs e)
         {
             bool status = false;
-            status = XBDataProvider.Company.SaveCompanyInitail(Company.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, Note.Text, true);
+            status = XBDataProvider.Company.SaveCompanyInitail(RgstCompany.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, Note.Text, true);
             if(status)
             {
                 Response.Redirect("Register");
