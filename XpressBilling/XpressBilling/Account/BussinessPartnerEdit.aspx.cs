@@ -48,6 +48,8 @@ namespace XpressBilling.Account
                 {
                     ddlStatus.SelectedValue = "1";
                     ddlStatus.Enabled = false;
+                    ddlStatus.Visible = false;
+                    lblstatus.Visible = false;
                     BPId.Value = "0";
                 }
             }
@@ -77,7 +79,7 @@ namespace XpressBilling.Account
             Tin.Text = row["TaxId1"].ToString();
             Cst.Text = row["TaxId2"].ToString();
             Name.Text = row["Name"].ToString();
-            Name.ReadOnly = true;
+            //Name.ReadOnly = true;
             Phone.Text = row["Phone"].ToString();
             Phone.ReadOnly = true;
             Mobile.Text = row["Mobile"].ToString();
@@ -99,6 +101,7 @@ namespace XpressBilling.Account
             City.SelectedValue = row["City"].ToString();
             City.Enabled = false;
             Area.Text = row["Area"].ToString();
+            Area.ReadOnly = true;
             Area.ReadOnly = true;
             State.Text = row["State"].ToString();
             State.ReadOnly = true;
@@ -128,51 +131,56 @@ namespace XpressBilling.Account
                 bool status = false;
                 if (BPId.Value != "0" && BPId.Value != "")
                 {
-                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name, Convert.ToInt32(ddlStatus.SelectedValue), orderType);
+                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value,Name.Text, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name, Convert.ToInt32(ddlStatus.SelectedValue), orderType);
                     if (status)
                     {
-                        //Message.Text 
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        //Message.Text 
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
-                {
-                    
+                {                    
                     int retunValue = 0;
                     retunValue = XBDataProvider.BussinessPartner.SaveBP(Session["CompanyCode"].ToString(), BussinessPartner.Text, Name.Text,Convert.ToInt32(BusinessPartnerType.SelectedValue), orderType,Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), ContactPerson.Text, Tin.Text, Cst.Text, Note.Text,  User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text,Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
-                    if (retunValue >= 1)
+                    if (retunValue == 2)
                     {
                         ClearInputs(Page.Controls);
-                        Message.Text = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
                     }
-                    //else if (retunValue == -1)
-                    //{
-                    //    Message.Text = "Bussiness Partner already exist";
-                    //}
+                    else if (retunValue == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
+                    }
                     else
                     {
-                        //Message.Text 
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-
                 }
-
-
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
-
-            //Label lblMsg = this.Master.FindControl("Message") as Label;
-            //lblMsg.Text = "Company added successfully";
-            //lblMsg.Visible = true;
         }
 
         private void ClearInputs(ControlCollection ctrls)

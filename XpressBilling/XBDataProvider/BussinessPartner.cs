@@ -19,8 +19,8 @@ namespace XBDataProvider
         {
             try
             {
+                int rtnvalue = -1;
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
@@ -51,6 +51,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Country", country));
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
+                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BusinessPartnerMst_xpins", cmd);
                 return returnValue;
             }
@@ -61,7 +62,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool UpdateBP(string bpId, int discount, int creditLimit, string tin, string cst,
+        public static bool UpdateBP(string bpId, string name, int discount, int creditLimit, string tin, string cst,
                                       string Note, string userName,int status,int orderType)
         {
             try
@@ -70,6 +71,7 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", bpId));
+                cmd.Parameters.Add(new SqlParameter("@Name", name));
                 cmd.Parameters.Add(new SqlParameter("@Discount", discount));
                 cmd.Parameters.Add(new SqlParameter("@CreditLimit", creditLimit));
                 cmd.Parameters.Add(new SqlParameter("@Tin", tin));

@@ -50,7 +50,15 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    ContactId.Value = "0";
+                    ContactId.Value = "0"; 
+                    lblusername.Visible = false;
+                    Username.Visible = false;
+                    lblDate.Visible = false;
+                    Date.Visible = false;
+                    ddlStatus.Visible = false;
+                    lblstatus.Visible = false;
+                    Username.Text = User.Identity.Name;
+                    //Date.Text = DateTime.Now();
                 }
             }
 
@@ -81,49 +89,70 @@ namespace XpressBilling.Account
             ddlCompany.Enabled = false;
             Zip.Text = row["ZipPostalCode"].ToString();
             ContactId.Value = row["ID"].ToString();
+            ddlStatus.SelectedValue = row["Status"].ToString();
         }
         protected void SaveClick(object sender, EventArgs e)
         {
             try
             {
-                int zipcode = Convert.ToInt16(Zip.Text);
+                //int zipcode = Convert.ToInt16(Zip.Text);
                 bool status = false;
+                if (ddlStatus.SelectedValue == "0")
+                    status = false;
+                else
+                    status = true;
                 string note = "";
                 string errmsg = "";
                 if (ContactId.Value != "0" && ContactId.Value != "")
                 {
-                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(zipcode), true, User.Identity.Name);
+                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), User.Identity.Name, status);
                     if (status)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
                 {
-                    int retunValue = 0;                    
-                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue,Convert.ToInt32( zipcode), true, note, errmsg, User.Identity.Name);
-                    if (retunValue >= 1)
+                    int retunValue = 0;
+                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), true, note, errmsg, User.Identity.Name);
+                    if (retunValue == 1)
                     {
                         ClearInputs(Page.Controls);
-                        lblMsg.InnerText = "Successfully added";
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
                     }
                     else if (retunValue == -1)
                     {
-                        lblMsg.InnerText = "Contact already exist";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
-                    }                    
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
         }
 

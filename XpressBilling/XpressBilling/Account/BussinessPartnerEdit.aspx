@@ -7,6 +7,20 @@
         </div>
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
                 <div class="page-header">Bussiness Partner</div>
                 <div class="form-group">
                     <label for="BussinessPartner" class="control-label col-xs-2 col-md-2">Bussiness Partner</label>
@@ -17,13 +31,6 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Name" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
 
-                    </div>
-                    <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
-                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
-                            <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
-                        </asp:DropDownList>
                     </div>
                 </div>
                 <div class="form-group">
@@ -71,11 +78,11 @@
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Phone" class="form-control txtNumeric" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Mobile" class="control-label col-xs-2 col-md-2">Mobile</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Mobile" class="form-control required" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Mobile" class="form-control required txtNumeric" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -160,13 +167,21 @@
                         <asp:TextBox runat="server" ID="Note" class="form-control required" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
+                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
+                            <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
                 <div class="form-group">
                     <asp:HiddenField ID="BPId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <a href="/Account/BussinessPartner.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveBussinessPartner" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
-                        <label id="lblMsg" style="color:red;" runat="server"></label>
-
-                    </div>
+                     </div>
 
                 </div>
             </div>

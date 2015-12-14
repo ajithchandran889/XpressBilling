@@ -28,8 +28,8 @@
                             </asp:TemplateField>
                             <asp:BoundField DataField="ContactPerson" HeaderText="Contact Person"></asp:BoundField>
                             <asp:BoundField DataField="Mobile" HeaderText="Mobile"></asp:BoundField>
-                            <asp:BoundField DataField="CityCode" HeaderText="City"></asp:BoundField>
-                            <asp:BoundField DataField="CountryCode" HeaderText="Country"></asp:BoundField>
+                            <asp:BoundField DataField="City" HeaderText="City"></asp:BoundField>
+                            <asp:BoundField DataField="Country" HeaderText="Country"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>
                             </asp:TemplateField>

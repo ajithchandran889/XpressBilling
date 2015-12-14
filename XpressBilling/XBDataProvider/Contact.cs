@@ -16,6 +16,7 @@ namespace XBDataProvider
         {
             try
             {
+                int rtnvalue = -1;
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Contact", Contact));
@@ -42,6 +43,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", username));
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Contact_xpins", cmd);
                 return returnValue;
             }
@@ -53,7 +55,7 @@ namespace XBDataProvider
         }
 
 
-        public static bool UpdateContact(string Contact, string Name, string Designation, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, bool status, string username)
+        public static bool UpdateContact(string Contact, string Name, string Designation, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, string username, bool status)
         {
             try
             {
@@ -274,7 +276,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", Id));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_CompanyGetById", cmd);
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_ContactGetById", cmd);
             }
             catch (Exception ex)
             {

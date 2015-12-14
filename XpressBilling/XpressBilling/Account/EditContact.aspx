@@ -3,6 +3,20 @@
     <div class="page-content">        
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
+                <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Saved Successfully
+                </div>
+                <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
+                    <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
+                    Updated Successfully
+                </div>
+                <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
+                </div>
+                <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
+                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                </div>
                 <div class="page-header">Contact Details</div>
                 <div class="form-group">
                     <label for="Contact" class="control-label col-xs-2 col-md-2">Contact</label>
@@ -21,7 +35,7 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>
                     </div>
-                    <label for="Date" class="control-label col-xs-2 col-md-2">Date</label>
+                    <label for="Date" id="lblDate" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Date" class="form-control" ReadOnly="true" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
                         
@@ -46,11 +60,11 @@
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Phone" class="form-control" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Phone" class="form-control txtNumeric" placeholder="Phone" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                     <label for="Mobile" class="control-label col-xs-2 col-md-2">Mobile</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Mobile" class="form-control required" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="Mobile" class="form-control required txtNumeric" placeholder="Mobile" ClientIDMode="Static"></asp:TextBox>                        
                     </div>
                 </div>
                 <div class="form-group">
@@ -110,9 +124,18 @@
                 <div class="form-group">
                     <label for="Zip" class="control-label col-xs-2 col-md-2">Zip/Postal Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Zip" class="form-control required" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>                    
                 </div> 
+                <div class="form-group">
+                    <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
+                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
+                            <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
                     <div class="form-group">
                         <asp:HiddenField ID="ContactId" runat="server" />
                     <asp:HiddenField ID="CompanyId" runat="server" />
