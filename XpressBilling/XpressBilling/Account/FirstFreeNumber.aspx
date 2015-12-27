@@ -6,7 +6,7 @@
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
-                    Bank Master               
+                    First Free Number               
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListFirstFreeNumber" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="FirstFreeNumberPageIndexChanging" PageSize="3" AutoGenerateColumns="false" OnDataBound="listFirstFreeNumberDataBound">
+                        OnPageIndexChanging="FirstFreeNumberPageIndexChanging" PageSize="3" AutoGenerateColumns="false" EmptyDataText="There are no Records" OnDataBound="listFirstFreeNumberDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="FirstFreeNumberEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

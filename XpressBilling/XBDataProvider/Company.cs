@@ -14,7 +14,7 @@ namespace XBDataProvider
         public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone,string mobile,string email,string web,string designation,string address1,string address2,
-                                      string city, string area, string zipCode, string country, string state, String fax, bool dbstatus, string Currency)
+                                      string city, string area, int zipCode, string country, string state, String fax, bool dbstatus, string Currency)
         {
             try
             {

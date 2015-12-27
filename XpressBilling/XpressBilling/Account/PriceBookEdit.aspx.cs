@@ -31,10 +31,16 @@ namespace XpressBilling.Account
                     lastDocNumber=lastDocNumber.Replace('D',' ');
                 }
                 LastDocumentNumber.Value = lastDocNumber;
-                if (Session["CompanyCode"] == null)
-                {
-                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
-                }
+                DataTable dtCurrency = XBDataProvider.Currency.GetAllActiveCurrencies(Session["CompanyCode"].ToString());
+
+                ddlCurrency.DataSource = dtCurrency;
+                ddlCurrency.DataValueField = "CurrencyCode";
+                ddlCurrency.DataTextField = "Name";
+                ddlCurrency.DataBind();
+                ListItem itemcurrency = new ListItem();
+                itemcurrency.Text = "Select Currency";
+                itemcurrency.Value = "";
+                ddlCurrency.Items.Insert(0, itemcurrency);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -48,7 +54,7 @@ namespace XpressBilling.Account
                 else
                 {
                     PriceBookId.Value = "0";
-                    Currency.Text = XBDataProvider.Currency.GetCurrencyCodeByCompany(Session["CompanyCode"].ToString()); ;
+                   // Currency.Text = XBDataProvider.Currency.GetCurrencyCodeByCompany(Session["CompanyCode"].ToString()); ;
                     CreatedUser.Visible = false;
                     CreatedDate.Visible = false;
                     lblDate.Visible = false;
@@ -91,7 +97,8 @@ namespace XpressBilling.Account
                     OrderType_1.Style.Add("display", "block");
                     OrderType_1.Enabled = false;
                 }
-                Currency.Text = row["CurrencyCode"].ToString();
+                //Currency.Text 
+                ddlCurrency.SelectedValue = row["CurrencyCode"].ToString();
                 PriceBookDocNo.Text = row["DocumentNo"].ToString();
                 CreatedDate.Text = Convert.ToDateTime(row["DocumentDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedUser.Text = row["CreatedBy"].ToString();
@@ -321,7 +328,7 @@ namespace XpressBilling.Account
                 {
                     orderType = Convert.ToInt32(OrderType_1.SelectedValue);
                 }
-                int id = XBDataProvider.PriceBook.SavePriceBookMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), orderType, Currency.Text, User.Identity.Name);
+                int id = XBDataProvider.PriceBook.SavePriceBookMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), orderType, ddlCurrency.SelectedValue, User.Identity.Name);
                 if (id > 0)
                 {
                     savePriceBook.Visible = false;

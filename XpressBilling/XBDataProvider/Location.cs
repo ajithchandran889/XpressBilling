@@ -13,10 +13,11 @@ namespace XBDataProvider
         public static int SaveLocation(string companyCode,string LocationCode, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
                                         string ContactCode, string Logo, string Note, string ErrorMsg, string userName,
                                         string phone, string mobile, string email, string web, string contactPerson, string designation, string address1, string address2,
-                                        string city, string area, string zipCode, string country, string state, String fax, bool dbstatus)
+                                        string city, string area, int zipCode, string country, string state, string fax, bool dbstatus)
         {
             try
             {
+                int rtnvalue = -1;
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
@@ -50,11 +51,12 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
                 cmd.Parameters.Add(new SqlParameter("@Status", dbstatus));
+                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_LocationMst_xpins", cmd);
             }
             catch (Exception ex)
             {
-                return -1;
+                return 0;
             }
 
         }

@@ -159,7 +159,7 @@ namespace XpressBilling.Account
                     int retunValue = 0;
                     dbstatus = true;
                     retunValue = XBDataProvider.Company.SaveCompany(AddCompany.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text,Convert.ToInt32(Zip.Text), Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
 
                     if (retunValue == 1)
                     {

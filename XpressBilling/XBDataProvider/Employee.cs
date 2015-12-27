@@ -30,7 +30,7 @@ namespace XBDataProvider
             }
             catch (Exception ex)
             {
-                return -1;
+                return 0;
             }
 
         }

@@ -5,17 +5,21 @@
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
                     Price Book
-                <div class="pull-right">
+                <%--<div class="pull-right">
                     <span class="icon-wrap pull-left"> <a href="PriceBookEdit"><i class="glyphicon glyphicon-plus "></i></a></span>
                     <span class="icon-wrap pull-left"><asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash"></i></asp:LinkButton> </span>
-                </div>
+                </div>--%>
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
-                        <h2>List View</h2>
+                        <h2 class="pull-left">List View</h2>
+                        <div class="pull-right"> 
+              <span class="icon-wrap pull-left"> <a href="PriceBookEdit"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
+               <span class="icon-wrap pull-left"> <asp:LinkButton ID="LinkButton1" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
+              </div>
                     </div>
                     <asp:GridView ID="ListPriceBook" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="PriceBookPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listPriceBookDataBound">
+                        OnPageIndexChanging="PriceBookPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Records" OnDataBound="listPriceBookDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="PriceBookEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

@@ -14,7 +14,7 @@
                         <span class="icon-wrap pull-left"> <a href="CurrencyEdit"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
                <span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
                     </div></div>
-                    <asp:GridView ID="listCurrency" runat="server" CssClass="table" AllowPaging="true"  OnDataBound="CurrencyUserDataBound"
+                    <asp:GridView ID="listCurrency" runat="server" CssClass="table" AllowPaging="true" EmptyDataText="There are no Records"  OnDataBound="CurrencyUserDataBound"
                         OnPageIndexChanging="listCurrencyPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>

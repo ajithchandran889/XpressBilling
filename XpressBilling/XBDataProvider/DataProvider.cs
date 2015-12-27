@@ -165,8 +165,7 @@ namespace XBDataProvider
                     sqlCmd.Connection.Dispose();
                     //sqlCmd.Connection.Close();
                 }
-            }
-
+            }            
             return returnValue;
         }
 
@@ -182,7 +181,7 @@ namespace XBDataProvider
 
                 returnValue = Convert.ToInt32(sqlCmd.ExecuteScalar());
             }
-            catch (SqlException ex)
+             catch (SqlException ex)
             {
                 // Rethrow the exception.
                 throw ex;

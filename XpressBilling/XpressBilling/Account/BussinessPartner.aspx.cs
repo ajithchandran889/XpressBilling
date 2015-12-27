@@ -20,7 +20,7 @@ namespace XpressBilling.Account
                 LoadBPList();
             }
 
-        }
+        }   
 
         protected void BussinessPartnerPageIndexChanging(object sender, GridViewPageEventArgs e)
         {

@@ -11,7 +11,7 @@
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
-                <div class="page-header">Add First Free Number</div>
+                <div class="page-header">First Free Number</div>
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Type</label>
@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Reference</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
-                            <asp:TextBox runat="server" ID="Reference" class="form-control required" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="Reference" class="form-control" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
                         </div>
                         <label id="lblUser" runat="server" class="control-label col-xs-12 col-sm-4 col-md-2">User</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
@@ -63,13 +63,14 @@
                     <div class="col-xs-10 col-md-8">
                         <asp:HiddenField ID="FirstFreeNumberId" runat="server" />
                         <asp:HiddenField ID="LastFirstFreeNumber" runat="server" />
-                        <asp:Button ID="saveFirstFreeNumberBtn" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="saveFirstFreeNumber" />
-                        <a id="cancelFirstFreeNumber" href="/Account/FirstFreenumber.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a>
+                        <a id="cancelFirstFreeNumber" href="/Account/FirstFreenumber.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a>
+                        <asp:Button ID="saveFirstFreeNumberBtn" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="saveFirstFreeNumber" />
+                        
                     </div>
                 </div>
             </div>
 
-            <asp:GridView ID="FirstFreeDetail" runat="server" ClientIDMode="Static" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID" OnDataBound="listFirstFreeNumberDataBound" OnPreRender="FirstFreeDetailPreRender">
+            <asp:GridView ID="FirstFreeDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID" OnDataBound="listFirstFreeNumberDataBound" OnPreRender="FirstFreeDetailPreRender">
                 <Columns>
                     <asp:TemplateField HeaderText="Order Type">
                         <ItemTemplate>
@@ -154,7 +155,7 @@
 
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">
-                    <a id="CancelFirstFreeDetails" href="/Account/FirstFreeNumber.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a><asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
+                    <a id="CancelFirstFreeDetails" href="/Account/FirstFreeNumber.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="SaveFirstFreeDetails" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveFirstFreeNumberDetails" />
                     
                 </div>
             </div>

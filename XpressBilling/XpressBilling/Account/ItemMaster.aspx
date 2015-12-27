@@ -14,7 +14,7 @@
                <span class="icon-wrap pull-left"> <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
                     </div>
                     <asp:GridView ID="ListItemMaster" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="ItemMasterPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="ItemMasterModeDataBound">
+                        OnPageIndexChanging="ItemMasterPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Locations" OnDataBound="ItemMasterModeDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="ItemMasterEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
@@ -43,4 +43,5 @@
             </div>
         </div>
     </div>
+        </div>
 </asp:Content>

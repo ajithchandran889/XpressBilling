@@ -68,5 +68,20 @@ namespace XBDataProvider
 
             return "";
         }
+        public static void DeleteUsers(string ids)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@ids", ids));
+                DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BankCodeDelete", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
     }
 }

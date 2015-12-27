@@ -264,7 +264,7 @@ label {
 	line-height:30px;
 	padding:0 5px;
 }
-.table {
+.table, .table-fix {
 	float: left;
 	width: 100%;
 	border-collapse: collapse;
@@ -273,6 +273,12 @@ label {
 	border-bottom: 0!important;
 	margin-bottom:5px;
 }
+    .table .form-control {
+        border: none;
+        background: none;
+        box-shadow: none !important;
+    }
+   
 .table th {
 	padding: 4px 5px;
 	border-right: 1px #CFDACF solid;
@@ -292,6 +298,9 @@ label {
 .table td a{ text-decoration:none;}
 .table th:first-child{ width:25px;}
 .table th:last-child{ width:25px;}
+
+.table-fix th:first-child{ width:auto!important;}
+.table-fix th:last-child{ width:auto!important;}
 .table tr:hover td {
 	background: #EDF1F8;
 }

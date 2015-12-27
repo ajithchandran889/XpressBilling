@@ -148,7 +148,7 @@ namespace XpressBilling.Account
                 item.Value = "";
                 Country.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
-                if (id != null)
+                if (id != null && id != 0)
                 {
                     DataTable companyDetails = XBDataProvider.Location.GetLocationById(id);
                     if (companyDetails.Rows.Count > 0)
@@ -165,6 +165,10 @@ namespace XpressBilling.Account
                 else
                 {
                     CompanyId.Value = "0";
+                    lblstatus.Visible = false;
+                    ddlStatus.Visible = false;
+                    FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
+                    FormationDate.ReadOnly = true;
                 }
             }
 
@@ -173,7 +177,7 @@ namespace XpressBilling.Account
         public void SetCompanyDetails(DataTable companyDetails)
         {
             DataRow row = companyDetails.Rows[0];
-            Location.Text = row["CompanyCode"].ToString();
+            Location.Text = row["LocationCode"].ToString();
             Location.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
@@ -253,9 +257,10 @@ namespace XpressBilling.Account
                 }
                 else
                 {
+                    dbstatus = true;
                     int retunValue = 0;
                     retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), Location.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, Location.Text, path, Note.Text, "", User.Identity.Name,
-                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.Text, State.Text, Fax.Text, dbstatus);
+                                                                    Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Convert.ToInt32(Zip.Text), Country.Text, State.Text, Fax.Text, dbstatus);
                     if (retunValue == 1)
                     {
                         ClearInputs(Page.Controls);
@@ -279,7 +284,6 @@ namespace XpressBilling.Account
                         failure.Visible = true;
                         alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
                 }
                 //if (CompanyId.Value != "0" && CompanyId.Value != "")
                 //{
@@ -318,7 +322,10 @@ namespace XpressBilling.Account
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
         }
 

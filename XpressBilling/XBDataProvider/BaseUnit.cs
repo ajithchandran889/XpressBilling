@@ -28,7 +28,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));
-                cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
+                //cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BaseUnit_xpins", cmd);
             }
             catch (Exception ex)

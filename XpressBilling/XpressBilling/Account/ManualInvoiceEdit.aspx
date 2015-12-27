@@ -93,9 +93,9 @@
                     <div class="grid_wrapper">
                         <div class="grid_header">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
+                           <%-- <div class="pull-right">
                                 <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
+                            </div>--%>
                         </div>
                         <asp:GridView ID="ManualInvoiceDetail" runat="server" class="table" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
                             <RowStyle CssClass="Odd" />
@@ -193,6 +193,8 @@
                                 <div class="col-xs-12 col-sm-8 col-md-8">
                                     <asp:TextBox runat="server" ID="MITotalDiscountAmt" class="form-control" placeholder="Discount Amt" ClientIDMode="Static"></asp:TextBox>
                                 </div>
+                                </div>
+                                <div class="form-group ">
                                 <label class="control-label col-xs-12 col-sm-4 col-md-4">Tax Amt</label>
                                 <div class="col-xs-12 col-sm-8 col-md-8">
                                     <asp:TextBox runat="server" ID="MITotalTaxAmt" class="form-control" placeholder="Tax Amt" ClientIDMode="Static"></asp:TextBox>

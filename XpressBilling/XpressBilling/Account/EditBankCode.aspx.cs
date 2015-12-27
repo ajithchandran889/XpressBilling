@@ -87,9 +87,10 @@ namespace XpressBilling.Account
                 {
                     msgstatus = XBDataProvider.BankCode.SaveBankCode(hdncompanycode.Value, BankCode.Text, Name.Text, User.Identity.Name, User.Identity.Name, DateTime.Today, true);
 
-                    ClearInputs(Page.Controls); 
+                    
                     if (msgstatus == 1)
                     {
+                        ClearInputs(Page.Controls); 
                         SaveSuccess.Visible = true;
                         UpdateSuccess.Visible = false;
                         failure.Visible = false;

@@ -19,7 +19,7 @@
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
                 <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
-                    <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
+                    <span id="alreadyexistmsg" runat="server">Already Exists</span>
                 </div>
                 <div class="page-header">Bussiness Partner</div>
                 <div class="form-group">

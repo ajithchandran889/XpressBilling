@@ -121,12 +121,16 @@ namespace XpressBilling.Account
                     status = XBDataProvider.UserRegistration.UpdateUserRegDetails(UserId.Value,Location.SelectedValue,EmployeeId.Text,DefLocation.SelectedValue,User.Identity.Name,absolutePath);
                     if (status)
                     {
-                        SetUserDetails(user.ProviderUserKey.ToString()); 
-                        Message.Text = "Successfully updated";
+                        SetUserDetails(user.ProviderUserKey.ToString());
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
@@ -144,17 +148,24 @@ namespace XpressBilling.Account
                         status = XBDataProvider.UserRegistration.SaveAddlUserRegDetails(UserName.Text, Company.Text, Location.SelectedValue, EmployeeId.Text, DefLocation.SelectedValue, User.Identity.Name, absolutePath);
                         if (status)
                         {
-                            Message.Text = "Successfully added";
+                            SaveSuccess.Visible = true;
+                            UpdateSuccess.Visible = false;
+                            failure.Visible = false;
+                            //alreadyexist.Visible = false;
                         }
                         else
                         {
-                            Message.Text = "Oops..Something went wrong.Please try again";
+                            SaveSuccess.Visible = false;
+                            UpdateSuccess.Visible = false;
+                            failure.Visible = true;
                         }
                         ClearInputs(Page.Controls);
                     }
                     else
                     {
-                        Message.Text = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                     
                 }
@@ -163,7 +174,10 @@ namespace XpressBilling.Account
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = false;
+                alreadyexist.Visible = true;
             }
 
             //Label lblMsg = this.Master.FindControl("Message") as Label;

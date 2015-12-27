@@ -12,12 +12,13 @@ namespace XpressBilling.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
 
+            FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
         }
 
         protected void SaveCompanyClick(object sender, EventArgs e)
         {
+           FormationDate.Text= Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
             bool status = false;
             status = XBDataProvider.Company.SaveCompanyInitail(RgstCompany.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, Note.Text, true);
             if(status)

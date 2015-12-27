@@ -34,7 +34,21 @@ namespace XpressBilling.Account
             listUser.DataSource = XBDataProvider.User.GetAllUsers(Session["CompanyCode"].ToString());
             listUser.DataBind();
         }
-
+        protected void deleteRecordsClick(object sender, EventArgs e)
+        {
+            string ids = string.Empty;
+            foreach (GridViewRow grow in listUser.Rows)
+            {
+                CheckBox chkdel = (CheckBox)grow.FindControl("chkDel");
+                if (chkdel.Checked)
+                {
+                    HiddenField hfSelectedId = grow.FindControl("selectedId") as HiddenField;
+                    ids += hfSelectedId.Value + ",";
+                }
+            }
+            XBDataProvider.User.DeleteUsers(ids);
+            LoadUserList();
+        }
         protected void listUserDataBound(object sender, EventArgs e)
         {
             foreach (GridViewRow gvRow in listUser.Rows)

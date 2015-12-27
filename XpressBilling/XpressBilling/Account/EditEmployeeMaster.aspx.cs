@@ -17,6 +17,10 @@ namespace XpressBilling.Account
         {
             if (!IsPostBack)
             {
+                if (Session["CompanyCode"] == null)
+                {
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
+                }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -48,7 +52,8 @@ namespace XpressBilling.Account
             DOJ.Text = row["DateofJoining"].ToString();
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
+            Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM/dd/yyyy");
+            //row["CreatedDate"].ToString(); 
             Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
             EmployeeId.Value = row["ID"].ToString();
@@ -71,11 +76,15 @@ namespace XpressBilling.Account
                     msgstatus = XBDataProvider.Employee.UpdateEmployee(Convert.ToInt32(EmployeeId.Value), Name.Text, User.Identity.Name, status);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully updated";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 else
@@ -84,19 +93,44 @@ namespace XpressBilling.Account
                     msgstatus = XBDataProvider.Employee.SaveEmployee(hdncompanycode.Value, Employee.Text, Name.Text, DOJ.Text, reference, User.Identity.Name, true);
                     if (msgstatus == 1)
                     {
-                        lblMsg.InnerText = "Successfully added";
+                        ClearInputs(Page.Controls);
+                        SaveSuccess.Visible = true;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = false;
+                    }
+                    else if (msgstatus == -1)
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = false;
+                        alreadyexist.Visible = true;
                     }
                     else
                     {
-                        lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                        alreadyexist.Visible = false;
                     }
-                    ClearInputs(Page.Controls);
+                    //if (msgstatus == 1)
+                    //{
+                    //    lblMsg.InnerText = "Successfully added";
+                    //}
+                    //else
+                    //{
+                    //    lblMsg.InnerText = "Oops..Something went wrong.Please try again";
+                    //}
+                    //ClearInputs(Page.Controls);
                 }
 
             }
             catch (Exception ex)
             {
-
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+                alreadyexist.Visible = false;
             }
 
 

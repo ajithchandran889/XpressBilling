@@ -11,7 +11,7 @@
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
-                <div class="page-header">Add Price Book Details</div>
+                <div class="page-header">Price Book Details</div>
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Type</label>
@@ -47,7 +47,9 @@
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Currency</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
-                            <asp:TextBox runat="server" ID="Currency" ReadOnly="true" class="form-control required" placeholder="Currrency" ClientIDMode="Static"></asp:TextBox>
+                            <%--<asp:TextBox runat="server" ID="Currency" ReadOnly="true" class="form-control" placeholder="Currrency" ClientIDMode="Static"></asp:TextBox>--%>
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlCurrency" ClientIDMode="Static">
+                        </asp:DropDownList>
                         </div>
                         <label id="lblDate" runat="server" class="control-label col-xs-12 col-sm-4 col-md-2">User</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
@@ -60,8 +62,8 @@
                     <div class="col-xs-10 col-md-8">
                         <asp:HiddenField ID="PriceBookId" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="LastDocumentNumber" runat="server" />
-                        <asp:Button ID="savePriceBook" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="savePriceBookClick" />
-                        <a id="cancelPriceBook" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a>
+                        <a id="cancelPriceBook" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="savePriceBook" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="savePriceBookClick" />
+                        
                     </div>
                 </div>
             </div>
@@ -75,10 +77,24 @@
                     <h2 class="pull-left">Transaction</h2>
                     
                 </div>
-                <asp:GridView ID="PriceBookDetail" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID">
+                <asp:GridView ID="PriceBookDetail" class="table table-fix" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID">
                      <RowStyle CssClass="Odd" />
                      <AlternatingRowStyle CssClass="Even" />
-                    <Columns>
+                    <Columns><%--<asp:TemplateField HeaderText="">
+                            <ItemTemplate>
+                               
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="">
+                            <ItemTemplate>
+                               
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="">
+                            <ItemTemplate>
+                               
+                            </ItemTemplate>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField HeaderText="Item">
                             <ItemTemplate>
                                 <asp:TextBox ID="ItemCode" class="form-control ItemCode" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
@@ -115,8 +131,8 @@
                 </asp:Panel>
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">
-                    <asp:Button ID="SaveDetail" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Text="Save" OnClick="savePriceBookClickDetails" />
-                    <a id="CancelPriceBook2" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-right">Cancel</a>
+                    <a id="CancelPriceBook2" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a>
+                    <asp:Button ID="SaveDetail" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="savePriceBookClickDetails" />
                 </div>
             </div>
             <br />

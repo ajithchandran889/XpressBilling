@@ -15,7 +15,7 @@
               </div></div>
 
                     <asp:GridView ID="listContact" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="listContactPageIndexChanging" PageSize="20" AutoGenerateColumns="false" OnDataBound="listContactDataBound">
+                        OnPageIndexChanging="listContactPageIndexChanging" PageSize="20" EmptyDataText="There are no Records" AutoGenerateColumns="false" OnDataBound="listContactDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="EditContact?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

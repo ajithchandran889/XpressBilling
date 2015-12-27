@@ -40,7 +40,7 @@ namespace XpressBilling.Account
                 itemcompany.Value = "";
                 ddlCompany.Items.Insert(0, itemcompany);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
-                if (id != null)
+                if (id != null && id != 0)
                 {
                     DataTable contactDetails = XBDataProvider.Contact.GetContactCodeById(id);
                     if (contactDetails.Rows.Count > 0)
@@ -58,7 +58,7 @@ namespace XpressBilling.Account
                     ddlStatus.Visible = false;
                     lblstatus.Visible = false;
                     Username.Text = User.Identity.Name;
-                    //Date.Text = DateTime.Now();
+                    Date.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy"); 
                 }
             }
 
