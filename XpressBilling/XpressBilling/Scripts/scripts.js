@@ -57,7 +57,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "SalesQuotationEdit.aspx/GetContactCodes",
+            url: "SQEdit.aspx/GetContactCodes",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
@@ -627,7 +627,11 @@ $(document).ready(function () {
             $(".SQItem").attr('readonly', 'readonly');
             $(".SQName").attr('readonly', 'readonly');
         }
-        
+        else if ($("#PageStatus").val() == "creating") {
+            $(".SQTaxAmt").attr('readonly', 'readonly');
+            $(".SQNetAmt").attr('readonly', 'readonly');
+            $(".SQUnit").attr('readonly', 'readonly');
+        }
     }
     else if ($("#PageStatus").val() == "create") {
         $(".SQTaxAmt").attr('readonly', 'readonly');
@@ -681,6 +685,7 @@ $(document).ready(function () {
         $(".PONetAmt").attr('readonly', 'readonly');
         $(".POUnit").attr('readonly', 'readonly');
     }
+    
     $("#mainForm").validate();
 });
 
@@ -1576,6 +1581,7 @@ function SearchText() {
     $(document).on("focusout", "#SQTaxPer", function (e) {
         CalculateSQAmount(this);
     });
+
     $(document).on("focusout", "#SQDiscAmt", function (e) {
         CalculateSQAmount(this);
     });
@@ -2100,5 +2106,19 @@ function SearchText() {
         else {
             $("#ShipToAddress").removeClass("errorValidation");
             return true;
+        }
+    });
+    function CreateNewRowSQ()
+    {
+        
+        $("#rowCount").val(parseInt($("#rowCount").val()) + 1); 
+        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SQItem" type="text" id="SQItem" class="form-control SQItem gridTxtBox required" style="width:70px;"></td><td><input name="SQName" type="text" id="SQName" class="form-control SQName gridTxtBox required"></td><td><input name="SQRate" type="text" id="SQRate" class="form-control SQRate gridTxtBox txtNumeric required"></td><td><input name="SQQuantity" type="text" id="SQQuantity" class="form-control SQQuantity gridTxtBox txtNumeric required"></td><td><input name="SQUnit" type="text" id="SQUnit" class="form-control SQUnit gridTxtBox required" readonly="readonly"></td><td><input name="SQDiscPer" type="text" id="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required"></td><td><input name="SQDiscAmt" type="text" id="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required"></td><td><input name="SQTaxPer" type="text" id="SQTaxPer" class="form-control SQTaxPer gridTxtBox required"><input type="hidden" name="SQTaxCode" id="SQTaxCode"></td><td><input name="SQTaxAmt" type="text" id="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" readonly="readonly"></td><td><input name="SQNetAmt" type="text" id="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" readonly="readonly" style="width:50px;"></td></tr>';
+        //var row = $("#rowTemplate").html(); alert(row);
+        $("#SalesQuotationDetail tbody").append(row);
+    }
+    $(document).on("keydown", "#SQNetAmt", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            CreateNewRowSQ()
         }
     });

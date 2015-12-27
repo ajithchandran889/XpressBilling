@@ -20,7 +20,7 @@
                         OnPageIndexChanging="SalesQuotationPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
-                            <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="SalesQuotationEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
+                            <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="SQEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="SalesQuotationNo" HeaderText="Sales Quotation"></asp:BoundField>
                             <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
                             <asp:BoundField DataField="SalesQuotationDate" HeaderText="Sales Quotation Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>

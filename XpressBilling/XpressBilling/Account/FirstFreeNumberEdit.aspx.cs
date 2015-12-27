@@ -458,6 +458,7 @@ namespace XpressBilling.Account
 
         protected void TypeSelectedIndexChanged(object sender, EventArgs e)
         {
+            Transaction.Items.Clear();
             string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
             if (Type.SelectedValue == "0")
             {
@@ -466,7 +467,7 @@ namespace XpressBilling.Account
                 
                 if (dtTable.Rows.Count > 0 && Type.SelectedValue == "0")
                 {
-                    Transaction.Items.Clear();
+                    
                     bool flag = true;
                     int value = 0;
                     foreach (string item in items)
