@@ -102,15 +102,6 @@
                             <asp:TextBox ID="Default" class="form-control" ClientIDMode="Static" runat="server" Text='<%# Bind("Defaults") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Status">
-                        <ItemTemplate>
-                            <asp:DropDownList ID="FirstFreeDtlStatus" runat="server">
-                                <asp:ListItem Value="1" Text="active"></asp:ListItem>
-                                <asp:ListItem Value="0" Text="inactive"></asp:ListItem>
-                            </asp:DropDownList>
-                            <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
 

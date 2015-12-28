@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListFirstFreeNumber" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="FirstFreeNumberPageIndexChanging" PageSize="3" AutoGenerateColumns="false" EmptyDataText="There are no Records" OnDataBound="listFirstFreeNumberDataBound">
+                        OnPageIndexChanging="FirstFreeNumberPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Records" OnDataBound="listFirstFreeNumberDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="FirstFreeNumberEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

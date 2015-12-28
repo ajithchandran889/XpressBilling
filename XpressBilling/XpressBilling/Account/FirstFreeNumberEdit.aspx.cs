@@ -381,7 +381,6 @@ namespace XpressBilling.Account
                     TextBox box4 = (TextBox)FirstFreeDetail.Rows[i].Cells[3].FindControl("Prefix");
                     TextBox box5 = (TextBox)FirstFreeDetail.Rows[i].Cells[4].FindControl("SequenceNumber");
                     TextBox box6 = (TextBox)FirstFreeDetail.Rows[i].Cells[5].FindControl("Default");
-                    DropDownList ddl = (DropDownList)FirstFreeDetail.Rows[i].Cells[6].FindControl("FirstFreeDtlStatus");
                     if (box1.Text != "" && box1.Text.Length != 0)
                     {
                         dr = dt.NewRow();
@@ -409,7 +408,7 @@ namespace XpressBilling.Account
                         dr["UpdatedBy"] = User.Identity.Name;
                         dr["CreatedDate"] = DateTime.Now.Date;
                         dr["UpdatedDate"] = DateTime.Now.Date;
-                        dr["Status"] = ddl.SelectedValue;
+                        dr["Status"] = 1;
                         dt.Rows.Add(dr);
                         i++;
                     }
