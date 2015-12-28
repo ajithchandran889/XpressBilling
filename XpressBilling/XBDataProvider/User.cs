@@ -11,7 +11,22 @@ namespace XBDataProvider
 {
     public static class User
     {
-        public static DataTable GetAllUsers(string companyCode)
+        public static DataTable GetAllUsers()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_UsersGetAll");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+        public static DataTable GetAllUsersByCompany(string companyCode)
         {
             DataTable dtTable = new DataTable();
             try
@@ -19,7 +34,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_UsersGetAll",cmd);
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_UsersGetAllByCompany", cmd);
             }
             catch (Exception ex)
             {

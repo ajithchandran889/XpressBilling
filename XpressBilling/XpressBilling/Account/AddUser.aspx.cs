@@ -37,6 +37,24 @@ namespace XpressBilling.Account
                 DefLocation.DataTextField = "Name";
                 DefLocation.DataBind();
                 DefLocation.Items.Insert(0, item);
+                DataTable dtCompany = XBDataProvider.Company.GetAllCompanyCode();
+                ddlCompany.DataSource = dtCompany;
+                ddlCompany.DataValueField = "CompanyCode";
+                ddlCompany.DataTextField = "Name";
+                ddlCompany.DataBind();
+                ListItem itemCompany = new ListItem();
+                itemCompany.Text = "Select Company";
+                itemCompany.Value = "0";
+                ddlCompany.Items.Insert(0, itemCompany);
+                DataTable dtEmployee = XBDataProvider.Employee.GetAllEmployee(Session["CompanyCode"].ToString());
+                ddlEmployeeId.DataSource = dtEmployee;
+                ddlEmployeeId.DataValueField = "EmployeeCode";
+                ddlEmployeeId.DataTextField = "Name";
+                ddlEmployeeId.DataBind();
+                ListItem itemEmployee = new ListItem();
+                itemEmployee.Text = "Select Employee";
+                itemEmployee.Value = "0";
+                ddlEmployeeId.Items.Insert(0, itemEmployee);
                 string id = Request.QueryString["ID"];
                 if (id != null)
                 {
@@ -60,9 +78,9 @@ namespace XpressBilling.Account
                 UserName.ReadOnly = true;
                 Email.Text = row["Email"].ToString();
                 Email.ReadOnly = true;
-                EmployeeId.Text = row["EmployeeId"].ToString();
-                Company.Text = row["CompanyCode"].ToString();
-                Company.ReadOnly = true;
+                ddlEmployeeId.SelectedValue = row["EmployeeId"].ToString();
+                ddlCompany.SelectedValue = row["CompanyCode"].ToString();
+                ddlCompany.Enabled = false;
                 Location.SelectedValue = row["LocationCode"].ToString();
                 DefLocation.SelectedValue = row["DefaultLocation"].ToString();
                 string status = Convert.ToBoolean(row["Status"].ToString()) ? "1" : "0";
@@ -118,7 +136,7 @@ namespace XpressBilling.Account
                     {
                         Roles.AddUserToRole(UserName.Text, UserType.SelectedValue);
                     }
-                    status = XBDataProvider.UserRegistration.UpdateUserRegDetails(UserId.Value,Location.SelectedValue,EmployeeId.Text,DefLocation.SelectedValue,User.Identity.Name,absolutePath);
+                    status = XBDataProvider.UserRegistration.UpdateUserRegDetails(UserId.Value,Location.SelectedValue,ddlEmployeeId.SelectedValue,DefLocation.SelectedValue,User.Identity.Name,absolutePath);
                     if (status)
                     {
                         SetUserDetails(user.ProviderUserKey.ToString());
@@ -145,7 +163,7 @@ namespace XpressBilling.Account
                             Membership.UpdateUser(user);
                         }
                         Roles.AddUserToRole(UserName.Text, UserType.SelectedValue);
-                        status = XBDataProvider.UserRegistration.SaveAddlUserRegDetails(UserName.Text, Company.Text, Location.SelectedValue, EmployeeId.Text, DefLocation.SelectedValue, User.Identity.Name, absolutePath);
+                        status = XBDataProvider.UserRegistration.SaveAddlUserRegDetails(UserName.Text, ddlCompany.SelectedValue, Location.SelectedValue, ddlEmployeeId.SelectedValue, DefLocation.SelectedValue, User.Identity.Name, absolutePath);
                         if (status)
                         {
                             SaveSuccess.Visible = true;

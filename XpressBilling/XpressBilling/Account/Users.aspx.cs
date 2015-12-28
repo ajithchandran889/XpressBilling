@@ -31,7 +31,7 @@ namespace XpressBilling.Account
 
         private void LoadUserList()
         {
-            listUser.DataSource = XBDataProvider.User.GetAllUsers(Session["CompanyCode"].ToString());
+            listUser.DataSource = XBDataProvider.User.GetAllUsers();
             listUser.DataBind();
         }
         protected void deleteRecordsClick(object sender, EventArgs e)

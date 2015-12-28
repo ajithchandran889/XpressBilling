@@ -50,16 +50,16 @@
                     </div>
                     <label for="EmployeeId" class="control-label col-xs-2 col-md-2">Employee ID</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="EmployeeId" class="form-control required" placeholder="Employee ID" ClientIDMode="Static"></asp:TextBox>
-                        
+                        <asp:DropDownList  runat="server" ID="ddlEmployeeId" class="form-control required" ClientIDMode="Static">
+                        </asp:DropDownList>
                     </div>
 
                 </div>
                 <div class="form-group">
                     <label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Company" class="form-control required" placeholder="Company" ClientIDMode="Static"></asp:TextBox>
-                        
+                        <asp:DropDownList  runat="server" ID="ddlCompany" class="form-control required" ClientIDMode="Static">
+                        </asp:DropDownList>
                     </div>
                      <label for="Location" class="control-label col-xs-2 col-md-2">Location</label>
                     <div class="col-xs-10 col-md-2">

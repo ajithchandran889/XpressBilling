@@ -49,10 +49,10 @@ namespace XpressBilling.Account
             Employee.Text = row["EmployeeCode"].ToString();
             Employee.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            DOJ.Text = row["DateofJoining"].ToString();
+            DOJ.Text = Convert.ToDateTime(row["DateofJoining"]).ToString("MM'/'dd'/'yyyy");
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM/dd/yyyy");
+            Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
             //row["CreatedDate"].ToString(); 
             Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();

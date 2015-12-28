@@ -26,7 +26,7 @@ namespace XpressBilling.Account
                 Location.DataValueField = "LocationCode";
                 Location.DataTextField = "Name";
                 Location.DataBind();
-                DataTable dtUsers = XBDataProvider.User.GetAllUsers(Session["CompanyCode"].ToString());
+                DataTable dtUsers = XBDataProvider.User.GetAllUsersByCompany(Session["CompanyCode"].ToString());
                 CreatedUser.DataSource = dtUsers;
                 CreatedUser.DataValueField = "UserName";
                 CreatedUser.DataTextField = "UserName";

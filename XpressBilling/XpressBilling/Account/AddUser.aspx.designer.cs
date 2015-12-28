@@ -112,22 +112,22 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox ConfPassword;
         
         /// <summary>
-        /// EmployeeId control.
+        /// ddlEmployeeId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox EmployeeId;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEmployeeId;
         
         /// <summary>
-        /// Company control.
+        /// ddlCompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Company;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCompany;
         
         /// <summary>
         /// Location control.

@@ -878,7 +878,7 @@ function SearchText() {
         var rowIndex = row.rowIndex - 1;
         var itemArr = itemMasterDetails[selectedItem];
         row.cells[1].getElementsByTagName("input")[0].value = itemArr[1];
-        row.cells[2].getElementsByTagName("input")[0].value = $("#Currency").val();
+        row.cells[2].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
         row.cells[3].getElementsByTagName("input")[0].value = itemArr[2];
         row.cells[4].getElementsByTagName("input")[0].value = itemArr[3];
         return false;
@@ -1023,6 +1023,7 @@ function SearchText() {
     $(document).on("click", "#SaveFirstFreeDetails", function (e) {
             var prefix = [];
             var sequence = [];
+            var flag = 0;
             $("#FirstFreeDetail tr").each(function () {
                 var val1 = $(this).find(".Prefix").val();
                 var val2 = $(this).find(".SequenceNumber").val();
@@ -1043,15 +1044,22 @@ function SearchText() {
                         if(sequence[i-1]==sequence[i])
                         {
                             alert("Same prefix and sequence number not allowed for more than one time");
-                            return false;
+                            flag = 1;
                         }
                     }
                 }
                 lastValue = value;
                 i++;
             });
+            if (flag == 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
             
-            return true;
     });
 
 
