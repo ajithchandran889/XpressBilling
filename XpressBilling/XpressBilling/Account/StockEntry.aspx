@@ -4,7 +4,7 @@
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
                 <div class="page-header">
-                    Sales Entry               
+                    Stock Adjustment               
                 </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListStockEntry" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="StockEntryPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
+                        OnPageIndexChanging="StockEntryPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="StockEntryEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

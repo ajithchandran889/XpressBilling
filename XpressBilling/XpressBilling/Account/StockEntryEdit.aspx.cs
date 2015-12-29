@@ -113,13 +113,13 @@ namespace XpressBilling.Account
                 Amount.ReadOnly = true;
                 Currency.Text = row["Currency"].ToString();
                 Currency.ReadOnly = true;
-                AddNewRow.Visible = false;
                 
                 SetStockEntryChildGrid();
                 int i = 0;
                 if (row["Status"].ToString() == "2")
                 {
-                    
+                    btnConvertStockRegister.Visible = false;
+                    btnSaveDtl.Visible = false;
                     foreach (GridViewRow gvr in StockEntryDetail.Rows)
                     {
                         TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
@@ -174,7 +174,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Qty", typeof(int)));
                 dt.Columns.Add(new DataColumn("Amount", typeof(float)));
                 dt.Columns.Add(new DataColumn("BaseUnitCode", typeof(string)));
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     dr = dt.NewRow();
                     dr["ID"] = "0";
@@ -287,12 +287,11 @@ namespace XpressBilling.Account
                         box5.Enabled = false;
                         box6.Enabled = false;
                         box7.Enabled = false;
-                        btnConvertStockRegister.Visible = false;
+                        
                     }
                     i++;
                 }
             }
-            AddNewRow.Visible = false;
         }
 
         protected void SaveBtnDetailClick(object sender, EventArgs e)
@@ -321,7 +320,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
-                foreach (GridViewRow row in StockEntryDetail.Rows)
+                if (PageStatus.Value == "creating")
                 {
                     TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
                     TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
@@ -329,6 +328,12 @@ namespace XpressBilling.Account
                     TextBox box5 = (TextBox)StockEntryDetail.Rows[i].Cells[4].FindControl("SEQuantity");
                     TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
                     TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
+                    string[] Items = Request.Form["Item"].Split(',');
+                    string[] Names = Request.Form["Name"].Split(',');
+                    string[] SERates = Request.Form["SERate"].Split(',');
+                    string[] SEQuantitys = Request.Form["SEQuantity"].Split(',');
+                    string[] Units = Request.Form["Unit"].Split(',');
+                    string[] SEAmounts = Request.Form["SEAmount"].Split(',');
                     if (box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
@@ -360,17 +365,93 @@ namespace XpressBilling.Account
                         dr["CreatedDate"] = DateTime.Now.Date;
                         dr["UpdatedDate"] = DateTime.Now.Date;
                         dt.Rows.Add(dr);
-                        i++;
                     }
+                    for (int k = 0; k < Items.Length; k++)
+                    {
+                        dr = dt.NewRow();
+                        if (string.IsNullOrEmpty(StockEntryDetail.DataKeys[i]["ID"].ToString()))
+                        {
+                            dr["ID"] = DBNull.Value;
+                        }
+                        else
+                        {
+                            dr["ID"] = Convert.ToInt32(StockEntryDetail.DataKeys[i]["ID"]);
+                        }
 
+                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                        dr["LocationCode"] = Location.Text;
+                        dr["StockAdjustmentMstId"] = Convert.ToInt32(StokeEntryMstId.Value);
+                        dr["Pos"] = 0;
+                        dr["ItemCode"] = Items[k];
+                        dr["ItemName"] = Names[k];
+                        dr["BaseUnitCode"] = Units[k];
+                        dr["Qty"] = Convert.ToInt32(SEQuantitys[k]);
+                        dr["Currency"] = "";
+                        dr["Rate"] = float.Parse(SERates[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Amount"] = float.Parse(SEAmounts[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Status"] = 1;
+                        dr["Reference"] = "";
+                        dr["ErrorMsg"] = null;
+                        dr["CreatedBy"] = User.Identity.Name;
+                        dr["UpdatedBy"] = User.Identity.Name;
+                        dr["CreatedDate"] = DateTime.Now.Date;
+                        dr["UpdatedDate"] = DateTime.Now.Date;
+                        dt.Rows.Add(dr);
+                    }
                 }
+                else
+                {
+                    foreach (GridViewRow row in StockEntryDetail.Rows)
+                    {
+                        TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
+                        TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
+                        TextBox box4 = (TextBox)StockEntryDetail.Rows[i].Cells[3].FindControl("SERate");
+                        TextBox box5 = (TextBox)StockEntryDetail.Rows[i].Cells[4].FindControl("SEQuantity");
+                        TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
+                        TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
+                        if (box2.Text != "" && box2.Text.Length != 0)
+                        {
+                            dr = dt.NewRow();
+                            if (string.IsNullOrEmpty(StockEntryDetail.DataKeys[i]["ID"].ToString()))
+                            {
+                                dr["ID"] = DBNull.Value;
+                            }
+                            else
+                            {
+                                dr["ID"] = Convert.ToInt32(StockEntryDetail.DataKeys[i]["ID"]);
+                            }
+
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = Location.Text;
+                            dr["StockAdjustmentMstId"] = Convert.ToInt32(StokeEntryMstId.Value);
+                            dr["Pos"] = 0;
+                            dr["ItemCode"] = box2.Text;
+                            dr["ItemName"] = box3.Text;
+                            dr["BaseUnitCode"] = box6.Text;
+                            dr["Qty"] = Convert.ToInt32(box5.Text);
+                            dr["Currency"] = "";
+                            dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Amount"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["Reference"] = "";
+                            dr["ErrorMsg"] = null;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                            i++;
+                        }
+
+                    }
+                }
+                
                 if (dt.Rows.Count > 0)
                 {
                     XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value), float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);
                      btnConvertStockRegister.Visible = true;
                      btnPrint.Visible = true;
                      Amount.Text = Request.Form[Amount.UniqueID].ToString();
-                     AddNewRow.Visible = false;
                      Status.SelectedValue = "1";
                      SetStockEntryChildGrid();
                      PageStatus.Value = "edit";

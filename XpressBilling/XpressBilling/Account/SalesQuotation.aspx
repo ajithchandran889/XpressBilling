@@ -10,14 +10,14 @@
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>
                         <div class="pull-right">
-                            <span class="icon-wrap pull-left"><a href="SalesQuotationEdit"><i class="glyphicon glyphicon-plus" style="color: white;"></i></a></span>
+                            <span class="icon-wrap pull-left"><a href="SQEdit"><i class="glyphicon glyphicon-plus" style="color: white;"></i></a></span>
                             <span class="icon-wrap pull-left">
                                 <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server"><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton>
                             </span>
                         </div>
                     </div>
                     <asp:GridView ID="ListSalesQuotation" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="SalesQuotationPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
+                        OnPageIndexChanging="SalesQuotationPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="SQEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

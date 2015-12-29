@@ -60,6 +60,8 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-10 col-md-8">
+                        <asp:HiddenField ID="PageStatus" ClientIDMode="Static" runat="server" />
+                        <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                         <asp:HiddenField ID="PriceBookId" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="LastDocumentNumber" runat="server" />
                         <a id="cancelPriceBook" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="savePriceBook" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="savePriceBookClick" />
@@ -73,11 +75,12 @@
             <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
             <asp:Panel runat="server" ID="gridDetails">
             <div class="grid_wrapper">
-                <div class="grid_header">
+                <div class="">
                     <h2 class="pull-left">Transaction</h2>
                     
                 </div>
-                <asp:GridView ID="PriceBookDetail" class="table table-fix" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID">
+                <asp:GridView ID="PriceBookDetail"  class="table table-fix" ClientIDMode="Static" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID"
+                    OnRowDataBound="PriceBookDetailRowDataBound">
                      <RowStyle CssClass="Odd" />
                      <AlternatingRowStyle CssClass="Even" />
                     <Columns><%--<asp:TemplateField HeaderText="">
@@ -95,14 +98,19 @@
                                
                             </ItemTemplate>
                         </asp:TemplateField>--%>
+                        <asp:TemplateField HeaderText="No:">
+                                    <ItemTemplate>
+                                        <asp:Label ID="indexIcrement" runat="server" Text='<%# Container.DataItemIndex + 1 %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                         <asp:TemplateField HeaderText="Item">
                             <ItemTemplate>
-                                <asp:TextBox ID="ItemCode" class="form-control ItemCode" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                                <asp:TextBox ID="ItemCode" class="form-control ItemCode required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Supplier Barcode">
                             <ItemTemplate>
-                                <asp:TextBox ID="SupplierBarcode" class="form-control SupplierBarcode" ClientIDMode="Static" runat="server" Text='<%# Bind("SupplierBarcode") %>'></asp:TextBox>
+                                <asp:TextBox ID="SupplierBarcode" class="form-control SupplierBarcode required" ClientIDMode="Static" runat="server" Text='<%# Bind("SupplierBarcode") %>'></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--<asp:TemplateField HeaderText="Description">
@@ -112,17 +120,17 @@
                     </asp:TemplateField>--%>
                         <asp:TemplateField HeaderText="Currency">
                             <ItemTemplate>
-                                <asp:TextBox ID="CurrencyCode" class="form-control CurrencyCode" ClientIDMode="Static" runat="server" Text='<%# Bind("CurrencyCode") %>'></asp:TextBox>
+                                <asp:TextBox ID="CurrencyCode" class="form-control CurrencyCode required" ClientIDMode="Static" runat="server" Text='<%# Bind("CurrencyCode") %>'></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="MRP">
                             <ItemTemplate>
-                                <asp:TextBox ID="MRP" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("MRP","{0:n}")%>'></asp:TextBox>
+                                <asp:TextBox ID="MRP" class="form-control required" ClientIDMode="Static" runat="server" Text='<%#Eval("MRP","{0:n}")%>'></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Price">
                             <ItemTemplate>
-                                <asp:TextBox ID="Price" class="form-control" ClientIDMode="Static" runat="server" Text='<%#Eval("Price","{0:n}")%>'></asp:TextBox>
+                                <asp:TextBox ID="Price" class="form-control priceBookPricetxt required" ClientIDMode="Static" runat="server" Text='<%#Eval("Price","{0:n}")%>'></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

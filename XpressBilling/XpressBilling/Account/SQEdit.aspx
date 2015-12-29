@@ -90,7 +90,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Reference</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:TextBox runat="server" ID="Reference" class="form-control required" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Reference" class="form-control" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Sales Order</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
@@ -110,11 +110,8 @@
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
-                        <div class="grid_header">
+                        <div class="">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
-                                <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
                         </div>
                         <asp:GridView ID="SalesQuotationDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
                             <RowStyle CssClass="Odd" />

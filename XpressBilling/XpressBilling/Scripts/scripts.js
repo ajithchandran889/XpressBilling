@@ -877,10 +877,10 @@ function SearchText() {
         var row = lnk.parentNode.parentNode;
         var rowIndex = row.rowIndex - 1;
         var itemArr = itemMasterDetails[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[1];
-        row.cells[2].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[2];
-        row.cells[4].getElementsByTagName("input")[0].value = itemArr[3];
+        row.cells[2].getElementsByTagName("input")[0].value = itemArr[1];
+        row.cells[3].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
+        row.cells[4].getElementsByTagName("input")[0].value = itemArr[2];
+        row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
         return false;
     }
     //var obj = {};
@@ -1017,7 +1017,7 @@ function SearchText() {
         $(".ItemCode").attr('readonly', 'readonly');
 
     }
-    $(".SupplierBarcode").attr('readonly', 'readonly'); 
+    //$(".SupplierBarcode").attr('readonly', 'readonly'); 
     $(".CurrencyCode").attr('readonly', 'readonly');
     $(".OrderType").attr('readonly', 'readonly');
     $(document).on("click", "#SaveFirstFreeDetails", function (e) {
@@ -1395,7 +1395,10 @@ function SearchText() {
             },
             change: function (event, ui) {
                 if (ui.item === null || !ui.item)
-                    $(this).val(''); /* clear the value */
+                {
+                    $(this).val(''); 
+                }
+                     /* clear the value */
             }
         });
     });
@@ -2126,7 +2129,42 @@ function SearchText() {
     }
     $(document).on("keydown", "#SQNetAmt", function (e) {
         var keyCode = e.keyCode || e.which;
-        if (keyCode == 9) {
+        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
             CreateNewRowSQ()
+        }
+    });
+    function CreateNewRowPriceBook() {
+
+        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" type="text" id="ItemCode" class="form-control ItemCode required"></td><td><input name="SupplierBarcode" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly"></td><td><input name="CurrencyCode" type="text" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly"></td><td><input name="MRP" type="text" id="MRP" class="form-control required"></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required"></td></tr>';
+        $("#PriceBookDetail tbody").append(row);
+    }
+    $(document).on("keydown", ".priceBookPricetxt", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9 && $("#PageStatus").val() == "create") {
+            CreateNewRowPriceBook()
+        }
+    });
+    function CreateNewRowStockEntry() {
+         $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+         var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td></tr>';
+         $("#StockEntryDetail tbody").append(row);
+    }
+    $(document).on("keydown", "#SEAmount", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+            CreateNewRowStockEntry()
+        }
+    });
+    function CreateNewRowInvoice() {
+        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+        var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td></tr>';
+        var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="IItem" type="text" id="IItem" class="form-control IItem required" style="width:70px;" aria-required="true"></td><td><input name="IItemName" type="text" id="IItemName" class="form-control IItemName required" style="width:70px;" aria-required="true"></td><td><input name="IItemRate" type="text" id="IItemRate" class="form-control IItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IQuantity" type="text" id="IQuantity" class="form-control IQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IUnit" type="text" id="IUnit" class="form-control IUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="IDiscPer" type="text" id="IDiscPer" class="form-control IDiscPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IDiscAmt" type="text" id="IDiscAmt" class="form-control IDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="ITaxPer" type="text" id="ITaxPer" class="form-control ITaxPer required" style="width:70px;" aria-required="true"><input type="hidden" name="ITaxCode" id="ITaxCode"></td><td><input name="ITaxAmt" type="text" id="ITaxAmt" class="form-control ITaxAmt required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="INetAmt" type="text" id="INetAmt" class="form-control INetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
+        $("#InvoiceDetail tbody").append(row);
+    }
+    $(document).on("keydown", "#INetAmt", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9 && $("#SalesInvoiceId").val() == "0") {
+            CreateNewRowInvoice()
         }
     });

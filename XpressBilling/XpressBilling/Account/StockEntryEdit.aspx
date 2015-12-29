@@ -18,7 +18,7 @@
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
-                <div class="page-header">Stock Entry</div>
+                <div class="page-header">Stock Adjustment</div>
                 <div class="form-group">
 
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Adjustment Type</label>
@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Reference</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:TextBox runat="server" ID="Reference" class="form-control required" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Reference" class="form-control" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Amount</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
@@ -83,6 +83,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-10 col-md-8">
+                        <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                         <asp:HiddenField ID="StokeEntryMstId" runat="server" ClientIDMode="Static"/>
                         <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
                         <a id="CancelBtn" href="/Account/StockEntry" runat="server" class="btn btn-primary">Cancel</a>
@@ -91,13 +92,10 @@
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
-                        <div class="grid_header">
+                        <div class="">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
-                                <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
                         </div>
-                        <asp:GridView ID="StockEntryDetail" runat="server" class="table" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
+                        <asp:GridView ID="StockEntryDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
                             <RowStyle CssClass="Odd" />
                             <AlternatingRowStyle CssClass="Even" />
                            
@@ -109,45 +107,40 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Item" ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="Item" class="form-control StockItem"  ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="Item" class="form-control StockItem required"  ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Name" ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="Name" class="form-control StockName" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
+                                        <asp:TextBox ID="Name" class="form-control StockName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Rate"  ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SERate" class="form-control StockRate txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SERate" class="form-control StockRate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Quantity"  ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SEQuantity" class="form-control StockQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SEQuantity" class="form-control StockQuantity txtNumeric required"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Unit"  ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="Unit" class="form-control StockUnit" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="Unit" class="form-control StockUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Amount"  ControlStyle-Width="100">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SEAmount" class="form-control StockAmount" ClientIDMode="Static" runat="server" Text='<%#Eval("Amount","{0:2}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SEAmount" class="form-control StockAmount required" ClientIDMode="Static" runat="server" Text='<%#Eval("Amount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-8">
-                        <div class="form-group ">
-                            <asp:Button ID="AddNewRow" runat="server" Text="Add Rows" OnClick="AddNewRowClick" />
-                        </div>
-                    </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
-                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
+                            <a id="btnCencelDtl" href="/Account/StockEntry" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConvertStockRegister" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Finalize"  Visible="false" OnClick="btnConvertStockRegisterClick"/>
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right"  Text="Print" Visible="false" OnClientClick="javascript:window.print();"/>

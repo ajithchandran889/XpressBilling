@@ -79,27 +79,27 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Enterprise Unit">
                         <ItemTemplate>
-                            <asp:TextBox ID="EnterpriseUnit" class="form-control"  ClientIDMode="Static" runat="server" Text='<%# Bind("EnterpriseUnitCode") %>'></asp:TextBox>
+                            <asp:TextBox ID="EnterpriseUnit" class="form-control required"  ClientIDMode="Static" runat="server" Text='<%# Bind("EnterpriseUnitCode") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="No of Digits">
                         <ItemTemplate>
-                            <asp:TextBox ID="NoOfDigits" class="form-control NoOfDigits txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Digits") %>'></asp:TextBox>
+                            <asp:TextBox ID="NoOfDigits" class="form-control NoOfDigits txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Digits") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Prefix">
                         <ItemTemplate>
-                            <asp:TextBox ID="Prefix" class="form-control Prefix" ClientIDMode="Static" runat="server" Text='<%# Bind("Prefix") %>'></asp:TextBox>
+                            <asp:TextBox ID="Prefix" class="form-control Prefix required" ClientIDMode="Static" runat="server" Text='<%# Bind("Prefix") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Sequence Number">
                         <ItemTemplate>
-                            <asp:TextBox ID="SequenceNumber" class="form-control SequenceNumber txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("SequenceNo") %>'></asp:TextBox>
+                            <asp:TextBox ID="SequenceNumber" class="form-control SequenceNumber txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("SequenceNo") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Default">
                         <ItemTemplate>
-                            <asp:TextBox ID="Default" class="form-control" ClientIDMode="Static" runat="server" Text='<%# Bind("Defaults") %>'></asp:TextBox>
+                            <asp:TextBox ID="Default" class="form-control required" ClientIDMode="Static" runat="server" Text='<%# Bind("Defaults") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>

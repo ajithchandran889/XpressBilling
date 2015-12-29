@@ -193,6 +193,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Currency;
         
         /// <summary>
+        /// rowCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField rowCount;
+        
+        /// <summary>
         /// StokeEntryMstId control.
         /// </summary>
         /// <remarks>
@@ -245,15 +254,6 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView StockEntryDetail;
-        
-        /// <summary>
-        /// AddNewRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddNewRow;
         
         /// <summary>
         /// btnCencelDtl control.

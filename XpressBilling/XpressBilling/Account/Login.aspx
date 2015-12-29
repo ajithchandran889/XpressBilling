@@ -4,13 +4,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" class="loginbody">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
-     <link rel="shortcut icon" href="../Images/img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="../Images/img/favicon.ico" type="image/x-icon">
 
-<%--    <link rel="shortcut icon" href="../images/img/favicon.ico" type="image/x-icon">--%>
+    <%--    <link rel="shortcut icon" href="../images/img/favicon.ico" type="image/x-icon">--%>
     <title></title>
     <link href="../Content/login.css" rel="stylesheet" type="text/css" />
     <link href="../Content/style.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body class="loginbody">
     <div class="wrapper">
@@ -19,14 +20,18 @@
 
             <div class="log-container">
                 <form runat="server">
-                    <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" OnLoggingIn="LoginCtrl_LoggingIn">
+                    <asp:Login ID="LoginCtrl" runat="server" ViewStateMode="Disabled" RenderOuterTable="false" OnLoggingIn="LoginCtrl_LoggingIn" OnLoginError="LoginCtrl_LoginError">
                         <LayoutTemplate>
+                            <div id="failure"  class="alert alert-danger" role="alert" runat="server">
+                                <asp:Label id="failureMessage" runat="server"></asp:Label>
+                            </div>
+
                             <ul>
                                 <li>
                                     <label>User Name</label></li>
                                 <li>
                                     <asp:TextBox runat="server" ID="UserName" placeholder="User Name" class="text-log" />
-                                    
+
                                 </li>
                             </ul>
                             <ul>
@@ -42,10 +47,10 @@
                                 </li>
                                 <li>
                                     <asp:TextBox runat="server" ID="Password" class="text-log" placeholder="Password" TextMode="Password" />
-                                    
+
                                 </li>
                             </ul>
-                             <ul>
+                            <ul>
                                 <li>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
                                         CssClass="field-validation-error" ErrorMessage="The password field is required." />
@@ -79,7 +84,7 @@
             </div>
 
         </div>
-            
-        </div>
+
+    </div>
 </body>
 </html>

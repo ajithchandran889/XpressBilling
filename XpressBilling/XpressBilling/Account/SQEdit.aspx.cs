@@ -560,6 +560,7 @@ namespace XpressBilling.Account
                 UpdateSuccess.Visible = false;
                 FinalizeSuccess.Visible = true;
                 failure.Visible = false;
+                btnSaveDtl.Visible = false;
             }
             else
             {

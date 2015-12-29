@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListInvoice" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="InvoicePageIndexChanging" PageSize="20" AutoGenerateColumns="false">
+                        OnPageIndexChanging="InvoicePageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="InvoiceEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
