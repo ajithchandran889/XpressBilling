@@ -73,6 +73,10 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="ContactPerson" class="form-control required" placeholder="Contact Person" ClientIDMode="Static"></asp:TextBox>
                     </div>
+                     <label for="Designation" class="control-label col-xs-2 col-md-2">Designation</label>
+                    <div class="col-xs-10 col-md-2">
+                        <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
@@ -99,10 +103,7 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Web" class="form-control" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
                     </div>
-                        <label for="Designation" class="control-label col-xs-2 col-md-2">Designation</label>
-                    <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>
-                    </div>
+                        
                     </div>
                 <div class="form-group"><div></div><div></div></div>
                 <div class="form-group"><div></div><div></div></div>

@@ -190,6 +190,8 @@
                                 <div class="col-xs-12 col-sm-8 col-md-8">
                                     <asp:TextBox runat="server" ID="ITotalDiscountAmt" class="form-control" placeholder="Discount Amt" ClientIDMode="Static"></asp:TextBox>
                                 </div>
+                            </div>
+                            <div class="form-group ">
                                 <label class="control-label col-xs-12 col-sm-4 col-md-4">Tax Amt</label>
                                 <div class="col-xs-12 col-sm-8 col-md-8">
                                     <asp:TextBox runat="server" ID="ITotalTaxAmt" class="form-control" placeholder="Tax Amt" ClientIDMode="Static"></asp:TextBox>
@@ -197,6 +199,7 @@
                                 <label class="control-label col-xs-12 col-sm-4 col-md-4">Order Amount</label>
                                 <div class="col-xs-12 col-sm-8 col-md-8">
                                     <asp:TextBox runat="server" ID="ITotalOrderAmt" class="form-control" placeholder="Order Amount" ClientIDMode="Static"></asp:TextBox>
+                            </div>
                                 </div>
                             </div>
                         </div>
