@@ -90,7 +90,12 @@ namespace XpressBilling.Account
                 ConfPassword.ReadOnly = true;
                 Password.Attributes.Add("class", Password.Attributes["class"].ToString().Replace("required", ""));
                 ConfPassword.Attributes.Add("class", ConfPassword.Attributes["class"].ToString().Replace("required", ""));
-                imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["path"].ToString());
+                if (row["path"].ToString() == null || row["path"].ToString() == "")
+                {
+                    imgPreview.ImageUrl = "/Images/user/preview.png";
+                }
+                else
+                    imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["path"].ToString());
                 inputUpload.Attributes.Clear();
             }
             
@@ -116,11 +121,18 @@ namespace XpressBilling.Account
             {
                 string path = "";
                 string absolutePath = "";
+     
                 if (inputUpload.HasFile)
                 {
-                    string filename = Path.GetFileName(inputUpload.FileName);
-                    path = Server.MapPath("~/Images/user/") + filename;
-                    absolutePath = "/Images/user/" + filename;
+                    string folderPath = "~/Images/Company/" + Session["CompanyCode"].ToString() + "/User/";
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    if (!System.IO.Directory.Exists(Server.MapPath("~") + "/Images/Company/" + Session["CompanyCode"].ToString() + "/User/"))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath("~") + "/Images/Company/" + Session["CompanyCode"].ToString() + "/User/");
+                    }
+                    path = Server.MapPath(folderPath) + UserName.Text + "_user_" + timestamp + Path.GetExtension(inputUpload.FileName);
+                    absolutePath = folderPath + UserName.Text + "_user_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
+                    imgPreview.ImageUrl = absolutePath;
                     inputUpload.SaveAs(path);
                 }
                 bool status = false;
@@ -214,6 +226,7 @@ namespace XpressBilling.Account
 
                 ClearInputs(ctrl.Controls);
             }
+            imgPreview.ImageUrl = "/Images/user/preview.png";
         }
     }
 }

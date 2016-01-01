@@ -218,6 +218,12 @@ namespace XpressBilling.Account
             CompanyId.Value = row["CompanyCode"].ToString();
             ContactId.Value = row["ContactCode"].ToString();
             ddlStatus.SelectedValue = row["Status"].ToString();
+            if (row["Logo"].ToString() == null || row["Logo"].ToString()=="")
+            {
+                imgPreview.ImageUrl = "/Images/user/preview.png";
+            }
+            else
+                imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["Logo"].ToString());
         }
         protected void SaveClick(object sender, EventArgs e)
         {
@@ -225,12 +231,19 @@ namespace XpressBilling.Account
             {
                 string path = "";
                 string absolutePath = "";
-                if (logoUpload.HasFile)
+                
+                if (inputUpload.HasFile)
                 {
-                    string filename = Path.GetFileName(logoUpload.FileName);
-                    path = Server.MapPath("~/Images/user/") + filename;
-                    absolutePath = "/Images/logo/" + filename;
-                    logoUpload.SaveAs(path);
+                    string folderPath = "~/Images/Company/" + Session["CompanyCode"].ToString() + "/Location/";
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    if (!System.IO.Directory.Exists(Server.MapPath("~") + "/Images/Company/" + Session["CompanyCode"].ToString() + "/Location/"))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath("~") + "/Images/Company/" + Session["CompanyCode"].ToString() + "/Location/");
+                    }
+                    path = Server.MapPath(folderPath) + Location.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName);
+                    absolutePath = folderPath + Location.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
+                    imgPreview.ImageUrl = absolutePath;
+                    inputUpload.SaveAs(path);
                 }
                 DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 bool status = false;
@@ -241,7 +254,7 @@ namespace XpressBilling.Account
                     dbstatus = true;
                 if (LocationId.Value != "0" && LocationId.Value != "")
                 {
-                    status = XBDataProvider.Location.UpdateLocation(LocationId.Value, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text,  path, Note.Text, User.Identity.Name, dbstatus);
+                    status = XBDataProvider.Location.UpdateLocation(LocationId.Value, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text,  absolutePath, Note.Text, User.Identity.Name, dbstatus);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
@@ -380,6 +393,7 @@ namespace XpressBilling.Account
 
                 ClearInputs(ctrl.Controls);
             }
+            imgPreview.ImageUrl = "/Images/user/preview.png";
         }
     }
 

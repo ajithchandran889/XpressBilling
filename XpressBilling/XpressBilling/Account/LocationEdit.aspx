@@ -172,8 +172,8 @@
                 <div class="form-group">
                     <label for="input-1" class="control-label col-xs-2 col-md-2">Upload Logo</label>
                     <div class="col-xs-10 col-md-2">
-                        <%--<input id="input-1" type="file" class="file">--%>
-                        <asp:FileUpload ID="logoUpload" runat="server" class="required" />
+                        <asp:Image ID="imgPreview" ClientIDMode="Static" runat="server" ImageUrl="/Images/user/preview.png" />
+                        <asp:FileUpload id="inputUpload" ClientIDMode="Static" runat="server" class="file" data-show-upload="false" data-show-caption="true" />
                     </div>
                     <asp:HiddenField ID="LocationId" runat="server" />
                     <asp:HiddenField ID="ContactId" runat="server" />

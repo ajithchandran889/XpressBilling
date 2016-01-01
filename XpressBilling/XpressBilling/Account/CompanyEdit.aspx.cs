@@ -115,6 +115,24 @@ namespace XpressBilling.Account
             Note.Text = row["Note"].ToString();
             CompanyId.Value = row["ID"].ToString();
             ddlStatus.SelectedValue = row["Status"].ToString();
+            if (row["Logo"].ToString() == null || row["Logo"].ToString()=="")
+            {
+                imgPreview.ImageUrl = "/Images/user/preview.png";
+            }
+            else
+                imgPreview.ImageUrl = HttpUtility.HtmlDecode(row["Logo"].ToString());
+            if (row["IsInitial"].ToString() == "True")
+            {
+                ContactPerson.Attributes.Add("class", ContactPerson.Attributes["class"].ToString().Replace("required", ""));
+                Designation.Attributes.Add("class", Designation.Attributes["class"].ToString().Replace("required", ""));
+                Mobile.Attributes.Add("class", Mobile.Attributes["class"].ToString().Replace("required", ""));
+                Email.Attributes.Add("class", Email.Attributes["class"].ToString().Replace("required", ""));
+                Address1.Attributes.Add("class", Address1.Attributes["class"].ToString().Replace("required", ""));
+                Address2.Attributes.Add("class", Address2.Attributes["class"].ToString().Replace("required", ""));
+                Area.Attributes.Add("class", Area.Attributes["class"].ToString().Replace("required", ""));
+                Zip.Attributes.Add("class", Zip.Attributes["class"].ToString().Replace("required", ""));
+                State.Attributes.Add("class", State.Attributes["class"].ToString().Replace("required", ""));
+            }
 
         }
 
@@ -124,12 +142,18 @@ namespace XpressBilling.Account
             {
                 string path = "";
                 string absolutePath = "";
-                if (logoUpload.HasFile)
+                if (inputUpload.HasFile)
                 {
-                    string filename = Path.GetFileName(logoUpload.FileName);
-                    path = Server.MapPath("~/Images/user/") + filename;
-                    absolutePath = "/Images/logo/" + filename;
-                    logoUpload.SaveAs(path);
+                    string folderPath = "~/Images/Company/"+AddCompany.Text+"/Logo/";
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    if (!System.IO.Directory.Exists(Server.MapPath("~") + "/Images/Company/" + AddCompany.Text + "/Logo/"))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath("~") + "/Images/Company/" + AddCompany.Text + "/Logo/");
+                    }
+                    path = Server.MapPath(folderPath) + AddCompany.Text + "_logo_" + timestamp + Path.GetExtension(inputUpload.FileName);
+                    absolutePath = folderPath + AddCompany.Text + "_logo_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
+                    imgPreview.ImageUrl = absolutePath;
+                    inputUpload.SaveAs(path);
                 }
                 bool status = false;
                 bool dbstatus;
@@ -245,6 +269,7 @@ namespace XpressBilling.Account
 
                 ClearInputs(ctrl.Controls);
             }
+            imgPreview.ImageUrl = "/Images/user/preview.png";
         }
     }
 

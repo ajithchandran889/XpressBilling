@@ -265,13 +265,22 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Note;
         
         /// <summary>
-        /// logoUpload control.
+        /// imgPreview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload logoUpload;
+        protected global::System.Web.UI.WebControls.Image imgPreview;
+        
+        /// <summary>
+        /// inputUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload inputUpload;
         
         /// <summary>
         /// lblstatus control.

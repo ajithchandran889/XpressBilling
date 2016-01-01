@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Membership.OpenAuth;
+using System.IO;
 
 namespace XpressBilling.Account
 {
@@ -45,9 +46,31 @@ namespace XpressBilling.Account
                 
                 DropDownList ddListCompany = (DropDownList)step.ContentTemplateContainer.FindControl("CompanyCode");
                 DropDownList ddListUser = (DropDownList)step.ContentTemplateContainer.FindControl("UserType");
+                FileUpload inputUpload = (FileUpload)step.ContentTemplateContainer.FindControl("inputUpload");
+                string path = "";
+                string absolutePath = "";
+                if (inputUpload.HasFile)
+                {
+                    string filename = Path.GetFileName(inputUpload.FileName);
+                    path = Server.MapPath("~/Images/user/") + filename;
+                    absolutePath = "/Images/user/" + filename;
+                    inputUpload.SaveAs(path);
+                }
+                if (inputUpload.HasFile)
+                {
+                    string folderPath = "~/Images/Company/" + ddListCompany.SelectedValue + "/User/";
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    if (!System.IO.Directory.Exists(Server.MapPath("~") + "/Images/Company/" + ddListCompany.SelectedValue + "/User/"))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath("~") + "/Images/Company/" + ddListCompany.SelectedValue + "/User/");
+                    }
+                    path = Server.MapPath(folderPath) + RegisterUser.UserName + "_user_" + timestamp + Path.GetExtension(inputUpload.FileName);
+                    absolutePath = folderPath + RegisterUser.UserName + "_user_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
+                    inputUpload.SaveAs(path);
+                }
                 Roles.AddUserToRole(RegisterUser.UserName, ddListUser.SelectedValue);
-                
-                XBDataProvider.UserRegistration.SaveAddlUserRegDetails(RegisterUser.UserName, ddListCompany.SelectedValue);
+
+                XBDataProvider.UserRegistration.SaveAddlUserRegDetails(RegisterUser.UserName, ddListCompany.SelectedValue, null, null, null, null, absolutePath);
                 Session["CompanyCode"] = ddListCompany.SelectedValue;
             }
             

@@ -24,14 +24,14 @@ namespace XpressBilling.Account
                 Session["BPDetails"] = dtTable;
                 DataRow row = null;
                 CustomerId.Items.Clear();
+                string firstCustomer = "";
                 if (dtTable.Rows.Count > 0)
                 {
                     Name.Text = dtTable.Rows[0]["Name"].ToString();
                     Location.Text = dtTable.Rows[0]["CountryCode"].ToString();
                     Telephone.Text = dtTable.Rows[0]["Phone"].ToString();
-
+                    firstCustomer = dtTable.Rows[0]["BusinessPartnerCode"].ToString();
                 }
-                string firstCustomer = dtTable.Rows[0]["BusinessPartnerCode"].ToString();
                 for (int i = 0; i < dtTable.Rows.Count; i++)
                 {
                     row = dtTable.Rows[i];
