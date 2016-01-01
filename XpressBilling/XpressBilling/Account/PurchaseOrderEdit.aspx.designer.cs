@@ -256,15 +256,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.GridView PurchaseOrderDetail;
         
         /// <summary>
-        /// AddNewRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddNewRow;
-        
-        /// <summary>
         /// PayTerms control.
         /// </summary>
         /// <remarks>
@@ -326,6 +317,24 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox POTotalOrderAmt;
+        
+        /// <summary>
+        /// IsFinalized control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField IsFinalized;
+        
+        /// <summary>
+        /// rowCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField rowCount;
         
         /// <summary>
         /// btnCencelDtl control.

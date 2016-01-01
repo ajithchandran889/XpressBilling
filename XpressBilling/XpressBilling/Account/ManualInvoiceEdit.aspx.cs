@@ -124,7 +124,6 @@ namespace XpressBilling.Account
                 //Amount.ReadOnly = true;
                 //Currency.Text = row["Currency"].ToString();
                 //Currency.ReadOnly = true;
-                AddNewRow.Visible = false;
 
                 SetManualInvoiceChildGrid();
             }
@@ -144,7 +143,6 @@ namespace XpressBilling.Account
                 ManualInvoiceDetail.DataSource = dt;
                 ManualInvoiceDetail.DataBind();
             }
-            AddNewRow.Visible = false;
         }
 
         protected void CustomerIdSelectedIndexChanged(object sender, EventArgs e)
@@ -202,7 +200,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("TaxPercentage", typeof(float)));
                 dt.Columns.Add(new DataColumn("TaxAmount", typeof(float)));
                 dt.Columns.Add(new DataColumn("NetAmount", typeof(float)));
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     dr = dt.NewRow();
                     dr["ID"] = "0";
@@ -390,7 +388,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
-                foreach (GridViewRow row in ManualInvoiceDetail.Rows)
+                if (InvoiceId.Value == "0")
                 {
                     TextBox box2 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[1].FindControl("MIItem");
                     TextBox box3 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[2].FindControl("MIItemName");
@@ -402,28 +400,30 @@ namespace XpressBilling.Account
                     TextBox box9 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[8].FindControl("MITaxPer");
                     TextBox box10 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[9].FindControl("MITaxAmt");
                     TextBox box11 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[10].FindControl("MINetAmt");
+                    string[] MIItems = Request.Form["MIItem"].Split(',');
+                    string[] MIItemNames = Request.Form["MIItemName"].Split(',');
+                    string[] MIItemRates = Request.Form["MIItemRate"].Split(',');
+                    string[] MIQuantitys = Request.Form["MIQuantity"].Split(',');
+                    string[] MIUnits = Request.Form["MIUnit"].Split(',');
+                    string[] MIDiscPers = Request.Form["MIDiscPer"].Split(',');
+                    string[] MIDiscAmts = Request.Form["MIDiscAmt"].Split(',');
+                    string[] MITaxPers = Request.Form["MITaxPer"].Split(',');
+                    string[] MITaxAmts = Request.Form["MITaxAmt"].Split(',');
+                    string[] MINetAmts = Request.Form["MINetAmt"].Split(',');
                     if (box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
-                        if (string.IsNullOrEmpty(ManualInvoiceDetail.DataKeys[i]["ID"].ToString()))
-                        {
-                            dr["ID"] = DBNull.Value;
-                        }
-                        else
-                        {
-                            dr["ID"] = Convert.ToInt32(ManualInvoiceDetail.DataKeys[i]["ID"]);
-                        }
-
+                        dr["ID"] = DBNull.Value;
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["LocationCode"] = Location.Text;
-                        dr["SalesOrderMstId"] =Convert.ToInt32(InvoiceId.Value);
+                        dr["SalesOrderMstId"] = Convert.ToInt32(InvoiceId.Value);
                         dr["ItemCode"] = box2.Text;
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
                         dr["Currency"] = "";
-                        dr["Rate"] =  float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TotalRate"] =  float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                         dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Tax"] = box9.Text;
@@ -440,7 +440,90 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                         i++;
                     }
+                    for (int k = 0; k < MIItems.Length; k++)
+                    {
+                        dr = dt.NewRow();
+                        dr["ID"] = DBNull.Value;
+                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                        dr["LocationCode"] = Location.Text;
+                        dr["SalesOrderMstId"] = Convert.ToInt32(InvoiceId.Value);
+                        dr["ItemCode"] = MIItems[k];
+                        dr["ItemName"] =MIItemNames[k];
+                        dr["BaseUnitCode"] = MIUnits[k];
+                        dr["Qty"] = Convert.ToInt32(MIQuantitys[k]);
+                        dr["Currency"] = "";
+                        dr["Rate"] = float.Parse(MIItemRates[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["DiscountPercentage"] = float.Parse(MIDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["DiscountAmt"] = float.Parse(MIDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Tax"] = MITaxPers[k];
+                        dr["TaxPercentage"] = float.Parse(MITaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TaxAmount"] = float.Parse(MITaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["NetAmount"] = float.Parse(MINetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Status"] = 1;
+                        dr["ErrorMsg"] = null;
+                        dr["Reference"] = Reference.Text;
+                        dr["CreatedBy"] = User.Identity.Name;
+                        dr["UpdatedBy"] = User.Identity.Name;
+                        dr["CreatedDate"] = DateTime.Now.Date;
+                        dr["UpdatedDate"] = DateTime.Now.Date;
+                        dt.Rows.Add(dr);
+                    }
+                }
+                else
+                {
+                    foreach (GridViewRow row in ManualInvoiceDetail.Rows)
+                    {
+                        TextBox box2 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[1].FindControl("MIItem");
+                        TextBox box3 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[2].FindControl("MIItemName");
+                        TextBox box4 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[3].FindControl("MIItemRate");
+                        TextBox box5 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[4].FindControl("MIQuantity");
+                        TextBox box6 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[5].FindControl("MIUnit");
+                        TextBox box7 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[6].FindControl("MIDiscPer");
+                        TextBox box8 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[7].FindControl("MIDiscAmt");
+                        TextBox box9 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[8].FindControl("MITaxPer");
+                        TextBox box10 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[9].FindControl("MITaxAmt");
+                        TextBox box11 = (TextBox)ManualInvoiceDetail.Rows[i].Cells[10].FindControl("MINetAmt");
+                        if (box2.Text != "" && box2.Text.Length != 0)
+                        {
+                            dr = dt.NewRow();
+                            if (string.IsNullOrEmpty(ManualInvoiceDetail.DataKeys[i]["ID"].ToString()))
+                            {
+                                dr["ID"] = DBNull.Value;
+                            }
+                            else
+                            {
+                                dr["ID"] = Convert.ToInt32(ManualInvoiceDetail.DataKeys[i]["ID"]);
+                            }
 
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = Location.Text;
+                            dr["SalesOrderMstId"] = Convert.ToInt32(InvoiceId.Value);
+                            dr["ItemCode"] = box2.Text;
+                            dr["ItemName"] = box3.Text;
+                            dr["BaseUnitCode"] = box6.Text;
+                            dr["Qty"] = Convert.ToInt32(box5.Text);
+                            dr["Currency"] = "";
+                            dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Tax"] = box9.Text;
+                            dr["TaxPercentage"] = float.Parse(box9.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TaxAmount"] = float.Parse(box10.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["NetAmount"] = float.Parse(box11.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["ErrorMsg"] = null;
+                            dr["Reference"] = Reference.Text;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                            i++;
+                        }
+
+                    }
                 }
                 #endregion
                 

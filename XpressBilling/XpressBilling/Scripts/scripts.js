@@ -633,11 +633,6 @@ $(document).ready(function () {
             $(".SQUnit").attr('readonly', 'readonly');
         }
     }
-    else if ($("#PageStatus").val() == "create") {
-        $(".SQTaxAmt").attr('readonly', 'readonly');
-        $(".SQNetAmt").attr('readonly', 'readonly');
-        $(".SQUnit").attr('readonly', 'readonly');
-    }
     if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create") {
         itemMasterArrayPO = [];
         itemMasterDetailsPO = {};
@@ -667,7 +662,7 @@ $(document).ready(function () {
             $(".POItem").attr('readonly', 'readonly');
             $(".POName").attr('readonly', 'readonly');
         }
-        if ($("#Status").val() == "2") {
+        else if ($("#Status").val() == "2" || $("#IsFinalized").val() != "0") {
             $(".POTaxAmt").attr('readonly', 'readonly');
             $(".PONetAmt").attr('readonly', 'readonly');
             $(".POUnit").attr('readonly', 'readonly');
@@ -678,13 +673,14 @@ $(document).ready(function () {
             $(".PODiscPer").attr('readonly', 'readonly');
             $(".PODiscAmt").attr('readonly', 'readonly');
             $(".POTaxPer").attr('readonly', 'readonly');
-        }
+       }
+       else if ($("#PageStatus").val() == "creating") {
+           $(".POTaxAmt").attr('readonly', 'readonly');
+           $(".PONetAmt").attr('readonly', 'readonly');
+           $(".POUnit").attr('readonly', 'readonly');
+       }
     }
-    else if ($("#PageStatus").val() == "create") {
-        $(".POTaxAmt").attr('readonly', 'readonly');
-        $(".PONetAmt").attr('readonly', 'readonly');
-        $(".POUnit").attr('readonly', 'readonly');
-    }
+    
     
     $("#mainForm").validate();
 });
@@ -2158,7 +2154,6 @@ function SearchText() {
     });
     function CreateNewRowInvoice() {
         $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-        var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td></tr>';
         var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="IItem" type="text" id="IItem" class="form-control IItem required" style="width:70px;" aria-required="true"></td><td><input name="IItemName" type="text" id="IItemName" class="form-control IItemName required" style="width:70px;" aria-required="true"></td><td><input name="IItemRate" type="text" id="IItemRate" class="form-control IItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IQuantity" type="text" id="IQuantity" class="form-control IQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IUnit" type="text" id="IUnit" class="form-control IUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="IDiscPer" type="text" id="IDiscPer" class="form-control IDiscPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IDiscAmt" type="text" id="IDiscAmt" class="form-control IDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="ITaxPer" type="text" id="ITaxPer" class="form-control ITaxPer required" style="width:70px;" aria-required="true"><input type="hidden" name="ITaxCode" id="ITaxCode"></td><td><input name="ITaxAmt" type="text" id="ITaxAmt" class="form-control ITaxAmt required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="INetAmt" type="text" id="INetAmt" class="form-control INetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
         $("#InvoiceDetail tbody").append(row);
     }
@@ -2166,5 +2161,27 @@ function SearchText() {
         var keyCode = e.keyCode || e.which;
         if (keyCode == 9 && $("#SalesInvoiceId").val() == "0") {
             CreateNewRowInvoice()
+        }
+    });
+    function CreateNewRowManualInvoice() {
+        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="MIItem" type="text" id="MIItem" class="form-control MIItem required" style="width:70px;" aria-required="true"></td><td><input name="MIItemName" type="text" id="MIItemName" class="form-control MIItemName required" style="width:70px;" aria-required="true"></td><td><input name="MIItemRate" type="text" id="MIItemRate" class="form-control MIItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIQuantity" type="text" id="MIQuantity" class="form-control MIQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIUnit" type="text" id="MIUnit" class="form-control MIUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MIDiscPer" type="text" id="MIDiscPer" class="form-control txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscAmt" type="text" id="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxPer" type="text" id="MITaxPer" class="form-control MITaxPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxAmt" type="text" id="MITaxAmt" class="form-control MITaxAmt txtNumeric required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MINetAmt" type="text" id="MINetAmt" class="form-control MINetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
+        $("#ManualInvoiceDetail tbody").append(row);
+    }
+    $(document).on("keydown", "#MINetAmt", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9 && $("#InvoiceId").val() == "0") {
+            CreateNewRowManualInvoice()
+        }
+    });
+    function CreateNewRowPO() {
+        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+        var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="POItem" type="text" id="POItem" class="form-control POItem required" style="width:70px;" aria-required="true"></td><td><input name="POName" type="text" id="POName" class="form-control POName required" aria-required="true"></td><td><input name="PORate" type="text" id="PORate" class="form-control PORate txtNumeric required" aria-required="true"></td><td><input name="POQuantity" type="text" id="POQuantity" class="form-control POQuantity txtNumeric required" aria-required="true"></td><td><input name="POUnit" type="text" id="POUnit" readonly="readonly"  class="form-control POUnit required" aria-required="true"></td><td><input name="PODiscPer" type="text" id="PODiscPer" class="form-control PODiscPer txtNumeric required" aria-required="true"></td><td><input name="PODiscAmt" type="text" id="PODiscAmt" class="form-control PODiscAmt txtNumeric"></td><td><input name="POTaxPer" type="text" id="POTaxPer" class="form-control POTaxPer required" aria-required="true"><input type="hidden" name="POTaxCode" id="POTaxCode"></td><td> <input name="POTaxAmt" type="text" id="POTaxAmt" class="form-control POTaxAmt required" readonly="readonly"  aria-required="true"></td><td><input name="PONetAmt" type="text" readonly="readonly" id="PONetAmt" class="form-control PONetAmt required" style="width:50px;" aria-required="true"></td></tr>';
+        $("#PurchaseOrderDetail tbody").append(row);
+    }
+    $(document).on("keydown", "#PONetAmt", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+            CreateNewRowPO()
         }
     });

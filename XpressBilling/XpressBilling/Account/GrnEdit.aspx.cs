@@ -82,7 +82,6 @@ namespace XpressBilling.Account
         {
             try
             {
-                btnConverGRN.Visible = true;
                 btnPrint.Visible = true;
                 DataRow row = grnDetails.Rows[0];
                 GRNId.Value = row["ID"].ToString();
@@ -106,7 +105,15 @@ namespace XpressBilling.Account
                 CreatedDate.ReadOnly = true;
                 Location.Text = row["LocationCode"].ToString();
                 Location.ReadOnly = true;
-
+                if (Status.SelectedValue == "2")
+                {
+                    btnConverGRN.Visible = false;
+                    btnSaveDtl.Visible = false;
+                }
+                else
+                {
+                    btnConverGRN.Visible = true;
+                }
                 SetGRNChildGrid(row["PurchaseOrderNo"].ToString());
             }
             catch (Exception e)
@@ -245,6 +252,7 @@ namespace XpressBilling.Account
             {
                 Status.SelectedValue = 2.ToString();
                 btnConverGRN.Visible = false;
+                btnSaveDtl.Visible = false;
             }
         }
     }

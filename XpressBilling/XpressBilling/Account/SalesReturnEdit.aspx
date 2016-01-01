@@ -110,13 +110,10 @@
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
-                        <div class="grid_header">
+                        <div class="">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
-                                <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
                         </div>
-                        <asp:GridView ID="SalesReturnDetail" runat="server" class="table" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
+                        <asp:GridView ID="SalesReturnDetail" runat="server" class="table  table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
                             <RowStyle CssClass="Odd" />
                             <AlternatingRowStyle CssClass="Even" />
 
@@ -128,54 +125,54 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Item" ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRItem" class="form-control SRItem " ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRItem" class="form-control SRItem required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Name"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRItemName" class="form-control SRItemName " ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRItemName" class="form-control SRItemName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Rate"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRItemRate" class="form-control SRItemRate txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SRItemRate" class="form-control SRItemRate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Quantity"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRQuantity" class="form-control SRQuantity txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRQuantity" class="form-control SRQuantity txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Unit"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRUnit" class="form-control SRUnit " ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRUnit" class="form-control SRUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc%"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRDiscPer" class="form-control SRDiscPer txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountPercentage","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SRDiscPer" class="form-control SRDiscPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountPercentage","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc Amt"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRDiscAmt" class="form-control SRDiscAmt txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SRDiscAmt" class="form-control SRDiscAmt txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt","{0:n}")%>'></asp:TextBox>
                                         
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax%"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRTaxPer" class="form-control SRTaxPer" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRTaxPer" class="form-control SRTaxPer required" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
                                         <asp:HiddenField ID="SRTaxCode" runat="server" ClientIDMode="Static" Value='<%# Bind("Tax") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax Amt"  ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRTaxAmt" class="form-control SRTaxAmt" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SRTaxAmt" class="form-control SRTaxAmt required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Net Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRNetAmt" class="form-control SRNetAmt" ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SRNetAmt" class="form-control SRNetAmt required" ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
                                         
                                     </ItemTemplate>
                                 </asp:TemplateField>

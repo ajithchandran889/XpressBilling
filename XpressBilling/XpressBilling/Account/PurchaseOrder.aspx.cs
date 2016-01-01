@@ -45,7 +45,7 @@ namespace XpressBilling.Account
                     ids += hfSelectedId.Value + ",";
                 }
             }
-            XBDataProvider.SalesQuotation.DeleteSalesQuotation(ids);
+            XBDataProvider.PurchaseOrder.DeletePurchaseOrder(ids);
             LoadPurchaseOrderList();
         }
     }

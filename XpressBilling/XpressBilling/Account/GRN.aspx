@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListGRN" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="GRNPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
+                        OnPageIndexChanging="GRNPageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="GrnEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

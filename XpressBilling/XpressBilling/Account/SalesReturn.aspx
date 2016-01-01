@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListSalesReturn" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="SalesReturnPageIndexChanging" PageSize="20" AutoGenerateColumns="false">
+                        OnPageIndexChanging="SalesReturnPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="SalesReturnEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />

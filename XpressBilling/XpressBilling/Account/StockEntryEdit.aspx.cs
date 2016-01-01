@@ -369,15 +369,7 @@ namespace XpressBilling.Account
                     for (int k = 0; k < Items.Length; k++)
                     {
                         dr = dt.NewRow();
-                        if (string.IsNullOrEmpty(StockEntryDetail.DataKeys[i]["ID"].ToString()))
-                        {
-                            dr["ID"] = DBNull.Value;
-                        }
-                        else
-                        {
-                            dr["ID"] = Convert.ToInt32(StockEntryDetail.DataKeys[i]["ID"]);
-                        }
-
+                        dr["ID"] = DBNull.Value;
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["LocationCode"] = Location.Text;
                         dr["StockAdjustmentMstId"] = Convert.ToInt32(StokeEntryMstId.Value);

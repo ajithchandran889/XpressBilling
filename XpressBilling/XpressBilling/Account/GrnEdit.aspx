@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GrnEdit.aspx.cs" Inherits="XpressBilling.Account.GrnEdit" %>
+﻿
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GrnEdit.aspx.cs" Inherits="XpressBilling.Account.GrnEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
         <div class="row content-holder">
@@ -78,13 +79,10 @@
                 
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
-                        <div class="grid_header">
+                        <div class="">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
-                                <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
                         </div>
-                        <asp:GridView ID="GRNDetail" runat="server" class="table" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
+                        <asp:GridView ID="GRNDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
                             <RowStyle CssClass="Odd" />
                             <AlternatingRowStyle CssClass="Even" />
                            

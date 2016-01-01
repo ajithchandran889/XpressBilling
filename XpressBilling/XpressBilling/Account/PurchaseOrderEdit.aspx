@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PurchaseOrderEdit.aspx.cs" Inherits="XpressBilling.Account.PurchaseOrderEdit" %>
+﻿
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PurchaseOrderEdit.aspx.cs" Inherits="XpressBilling.Account.PurchaseOrderEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
         <div class="row content-holder">
@@ -83,7 +84,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Reference</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:TextBox runat="server" ID="Reference" class="form-control required" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Reference" class="form-control" placeholder="Reference" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Available Credit</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
@@ -102,13 +103,10 @@
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
-                        <div class="grid_header">
+                        <div class="">
                             <h2 class="pull-left">Transaction</h2>
-                            <div class="pull-right">
-                                <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
-                            </div>
                         </div>
-                        <asp:GridView ID="PurchaseOrderDetail" runat="server" class="table" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
+                        <asp:GridView ID="PurchaseOrderDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
                             <RowStyle CssClass="Odd" />
                             <AlternatingRowStyle CssClass="Even" />
                            
@@ -120,32 +118,32 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Item" ControlStyle-Width="70">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POItem" class="form-control POItem  " ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="POItem" class="form-control POItem required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Name">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POName" class="form-control POName  " ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
+                                        <asp:TextBox ID="POName" class="form-control POName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Rate">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="PORate" class="form-control PORate txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="PORate" class="form-control PORate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Quantity">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POQuantity" class="form-control POQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="POQuantity" class="form-control POQuantity txtNumeric required"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Unit">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POUnit" class="form-control POUnit  " ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
+                                        <asp:TextBox ID="POUnit" class="form-control POUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc%">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="PODiscPer" class="form-control PODiscPer txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("Discount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="PODiscPer" class="form-control PODiscPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Discount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc Amt">
@@ -155,27 +153,22 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax%">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POTaxPer" class="form-control POTaxPer  " ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
+                                        <asp:TextBox ID="POTaxPer" class="form-control POTaxPer required" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
                                         <asp:HiddenField ID="POTaxCode" runat="server" ClientIDMode="Static" value='<%# Bind("Tax") %>'/>
                                </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax Amt">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="POTaxAmt" class="form-control POTaxAmt  " ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="POTaxAmt" class="form-control POTaxAmt required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Net Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="PONetAmt" class="form-control PONetAmt  " ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="PONetAmt" class="form-control PONetAmt required" ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-8">
-                        <div class="form-group ">
-                            <asp:Button ID="AddNewRow" runat="server" Text="Add Rows" OnClick="AddNewRowClick" />
-                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-8">
                         <div class="form-group ">
@@ -218,6 +211,8 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
 
                         <div class="row">
+                            <asp:HiddenField ID="IsFinalized" runat="server" ClientIDMode="Static" Value="0" />
+                            <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                             <a id="btnCencelDtl" href="/Account/PurchaseOrder" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary PurchaseOrderBtnDetail" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConverOrder" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Order" Visible="false" OnClick="BtnConvertOrderClick" />
