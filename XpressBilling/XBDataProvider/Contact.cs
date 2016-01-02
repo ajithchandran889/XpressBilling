@@ -55,7 +55,7 @@ namespace XBDataProvider
         }
 
 
-        public static bool UpdateContact(string Contact, string Name, string Designation, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, string username, bool status)
+        public static bool UpdateContact(string Contact, string Name, string Designation, string Phone, string Mobile, string Fax, string Email, string Web, string Address1, string Address2, string Citycontact, string Area, string State, string Country, int Zip, string username, bool status,string companyname)
         {
             try
             {
@@ -79,6 +79,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", username));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@CompanyName", companyname));
                 DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_ContactMst_xpupd", cmd);
                 return true;
             }

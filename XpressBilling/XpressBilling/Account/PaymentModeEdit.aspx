@@ -22,35 +22,36 @@
                    <label id="lblPaymentMode" runat="server" for="PaymentMode" class="control-label col-xs-2 col-md-2">Payment Mode</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="PaymentMode" name="PaymentMode" class="form-control" placeholder="PaymentMode" ClientIDMode="Static"></asp:TextBox>
-                    </div>
+                    </div><div class="col-xs-10 col-md-2"></div>
                     <label id="lblCreatedDate" runat="server" for="Date" class="control-label col-xs-2 col-md-2">Created Date</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="CreatedDate" name="Date" class="form-control" placeholder="Date" ClientIDMode="Static"></asp:TextBox>
                     </div>
-
+                    <div class="col-xs-10 col-md-2"></div>
                 </div>
                 <div class="form-group">
                     <label for="Name" class="control-label col-xs-2 col-md-2">Name</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Name" name="Name" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
-                    </div>
+                    </div><div class="col-xs-10 col-md-2"></div>
                     <label id="lblCreatedUser" runat="server" for="CreatedUser" class="control-label col-xs-2 col-md-2">User</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="CreatedUser" name="CreatedUser" class="form-control " placeholder="User" ClientIDMode="Static"></asp:TextBox>
                     </div>
+                    <div class="col-xs-10 col-md-2"></div>
                 </div>
                 
                 <div class="form-group">
                     <label  class="control-label col-xs-2 col-md-2">Transaction</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="Transaction" ClientIDMode="Static">
+                        <asp:DropDownList runat="server" class="form-control required" ID="Transaction" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="TransactionSelectedIndexChanged">
                             <asp:ListItem Selected="True" Value="-1" Text="Select Transaction"></asp:ListItem>
                             <asp:ListItem Value="0" Text="Cash"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Bank"></asp:ListItem>
                             <asp:ListItem Value="2" Text="Discount"></asp:ListItem>
                             <asp:ListItem Value="3" Text="Round-off"></asp:ListItem>
                         </asp:DropDownList>
-                    </div><%--<div class="col-xs-10 col-md-2"></div>--%>
+                    </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">
@@ -58,15 +59,16 @@
                             <asp:ListItem Value="0" Text="InActive"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
+                    
                 </div>
                  <div class="form-group">
-                    <asp:Label id="lblBankDetail" runat="server"  ClientIDMode="Static"  for="BankAccount" class="control-label col-xs-2 col-md-2">Bank Account</asp:Label>
+                    <label id="lblBankacc" runat="server" for="BankAccount" class="control-label col-xs-2 col-md-2">Bank Account</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="BankAccount" class="form-control required" placeholder="Bank Account" ClientIDMode="Static"></asp:TextBox>
-                        <%--<asp:DropDownList runat="server" class="form-control required" ID="ddlBankAccount" ClientIDMode="Static">                            
-                        </asp:DropDownList>--%>
+                        <%--<asp:TextBox runat="server" ID="BankAccount" class="form-control required" placeholder="Bank Account" ClientIDMode="Static"></asp:TextBox>--%>
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlBankAccount" AutoPostBack="true" OnSelectedIndexChanged="ddlBankAccountSelectedIndexChanged" ClientIDMode="Static">                            
+                        </asp:DropDownList>                        
                     </div>
-                    
+                    <label id="lblbankcode" runat="server" class="control-label col-xs-2 col-md-2"></label>
 
                 </div>
                 <div class="form-group">

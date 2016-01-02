@@ -112,13 +112,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Date;
         
         /// <summary>
-        /// ddlCompany control.
+        /// txtcompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCompany;
+        protected global::System.Web.UI.WebControls.TextBox txtcompany;
         
         /// <summary>
         /// lblusername control.
@@ -272,6 +272,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField ContactId;
+        
+        /// <summary>
+        /// hdncompanycode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdncompanycode;
         
         /// <summary>
         /// CompanyId control.

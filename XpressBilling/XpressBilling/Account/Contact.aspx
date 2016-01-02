@@ -23,7 +23,7 @@
                             <asp:BoundField DataField="Contact" HeaderText="Contact"></asp:BoundField>
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Designation" HeaderText="Designation"></asp:BoundField>
-                            <asp:BoundField DataField="CompanyCode" HeaderText="Company"></asp:BoundField>
+                            <asp:BoundField DataField="CompanyName" HeaderText="Company"></asp:BoundField>
                             <%--<asp:BoundField DataField="CompanyCodeName" HeaderText="Company"></asp:BoundField>--%>
                             <asp:BoundField DataField="CountryCode" HeaderText="Country"></asp:BoundField>
                             <asp:BoundField DataField="CityCode" HeaderText="City"></asp:BoundField>

@@ -11,10 +11,11 @@ namespace XBDataProvider
 {
     public static class PaymentMode
     {
-        public static bool SavePaymentMode(string companyCode,string name, int transaction, string bankAccount, string user)
+        public static bool SavePaymentMode(string companyCode,string name, int transaction, string bankAccount,string bankcode, string user)
         {
             try
             {
+                string othervalue = "";
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
@@ -23,11 +24,13 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Transaction", transaction));
                 if(transaction==1)
                 {
-                    cmd.Parameters.Add(new SqlParameter("@BankCode", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@AccountNo", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@BankCode", bankcode));
                 }
                 else
                 {
-                    cmd.Parameters.Add(new SqlParameter("@AccountNo", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@AccountNo", othervalue));
+                    cmd.Parameters.Add(new SqlParameter("@BankCode", othervalue));
                 }
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
@@ -43,10 +46,11 @@ namespace XBDataProvider
 
         }
 
-        public static bool UpdatePaymentMode(string id, string name, int transaction, string bankAccount, string user,bool status)
+        public static bool UpdatePaymentMode(string id, string name, int transaction, string bankAccount, string user,bool status,string bankcode)
         {
             try
             {
+                string othervalue = "";
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
@@ -55,11 +59,13 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Transactions", transaction));
                 if (transaction == 1)
                 {
-                    cmd.Parameters.Add(new SqlParameter("@BankCode", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@AccountNo", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@BankCode", bankcode));
                 }
                 else
                 {
-                    cmd.Parameters.Add(new SqlParameter("@AccountNo", bankAccount));
+                    cmd.Parameters.Add(new SqlParameter("@AccountNo", othervalue));
+                    cmd.Parameters.Add(new SqlParameter("@BankCode", othervalue));
                 }
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
@@ -159,6 +165,39 @@ namespace XBDataProvider
             {
             }
 
+        }
+
+        public static DataTable ActiveBankAcc(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentMode_GetAllActiveBankAccount", cmd);
+                
+            }
+            catch (Exception ex)
+            {
+            }
+            return dtTable;
+        }
+        public static DataTable BankcodeAgainstAcc(int id)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentMode_GetCodeAgainstBankAccount", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return dtTable;
         }
     }
 }

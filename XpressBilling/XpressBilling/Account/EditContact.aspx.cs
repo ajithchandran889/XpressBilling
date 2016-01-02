@@ -30,21 +30,25 @@ namespace XpressBilling.Account
                 item.Text = "Select Country";
                 item.Value = "";
                 Country.Items.Insert(0, item);
-                DataTable dtCompanies = XBDataProvider.Company.GetAllActiveCompany();
-                ddlCompany.DataSource = dtCompanies;
-                ddlCompany.DataValueField = "CompanyCode";
-                ddlCompany.DataTextField = "Name";
-                ddlCompany.DataBind();
-                ListItem itemcompany = new ListItem();
-                itemcompany.Text = "Select Company";
-                itemcompany.Value = "";
-                ddlCompany.Items.Insert(0, itemcompany);
+                //DataTable dtCompanies = XBDataProvider.Company.GetAllActiveCompany();
+                //ddlCompany.DataSource = dtCompanies;
+                //ddlCompany.DataValueField = "CompanyCode";
+                //ddlCompany.DataTextField = "Name";
+                //ddlCompany.DataBind();
+                //ListItem itemcompany = new ListItem();
+                //itemcompany.Text = "Select Company";
+                //itemcompany.Value = "";
+                //ddlCompany.Items.Insert(0, itemcompany);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
                     DataTable contactDetails = XBDataProvider.Contact.GetContactCodeById(id);
                     if (contactDetails.Rows.Count > 0)
-                    {
+                    { DataTable dtTable = XBDataProvider.City.GetCitiesByCompany(Session["CompanyCode"].ToString());
+                        City.DataSource = dtTable;
+                        City.DataValueField = "CityCode";
+                        City.DataTextField = "Name";
+                        City.DataBind();
                         SetContactDetails(contactDetails);
                     }
                 }
@@ -85,8 +89,9 @@ namespace XpressBilling.Account
             Area.Text = row["Area"].ToString();
             State.Text = row["State"].ToString();
             Country.SelectedValue = row["CountryCode"].ToString();
-            ddlCompany.SelectedValue = row["CompanyCode"].ToString();
-            ddlCompany.Enabled = false;
+            txtcompany.Text = row["CompanyName"].ToString();
+            //ddlCompany.SelectedValue = row["CompanyCode"].ToString();
+            //ddlCompany.Enabled = false;
             Zip.Text = row["ZipPostalCode"].ToString();
             ContactId.Value = row["ID"].ToString();
             ddlStatus.SelectedValue = row["Status"].ToString();
@@ -95,6 +100,7 @@ namespace XpressBilling.Account
         {
             try
             {
+                hdncompanycode.Value = Session["CompanyCode"].ToString();
                 //int zipcode = Convert.ToInt16(Zip.Text);
                 bool status = false;
                 if (ddlStatus.SelectedValue == "0")
@@ -105,7 +111,7 @@ namespace XpressBilling.Account
                 string errmsg = "";
                 if (ContactId.Value != "0" && ContactId.Value != "")
                 {
-                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), User.Identity.Name, status);
+                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), User.Identity.Name, status,txtcompany.Text);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
@@ -122,7 +128,7 @@ namespace XpressBilling.Account
                 else
                 {
                     int retunValue = 0;
-                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, ddlCompany.SelectedValue.ToString(), Designation.Text, ddlCompany.SelectedItem.ToString(), Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), true, note, errmsg, User.Identity.Name);
+                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, hdncompanycode.Value, Designation.Text, txtcompany.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), true, note, errmsg, User.Identity.Name);
                     if (retunValue == 1)
                     {
                         ClearInputs(Page.Controls);

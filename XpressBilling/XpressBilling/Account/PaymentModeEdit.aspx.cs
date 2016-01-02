@@ -18,6 +18,8 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                
+
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id!=0)
                 {
@@ -39,10 +41,61 @@ namespace XpressBilling.Account
                     lblCreatedDate.Visible = false;
                     lblstatus.Visible = false;
                     ddlStatus.Visible = false;
+                    ddlBankAccount.Visible = false;
+                    lblbankcode.Visible = false;
+                    lblBankacc.Visible = false;
                 }
             }
         }
+        protected void TransactionSelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(Transaction.SelectedValue.ToString()=="1")
+                {
+                    ddlBankAccount.Visible = true;
+                    lblBankacc.Visible = true;
+                    lblbankcode.Visible = true;
+                DataTable dtbankacc = XBDataProvider.PaymentMode.ActiveBankAcc(Session["CompanyCode"].ToString());
 
+                ddlBankAccount.DataSource = dtbankacc;
+                ddlBankAccount.DataValueField = "ID";
+                ddlBankAccount.DataTextField = "AccountNo";
+                ddlBankAccount.DataBind();
+                ListItem itemBankAccount = new ListItem();
+                itemBankAccount.Text = "Select AccountNo";
+                itemBankAccount.Value = "";
+                ddlBankAccount.Items.Insert(0, itemBankAccount);
+                }
+                else
+                {
+                    ddlBankAccount.Visible = false;
+                    lblBankacc.Visible = false;
+                    lblbankcode.Visible = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        protected void ddlBankAccountSelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                DataTable dtbankcode = XBDataProvider.PaymentMode.BankcodeAgainstAcc(Convert.ToInt32(Transaction.SelectedValue));
+                DataRow row = dtbankcode.Rows[0];
+                lblbankcode.InnerText = row["BankCode"].ToString();
+                    
+               
+ }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void SetPaymentModeDetails(DataTable paymentModeDetails)
         {
             DataRow row = paymentModeDetails.Rows[0];
@@ -57,14 +110,29 @@ namespace XpressBilling.Account
             Transaction.SelectedValue = row["Transactions"].ToString();
             if (row["Transactions"].ToString()=="1")
             {
-                lblBankDetail.Text = "Bank Code";
-                //ddlBankAccount.SelectedValue = row["BankCode"].ToString();
-                BankAccount.Text = row["BankCode"].ToString();
+                DataTable dtbankacc = XBDataProvider.PaymentMode.ActiveBankAcc(Session["CompanyCode"].ToString());
+
+                ddlBankAccount.DataSource = dtbankacc;
+                ddlBankAccount.DataValueField = "ID";
+                ddlBankAccount.DataTextField = "AccountNo";
+                ddlBankAccount.DataBind();
+                ListItem itemBankAccount = new ListItem();
+                itemBankAccount.Text = "Select AccountNo";
+                itemBankAccount.Value = "";
+                ddlBankAccount.Items.Insert(0, itemBankAccount);
+                lblBankacc.Visible = true;
+                //lblBankDetail.Text = "Bank Code";
+                ddlBankAccount.SelectedValue = row["AccountNo"].ToString();
+                //BankAccount.Text = row["BankCode"].ToString();
+                lblbankcode.InnerText = row["BankCode"].ToString();
             }
             else
             {
-                BankAccount.Text = row["AccountNo"].ToString();
-                lblBankDetail.Text = "Bank Account";
+                lblBankacc.Visible = false;
+                ddlBankAccount.Visible = false;
+                lblbankcode.Visible = false;
+                //BankAccount.Text = row["AccountNo"].ToString();
+                //lblBankDetail.Text = "Bank Account";
             }
             
 
@@ -83,7 +151,7 @@ namespace XpressBilling.Account
                     else
                         statusflag = true;
                     string hg = Transaction.SelectedValue;
-                    status = XBDataProvider.PaymentMode.UpdatePaymentMode(PaymentModeId.Value, Name.Text, Convert.ToInt32(Transaction.SelectedValue), BankAccount.Text, User.Identity.Name, statusflag);
+                    status = XBDataProvider.PaymentMode.UpdatePaymentMode(PaymentModeId.Value, Name.Text, Convert.ToInt32(Transaction.SelectedValue), ddlBankAccount.SelectedValue, User.Identity.Name, statusflag, lblbankcode.InnerText);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
@@ -99,7 +167,7 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    status = XBDataProvider.PaymentMode.SavePaymentMode(Session["CompanyCode"].ToString(), Name.Text, Convert.ToInt32(Transaction.SelectedValue), BankAccount.Text, User.Identity.Name);
+                    status = XBDataProvider.PaymentMode.SavePaymentMode(Session["CompanyCode"].ToString(), Name.Text, Convert.ToInt32(Transaction.SelectedValue), ddlBankAccount.SelectedValue,lblbankcode.InnerText, User.Identity.Name);
                     if (status)
                     {
                         ClearInputs(Page.Controls);

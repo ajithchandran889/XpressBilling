@@ -21,7 +21,7 @@ namespace XpressBilling.Account
                 DataTable dtbankcode = XBDataProvider.BankMst.GetAllActiveBankCode(Session["CompanyCode"].ToString());
 
                 ddlbankcode.DataSource = dtbankcode;
-                ddlbankcode.DataValueField = "Id";
+                ddlbankcode.DataValueField = "BankCode";
                 ddlbankcode.DataTextField = "Name";
                 ddlbankcode.DataBind();
                 ListItem item = new ListItem();

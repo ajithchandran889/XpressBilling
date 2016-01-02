@@ -15,13 +15,13 @@
               </div>
                     </div>
                     <asp:GridView ID="ListPaymentMode" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="PaymentModePageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Locations" OnDataBound="listPaymentModeDataBound">
+                        OnPageIndexChanging="PaymentModePageIndexChanging" PageSize="20" AutoGenerateColumns="false" EmptyDataText="There are no Paymentmodes" OnDataBound="listPaymentModeDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="PaymentMode" DataNavigateUrlFormatString="PaymentModeEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="PaymentMode" HeaderText="Payment Mode"></asp:BoundField>
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
-                            <asp:BoundField DataField="AccountNo" HeaderText="Account"></asp:BoundField>
+                            <asp:BoundField DataField="AccNo" HeaderText="Account"></asp:BoundField>
                             <asp:BoundField DataField="BankCode" HeaderText="Bank Code"></asp:BoundField>
                            <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "InActive":"Active" %></ItemTemplate>

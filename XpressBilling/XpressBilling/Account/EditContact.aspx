@@ -43,10 +43,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Company" class="control-label col-xs-2 col-md-2">Company</label>
+                    <label for="Company" class="control-label col-xs-2 col-md-2">Company Name</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control" ID="ddlCompany" ClientIDMode="Static">
-                        </asp:DropDownList>                        
+                        <asp:TextBox runat="server" ID="txtcompany" class="form-control" placeholder="Company" ClientIDMode="Static"></asp:TextBox>
+                        <%--<asp:DropDownList runat="server" class="form-control" ID="ddlCompany" ClientIDMode="Static">
+                        </asp:DropDownList>  --%>                      
                     </div>
                     <label for="UserName" runat="server" ID="lblusername" placeholder="UserName"  class="control-label col-xs-2 col-md-2">User</label>
                     <div class="col-xs-10 col-md-2">
@@ -138,6 +139,7 @@
                 </div>
                     <div class="form-group">
                         <asp:HiddenField ID="ContactId" runat="server" />
+                    <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
                         <a href="/Account/Contact.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
