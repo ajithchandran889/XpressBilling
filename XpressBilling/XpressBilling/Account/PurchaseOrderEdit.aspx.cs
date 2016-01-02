@@ -460,17 +460,6 @@ namespace XpressBilling.Account
                     TextBox box10 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[9].FindControl("POTaxAmt");
                     TextBox box11 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[10].FindControl("PONetAmt");
                     HiddenField hdnFld = (HiddenField)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxCode");
-                    string[] POItems = Request.Form["POItem"].Split(',');
-                    string[] PONames = Request.Form["POName"].Split(',');
-                    string[] PORates = Request.Form["PORate"].Split(',');
-                    string[] POQuantitys = Request.Form["POQuantity"].Split(',');
-                    string[] POUnits = Request.Form["POUnit"].Split(',');
-                    string[] PODiscPers = Request.Form["PODiscPer"].Split(',');
-                    string[] PODiscAmts = Request.Form["PODiscAmt"].Split(',');
-                    string[] POTaxPers = Request.Form["POTaxPer"].Split(',');
-                    string[] POTaxAmts = Request.Form["POTaxAmt"].Split(',');
-                    string[] PONetAmts = Request.Form["PONetAmt"].Split(',');
-                    string[] POTaxCodes = Request.Form["POTaxCode"].Split(',');
                     if (box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
@@ -505,40 +494,56 @@ namespace XpressBilling.Account
                         dr["UpdatedDate"] = DateTime.Now.Date;
                         dt.Rows.Add(dr);
                     }
-                    for (int k = 0; k < POItems.Length; k++)
+                    if(Request.Form["POItem"]!=null)
                     {
-                        dr = dt.NewRow();
-                        dr["ID"] = DBNull.Value;
-                        DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
-                        dr["PurchaseOrderMstId"] = Convert.ToInt32(PurchaseOrderId.Value);
-                        dr["PurchaseOrderNo"] = OrderNo.Text;
-                        dr["PurchaseOrderDate"] = date;
-                        dr["ItemCode"] = POItems[k];
-                        dr["ItemName"] = PONames[k];
-                        dr["BaseUnitCode"] = POUnits[k];
-                        dr["OrderQty"] = Convert.ToInt32(POQuantitys[k]);
-                        dr["ReceivedQty"] = 0;
-                        dr["InOrderQty"] = Convert.ToInt32(POQuantitys[k]);
-                        dr["Currency"] = "";
-                        dr["Rate"] = float.Parse(PORates[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["DiscountPercentage"] = float.Parse(PODiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["DiscountAmt"] = float.Parse(PODiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Tax"] = POTaxCodes[k];
-                        dr["TaxPercentage"] = float.Parse(POTaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TaxAmount"] = float.Parse(POTaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["NetAmount"] = float.Parse(PONetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Status"] = 1;
-                        dr["ErrorMsg"] = null;
-                        dr["Reference"] = Reference.Text;
-                        dr["CreatedBy"] = User.Identity.Name;
-                        dr["UpdatedBy"] = User.Identity.Name;
-                        dr["CreatedDate"] = DateTime.Now.Date;
-                        dr["UpdatedDate"] = DateTime.Now.Date;
-                        dt.Rows.Add(dr);
+                        string[] POItems = Request.Form["POItem"].Split(',');
+                        string[] PONames = Request.Form["POName"].Split(',');
+                        string[] PORates = Request.Form["PORate"].Split(',');
+                        string[] POQuantitys = Request.Form["POQuantity"].Split(',');
+                        string[] POUnits = Request.Form["POUnit"].Split(',');
+                        string[] PODiscPers = Request.Form["PODiscPer"].Split(',');
+                        string[] PODiscAmts = Request.Form["PODiscAmt"].Split(',');
+                        string[] POTaxPers = Request.Form["POTaxPer"].Split(',');
+                        string[] POTaxAmts = Request.Form["POTaxAmt"].Split(',');
+                        string[] PONetAmts = Request.Form["PONetAmt"].Split(',');
+                        string[] POTaxCodes = Request.Form["POTaxCode"].Split(',');
+
+                        for (int k = 0; k < POItems.Length; k++)
+                        {
+                            dr = dt.NewRow();
+                            dr["ID"] = DBNull.Value;
+                            DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = Location.Text;
+                            dr["PurchaseOrderMstId"] = Convert.ToInt32(PurchaseOrderId.Value);
+                            dr["PurchaseOrderNo"] = OrderNo.Text;
+                            dr["PurchaseOrderDate"] = date;
+                            dr["ItemCode"] = POItems[k];
+                            dr["ItemName"] = PONames[k];
+                            dr["BaseUnitCode"] = POUnits[k];
+                            dr["OrderQty"] = Convert.ToInt32(POQuantitys[k]);
+                            dr["ReceivedQty"] = 0;
+                            dr["InOrderQty"] = Convert.ToInt32(POQuantitys[k]);
+                            dr["Currency"] = "";
+                            dr["Rate"] = float.Parse(PORates[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountPercentage"] = float.Parse(PODiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountAmt"] = float.Parse(PODiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Tax"] = POTaxCodes[k];
+                            dr["TaxPercentage"] = float.Parse(POTaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TaxAmount"] = float.Parse(POTaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["NetAmount"] = float.Parse(PONetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["ErrorMsg"] = null;
+                            dr["Reference"] = Reference.Text;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                        }
                     }
+                    
                 }
                 else
                 {

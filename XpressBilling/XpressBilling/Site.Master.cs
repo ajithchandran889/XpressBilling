@@ -84,6 +84,7 @@ namespace XpressBilling
                     _panelNormal.Visible = true;
                     _panelSuper.Visible = false;
                 }
+               // string userId = Membership.GetUser().ProviderUserKey.ToString();
             }
             
         }

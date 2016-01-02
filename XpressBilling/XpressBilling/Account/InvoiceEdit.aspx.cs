@@ -416,17 +416,6 @@ namespace XpressBilling.Account
                     TextBox box10 = (TextBox)InvoiceDetail.Rows[i].Cells[9].FindControl("ITaxAmt");
                     TextBox box11 = (TextBox)InvoiceDetail.Rows[i].Cells[10].FindControl("INetAmt");
                     HiddenField hdnFld = (HiddenField)InvoiceDetail.Rows[i].Cells[8].FindControl("ITaxCode");
-                    string[] IItems = Request.Form["IItem"].Split(',');
-                    string[] IItemNames = Request.Form["IItemName"].Split(',');
-                    string[] IItemRates = Request.Form["IItemRate"].Split(',');
-                    string[] IQuantities = Request.Form["IQuantity"].Split(',');
-                    string[] IUnits = Request.Form["IUnit"].Split(',');
-                    string[] IDiscPers = Request.Form["IDiscPer"].Split(',');
-                    string[] IDiscAmts = Request.Form["IDiscAmt"].Split(',');
-                    string[] ITaxPers = Request.Form["ITaxPer"].Split(',');
-                    string[] ITaxAmts = Request.Form["ITaxAmt"].Split(',');
-                    string[] INetAmts = Request.Form["INetAmt"].Split(',');
-                    string[] ITaxCodes = Request.Form["ITaxCode"].Split(',');
                     if (box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
@@ -464,35 +453,51 @@ namespace XpressBilling.Account
                         dr["UpdatedDate"] = DateTime.Now.Date;
                         dt.Rows.Add(dr);
                     }
-                    for (int k = 0; k < IItems.Length; k++)
+                    if(Request.Form["IItem"]!=null)
                     {
-                        dr = dt.NewRow();
-                        dr["ID"] = DBNull.Value;
-                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
-                        dr["SalesOrderMstId"] = Convert.ToInt32(SalesInvoiceId.Value);
-                        dr["ItemCode"] = IItems[k];
-                        dr["ItemName"] = IItemNames[k];
-                        dr["BaseUnitCode"] = IUnits[k];
-                        dr["Qty"] = Convert.ToInt32(IQuantities[k]);
-                        dr["Currency"] = "";
-                        dr["Rate"] = float.Parse(IItemRates[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["DiscountPercentage"] = float.Parse(IDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["DiscountAmt"] = float.Parse(IDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Tax"] = ITaxCodes[k];
-                        dr["TaxPercentage"] = float.Parse(ITaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TaxAmount"] = float.Parse(ITaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["NetAmount"] = float.Parse(INetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Status"] = 1;
-                        dr["ErrorMsg"] = null;
-                        dr["Reference"] = Reference.Text;
-                        dr["CreatedBy"] = User.Identity.Name;
-                        dr["UpdatedBy"] = User.Identity.Name;
-                        dr["CreatedDate"] = DateTime.Now.Date;
-                        dr["UpdatedDate"] = DateTime.Now.Date;
-                        dt.Rows.Add(dr);
+                        string[] IItems = Request.Form["IItem"].Split(',');
+                        string[] IItemNames = Request.Form["IItemName"].Split(',');
+                        string[] IItemRates = Request.Form["IItemRate"].Split(',');
+                        string[] IQuantities = Request.Form["IQuantity"].Split(',');
+                        string[] IUnits = Request.Form["IUnit"].Split(',');
+                        string[] IDiscPers = Request.Form["IDiscPer"].Split(',');
+                        string[] IDiscAmts = Request.Form["IDiscAmt"].Split(',');
+                        string[] ITaxPers = Request.Form["ITaxPer"].Split(',');
+                        string[] ITaxAmts = Request.Form["ITaxAmt"].Split(',');
+                        string[] INetAmts = Request.Form["INetAmt"].Split(',');
+                        string[] ITaxCodes = Request.Form["ITaxCode"].Split(',');
+
+                        for (int k = 0; k < IItems.Length; k++)
+                        {
+                            dr = dt.NewRow();
+                            dr["ID"] = DBNull.Value;
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = Location.Text;
+                            dr["SalesOrderMstId"] = Convert.ToInt32(SalesInvoiceId.Value);
+                            dr["ItemCode"] = IItems[k];
+                            dr["ItemName"] = IItemNames[k];
+                            dr["BaseUnitCode"] = IUnits[k];
+                            dr["Qty"] = Convert.ToInt32(IQuantities[k]);
+                            dr["Currency"] = "";
+                            dr["Rate"] = float.Parse(IItemRates[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountPercentage"] = float.Parse(IDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountAmt"] = float.Parse(IDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Tax"] = ITaxCodes[k];
+                            dr["TaxPercentage"] = float.Parse(ITaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TaxAmount"] = float.Parse(ITaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["NetAmount"] = float.Parse(INetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["ErrorMsg"] = null;
+                            dr["Reference"] = Reference.Text;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                        }
                     }
+                    
 
                 }
                 else

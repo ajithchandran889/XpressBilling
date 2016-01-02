@@ -322,7 +322,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
-                if(PageStatus.Value=="creating")
+                if (PageStatus.Value == "creating")
                 {
                     TextBox box2 = (TextBox)SalesQuotationDetail.Rows[i].Cells[1].FindControl("SQItem");
                     TextBox box3 = (TextBox)SalesQuotationDetail.Rows[i].Cells[2].FindControl("SQName");
@@ -335,17 +335,6 @@ namespace XpressBilling.Account
                     TextBox box10 = (TextBox)SalesQuotationDetail.Rows[i].Cells[9].FindControl("SQTaxAmt");
                     TextBox box11 = (TextBox)SalesQuotationDetail.Rows[i].Cells[10].FindControl("SQNetAmt");
                     HiddenField hdnFld = (HiddenField)SalesQuotationDetail.Rows[i].Cells[8].FindControl("SQTaxCode");
-                    string[] SQItems = Request.Form["SQItem"].Split(',');
-                    string[] SQNames = Request.Form["SQName"].Split(',');
-                    string[] SQRates = Request.Form["SQRate"].Split(',');
-                    string[] SQQuantities = Request.Form["SQQuantity"].Split(',');
-                    string[] SQUnits = Request.Form["SQUnit"].Split(',');
-                    string[] SQDiscPers = Request.Form["SQDiscPer"].Split(',');
-                    string[] SQDiscAmts = Request.Form["SQDiscAmt"].Split(',');
-                    string[] SQTaxPers = Request.Form["SQTaxPer"].Split(',');
-                    string[] SQTaxAmts = Request.Form["SQTaxAmt"].Split(',');
-                    string[] SQNetAmts = Request.Form["SQNetAmt"].Split(',');
-                    string[] SQTaxCodes = Request.Form["SQTaxCode"].Split(',');
                     dr = dt.NewRow();
                     dr["ID"] = DBNull.Value;
                     DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
@@ -375,37 +364,53 @@ namespace XpressBilling.Account
                     dr["CreatedDate"] = DateTime.Now.Date;
                     dr["UpdatedDate"] = DateTime.Now.Date;
                     dt.Rows.Add(dr);
-                    for(int k=0;k<SQItems.Length;k++)
+                    if (Request.Form["SQItem"] != null)
                     {
-                        dr = dt.NewRow();
-                        dr["ID"] = DBNull.Value;
-                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
-                        dr["SalesQuotationMstID"] = Convert.ToInt32(SalesQuotationId.Value);
-                        dr["SalesQuotationNo"] = Quotation.Text;
-                        dr["SalesQuotationDate"] = date;
-                        dr["ItemCode"] = SQItems[k];
-                        dr["ItemName"] = SQNames[k];
-                        dr["BaseUnitCode"] =SQUnits[k];
-                        dr["Qty"] = Convert.ToInt32(SQQuantities[k].ToString());
-                        dr["Currency"] = "";
-                        dr["Rate"] = float.Parse(SQRates[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TotalRate"] = float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Discount"] = float.Parse(SQDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["DiscountAmt"] = float.Parse(SQDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Tax"] = SQTaxCodes[k];
-                        dr["TaxPercentage"] = float.Parse(SQTaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TaxAmount"] = float.Parse(SQTaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["NetAmount"] = float.Parse(SQNetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Status"] = 1;
-                        dr["ErrorMsg"] = null;
-                        dr["Reference"] = Reference.Text;
-                        dr["CreatedBy"] = User.Identity.Name;
-                        dr["UpdatedBy"] = User.Identity.Name;
-                        dr["CreatedDate"] = DateTime.Now.Date;
-                        dr["UpdatedDate"] = DateTime.Now.Date;
-                        dt.Rows.Add(dr);
+                        string[] SQItems = Request.Form["SQItem"].Split(',');
+                        string[] SQNames = Request.Form["SQName"].Split(',');
+                        string[] SQRates = Request.Form["SQRate"].Split(',');
+                        string[] SQQuantities = Request.Form["SQQuantity"].Split(',');
+                        string[] SQUnits = Request.Form["SQUnit"].Split(',');
+                        string[] SQDiscPers = Request.Form["SQDiscPer"].Split(',');
+                        string[] SQDiscAmts = Request.Form["SQDiscAmt"].Split(',');
+                        string[] SQTaxPers = Request.Form["SQTaxPer"].Split(',');
+                        string[] SQTaxAmts = Request.Form["SQTaxAmt"].Split(',');
+                        string[] SQNetAmts = Request.Form["SQNetAmt"].Split(',');
+                        string[] SQTaxCodes = Request.Form["SQTaxCode"].Split(',');
+
+                        for (int k = 0; k < SQItems.Length; k++)
+                        {
+                            dr = dt.NewRow();
+                            dr["ID"] = DBNull.Value;
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = Location.Text;
+                            dr["SalesQuotationMstID"] = Convert.ToInt32(SalesQuotationId.Value);
+                            dr["SalesQuotationNo"] = Quotation.Text;
+                            dr["SalesQuotationDate"] = date;
+                            dr["ItemCode"] = SQItems[k];
+                            dr["ItemName"] = SQNames[k];
+                            dr["BaseUnitCode"] = SQUnits[k];
+                            dr["Qty"] = Convert.ToInt32(SQQuantities[k].ToString());
+                            dr["Currency"] = "";
+                            dr["Rate"] = float.Parse(SQRates[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TotalRate"] = float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Discount"] = float.Parse(SQDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountAmt"] = float.Parse(SQDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Tax"] = SQTaxCodes[k];
+                            dr["TaxPercentage"] = float.Parse(SQTaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TaxAmount"] = float.Parse(SQTaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["NetAmount"] = float.Parse(SQNetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["ErrorMsg"] = null;
+                            dr["Reference"] = Reference.Text;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                        }
                     }
+
                 }
                 else
                 {
@@ -465,7 +470,7 @@ namespace XpressBilling.Account
 
                     }
                 }
-                
+
                 if (dt.Rows.Count > 0)
                 {
                     XBDataProvider.SalesQuotation.SaveSQDetail(Convert.ToInt32(SalesQuotationId.Value), PayTerms.Text, DeliveryTerms.Text, float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);

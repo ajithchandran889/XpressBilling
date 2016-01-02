@@ -254,7 +254,7 @@
                             <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                             <asp:HiddenField ID="SalesInvoiceId" runat="server" ClientIDMode="Static"/>
                             <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
-                            <a id="btnCencelDtl" href="/Account/SalesQuotation" runat="server" class="btn btn-primary">Cancel</a>
+                            <a id="btnCencelDtl" href="/Account/Invoice" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary SalesInvoiceBtnDetail" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnFinalize" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Finalize" Visible="false" OnClick="btnFinalizeClick" />
                            <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();"/>

@@ -127,7 +127,7 @@
                                 </li>
                                 <li class="light-blue">
                                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                        <img runat="server" class="nav-user-photo" src="~/Images/img/user.jpg" alt="Jason's Photo" />
+                                        <img runat="server" id="profilePic" class="nav-user-photo" src="~/Images/img/user.jpg" alt="Jason's Photo" />
                                         <span class="user-info">
                                             <small>Welcome,</small>
                                             <asp:LoginName runat="server" CssClass="username" />
