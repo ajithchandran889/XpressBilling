@@ -65,7 +65,7 @@ namespace XpressBilling.Account
                     // PriceBookDetail.Visible = false;
                     SaveDetail.Visible = false;
                     CancelPriceBook2.Visible = false;
-                    lblSearch.Visible = false;
+                    //lblSearch.Visible = false;
                     txtSearch.Visible = false;
                     btnSearch.Visible = false;
                     gridDetails.Visible = false;

@@ -15,7 +15,7 @@
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
                 <div class="page-header">BankCode Details</div>
-                <div class="form-group">General Information</div>
+                <h6>General Information</h6>
 
                 <div class="form-group">
                     <label for="AccountNo" class="control-label col-xs-2 col-md-2">Account No</label>
@@ -81,8 +81,7 @@
                     <div class="col-xs-10 col-md-2"></div>
                     <div class="col-xs-10 col-md-2"></div>
                 </div>
-                <div class="form-group"></div>
-                <div class="form-group">More Information</div>
+                <h6>More Information</h6>
 
                 <div class="form-group">
                     <label for="IBAN" class="control-label col-xs-2 col-md-2">IBAN</label>

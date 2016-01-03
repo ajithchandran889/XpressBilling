@@ -68,17 +68,24 @@
                         
                     </div>
                 </div>
+                <hr>
             </div>
-            <asp:Label ID="lblSearch" runat="server">Search:</asp:Label>
-            &nbsp;&nbsp;
+           
+            <%--<div class="form-group">--%>
+                    <div class="col-xs-10 col-md-8">
+                         
+            <%--<asp:Label ID="lblSearch" runat="server">Search:</asp:Label>
+            &nbsp;&nbsp;--%>
             <asp:TextBox ID="txtSearch" runat="server" CssClass="txt"></asp:TextBox>
             <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
+                        </div>
             <asp:Panel runat="server" ID="gridDetails">
+                <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="grid_wrapper">
-                <div class="">
-                    <h2 class="pull-left">Transaction</h2>
+                
+                    <h2  class="page-header">Transaction</h2>
                     
-                </div>
+               
                 <asp:GridView ID="PriceBookDetail"  class="table table-fix" ClientIDMode="Static" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID"
                     OnRowDataBound="PriceBookDetailRowDataBound">
                      <RowStyle CssClass="Odd" />
@@ -136,6 +143,7 @@
                     </Columns>
                 </asp:GridView>
             </div>
+                    </div>
                 </asp:Panel>
             <div class="form-group">
                 <div class="col-xs-10 col-md-8">

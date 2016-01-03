@@ -12,6 +12,8 @@ html, body  {
     font-size:13px;
     color:#333;
 }
+h6 {font-size:1.3em!important; color:#4c8fbd!important;
+}
 .wrapper {
     float: left;
     height: 100%;
@@ -234,6 +236,7 @@ label {
 .form-group {
 	width:100%;
 	float:left;
+    margin-bottom:3px!important;
 }
 .grid_wrapper {
 	float:left;
@@ -264,6 +267,8 @@ label {
 	line-height:30px;
 	padding:0 5px;
 }
+.table {margin-top:0!important;
+}
 .table, .table-fix {
 	float: left;
 	width: 100%;
@@ -276,7 +281,11 @@ label {
     .table .form-control {
         border: none;
         background: none;
-        box-shadow: none !important;
+        box-shadow: none!important;
+        height:22px;
+        margin-bottom:0!important;
+        padding:0 2px!important;
+        line-height:22px!important;
     }
    
 .table th {
@@ -290,7 +299,7 @@ label {
 	color:#fff;
 }
 .table td {
-	padding: 3px 5px;
+	padding: 2px 5px!important;
 	border-right: 1px #CFDACF solid;
 	border-bottom: 1px #CFDACF solid;
 	border-collapse: collapse;
@@ -315,7 +324,7 @@ label {
 .pagination { margin:0; color:#333}
 .page-header{ margin:5px 0 10px; padding:0 0 5px; font-size:16px;}
 .form-horizontal .control-label { padding-top:0;}
-.form-control{ border-radius:3px!important; box-shadow:0px 1px 5px #ccc!important; margin-bottom:3px!important;}
+.form-control{ border-radius:3px!important; box-shadow:0px 1px 5px #ccc!important; margin-bottom:3px!important; height:28px;}
 .page-content{ background:#EEF4F9;}
 .content-holder{ background:#fff; border: solid 1px #C5DAEB; padding-bottom:10px;}
 .file{  padding:5px 0;}
@@ -337,6 +346,269 @@ label {
     tr {
         border: 1px solid #ccc;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     td {
         /* Behave  like a "row" */
@@ -386,3 +658,14 @@ label {
     border-style: solid;
     border-color: #ff0000 ;
 }
+input, textarea {
+    margin-top: 0 !important;
+}
+hr {
+  
+  margin: 5px 0; width:100%;
+}
+#imgPreview {height:100px!important; width:100px!important;
+
+}
+

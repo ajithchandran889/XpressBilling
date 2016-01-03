@@ -61,9 +61,9 @@
                     </div>
 
                 </div>
-
-                <div class="form-group"></div>
-                <div class="form-group"></div>
+                 <hr>
+                <%--<div class="form-group"></div>
+                <div class="form-group"></div>--%>
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
@@ -109,9 +109,9 @@
                         <asp:TextBox runat="server" ID="Designation" class="form-control required" placeholder="Designation" ClientIDMode="Static"></asp:TextBox>
 
                     </div>
-                </div>
-                <div class="form-group"></div>
-                <div class="form-group"></div>
+                </div> <hr>
+               <%-- <div class="form-group"></div>
+                <div class="form-group"></div>--%>
                 <div class="form-group">
                     <label for="Address1" class="control-label col-xs-2 col-md-2">Address Street 1</label>
                     <div class="col-xs-10 col-md-2">
@@ -159,9 +159,9 @@
                         <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>
 
-                </div>
-                <div class="form-group"></div>
-                <div class="form-group"></div>
+                </div> <hr>
+                <%--<div class="form-group"></div>
+                <div class="form-group"></div>--%>
                 <div class="form-group">
                     <label for="Note" class="control-label col-xs-2 col-md-2">Note</label>
                     <div class="col-xs-10 col-md-6">

@@ -54,10 +54,10 @@
                         <asp:TextBox runat="server" ID="Username" class="form-control" ReadOnly="true" placeholder="User" ClientIDMode="Static"></asp:TextBox>
                     </div>
                   </div>
-
+                 <hr>
                 
-                 <div class="form-group"><div></div></div>
-                <div class="form-group"><div></div></div>
+                <%-- <div class="form-group"><div></div></div>
+                <div class="form-group"><div></div></div>--%>
                 <div class="form-group">
                     <label for="Phone" class="control-label col-xs-2 col-md-2">Phone</label>
                     <div class="col-xs-10 col-md-2">
@@ -83,9 +83,9 @@
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Web" class="form-control" placeholder="Web" ClientIDMode="Static"></asp:TextBox>
                     </div>                        
-                    </div>
-                <div class="form-group"><div></div><div></div></div>
-                <div class="form-group"><div></div><div></div></div>
+                    </div> <hr>
+                <%--<div class="form-group"><div></div><div></div></div>
+                <div class="form-group"><div></div><div></div></div>--%>
                 <div class="form-group">
                     <label for="Address1" class="control-label col-xs-2 col-md-2">Address Street 1</label>
                     <div class="col-xs-10 col-md-2">

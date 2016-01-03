@@ -70,7 +70,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <button type="button" class="btn btn-primary pull-left">Cancel</button>
+                                            <a href="" class="btn btn-primary pull-left">Cancel</a>
+                                           <%-- <button type="button" class="btn btn-primary pull-left">Cancel</button>--%>
                                             <asp:Button runat="server" class="btn btn-primary pull-left" CommandName="MoveNext" Text="Register" />
 
                                         </div>
