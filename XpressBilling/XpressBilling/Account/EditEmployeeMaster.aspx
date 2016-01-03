@@ -20,7 +20,7 @@
                 <div class="page-header">Employee Details</div>
                 <div class="form-group">
                    
-                    <label for="Employee" class="control-label col-xs-2 col-md-2">Employee</label>
+                    <label for="Employee" class="control-label col-xs-2 col-md-2">Employee ID</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Employee" class="form-control required" placeholder="Employee" ClientIDMode="Static"></asp:TextBox>                        
                     </div><div class="col-xs-10 col-md-2"></div>

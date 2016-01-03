@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <label for="Discount" class="control-label col-xs-2 col-md-2">Discount</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Discount" class="form-control required txtNumeric" placeholder="Discount" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Discount" class="form-control txtNumeric" placeholder="Discount" ClientIDMode="Static"></asp:TextBox>
 
                     </div>
                     <label for="CreditLimit" class="control-label col-xs-2 col-md-2">Credit Limit</label>
@@ -160,14 +160,14 @@
                 <div class="form-group">
                     <label for="Zip" class="control-label col-xs-2 col-md-2">Zip/Postal Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" MaxLength="6" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                  <hr>
                 <div class="form-group">
                     <label for="Note" class="control-label col-xs-2 col-md-2">Note</label>
                     <div class="col-xs-10 col-md-6">
-                        <asp:TextBox runat="server" ID="Note" class="form-control required" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Note" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
 

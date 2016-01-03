@@ -17,7 +17,7 @@
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Type</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
                             <asp:DropDownList runat="server" ID="Type" class="form-control required" ClientIDMode="Static">
-                                <asp:ListItem Value="0" Text="Cost"></asp:ListItem>
+                                <asp:ListItem Value="0" Text="Sales"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="Purchase"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
@@ -29,13 +29,14 @@
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Order Type</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
+                           
                             <asp:DropDownList runat="server" ID="OrderType_0" class="form-control required" ClientIDMode="Static">
-                                <asp:ListItem Value="0" Text="Local"></asp:ListItem>
-                                <asp:ListItem Value="1" Text="Import"></asp:ListItem>
-                            </asp:DropDownList>
-                            <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required" Style="display: none" ClientIDMode="Static">
                                 <asp:ListItem Value="0" Text="Cash"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="Credit"></asp:ListItem>
+                            </asp:DropDownList>
+                             <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required" Style="display: none" ClientIDMode="Static">
+                                <asp:ListItem Value="0" Text="Local"></asp:ListItem>
+                                <asp:ListItem Value="1" Text="Import"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
 

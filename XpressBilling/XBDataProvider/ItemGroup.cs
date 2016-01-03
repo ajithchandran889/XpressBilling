@@ -96,6 +96,24 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static DataTable GetAllTax(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveTax", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveTaxCodes");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
 
         public static DataTable GetItemGroupById(int Id)
         {

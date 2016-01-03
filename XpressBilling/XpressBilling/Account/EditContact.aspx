@@ -125,7 +125,7 @@
                 <div class="form-group">
                     <label for="Zip" class="control-label col-xs-2 col-md-2">Zip/Postal Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" MaxLength="6" ClientIDMode="Static"></asp:TextBox>
                     </div>                    
                 </div> 
                 <div class="form-group">

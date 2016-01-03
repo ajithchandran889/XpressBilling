@@ -47,7 +47,7 @@
                 </div>
                  <div class="form-group"> 
                     
-                        <label for="TaxCode" runat="server" id="lblTaxCode" class="control-label col-xs-2 col-md-2">Tax Code</label>
+                        <label for="TaxCode" runat="server" id="lblTaxCode" class="control-label col-xs-2 col-md-2">Tax</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="ddlTaxCode" ClientIDMode="Static">                            
                         </asp:DropDownList>

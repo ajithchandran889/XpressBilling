@@ -14,7 +14,7 @@
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
                 </div>
-                <div class="page-header">BankCode Details</div>
+                <div class="page-header">Bank Master</div>
                 <h6>General Information</h6>
 
                 <div class="form-group">

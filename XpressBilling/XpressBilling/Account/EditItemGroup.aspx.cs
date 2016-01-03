@@ -18,13 +18,13 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTaxCodes(Session["CompanyCode"].ToString());
+                DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTax(Session["CompanyCode"].ToString());
                 ddlTaxCode.DataSource = dtItemGroups;
-                ddlTaxCode.DataValueField = "TaxCode";
-                ddlTaxCode.DataTextField = "name";
+                ddlTaxCode.DataValueField = "Tax";
+                ddlTaxCode.DataTextField = "Name";
                 ddlTaxCode.DataBind();
                 ListItem item = new ListItem();
-                item.Text = "Select TaxCode";
+                item.Text = "Select Tax";
                 item.Value = "0";
                 ddlTaxCode.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);

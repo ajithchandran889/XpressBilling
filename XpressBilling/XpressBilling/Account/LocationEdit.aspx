@@ -44,19 +44,19 @@
                     </div>
                     <label for="lblRegistrationNo" class="control-label col-xs-2 col-md-2">Registration Number</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required txtNumeric" placeholder="Registration Number" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control txtNumeric" placeholder="Registration Number" ClientIDMode="Static"></asp:TextBox>
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="TIN" class="control-label col-xs-2 col-md-2">TIN</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="TIN" class="form-control required" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="TIN" class="form-control" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
 
                     </div>
                     <label for="PAN" class="control-label col-xs-2 col-md-2">PAN</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="PAN" class="form-control required" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="PAN" class="form-control" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>
 
                     </div>
 
@@ -156,7 +156,7 @@
                 <div class="form-group">
                     <label for="Zip" class="control-label col-xs-2 col-md-2">Zip/Postal Code</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Zip" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Zip" MaxLength="6" class="form-control required txtNumeric" placeholder="Zip" ClientIDMode="Static"></asp:TextBox>
                     </div>
 
                 </div> <hr>

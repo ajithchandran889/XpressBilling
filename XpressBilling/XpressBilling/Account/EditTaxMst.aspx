@@ -66,8 +66,8 @@
                     <label for="TaxPercentage" class="control-label col-xs-2 col-md-2">Tax Percentage</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="TaxPercentage" class="form-control required txtNumeric" placeholder="TaxPercentage" ClientIDMode="Static"></asp:TextBox>                        
-                    </div>
-                    <div class="col-xs-10 col-md-2"></div>
+                    </div><label for="perc" class="control-label col-xs-2 col-md-2">%</label>
+                   <%-- <div class="col-xs-10 col-md-2"></div>--%>
                     
                     <div class="col-xs-10 col-md-2">
                         
