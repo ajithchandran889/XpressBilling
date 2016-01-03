@@ -82,7 +82,7 @@ namespace XBDataProvider
             return DataProvider.ExecuteScalarString(connString, "dbo.sp_GetLastFirstFreeNumber", cmd);
         }
 
-        public static int SaveFirstFreeMaster(string companyCode, string docNumber, int item, int transaction, string reference, string user)
+        public static int SaveFirstFreeMaster(string companyCode, string docNumber, int item, int transaction, string reference, string user, DataTable dtFirstFreeDetails)
         {
             try
             {
@@ -96,6 +96,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
+                cmd.Parameters.Add(new SqlParameter("@tblFirstFreeDtl", dtFirstFreeDetails));
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@DocumentDate", DateTime.Now.Date));
@@ -340,6 +341,16 @@ namespace XBDataProvider
             int prefixLength = prefix.Length;
             string intCount = "D" + (length - prefixLength);
             return prefix + "" + seqNo.ToString(intCount);
+        }
+
+        public static int GetFirstTimeSelectedType(string companyCode)
+        {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                return DataProvider.ExecuteScalarInt(connString, "dbo.sp_GetFirstTimeSelectedType", cmd);
+
         }
     }
 }

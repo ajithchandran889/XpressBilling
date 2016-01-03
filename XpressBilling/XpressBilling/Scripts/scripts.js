@@ -1049,7 +1049,7 @@ function SearchText() {
     //$(".SupplierBarcode").attr('readonly', 'readonly'); 
     $(".CurrencyCode").attr('readonly', 'readonly');
     $(".OrderType").attr('readonly', 'readonly');
-    $(document).on("click", "#SaveFirstFreeDetails", function (e) {
+    $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
             var prefix = [];
             var sequence = [];
             var flag = 0;

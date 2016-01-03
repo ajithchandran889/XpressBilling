@@ -14,7 +14,7 @@ namespace XpressBilling.Account
         {
             if (!Page.IsPostBack)
             {
-                
+
                 string lastFirstFreeNumberNumber = XBDataProvider.FirstFreeNumber.GetDocumentNumber();
                 if (lastFirstFreeNumberNumber == null || lastFirstFreeNumberNumber == "")
                 {
@@ -29,7 +29,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                
+
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -42,28 +42,28 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    FirstFreeNumberId.Value = "0"; ;
-                    CreatedUser.Visible = false;
-                    CreatedDate.Visible = false;
-                    lblDate.Visible = false;
-                    lblUser.Visible = false;
-                    FirstFreeDetail.Visible = false;
-                    SaveFirstFreeDetails.Visible = false;
-                    CancelFirstFreeDetails.Visible = false;
-                    if (Type.SelectedValue == "0")
+                    int prevType = XBDataProvider.FirstFreeNumber.GetFirstTimeSelectedType(Session["CompanyCode"].ToString());
+                    if (prevType != -1)
                     {
+                        Type.SelectedValue = prevType.ToString();
+                        Type.Enabled = false;
+                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
                         DataRow row = null;
                         DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
-                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
-                        if(dtTable.Rows.Count>0 && Type.SelectedValue=="0")
+
+                        if (dtTable.Rows.Count > 0)
                         {
                             Transaction.Items.Clear();
+                            ListItem emptyItem = new ListItem();
+                            emptyItem.Value = "";
+                            emptyItem.Text = "--Select one--";
+                            Transaction.Items.Add(emptyItem);
                             bool flag = true;
-                            int value=0;
-                            foreach(string item in items)
+                            int value = 0;
+                            foreach (string item in items)
                             {
                                 flag = true;
-                                for(int i=0;i<dtTable.Rows.Count;i++)
+                                for (int i = 0; i < dtTable.Rows.Count; i++)
                                 {
                                     row = dtTable.Rows[i];
                                     if (value.ToString() == row["Transactions"].ToString())
@@ -71,7 +71,7 @@ namespace XpressBilling.Account
                                         flag = false;
                                     }
                                 }
-                                if(flag)
+                                if (flag)
                                 {
                                     ListItem list = new ListItem();
                                     list.Value = value.ToString();
@@ -82,6 +82,13 @@ namespace XpressBilling.Account
                             }
                         }
                     }
+                    FirstFreeNumberId.Value = "0"; ;
+                    CreatedUser.Visible = false;
+                    CreatedDate.Visible = false;
+                    lblDate.Visible = false;
+                    lblUser.Visible = false;
+                    FirstFreeDetail.Visible = false;
+                    
                 }
             }
         }
@@ -98,15 +105,8 @@ namespace XpressBilling.Account
                 Transaction.SelectedValue = row["Transactions"].ToString();
                 Transaction.Enabled = false;
                 Reference.Text = row["Reference"].ToString();
-                //Reference.Enabled = false;
-                CreatedDate.Text =  Convert.ToDateTime(row["DocumentDate"]).ToString("MM'/'dd'/'yyyy");
+                CreatedDate.Text = Convert.ToDateTime(row["DocumentDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedUser.Text = row["CreatedBy"].ToString();
-                saveFirstFreeNumberBtn.Visible = false;
-                cancelFirstFreeNumber.Visible = false;
-                //PriceBookDetail.Visible = true;
-                //SaveDetail.Visible = true;
-                //CancelPriceBook2.Visible = true;
-                //Type.Enabled = false;
                 SetFirstFreeDetailsChildGrid();
             }
             catch (Exception e)
@@ -130,7 +130,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
                 dr = dt.NewRow();
                 dr["OrderType"] = "Against Order";
@@ -163,7 +162,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
                 dr = dt.NewRow();
@@ -197,7 +195,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
                 dr = dt.NewRow();
                 dr["OrderType"] = "Addition";
@@ -234,7 +231,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
                 dr = dt.NewRow();
@@ -268,7 +264,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
                 dr = dt.NewRow();
@@ -287,72 +282,12 @@ namespace XpressBilling.Account
 
             }
         }
+
         protected void saveFirstFreeNumber(object sender, EventArgs e)
         {
             try
             {
                 string newDocumentNumber = "F" + (Convert.ToInt32(LastFirstFreeNumber.Value) + 1);
-                int id = XBDataProvider.FirstFreeNumber.SaveFirstFreeMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), Convert.ToInt32(Transaction.SelectedValue), Reference.Text, User.Identity.Name);
-                if (id > 0)
-                {
-                    Type.Enabled = false;
-                    Transaction.Enabled = false;
-                    saveFirstFreeNumberBtn.Visible = false;
-                    cancelFirstFreeNumber.Visible = false;
-                    SaveFirstFreeDetails.Visible = true;
-                    CancelFirstFreeDetails.Visible = true;
-                    NumberGroup.Text = newDocumentNumber;
-                    FirstFreeNumberId.Value = id.ToString();
-                    FirstFreeDetail.Visible = true;
-                    if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
-                    {
-                        SetInitialRowWithCashCreditOptions();
-                    }
-                    else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
-                    {
-                        SetInitialRowWithAgainstManualOptions();
-                    }
-                    else if (Transaction.SelectedValue == "5")
-                    {
-                        SetInitialRowWithAddtionDeductionOpeningOptions();
-                    }
-                    else if (Transaction.SelectedValue == "4")
-                    {
-                        SetInitialRowWithLocalImportOptions();
-                    }
-                    else if (Transaction.SelectedValue == "8")
-                    {
-                        SetInitialRowWithManualGoodsOptions();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-
-        }
-
-        public void SetFirstFreeDetailsChildGrid()
-        {
-            DataTable dt = new DataTable();
-            dt = XBDataProvider.FirstFreeNumber.GetFirstFreeDtlById(Convert.ToInt32(FirstFreeNumberId.Value));
-            
-            if (dt.Rows.Count > 0)
-            {
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
-                return;
-            }
-            //SetInitialRow();
-
-        }
-
-        protected void SaveFirstFreeNumberDetails(object sender, EventArgs e)
-        {
-            try
-            {
                 DataTable dt = new DataTable();
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
@@ -365,7 +300,6 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Digits", typeof(int)));
                 dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
-                dt.Columns.Add(new DataColumn("Defaults", typeof(int)));
                 dt.Columns.Add(new DataColumn("Reference", typeof(string)));
                 dt.Columns.Add(new DataColumn("CreatedBy", typeof(string)));
                 dt.Columns.Add(new DataColumn("UpdatedBy", typeof(string)));
@@ -380,16 +314,15 @@ namespace XpressBilling.Account
                     TextBox box3 = (TextBox)FirstFreeDetail.Rows[i].Cells[2].FindControl("NoOfDigits");
                     TextBox box4 = (TextBox)FirstFreeDetail.Rows[i].Cells[3].FindControl("Prefix");
                     TextBox box5 = (TextBox)FirstFreeDetail.Rows[i].Cells[4].FindControl("SequenceNumber");
-                    TextBox box6 = (TextBox)FirstFreeDetail.Rows[i].Cells[5].FindControl("Default");
                     if (box1.Text != "" && box1.Text.Length != 0)
                     {
                         dr = dt.NewRow();
                         dr["ID"] = FirstFreeDetail.DataKeys[i]["ID"];
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["FirstFreeNumberMstID"] = Convert.ToInt32(FirstFreeNumberId.Value);
-                        dr["DocumentNo"] = NumberGroup.Text;
+                        dr["DocumentNo"] = newDocumentNumber;
                         dr["DocumentDate"] = DateTime.Now.Date;
-                        if (Type.SelectedValue!="0")
+                        if (Type.SelectedValue != "0")
                         {
                             dr["EnterpriseUnitCode"] = box2.Text;
                         }
@@ -397,12 +330,11 @@ namespace XpressBilling.Account
                         {
                             dr["EnterpriseUnitCode"] = DBNull.Value;
                         }
-                        
+
                         dr["OrderType"] = box1.Text;
                         dr["Digits"] = box3.Text;
                         dr["Prefix"] = box4.Text;
                         dr["SequenceNo"] = box5.Text;
-                        dr["Defaults"] = box6.Text;
                         dr["Reference"] = null;
                         dr["CreatedBy"] = User.Identity.Name;
                         dr["UpdatedBy"] = User.Identity.Name;
@@ -414,19 +346,54 @@ namespace XpressBilling.Account
                     }
 
                 }
-                if (dt.Rows.Count > 0)
+                if(FirstFreeNumberId.Value!="0")
                 {
                     XBDataProvider.FirstFreeNumber.SaveFirstFreeMasterDetail(dt);
+                    failureMessage.Visible = false;
                     SaveSuccess.Visible = true;
                 }
-                SetFirstFreeDetailsChildGrid();
+                else
+                {
+                    int id = XBDataProvider.FirstFreeNumber.SaveFirstFreeMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), Convert.ToInt32(Transaction.SelectedValue), Reference.Text, User.Identity.Name, dt);
+                    if (id > 0)
+                    {
+                        Type.Enabled = false;
+                        Transaction.Enabled = false;
+                        NumberGroup.Text = newDocumentNumber;
+                        FirstFreeNumberId.Value = id.ToString();
+                        SaveSuccess.Visible = true;
+                        failureMessage.Visible = false;
+                        SetFirstFreeDetailsChildGrid();
+                    }
+                    else
+                    {
+                        failureMessage.Visible = true;
+                        SaveSuccess.Visible = false;
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
                 failureMessage.Visible = true;
-                SaveSuccess.Visible = true;
+                SaveSuccess.Visible = false;
             }
 
+
+        }
+
+        public void SetFirstFreeDetailsChildGrid()
+        {
+            DataTable dt = new DataTable();
+            dt = XBDataProvider.FirstFreeNumber.GetFirstFreeDtlById(Convert.ToInt32(FirstFreeNumberId.Value));
+
+            if (dt.Rows.Count > 0)
+            {
+                FirstFreeDetail.DataSource = dt;
+                FirstFreeDetail.DataBind();
+                return;
+            }
+            //SetInitialRow();
 
         }
 
@@ -457,51 +424,61 @@ namespace XpressBilling.Account
 
         protected void TypeSelectedIndexChanged(object sender, EventArgs e)
         {
-            Transaction.Items.Clear();
+
             string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
-            if (Type.SelectedValue == "0")
+            DataRow row = null;
+            DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
+
+            if (dtTable.Rows.Count > 0)
             {
-                DataRow row = null;
-                DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
-                
-                if (dtTable.Rows.Count > 0 && Type.SelectedValue == "0")
-                {
-                    
-                    bool flag = true;
-                    int value = 0;
-                    foreach (string item in items)
-                    {
-                        flag = true;
-                        for (int i = 0; i < dtTable.Rows.Count; i++)
-                        {
-                            row = dtTable.Rows[i];
-                            if (value.ToString() == row["Transactions"].ToString())
-                            {
-                                flag = false;
-                            }
-                        }
-                        if (flag)
-                        {
-                            ListItem list = new ListItem();
-                            list.Value = value.ToString();
-                            list.Text = item;
-                            Transaction.Items.Add(list);
-                        }
-                        value++;
-                    }
-                }
-            }
-            else
-            {
+                Transaction.Items.Clear();
+                bool flag = true;
                 int value = 0;
                 foreach (string item in items)
                 {
-                    ListItem list = new ListItem();
-                    list.Value = value.ToString();
-                    list.Text = item;
-                    Transaction.Items.Add(list);
+                    flag = true;
+                    for (int i = 0; i < dtTable.Rows.Count; i++)
+                    {
+                        row = dtTable.Rows[i];
+                        if (value.ToString() == row["Transactions"].ToString())
+                        {
+                            flag = false;
+                        }
+                    }
+                    if (flag)
+                    {
+                        ListItem list = new ListItem();
+                        list.Value = value.ToString();
+                        list.Text = item;
+                        Transaction.Items.Add(list);
+                    }
                     value++;
                 }
+            }
+        }
+
+        protected void TransactionSelectedIndexChanged(object sender, EventArgs e)
+        {
+            FirstFreeDetail.Visible = true;
+            if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
+            {
+                SetInitialRowWithCashCreditOptions();
+            }
+            else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
+            {
+                SetInitialRowWithAgainstManualOptions();
+            }
+            else if (Transaction.SelectedValue == "5")
+            {
+                SetInitialRowWithAddtionDeductionOpeningOptions();
+            }
+            else if (Transaction.SelectedValue == "4")
+            {
+                SetInitialRowWithLocalImportOptions();
+            }
+            else if (Transaction.SelectedValue == "8")
+            {
+                SetInitialRowWithManualGoodsOptions();
             }
         }
     }
