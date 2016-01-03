@@ -1,6 +1,8 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -84,7 +86,13 @@ namespace XpressBilling
                     _panelNormal.Visible = true;
                     _panelSuper.Visible = false;
                 }
-               // string userId = Membership.GetUser().ProviderUserKey.ToString();
+                string userId = Membership.GetUser().ProviderUserKey.ToString();
+                DataTable userDetails = XBDataProvider.User.GetUserById(userId);
+                if (userDetails.Rows.Count > 0)
+                {
+                    DataRow row = userDetails.Rows[0];
+                    (this.HeadLoginView.FindControl("profilePic") as Image).ImageUrl = row["path"].ToString();
+                }
             }
             
         }

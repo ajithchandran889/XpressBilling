@@ -57,7 +57,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "SQEdit.aspx/GetContactCodes",
+            url: "SQEdit.aspx/GetEmployeeCodes",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
@@ -73,6 +73,10 @@ $(document).ready(function () {
     }
     if ($("#StokeEntryMstId").length > 0)
     {
+        if ($("#OrderNo").val() == "") {
+            alert("Please create first free number for stock adjustment");
+            $("#SaveBtn").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -111,8 +115,20 @@ $(document).ready(function () {
             }
         });
     }
+    if ($("#GRNId").length > 0)
+    {
+        if ($("#GoodsReceipt").val() == "") {
+            alert("Please create first free number for goods receipt");
+            $("#btnSaveDtl").attr("disabled", true);
+        }
+    }
     if ($("#SalesQuotationId").length > 0)
     {
+        if ($("#Quotation").val() == "")
+        {
+            alert("Please create first free number for Sales Quotation");
+            $("#SaveBtn").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -174,6 +190,10 @@ $(document).ready(function () {
     }
     if ($("#PurchaseOrderId").length > 0)
     {
+        if ($("#OrderNo").val() == "") {
+            alert("Please create first free number for purchase order");
+            $("#SaveBtn").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -234,6 +254,10 @@ $(document).ready(function () {
         });
     }
     if ($("#SalesReturnMstId").length > 0) {
+        if ($("#SalesReturn").val() == "") {
+            alert("Please create first free number for Sales Return");
+            $("#SaveBtn").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -296,6 +320,11 @@ $(document).ready(function () {
     }
     if ($("#InvoiceId").length > 0)
     {
+        if ($("#Invoice").val() == "")
+        {
+            alert("Please create first free number for Manual Invoice");
+            $("#btnSaveDtl").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -360,6 +389,10 @@ $(document).ready(function () {
     }
     if ($("#SalesInvoiceId").length > 0)
     {
+        if ($("#Invoice").val() == "") {
+            alert("Please create first free number for Sales Invoice");
+            $("#btnSaveDtl").attr("disabled", true);
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",

@@ -536,6 +536,31 @@ namespace XpressBilling.Account
             return result;
         }
 
+        [WebMethod]
+        public static List<ContactDetails> GetEmployeeCodes(string companyCode)
+        {
+            List<ContactDetails> result = new List<ContactDetails>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.Employee.GetAllEmployeCode(companyCode);
+                DataRow row = null;
+                for (int index = 0; index < dtTable.Rows.Count; index++)
+                {
+                    row = dtTable.Rows[index];
+                    ContactDetails itemContact = new ContactDetails();
+                    itemContact.code = row["EmployeeCode"].ToString();
+
+                    result.Add(itemContact);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
         protected void BtnConvertOrderClick(object sender, EventArgs e)
         {
             DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetSaleOrderCashCreditSequenceDetails(Session["CompanyCode"].ToString());

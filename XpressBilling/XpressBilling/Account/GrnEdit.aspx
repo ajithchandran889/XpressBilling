@@ -1,5 +1,5 @@
-﻿
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GrnEdit.aspx.cs" Inherits="XpressBilling.Account.GrnEdit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GrnEdit.aspx.cs" Inherits="XpressBilling.Account.GrnEdit" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="page-content">
         <div class="row content-holder">
@@ -13,7 +13,7 @@
                             <asp:ListItem Value="1" Text="Manual Goods Receipt"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
-                    
+
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Goods Receipt</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
                         <asp:TextBox runat="server" ID="GoodsReceipt" ReadOnly="true" class="form-control required" placeholder="Goods Receipt" ClientIDMode="Static"></asp:TextBox>
@@ -25,7 +25,7 @@
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Status</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
                         <asp:DropDownList runat="server" ID="Status" class="form-control required" Enabled="false" ClientIDMode="Static">
-                            <asp:ListItem Value="0" Text="Free" ></asp:ListItem>
+                            <asp:ListItem Value="0" Text="Free"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Open"></asp:ListItem>
                             <asp:ListItem Value="2" Text="Finalized"></asp:ListItem>
                         </asp:DropDownList>
@@ -73,23 +73,28 @@
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Total Qty</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
                         <asp:TextBox runat="server" ID="TotalQty" class="form-control" ReadOnly="true" Text="0" placeholder="Total Qty" ClientIDMode="Static"></asp:TextBox>
-                     </div>
+                    </div>
 
                 </div>
-                
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <a id="cancelGrn" href="/Account/GRN" runat="server" class="btn btn-primary">Cancel</a>
+                    </div>
+
+                </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
                         <div class="">
                             <h2 class="pull-left">Transaction</h2>
                         </div>
-                        <asp:GridView ID="GRNDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID" >
+                        <asp:GridView ID="GRNDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
                             <RowStyle CssClass="Odd" />
                             <AlternatingRowStyle CssClass="Even" />
-                           
+
                             <Columns>
                                 <asp:TemplateField HeaderText="No:">
-                                    <ItemTemplate >
-                                       <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>'  />
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Item" ControlStyle-Width="70">
@@ -109,13 +114,13 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Order Qnty">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="OrderQuantity" class="form-control OrderQuantity" ReadOnly="true"  ClientIDMode="Static" runat="server" Text='<%# Bind("OrderQty") %>'></asp:TextBox>
+                                        <asp:TextBox ID="OrderQuantity" class="form-control OrderQuantity" ReadOnly="true" ClientIDMode="Static" runat="server" Text='<%# Bind("OrderQty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Received Qnty">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="ReceivedQuantity" class="form-control ReceivedQuantity txtNumeric"  ClientIDMode="Static" runat="server" Text='<%# Eval("ReceivedQty").ToString() == "0"? Eval("OrderQty"): Eval("ReceivedQty")%>'></asp:TextBox>
-                                        <asp:HiddenField ID="prevRecvdQnty"  ClientIDMode="Static" runat="server" Value='<%# Bind("OrderQty") %>'></asp:HiddenField>
+                                        <asp:TextBox ID="ReceivedQuantity" class="form-control ReceivedQuantity txtNumeric" ClientIDMode="Static" runat="server" Text='<%# Eval("ReceivedQty").ToString() == "0"? Eval("OrderQty"): Eval("ReceivedQty")%>'></asp:TextBox>
+                                        <asp:HiddenField ID="prevRecvdQnty" ClientIDMode="Static" runat="server" Value='<%# Bind("OrderQty") %>'></asp:HiddenField>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -132,17 +137,17 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
-                            <asp:HiddenField ID="GRNId" runat="server" ClientIDMode="Static"/>
+                            <asp:HiddenField ID="GRNId" runat="server" ClientIDMode="Static" />
                             <asp:HiddenField runat="server" ID="PageStatus" ClientIDMode="Static" />
                             <a id="btnCencelDtl" href="/Account/GRN" runat="server" class="btn btn-primary">Cancel</a>
                             <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Save" OnClick="SaveBtnDetailClick" />
                             <asp:Button ID="btnConverGRN" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Convert" Visible="false" OnClick="BtnConvertGRNClick" />
-                            <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();" />
+                            <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print" OnClientClick="javascript:window.print();" />
                         </div>
 
                     </div>
                 </asp:Panel>
-                <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static" />
             </div>
         </div>
     </div>

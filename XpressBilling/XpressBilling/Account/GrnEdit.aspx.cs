@@ -132,6 +132,7 @@ namespace XpressBilling.Account
                 GRNDetail.DataSource = dtDetails;
                 GRNDetail.DataBind();
                 gridDetails.Visible = true;
+                cancelGrn.Visible = false;
             }
 
         }

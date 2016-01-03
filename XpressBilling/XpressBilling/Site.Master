@@ -29,7 +29,7 @@
                 <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar"><span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                 <div class="navbar-header pull-left"><a href="#" class="navbar-brand"><small><i class="fa fa-star-half-empty"></i>ISER </small></a></div>
                 <div class="navbar-buttons navbar-header pull-right" role="navigation">
-                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                    <asp:LoginView runat="server" ID="HeadLoginView" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav ace-nav">
                                 <li class="green">
@@ -127,7 +127,8 @@
                                 </li>
                                 <li class="light-blue">
                                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                        <img runat="server" id="profilePic" class="nav-user-photo" src="~/Images/img/user.jpg" alt="Jason's Photo" />
+                                        <%--<img runat="server" id="profilePic" class="nav-user-photo" src="~/Images/img/user.jpg" alt="Jason's Photo" />--%>
+                                        <asp:Image runat="server" id="profilePic" class="nav-user-photo"  />
                                         <span class="user-info">
                                             <small>Welcome,</small>
                                             <asp:LoginName runat="server" CssClass="username" />
