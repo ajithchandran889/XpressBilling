@@ -22,7 +22,7 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 CompanyCode.Value = Session["CompanyCode"].ToString();
-                DataTable dtTable = XBDataProvider.BussinessPartner.GetAllBussinessPartnerCodes(Session["CompanyCode"].ToString());
+                DataTable dtTable = XBDataProvider.BussinessPartner.GetAllBussinessPartnerSuplierCodes(Session["CompanyCode"].ToString());
                 Session["BPDetails"] = dtTable;
                 DataRow row = null;
                 CustomerId.Items.Clear();
@@ -40,10 +40,17 @@ namespace XpressBilling.Account
                 for (int i = 0; i < dtTable.Rows.Count; i++)
                 {
                     row = dtTable.Rows[i];
+                    
+                    ListItem item = new ListItem();
+                    item.Text = "Select Bank";
+                    item.Value = "";
+                    CustomerId.Items.Insert(0, item);
                     ListItem list = new ListItem();
                     list.Value = row["BusinessPartnerCode"].ToString();
                     list.Text = row["BusinessPartnerCode"].ToString();
                     CustomerId.Items.Add(list);
+                    
+                    
                 }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)

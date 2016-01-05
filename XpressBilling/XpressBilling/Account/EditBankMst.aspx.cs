@@ -26,7 +26,7 @@ namespace XpressBilling.Account
                 ddlbankcode.DataBind();
                 ListItem item = new ListItem();
                 item.Text = "Select Bank";
-                item.Value = "0";
+                item.Value = "";
                 ddlbankcode.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != 0)

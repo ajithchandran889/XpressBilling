@@ -193,7 +193,23 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static DataTable GetAllBussinessPartnerSuplierCodes(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_BussinessPartnerGetAllActiveSupplierCodes", cmd);
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return dtTable;
+        }
         public static DataTable GetAllSupplierCodes(string companyCode)
         {
             DataTable dtTable = new DataTable();
