@@ -72,7 +72,8 @@
                             </ul>
                             <ul>
                                 <li></li>
-                                <li><a href="~/Account/PasswordRecovery" class="left">Forgot Password?</a></li>
+                                <li><a href="/Account/PasswordRecovery" class="left">Forgot Password?</a>
+                                    <a href="/Account/Register" class="left">New User?</a></li>
                             </ul>
                         </LayoutTemplate>
                     </asp:Login>

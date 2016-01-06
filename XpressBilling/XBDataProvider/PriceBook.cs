@@ -138,7 +138,7 @@ namespace XBDataProvider
             SqlCommand cmd = new SqlCommand();
             return DataProvider.ExecuteScalarString(connString, "dbo.sp_PriceBookGetLastDocumentNumber", cmd);
         }
-        public static int SavePriceBookMaster(string companyCode,string docNumber, int item, int orderType, string currency, string user)
+        public static int SavePriceBookMaster(string companyCode, string docNumber, int item, int orderType, string currency, string user, DataTable dtPriceBookDetails)
         {
             try
             {
@@ -155,6 +155,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@createdDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@DocumentDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@tblPriceBookDtl", dtPriceBookDetails));
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_PriceBookMaster_xpins", cmd);
                 
             }

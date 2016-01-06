@@ -669,3 +669,12 @@ hr {
 
 }*/
 
+#LoginCtrl_failure {
+    text-align: center;
+    padding: 14px;
+
+}
+#LoginCtrl_failureMessage
+{
+    color:red;
+}

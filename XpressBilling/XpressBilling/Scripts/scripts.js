@@ -1,4 +1,4 @@
-﻿var itemMasterArray = [];""
+﻿var itemMasterArray = []; ""
 var itemMasterDetails = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
@@ -40,10 +40,10 @@ var itemMasterArraySalesReturnByName = [];
 var itemMasterDetailsSalesReturnByName = {};
 var SRItemRowDetails = [];
 $(function () {
-    $("#inputDate").datepicker(); 
+    $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
     $("#Date").datepicker();
-    $("#DOJ").datepicker(); 
+    $("#DOJ").datepicker();
     $("#Validity").datepicker();
     $("#PeriodFrom").datepicker();
     $("#PeriodTo").datepicker();
@@ -71,8 +71,7 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#StokeEntryMstId").length > 0)
-    {
+    if ($("#StokeEntryMstId").length > 0) {
         if ($("#OrderNo").val() == "") {
             alert("Please create first free number for stock adjustment");
             $("#SaveBtn").attr("disabled", true);
@@ -115,17 +114,14 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#GRNId").length > 0)
-    {
+    if ($("#GRNId").length > 0) {
         if ($("#GoodsReceipt").val() == "") {
             alert("Please create first free number for goods receipt");
             $("#btnSaveDtl").attr("disabled", true);
         }
     }
-    if ($("#SalesQuotationId").length > 0)
-    {
-        if ($("#Quotation").val() == "")
-        {
+    if ($("#SalesQuotationId").length > 0) {
+        if ($("#Quotation").val() == "") {
             alert("Please create first free number for Sales Quotation");
             $("#SaveBtn").attr("disabled", true);
         }
@@ -188,8 +184,7 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#PurchaseOrderId").length > 0)
-    {
+    if ($("#PurchaseOrderId").length > 0) {
         if ($("#OrderNo").val() == "") {
             alert("Please create first free number for purchase order");
             $("#SaveBtn").attr("disabled", true);
@@ -318,10 +313,8 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#InvoiceId").length > 0)
-    {
-        if ($("#Invoice").val() == "")
-        {
+    if ($("#InvoiceId").length > 0) {
+        if ($("#Invoice").val() == "") {
             alert("Please create first free number for Manual Invoice");
             $("#btnSaveDtl").attr("disabled", true);
         }
@@ -366,8 +359,7 @@ $(document).ready(function () {
             }
         });
     }
-    if($("#PriceBookId").length>0)
-    {
+    if ($("#PriceBookId").length > 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -379,7 +371,7 @@ $(document).ready(function () {
                 itemMasterDetails = {};
                 $.each(data.d, function (i, j) {
                     itemMasterArray.push(j.code);
-                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
+                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
                 });
             },
             error: function (result) {
@@ -387,8 +379,7 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#SalesInvoiceId").length > 0)
-    {
+    if ($("#SalesInvoiceId").length > 0) {
         if ($("#Invoice").val() == "") {
             alert("Please create first free number for Sales Invoice");
             $("#btnSaveDtl").attr("disabled", true);
@@ -508,9 +499,8 @@ $(document).ready(function () {
                 i++;
             }
 
-        }); 
-        if ($("#Status").val() == "2")
-        {
+        });
+        if ($("#Status").val() == "2") {
             $(".SRItem").attr('readonly', 'readonly');
             $(".SRItemName").attr('readonly', 'readonly');
             $(".SRItemRate").attr('readonly', 'readonly');
@@ -526,8 +516,7 @@ $(document).ready(function () {
             $("#SRTotalTaxAmt").attr('readonly', 'readonly');
             $("#SRTotalOrderAmt").attr('readonly', 'readonly');
         }
-        else if ($("#Status").val() == "1")
-        {
+        else if ($("#Status").val() == "1") {
             $(".SRItem").attr('readonly', 'readonly');
             $(".SRItemName").attr('readonly', 'readonly');
             $(".SRItemRate").attr('readonly', 'readonly');
@@ -544,11 +533,11 @@ $(document).ready(function () {
         }
     }
     if ($("#InvoiceId").length > 0 && $("#PageStatus").val() != "create") {
-        itemMasterArrayManualInvoice = []; 
+        itemMasterArrayManualInvoice = [];
         itemMasterDetailsManualInvoice = {};
         var i = 0;
         $("tr", $("#ManualInvoiceDetail")).each(function () {
-            
+
             var val = $("input[id*='MIItem']", $(this)).val();
             var qnty = parseInt($("input[id*='MIQuantity']", $(this)).val());
             var rate = parseFloat($("input[id*='MIItemRate']", $(this)).val());
@@ -573,8 +562,7 @@ $(document).ready(function () {
             $(".MIItemName").attr('readonly', 'readonly');
         }
     }
-    else if ($("#PageStatus").val() == "create")
-    {
+    else if ($("#PageStatus").val() == "create") {
         $(".MITaxAmt").attr('readonly', 'readonly');
         $(".MINetAmt").attr('readonly', 'readonly');
         $(".MIUnit").attr('readonly', 'readonly');
@@ -600,17 +588,15 @@ $(document).ready(function () {
                 i++;
             }
 
-        }); 
-        if ($("#Status").val() == "1")
-        {
+        });
+        if ($("#Status").val() == "1") {
             $(".ITaxAmt").attr('readonly', 'readonly');
             $(".INetAmt").attr('readonly', 'readonly');
             $(".IUnit").attr('readonly', 'readonly');
             $(".IItem").attr('readonly', 'readonly');
             $(".IItemName").attr('readonly', 'readonly');
         }
-        else if ($("#Status").val() == "2")
-        {
+        else if ($("#Status").val() == "2") {
             $(".ITaxAmt").attr('readonly', 'readonly');
             $(".INetAmt").attr('readonly', 'readonly');
             $(".IUnit").attr('readonly', 'readonly');
@@ -622,7 +608,7 @@ $(document).ready(function () {
             $(".IDiscAmt").attr('readonly', 'readonly');
             $(".ITaxPer").attr('readonly', 'readonly');
         }
-       
+
     }
     else if ($("#PageStatus").val() == "create") {
         $(".ITaxAmt").attr('readonly', 'readonly');
@@ -641,7 +627,7 @@ $(document).ready(function () {
             var discountAmt = parseFloat($("input[id*='SQDiscAmt']", $(this)).val());
             var taxPer = parseFloat($("input[id*='SQTaxPer']", $(this)).val());
             if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
-                
+
                 var rowTotalRate = qnty * rate;
                 var discountPer = (discountAmt / rowTotalRate).toFixed(2);
                 var taxAmount = (rowTotalRate - discountAmt) * taxPer;
@@ -652,8 +638,7 @@ $(document).ready(function () {
             }
 
         });
-        if ($("#PageStatus").val() == "edit")
-        {
+        if ($("#PageStatus").val() == "edit") {
             $(".SQTaxAmt").attr('readonly', 'readonly');
             $(".SQNetAmt").attr('readonly', 'readonly');
             $(".SQUnit").attr('readonly', 'readonly');
@@ -702,29 +687,28 @@ $(document).ready(function () {
             $(".POItem").attr('readonly', 'readonly');
             $(".POName").attr('readonly', 'readonly');
             $(".PORate").attr('readonly', 'readonly');
-            $(".POQuantity").attr('readonly', 'readonly');   
+            $(".POQuantity").attr('readonly', 'readonly');
             $(".PODiscPer").attr('readonly', 'readonly');
             $(".PODiscAmt").attr('readonly', 'readonly');
             $(".POTaxPer").attr('readonly', 'readonly');
-       }
-       else if ($("#PageStatus").val() == "creating") {
-           $(".POTaxAmt").attr('readonly', 'readonly');
-           $(".PONetAmt").attr('readonly', 'readonly');
-           $(".POUnit").attr('readonly', 'readonly');
-       }
+        }
+        else if ($("#PageStatus").val() == "creating") {
+            $(".POTaxAmt").attr('readonly', 'readonly');
+            $(".PONetAmt").attr('readonly', 'readonly');
+            $(".POUnit").attr('readonly', 'readonly');
+        }
     }
-    
-    
+
+
     $("#mainForm").validate();
 });
 
 
 $(document).ready(function () {
-    
+
     SearchText();
 
-    function DeleteConfirm()
-    {
+    function DeleteConfirm() {
         var Ans = confirm("Do you want to Delete Selected Employee Record?");
         if (Ans) {
             return true;
@@ -809,13 +793,11 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "#Transaction", function () {
-        
-        if($("#Transaction").val()=="1")
-        {
+
+        if ($("#Transaction").val() == "1") {
             $("#lblBankDetail").text("Bank Code");
         }
-        else
-        {
+        else {
             $("#lblBankDetail").text("Bank Account");
         }
     });
@@ -852,13 +834,13 @@ $(document).ready(function () {
             reader.readAsDataURL(files[0]); // read the local file
 
             reader.onloadend = function () { // set image data as background of div
-             
+
                 $("#imgPreview").attr('src', this.result);
             }
         }
     });
 
-    
+
 });
 function SearchText() {
     $("#Company").autocomplete({
@@ -875,1346 +857,1388 @@ function SearchText() {
                     alert("Error");
                 }
             });
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
         }
     });
 }
 
 
-    function SetSelectedRowStockEntry(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsStockEntry[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+function SetSelectedRowStockEntry(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsStockEntry[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
 
-        return false;
-    }
+    return false;
+}
 
-    function SetSelectedRowStockEntryByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsStockEntryByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+function SetSelectedRowStockEntryByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsStockEntryByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
 
-        return false;
-    }
+    return false;
+}
 
-    function SetSelectedRow(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetails[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[1];
-        row.cells[3].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
-        row.cells[4].getElementsByTagName("input")[0].value = itemArr[2];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
-        return false;
-    }
-    //var obj = {};
-    //obj.companyCode = $.trim($("#CompanyCode").val());
-    //$(".ItemCode").autocomplete({
-    //    source: function (request, response) {
-    //        $.ajax({
-    //            type: "POST",
-    //            contentType: "application/json; charset=utf-8",
-    //            url: "PriceBookEdit.aspx/GetItemMasters",
-    //            data: JSON.stringify(obj),
-    //            dataType: "json",
-    //            success: function (data) {
-    //                itemMasterArray = [];
-    //                itemMasterDetails = {};
-    //                $.each(data.d, function (i, j) {
-    //                    itemMasterArray.push(j.code);
-    //                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
-    //                });
-    //                response(itemMasterArray);
-    //            },
-    //            error: function (result) {
-    //                alert("Error");
-    //            }
-    //        });
-    //    },
-    //    select: function (event, ui) {
-    //        SetSelectedRow(this, ui.item.label);
-        
-    //    },
-    //});
-    $(document).on("keydown", ".ItemCode", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArray,
-            select: function (event, ui) {
-                SetSelectedRow(this, ui.item.label);
+function SetSelectedRow(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetails[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
+    row.cells[4].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[2];
+    row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
+    return false;
+}
+//var obj = {};
+//obj.companyCode = $.trim($("#CompanyCode").val());
+//$(".ItemCode").autocomplete({
+//    source: function (request, response) {
+//        $.ajax({
+//            type: "POST",
+//            contentType: "application/json; charset=utf-8",
+//            url: "PriceBookEdit.aspx/GetItemMasters",
+//            data: JSON.stringify(obj),
+//            dataType: "json",
+//            success: function (data) {
+//                itemMasterArray = [];
+//                itemMasterDetails = {};
+//                $.each(data.d, function (i, j) {
+//                    itemMasterArray.push(j.code);
+//                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
+//                });
+//                response(itemMasterArray);
+//            },
+//            error: function (result) {
+//                alert("Error");
+//            }
+//        });
+//    },
+//    select: function (event, ui) {
+//        SetSelectedRow(this, ui.item.label);
 
-            }
-        });
-    });
-    $(document).on("keydown", "#SalesMan", function (e) {
-        $(this).autocomplete({
-            source: contactArray
-        });
-    });
-    //$(document).on("keydown", "#SalesMan", function (e) {
-    //    var obj = {};
-    //    obj.companyCode = $.trim($("#CompanyCode").val());
-        
-        
-        
-    //});
-    
+//    },
+//});
+$(document).on("keydown", ".ItemCode", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArray,
+        select: function (event, ui) {
+            SetSelectedRow(this, ui.item.label);
 
-    $(".Name").attr('readonly', 'readonly');
-    $(".Rate").attr('readonly', 'readonly');
-    $(".Unit").attr('readonly', 'readonly');
-    $(".NetAmt").attr('readonly', 'readonly');
-    $("#TotalAmount").attr('readonly', 'readonly');
-    $("#TotalDiscountAmt").attr('readonly', 'readonly');
-    $("#TotalTaxAmt").attr('readonly', 'readonly');
-    $("#TotalOrderAmt").attr('readonly', 'readonly');
-    if ($("#SalesOrder").val()!="")
-    {
-        $(".gridTxtBox").attr('readonly', 'readonly');
-    }
-
-
-    $(document).on("keydown", ".StockItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayStockEntry,
-            select: function (event, ui) {
-                SetSelectedRowStockEntry(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".StockName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayStockEntryByName,
-            select: function (event, ui) {
-                SetSelectedRowStockEntryByName(this, ui.item.label);
-
-            }
-        });
-        //$(this).autocomplete(optionsStockEntryByName);
-    });
-    function CalculateSEAmount(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            if (qnty != "") {
-                var amount = qnty * rate;
-                if (!SEItemRowDetails[rowIndex] && row.cells[6].getElementsByTagName("input")[0].value == "") {
-
-                    row.cells[6].getElementsByTagName("input")[0].value = amount;
-                    SEItemRowDetails[rowIndex] = [qnty, rate, amount];
-                    if ($("#Amount").val() == "" || $("#Amount").val() == "0") {
-                        $("#Amount").val(amount);
-                    }
-                    else {
-                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(amount));
-                    }
-                }
-                else {
-                    //alert("okkk");
-                    var itemArray = SEItemRowDetails[rowIndex];
-                    var totalAmt = parseFloat($("#Amount").val());
-                    var oldAmount = parseFloat(itemArray[2]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalAmt += parseFloat(amount);
-                    row.cells[6].getElementsByTagName("input")[0].value = amount;
-                    $("#Amount").val(totalAmt);
-                    SEItemRowDetails[rowIndex] = [qnty, rate, amount];
-                }
-
-
-            }
-        }
-
-    }
-
-    $(document).on("focusout", "#SEQuantity", function (e) {
-        CalculateSEAmount(this);
-    });
-    $(document).on("focusout", "#SERate", function (e) {
-        CalculateSEAmount(this);
-    });
-
-    if ($(".ItemCode").val()!="")
-    {
-        $(".ItemCode").attr('readonly', 'readonly');
-
-    }
-    //$(".SupplierBarcode").attr('readonly', 'readonly'); 
-    $(".CurrencyCode").attr('readonly', 'readonly');
-    $(".OrderType").attr('readonly', 'readonly');
-    $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
-            var prefix = [];
-            var sequence = [];
-            var flag = 0;
-            $("#FirstFreeDetail tr").each(function () {
-                var val1 = $(this).find(".Prefix").val();
-                var val2 = $(this).find(".SequenceNumber").val();
-                if (typeof val1 !== "undefined") {
-                    prefix.push(val1);
-                }
-                if (typeof val2 !== "undefined") {
-                    sequence.push(val2);
-                }       
-            });
-            var lastValue = "";
-            var i = 0;
-            $.each(prefix, function( index, value ) {
-                if(lastValue!="")
-                {
-                    if(value==lastValue)
-                    {
-                        if(sequence[i-1]==sequence[i])
-                        {
-                            alert("Same prefix and sequence number not allowed for more than one time");
-                            flag = 1;
-                        }
-                    }
-                }
-                lastValue = value;
-                i++;
-            });
-            if (flag == 1)
-            {
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArray);
+            if (exists < 0) {
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-            else
-            {
-                return true;
+            else {
+                itemMasterArray = $.grep(itemMasterArray, function (val) {
+                    if (val != ui.item.label) {
+                        return val;
+                    }
+                });
             }
-            
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
     });
+});
+$(document).on("click", "#lnkDelete", function (e) {
+    var row = this.parentNode.parentNode;
+    itemMasterArray.push(row.cells[1].getElementsByTagName("input")[0].value);
+    row.remove();
+    var index = 1;
+    $("td:first-child", $("#PriceBookDetail")).each(function () {
+        $(this).find("span:first").text(index);
+        index++;
+
+    });
+    $("#rowCount").val(index);
+    return false;
+});
+$(document).on("keydown", "#SalesMan", function (e) {
+    $(this).autocomplete({
+        source: contactArray,
+            change: function (event, ui) {
+                val = $(this).val();
+                exists = $.inArray(val, contactArray);
+                if (exists < 0) {
+                    $(this).val("");
+                    return false;
+                }
+            },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+//$(document).on("keydown", "#SalesMan", function (e) {
+//    var obj = {};
+//    obj.companyCode = $.trim($("#CompanyCode").val());
 
 
-    $(document).on("keydown", ".txtNumeric", function (e) {
-        if (e.shiftKey || e.ctrlKey || e.altKey) {
+
+//});
+
+
+$(".Name").attr('readonly', 'readonly');
+$(".Rate").attr('readonly', 'readonly');
+$(".Unit").attr('readonly', 'readonly');
+$(".NetAmt").attr('readonly', 'readonly');
+$("#TotalAmount").attr('readonly', 'readonly');
+$("#TotalDiscountAmt").attr('readonly', 'readonly');
+$("#TotalTaxAmt").attr('readonly', 'readonly');
+$("#TotalOrderAmt").attr('readonly', 'readonly');
+if ($("#SalesOrder").val() != "") {
+    $(".gridTxtBox").attr('readonly', 'readonly');
+}
+
+
+$(document).on("keydown", ".StockItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayStockEntry,
+        select: function (event, ui) {
+            SetSelectedRowStockEntry(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".StockName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayStockEntryByName,
+        select: function (event, ui) {
+            SetSelectedRowStockEntryByName(this, ui.item.label);
+
+        }
+    });
+    //$(this).autocomplete(optionsStockEntryByName);
+});
+function CalculateSEAmount(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        if (qnty != "") {
+            var amount = qnty * rate;
+            if (!SEItemRowDetails[rowIndex] && row.cells[6].getElementsByTagName("input")[0].value == "") {
+
+                row.cells[6].getElementsByTagName("input")[0].value = amount;
+                SEItemRowDetails[rowIndex] = [qnty, rate, amount];
+                if ($("#Amount").val() == "" || $("#Amount").val() == "0") {
+                    $("#Amount").val(amount);
+                }
+                else {
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(amount));
+                }
+            }
+            else {
+                //alert("okkk");
+                var itemArray = SEItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#Amount").val());
+                var oldAmount = parseFloat(itemArray[2]);
+                totalAmt -= parseFloat(oldAmount);
+                totalAmt += parseFloat(amount);
+                row.cells[6].getElementsByTagName("input")[0].value = amount;
+                $("#Amount").val(totalAmt);
+                SEItemRowDetails[rowIndex] = [qnty, rate, amount];
+            }
+
+
+        }
+    }
+
+}
+
+$(document).on("focusout", "#SEQuantity", function (e) {
+    CalculateSEAmount(this);
+});
+$(document).on("focusout", "#SERate", function (e) {
+    CalculateSEAmount(this);
+});
+
+if ($(".ItemCode").val() != "") {
+    $(".ItemCode").attr('readonly', 'readonly');
+
+}
+$(".SupplierBarcode").attr('readonly', 'readonly');
+$(".CurrencyCode").attr('readonly', 'readonly');
+$(".OrderType").attr('readonly', 'readonly');
+$(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
+    var prefix = [];
+    var sequence = [];
+    var flag = 0;
+    $("#FirstFreeDetail tr").each(function () {
+        var val1 = $(this).find(".Prefix").val();
+        var val2 = $(this).find(".SequenceNumber").val();
+        if (typeof val1 !== "undefined") {
+            prefix.push(val1);
+        }
+        if (typeof val2 !== "undefined") {
+            sequence.push(val2);
+        }
+    });
+    var lastValue = "";
+    var i = 0;
+    $.each(prefix, function (index, value) {
+        if (lastValue != "") {
+            if (value == lastValue) {
+                if (sequence[i - 1] == sequence[i]) {
+                    alert("Same prefix and sequence number not allowed for more than one time");
+                    flag = 1;
+                }
+            }
+        }
+        lastValue = value;
+        i++;
+    });
+    if (flag == 1) {
+        return false;
+    }
+    else {
+        return true;
+    }
+
+});
+
+
+$(document).on("keydown", ".txtNumeric", function (e) {
+    if (e.shiftKey || e.ctrlKey || e.altKey) {
+        e.preventDefault();
+    } else {
+        var key = e.keyCode;
+        if (!((key == 190) || (key == 110) || (key == 9) || (key == 8) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
             e.preventDefault();
-        } else {
-            var key = e.keyCode;
-            if (!((key == 190 )||( key == 110) || (key == 9) || (key == 8) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
-                e.preventDefault();
-            }
-        }
-    });
-
-    function SetSelectedRowManualInvoice(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsManualInvoice[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        return false;
-    }
-    function SetSelectedRowManualInvoiceByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsManualInvoiceByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        return false;
-    }
-    function setSelectedTaxCode(lnk, selectedItem) {
-        
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var taxPer = itemTaxDetails[selectedItem];
-        $(lnk).val('');
-        row.cells[8].getElementsByTagName("input")[0].value = taxPer;
-        row.cells[8].getElementsByTagName("input")[1].value = selectedItem;
-        return false;
-    }
-
-   
-    $(document).on("keydown", ".MIItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayManualInvoice,
-            select: function (event, ui) {
-                SetSelectedRowManualInvoice(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".MIItemName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayManualInvoiceByName,
-            select: function (event, ui) {
-                SetSelectedRowManualInvoiceByName(this, ui.item.label);
-
-            }
-        });
-        //$(this).autocomplete(optionsManualInvoiceByName);
-    });
-    $(document).on("focusout", "#MIQuantity", function (e) {
-        
-        CalculateMIAmount(this);
-    });
-    $(document).on("focusout", "#MIItemRate", function (e) {
-        CalculateMIAmount(this);
-    });
-    $(document).on("focusout", "#MIDiscPer", function (e) {
-        CalculateMIAmount(this);
-    });
-    $(document).on("focusout", "#MITaxPer", function (e) {
-        CalculateMIAmount(this);
-    });
-    $(document).on("focusout", "#MIDiscAmt", function (e) {
-        CalculateMIAmount(this);
-    });
-    
-    $("#MITotalAmount").attr('readonly', 'readonly');
-    $("#MITotalDiscountAmt").attr('readonly', 'readonly');
-    $("#MITotalTaxAmt").attr('readonly', 'readonly');
-    $("#MITotalOrderAmt").attr('readonly', 'readonly');
-    function CalculateMIAmount(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
-            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
-            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
-            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-                var rowTotalRate = qnty * rate;
-                if ($(txtBox).attr("id") == "MIDiscAmt")
-                {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                }
-                else
-                {
-                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
-                }
-                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
-                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
-                var orderAmount = netAmount;
-                if ($(txtBox).attr("id") == "MIDiscAmt")
-                {
-                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
-                }
-                else {
-                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
-                }
-                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
-                
-                if (!MIItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                    if ($("#MITotalAmount").val() == "") {
-                        $("#MITotalAmount").val(netAmount);
-                    }
-                    else {
-                        $("#MITotalAmount").val(parseFloat($("#MITotalAmount").val()) + parseFloat(netAmount));
-                    } 
-                    if ($("#Amount").val() == "") {
-                        $("#Amount").val(netAmount);
-                    }
-                    else {
-                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#MITotalDiscountAmt").val() == "") {
-                        $("#MITotalDiscountAmt").val(discountAmt);
-                    }
-                    else {
-                        $("#MITotalDiscountAmt").val(parseFloat($("#MITotalDiscountAmt").val()) + parseFloat(discountAmt));
-                    }
-                    if ($("#MITotalTaxAmt").val() == "") {
-                        $("#MITotalTaxAmt").val(taxAmount);
-                    }
-                    else {
-                        $("#MITotalTaxAmt").val(parseFloat($("#MITotalTaxAmt").val()) + parseFloat(taxAmount));
-                    }
-                    if ($("#MITotalOrderAmt").val() == "") {
-                        $("#MITotalOrderAmt").val(orderAmount);
-                    }
-                    else {
-                        $("#MITotalOrderAmt").val(parseFloat($("#MITotalOrderAmt").val()) + parseFloat(orderAmount));
-                    }
-                }
-                else {
-                    var itemArray = MIItemRowDetails[rowIndex];
-                    var totalAmt = parseFloat($("#Amount").val());
-                    var totalDiscount = parseFloat($("#MITotalDiscountAmt").val());
-                    var totalTax = parseFloat($("#MITotalTaxAmt").val());
-                    var totalOder = parseFloat($("#MITotalOrderAmt").val());
-                    var oldAmount = parseFloat(itemArray[6]);
-                    var oldDiscount = parseFloat(itemArray[3]);
-                    var oldTax = parseFloat(itemArray[5]);
-                    var oldOder = parseFloat(itemArray[7]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalDiscount -= parseFloat(oldDiscount);
-                    totalTax -= parseFloat(oldTax);
-                    totalOder -= parseFloat(oldOder);
-                    totalAmt += parseFloat(netAmount);
-                    totalDiscount += parseFloat(discountAmt);
-                    totalTax += parseFloat(taxAmount);
-                    totalOder += parseFloat(orderAmount);
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    $("#Amount").val(totalAmt);
-                    $("#MITotalAmount").val(totalAmt);
-                    $("#MITotalDiscountAmt").val(totalDiscount);
-                    $("#MITotalTaxAmt").val(totalTax);
-                    $("#MITotalOrderAmt").val(totalOder);
-                    MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                }
-
-
-            }
-        }
-
-    }
-
-    function iSQuantityAvailableI(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != ""
-            && row.cells[4].getElementsByTagName("input")[0].value!="") {
-            var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
-            var itemArr = itemMasterQuantityI[itemCode];
-            if (typeof (itemArr) === "undefined") {
-                var obj = {};
-                obj.companyCode = $.trim($("#CompanyCode").val());
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: "PriceBookEdit.aspx/GetItemMasters",
-                    data: JSON.stringify(obj),
-                    dataType: "json",
-                    success: function (data) {
-                        itemMasterQuantityI = {};
-                        $.each(data.d, function (i, j) {
-                            itemMasterQuantityI[j.code] = [j.Qnty];
-                        });
-                        itemArr = itemMasterQuantityI[itemCode];
-                        if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                            CalculateIAmount(txtBox);
-                        }
-                        else {
-                            row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                            alert("Sorry,Avilable Items:" + itemArr[0]);
-                        }
-                    },
-                    error: function (result) {
-                        alert("Error");
-                    }
-                });
-                
-            }
-            else
-            {
-                if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                    CalculateIAmount(txtBox);
-                }
-                else {
-                    row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                    alert("Sorry,Avilable Items:" + itemArr[0]);
-                }
-            }
-            
         }
     }
-    function iSQuantityAvailableSQ(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != ""
-            && row.cells[4].getElementsByTagName("input")[0].value != "") {
-            var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
-            var itemArr = itemMasterQuantitySQ[itemCode];
-            if (typeof (itemArr) === "undefined") {
-                var obj = {};
-                obj.companyCode = $.trim($("#CompanyCode").val());
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: "PriceBookEdit.aspx/GetItemMasters",
-                    data: JSON.stringify(obj),
-                    dataType: "json",
-                    success: function (data) {
-                        itemMasterQuantitySQ = {};
-                        $.each(data.d, function (i, j) {
-                            itemMasterQuantitySQ[j.code] = [j.Qnty];
-                        });
-                        itemArr = itemMasterQuantitySQ[itemCode];
-                        if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                            CalculateSQAmount(txtBox);
-                        }
-                        else {
-                            row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                            alert("Sorry,Avilable Items:" + itemArr[0]);
-                        }
-                    },
-                    error: function (result) {
-                        alert("Error");
+});
+
+function SetSelectedRowManualInvoice(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsManualInvoice[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    return false;
+}
+function SetSelectedRowManualInvoiceByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsManualInvoiceByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    return false;
+}
+function setSelectedTaxCode(lnk, selectedItem) {
+
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var taxPer = itemTaxDetails[selectedItem];
+    $(lnk).val('');
+    row.cells[8].getElementsByTagName("input")[0].value = taxPer;
+    row.cells[8].getElementsByTagName("input")[1].value = selectedItem;
+    return false;
+}
+
+
+$(document).on("keydown", ".MIItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayManualInvoice,
+        select: function (event, ui) {
+            SetSelectedRowManualInvoice(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".MIItemName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayManualInvoiceByName,
+        select: function (event, ui) {
+            SetSelectedRowManualInvoiceByName(this, ui.item.label);
+
+        }
+    });
+    //$(this).autocomplete(optionsManualInvoiceByName);
+});
+$(document).on("focusout", "#MIQuantity", function (e) {
+
+    CalculateMIAmount(this);
+});
+$(document).on("focusout", "#MIItemRate", function (e) {
+    CalculateMIAmount(this);
+});
+$(document).on("focusout", "#MIDiscPer", function (e) {
+    CalculateMIAmount(this);
+});
+$(document).on("focusout", "#MITaxPer", function (e) {
+    CalculateMIAmount(this);
+});
+$(document).on("focusout", "#MIDiscAmt", function (e) {
+    CalculateMIAmount(this);
+});
+
+$("#MITotalAmount").attr('readonly', 'readonly');
+$("#MITotalDiscountAmt").attr('readonly', 'readonly');
+$("#MITotalTaxAmt").attr('readonly', 'readonly');
+$("#MITotalOrderAmt").attr('readonly', 'readonly');
+function CalculateMIAmount(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+        var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+        var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+        if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+            var rowTotalRate = qnty * rate;
+            if ($(txtBox).attr("id") == "MIDiscAmt") {
+                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            }
+            else {
+                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+            }
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+            var orderAmount = netAmount;
+            if ($(txtBox).attr("id") == "MIDiscAmt") {
+                row.cells[6].getElementsByTagName("input")[0].value = discountPer;
+            }
+            else {
+                row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
+            }
+            row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+
+            if (!MIItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                if ($("#MITotalAmount").val() == "") {
+                    $("#MITotalAmount").val(netAmount);
+                }
+                else {
+                    $("#MITotalAmount").val(parseFloat($("#MITotalAmount").val()) + parseFloat(netAmount));
+                }
+                if ($("#Amount").val() == "") {
+                    $("#Amount").val(netAmount);
+                }
+                else {
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                }
+                if ($("#MITotalDiscountAmt").val() == "") {
+                    $("#MITotalDiscountAmt").val(discountAmt);
+                }
+                else {
+                    $("#MITotalDiscountAmt").val(parseFloat($("#MITotalDiscountAmt").val()) + parseFloat(discountAmt));
+                }
+                if ($("#MITotalTaxAmt").val() == "") {
+                    $("#MITotalTaxAmt").val(taxAmount);
+                }
+                else {
+                    $("#MITotalTaxAmt").val(parseFloat($("#MITotalTaxAmt").val()) + parseFloat(taxAmount));
+                }
+                if ($("#MITotalOrderAmt").val() == "") {
+                    $("#MITotalOrderAmt").val(orderAmount);
+                }
+                else {
+                    $("#MITotalOrderAmt").val(parseFloat($("#MITotalOrderAmt").val()) + parseFloat(orderAmount));
+                }
+            }
+            else {
+                var itemArray = MIItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#Amount").val());
+                var totalDiscount = parseFloat($("#MITotalDiscountAmt").val());
+                var totalTax = parseFloat($("#MITotalTaxAmt").val());
+                var totalOder = parseFloat($("#MITotalOrderAmt").val());
+                var oldAmount = parseFloat(itemArray[6]);
+                var oldDiscount = parseFloat(itemArray[3]);
+                var oldTax = parseFloat(itemArray[5]);
+                var oldOder = parseFloat(itemArray[7]);
+                totalAmt -= parseFloat(oldAmount);
+                totalDiscount -= parseFloat(oldDiscount);
+                totalTax -= parseFloat(oldTax);
+                totalOder -= parseFloat(oldOder);
+                totalAmt += parseFloat(netAmount);
+                totalDiscount += parseFloat(discountAmt);
+                totalTax += parseFloat(taxAmount);
+                totalOder += parseFloat(orderAmount);
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                $("#Amount").val(totalAmt);
+                $("#MITotalAmount").val(totalAmt);
+                $("#MITotalDiscountAmt").val(totalDiscount);
+                $("#MITotalTaxAmt").val(totalTax);
+                $("#MITotalOrderAmt").val(totalOder);
+                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+            }
+
+
+        }
+    }
+
+}
+
+function iSQuantityAvailableI(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterQuantityI[itemCode];
+        if (typeof (itemArr) === "undefined") {
+            var obj = {};
+            obj.companyCode = $.trim($("#CompanyCode").val());
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "PriceBookEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (data) {
+                    itemMasterQuantityI = {};
+                    $.each(data.d, function (i, j) {
+                        itemMasterQuantityI[j.code] = [j.Qnty];
+                    });
+                    itemArr = itemMasterQuantityI[itemCode];
+                    if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                        CalculateIAmount(txtBox);
                     }
-                });
+                    else {
+                        row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                        alert("Sorry,Avilable Items:" + itemArr[0]);
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+
+        }
+        else {
+            if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                CalculateIAmount(txtBox);
+            }
+            else {
+                row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                alert("Sorry,Avilable Items:" + itemArr[0]);
+            }
+        }
+
+    }
+}
+function iSQuantityAvailableSQ(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterQuantitySQ[itemCode];
+        if (typeof (itemArr) === "undefined") {
+            var obj = {};
+            obj.companyCode = $.trim($("#CompanyCode").val());
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "PriceBookEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (data) {
+                    itemMasterQuantitySQ = {};
+                    $.each(data.d, function (i, j) {
+                        itemMasterQuantitySQ[j.code] = [j.Qnty];
+                    });
+                    itemArr = itemMasterQuantitySQ[itemCode];
+                    if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                        CalculateSQAmount(txtBox);
+                    }
+                    else {
+                        row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                        alert("Sorry,Avilable Items:" + itemArr[0]);
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+
+        }
+        else {
+            if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
+                CalculateSQAmount(txtBox);
+            }
+            else {
+                row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                alert("Sorry,Avilable Items:" + itemArr[0]);
+            }
+        }
+
+    }
+}
+
+function SetSelectedRowInvoice(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsInvoice[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+function SetSelectedRowInvoiceByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsInvoiceByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+
+
+$(document).on("keydown", ".IItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayInvoice,
+        select: function (event, ui) {
+            SetSelectedRowInvoice(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".IItemName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayInvoiceByName,
+        select: function (event, ui) {
+            SetSelectedRowInvoiceByName(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".ITaxPer", function (e) {
+    $(this).autocomplete({
+        source: itemTaxCodes,
+        select: function (event, ui) {
+            event.preventDefault();
+            setSelectedTaxCode(this, ui.item.label);
+
+        },
+        change: function (event, ui) {
+            if (ui.item === null || !ui.item) {
+                $(this).val('');
+            }
+            /* clear the value */
+        }
+    });
+});
+$(document).on("focusout", "#IQuantity", function (e) {
+    iSQuantityAvailableI(this);
+
+});
+$(document).on("focusout", "#IItemRate", function (e) {
+    CalculateIAmount(this);
+});
+$(document).on("focusout", "#IDiscPer", function (e) {
+    CalculateIAmount(this);
+});
+$(document).on("focusout", "#ITaxPer", function (e) {
+    CalculateIAmount(this);
+});
+$(document).on("focusout", "#IDiscAmt", function (e) {
+    CalculateIAmount(this);
+});
+//$(".MIItemRate").attr('readonly', 'readonly');
+$("#ITotalAmount").attr('readonly', 'readonly');
+$("#ITotalDiscountAmt").attr('readonly', 'readonly');
+$("#ITotalTaxAmt").attr('readonly', 'readonly');
+$("#ITotalOrderAmt").attr('readonly', 'readonly');
+function CalculateIAmount(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+        var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+        var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+        if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+            var rowTotalRate = qnty * rate;
+            if ($(txtBox).attr("id") == "IDiscAmt") {
+                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            }
+            else {
+                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+            }
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+            var orderAmount = netAmount;
+            if ($(txtBox).attr("id") == "IDiscAmt") {
+                row.cells[6].getElementsByTagName("input")[0].value = discountPer;
 
             }
             else {
-                if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                    CalculateSQAmount(txtBox);
+                row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
+            }
+            row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+            if (!IItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                IItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                if ($("#ITotalAmount").val() == "") {
+                    $("#ITotalAmount").val(netAmount);
                 }
                 else {
-                    row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                    alert("Sorry,Avilable Items:" + itemArr[0]);
+                    $("#ITotalAmount").val(parseFloat($("#ITotalAmount").val()) + parseFloat(netAmount));
+                }
+                if ($("#Amount").val() == "") {
+                    $("#Amount").val(netAmount);
+                }
+                else {
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                }
+                if ($("#ITotalDiscountAmt").val() == "") {
+                    $("#ITotalDiscountAmt").val(discountAmt);
+                }
+                else {
+                    $("#ITotalDiscountAmt").val(parseFloat($("#ITotalDiscountAmt").val()) + parseFloat(discountAmt));
+                }
+                if ($("#ITotalTaxAmt").val() == "") {
+                    $("#ITotalTaxAmt").val(taxAmount);
+                }
+                else {
+                    $("#ITotalTaxAmt").val(parseFloat($("#ITotalTaxAmt").val()) + parseFloat(taxAmount));
+                }
+                if ($("#ITotalOrderAmt").val() == "") {
+                    $("#ITotalOrderAmt").val(orderAmount);
+                }
+                else {
+                    $("#ITotalOrderAmt").val(parseFloat($("#ITotalOrderAmt").val()) + parseFloat(orderAmount));
                 }
             }
+            else {
+                var itemArray = IItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#Amount").val());
+                var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
+                var totalTax = parseFloat($("#ITotalTaxAmt").val());
+                var totalOder = parseFloat($("#ITotalOrderAmt").val());
+                var oldAmount = parseFloat(itemArray[6]);
+                var oldDiscount = parseFloat(itemArray[3]);
+                var oldTax = parseFloat(itemArray[5]);
+                var oldOder = parseFloat(itemArray[7]);
+                totalAmt -= parseFloat(oldAmount);
+                totalDiscount -= parseFloat(oldDiscount);
+                totalTax -= parseFloat(oldTax);
+                totalOder -= parseFloat(oldOder);
+                totalAmt += parseFloat(netAmount);
+                totalDiscount += parseFloat(discountAmt);
+                totalTax += parseFloat(taxAmount);
+                totalOder += parseFloat(orderAmount);
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                $("#Amount").val(totalAmt);
+                $("#ITotalAmount").val(totalAmt);
+                $("#ITotalDiscountAmt").val(totalDiscount);
+                $("#ITotalTaxAmt").val(totalTax);
+                $("#ITotalOrderAmt").val(totalOder);
+                IItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+            }
+
 
         }
     }
 
-    function SetSelectedRowInvoice(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsInvoice[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
-        return false;
-    }
-    function SetSelectedRowInvoiceByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsInvoiceByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
-        return false;
-    }
-    
+}
 
-    $(document).on("keydown", ".IItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayInvoice,
-            select: function (event, ui) {
-                SetSelectedRowInvoice(this, ui.item.label);
+function SetSelectedRowSQ(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsSQ[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+function SetSelectedRowSQByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsSQByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+
+
+$(document).on("keydown", ".SQItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArraySQ,
+        select: function (event, ui) {
+            SetSelectedRowSQ(this, ui.item.label);
+
+        }
+    });
+    //$(this).autocomplete(optionsSQ);
+});
+$(document).on("keydown", ".SQName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArraySQByName,
+        select: function (event, ui) {
+            SetSelectedRowSQByName(this, ui.item.label);
+
+        }
+    });
+    //$(this).autocomplete(optionsSQByName);
+});
+$(document).on("keydown", ".SQTaxPer", function (e) {
+    $(this).autocomplete({
+        source: itemTaxCodes,
+        select: function (event, ui) {
+            event.preventDefault();
+            setSelectedTaxCode(this, ui.item.label);
+
+        },
+        change: function (event, ui) {
+            if (ui.item === null || !ui.item)
+                $(this).val(''); /* clear the value */
+        }
+    });
+});
+$(document).on("focusout", "#SQQuantity", function (e) {
+    iSQuantityAvailableSQ(this);
+});
+$(document).on("focusout", "#SQRate", function (e) {
+    CalculateSQAmount(this);
+});
+$(document).on("focusout", "#SQDiscPer", function (e) {
+    CalculateSQAmount(this);
+});
+$(document).on("focusout", "#SQTaxPer", function (e) {
+    CalculateSQAmount(this);
+});
+
+$(document).on("focusout", "#SQDiscAmt", function (e) {
+    CalculateSQAmount(this);
+});
+//$(".MIItemRate").attr('readonly', 'readonly');
+$("#TotalAmount").attr('readonly', 'readonly');
+$("#TotalDiscountAmt").attr('readonly', 'readonly');
+$("#TotalTaxAmt").attr('readonly', 'readonly');
+$("#TotalOrderAmt").attr('readonly', 'readonly');
+function CalculateSQAmount(txtBox) {
+
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+        var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+        var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+        if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+            var rowTotalRate = qnty * rate;
+            if ($(txtBox).attr("id") == "SQDiscAmt") {
+                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            }
+            else {
+                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+            }
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+            var orderAmount = netAmount;
+            if ($(txtBox).attr("id") == "SQDiscAmt") {
+                row.cells[6].getElementsByTagName("input")[0].value = discountPer;
+            }
+            else {
+                row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
 
             }
-        });
-    });
-    $(document).on("keydown", ".IItemName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayInvoiceByName,
-            select: function (event, ui) {
-                SetSelectedRowInvoiceByName(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".ITaxPer", function (e) {
-        $(this).autocomplete({
-            source: itemTaxCodes,
-            select: function (event, ui) {
-                event.preventDefault();
-                setSelectedTaxCode(this, ui.item.label);
-
-            },
-            change: function (event, ui) {
-                if (ui.item === null || !ui.item)
-                {
-                    $(this).val(''); 
-                }
-                     /* clear the value */
-            }
-        });
-    });
-    $(document).on("focusout", "#IQuantity", function (e) {
-        iSQuantityAvailableI(this);
-       
-    });
-    $(document).on("focusout", "#IItemRate", function (e) {
-        CalculateIAmount(this);
-    });
-    $(document).on("focusout", "#IDiscPer", function (e) {
-        CalculateIAmount(this);
-    });
-    $(document).on("focusout", "#ITaxPer", function (e) {
-        CalculateIAmount(this);
-    });
-    $(document).on("focusout", "#IDiscAmt", function (e) {
-        CalculateIAmount(this);
-    });
-    //$(".MIItemRate").attr('readonly', 'readonly');
-    $("#ITotalAmount").attr('readonly', 'readonly');
-    $("#ITotalDiscountAmt").attr('readonly', 'readonly');
-    $("#ITotalTaxAmt").attr('readonly', 'readonly');
-    $("#ITotalOrderAmt").attr('readonly', 'readonly');
-    function CalculateIAmount(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            var discountPer = row.cells[6].getElementsByTagName("input")[0].value; 
-            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value; 
-            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
-            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-                var rowTotalRate = qnty * rate;
-                if ($(txtBox).attr("id") == "IDiscAmt")
-                {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+            if (!SQItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                if ($("#TotalAmount").val() == "") {
+                    $("#TotalAmount").val(netAmount);
                 }
                 else {
-                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                    $("#TotalAmount").val(parseFloat($("#TotalAmount").val()) + parseFloat(netAmount));
                 }
-                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
-                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
-                var orderAmount = netAmount;
-                if ($(txtBox).attr("id") == "IDiscAmt")
-                {
-                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
-                    
-                }
-                else
-                {
-                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
-                }
-                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
-                if (!IItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    IItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                    if ($("#ITotalAmount").val() == "") {
-                        $("#ITotalAmount").val(netAmount);
-                    }
-                    else {
-                        $("#ITotalAmount").val(parseFloat($("#ITotalAmount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#Amount").val() == "") {
-                        $("#Amount").val(netAmount);
-                    }
-                    else {
-                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#ITotalDiscountAmt").val() == "") {
-                        $("#ITotalDiscountAmt").val(discountAmt);
-                    }
-                    else {
-                        $("#ITotalDiscountAmt").val(parseFloat($("#ITotalDiscountAmt").val()) + parseFloat(discountAmt));
-                    }
-                    if ($("#ITotalTaxAmt").val() == "") {
-                        $("#ITotalTaxAmt").val(taxAmount);
-                    }
-                    else {
-                        $("#ITotalTaxAmt").val(parseFloat($("#ITotalTaxAmt").val()) + parseFloat(taxAmount));
-                    }
-                    if ($("#ITotalOrderAmt").val() == "") {
-                        $("#ITotalOrderAmt").val(orderAmount);
-                    }
-                    else {
-                        $("#ITotalOrderAmt").val(parseFloat($("#ITotalOrderAmt").val()) + parseFloat(orderAmount));
-                    }
+                if ($("#TotalDiscountAmt").val() == "") {
+                    $("#TotalDiscountAmt").val(discountAmt);
                 }
                 else {
-                    var itemArray = IItemRowDetails[rowIndex];
-                    var totalAmt = parseFloat($("#Amount").val());
-                    var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
-                    var totalTax = parseFloat($("#ITotalTaxAmt").val());
-                    var totalOder = parseFloat($("#ITotalOrderAmt").val());
-                    var oldAmount = parseFloat(itemArray[6]);
-                    var oldDiscount = parseFloat(itemArray[3]);
-                    var oldTax = parseFloat(itemArray[5]);
-                    var oldOder = parseFloat(itemArray[7]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalDiscount -= parseFloat(oldDiscount);
-                    totalTax -= parseFloat(oldTax);
-                    totalOder -= parseFloat(oldOder);
-                    totalAmt += parseFloat(netAmount);
-                    totalDiscount += parseFloat(discountAmt);
-                    totalTax += parseFloat(taxAmount);
-                    totalOder += parseFloat(orderAmount);
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    $("#Amount").val(totalAmt);
-                    $("#ITotalAmount").val(totalAmt);
-                    $("#ITotalDiscountAmt").val(totalDiscount);
-                    $("#ITotalTaxAmt").val(totalTax);
-                    $("#ITotalOrderAmt").val(totalOder);
-                    IItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                    $("#TotalDiscountAmt").val(parseFloat($("#TotalDiscountAmt").val()) + parseFloat(discountAmt));
                 }
+                if ($("#TotalTaxAmt").val() == "") {
+                    $("#TotalTaxAmt").val(taxAmount);
+                }
+                else {
+                    $("#TotalTaxAmt").val(parseFloat($("#TotalTaxAmt").val()) + parseFloat(taxAmount));
+                }
+                if ($("#TotalOrderAmt").val() == "") {
+                    $("#TotalOrderAmt").val(orderAmount);
+                }
+                else {
+                    $("#TotalOrderAmt").val(parseFloat($("#TotalOrderAmt").val()) + parseFloat(orderAmount));
+                }
+            }
+            else {
+                var itemArray = SQItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#TotalAmount").val());
+                var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
+                var totalTax = parseFloat($("#TotalTaxAmt").val());
+                var totalOder = parseFloat($("#TotalOrderAmt").val());
+                var oldAmount = parseFloat(itemArray[6]);
+                var oldDiscount = parseFloat(itemArray[3]);
+                var oldTax = parseFloat(itemArray[5]);
+                var oldOder = parseFloat(itemArray[7]);
+                totalAmt -= parseFloat(oldAmount);
+                totalDiscount -= parseFloat(oldDiscount);
+                totalTax -= parseFloat(oldTax);
+                totalOder -= parseFloat(oldOder);
+                totalAmt += parseFloat(netAmount);
+                totalDiscount += parseFloat(discountAmt);
+                totalTax += parseFloat(taxAmount);
+                totalOder += parseFloat(orderAmount);
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                $("#TotalAmount").val(totalAmt);
+                $("#TotalDiscountAmt").val(totalDiscount);
+                $("#TotalTaxAmt").val(totalTax);
+                $("#TotalOrderAmt").val(totalOder);
+                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+            }
 
 
+        }
+    }
+
+}
+
+function iSQuantityAvailablePO(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterQuantityPO[itemCode];
+        if (typeof (itemArr) === "undefined") {
+            var obj = {};
+            obj.companyCode = $.trim($("#CompanyCode").val());
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "PriceBookEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (data) {
+                    itemMasterQuantityPO = {};
+                    $.each(data.d, function (i, j) {
+                        itemMasterQuantityPO[j.code] = [j.Qnty];
+                    });
+                    itemArr = itemMasterQuantityPO[itemCode];
+                    if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
+                        CalculatePOAmount(txtBox);
+                    }
+                    else {
+                        row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                        alert("Sorry,Avilable Items:" + itemArr[0]);
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+
+        }
+        else {
+            if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
+                CalculatePOAmount(txtBox);
+            }
+            else {
+                row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
+                alert("Sorry,Avilable Items:" + itemArr[0]);
             }
         }
 
     }
+}
 
-    function SetSelectedRowSQ(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsSQ[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
-        return false;
-    }
-    function SetSelectedRowSQByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsSQByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
-        return false;
-    }
+function SetSelectedRowPO(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsPO[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
 
-
-    $(document).on("keydown", ".SQItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArraySQ,
-            select: function (event, ui) {
-                SetSelectedRowSQ(this, ui.item.label);
-
-            }
-        });
-        //$(this).autocomplete(optionsSQ);
-    });
-    $(document).on("keydown", ".SQName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArraySQByName,
-            select: function (event, ui) {
-                SetSelectedRowSQByName(this, ui.item.label);
-
-            }
-        });
-        //$(this).autocomplete(optionsSQByName);
-    });
-    $(document).on("keydown", ".SQTaxPer", function (e) {
-        $(this).autocomplete({
-            source: itemTaxCodes,
-            select: function (event, ui) {
-                event.preventDefault();
-                setSelectedTaxCode(this, ui.item.label);
-
-            },
-            change: function (event, ui) {
-                if (ui.item === null || !ui.item)
-                    $(this).val(''); /* clear the value */
-            }
-        });
-    });
-    $(document).on("focusout", "#SQQuantity", function (e) {
-        iSQuantityAvailableSQ(this);
-   });
-    $(document).on("focusout", "#SQRate", function (e) {
-        CalculateSQAmount(this);
-    });
-    $(document).on("focusout", "#SQDiscPer", function (e) {
-        CalculateSQAmount(this);
-    });
-    $(document).on("focusout", "#SQTaxPer", function (e) {
-        CalculateSQAmount(this);
-    });
-
-    $(document).on("focusout", "#SQDiscAmt", function (e) {
-        CalculateSQAmount(this);
-    });
-    //$(".MIItemRate").attr('readonly', 'readonly');
-    $("#TotalAmount").attr('readonly', 'readonly');
-    $("#TotalDiscountAmt").attr('readonly', 'readonly');
-    $("#TotalTaxAmt").attr('readonly', 'readonly');
-    $("#TotalOrderAmt").attr('readonly', 'readonly');
-    function CalculateSQAmount(txtBox) {
-        
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
-            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
-            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
-            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-                var rowTotalRate = qnty * rate;
-                if ($(txtBox).attr("id") == "SQDiscAmt")
-                {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                }
-                else {
-                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
-                }
-                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
-                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
-                var orderAmount = netAmount;
-                if ($(txtBox).attr("id") == "SQDiscAmt")
-                {
-                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
-                }
-                else {
-                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
-                    
-                }
-                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
-                if (!SQItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                    if ($("#TotalAmount").val() == "") {
-                        $("#TotalAmount").val(netAmount);
-                    }
-                    else {
-                        $("#TotalAmount").val(parseFloat($("#TotalAmount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#TotalDiscountAmt").val() == "") {
-                        $("#TotalDiscountAmt").val(discountAmt);
-                    }
-                    else {
-                        $("#TotalDiscountAmt").val(parseFloat($("#TotalDiscountAmt").val()) + parseFloat(discountAmt));
-                    }
-                    if ($("#TotalTaxAmt").val() == "") {
-                        $("#TotalTaxAmt").val(taxAmount);
-                    }
-                    else {
-                        $("#TotalTaxAmt").val(parseFloat($("#TotalTaxAmt").val()) + parseFloat(taxAmount));
-                    }
-                    if ($("#TotalOrderAmt").val() == "") {
-                        $("#TotalOrderAmt").val(orderAmount);
-                    }
-                    else {
-                        $("#TotalOrderAmt").val(parseFloat($("#TotalOrderAmt").val()) + parseFloat(orderAmount));
-                    }
-                }
-                else {
-                    var itemArray = SQItemRowDetails[rowIndex]; 
-                    var totalAmt = parseFloat($("#TotalAmount").val());
-                    var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
-                    var totalTax = parseFloat($("#TotalTaxAmt").val());
-                    var totalOder = parseFloat($("#TotalOrderAmt").val());
-                    var oldAmount = parseFloat(itemArray[6]);
-                    var oldDiscount = parseFloat(itemArray[3]);
-                    var oldTax = parseFloat(itemArray[5]);
-                    var oldOder = parseFloat(itemArray[7]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalDiscount -= parseFloat(oldDiscount);
-                    totalTax -= parseFloat(oldTax);
-                    totalOder -= parseFloat(oldOder);
-                    totalAmt += parseFloat(netAmount);
-                    totalDiscount += parseFloat(discountAmt);
-                    totalTax += parseFloat(taxAmount);
-                    totalOder += parseFloat(orderAmount);
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    $("#TotalAmount").val(totalAmt);
-                    $("#TotalDiscountAmt").val(totalDiscount);
-                    $("#TotalTaxAmt").val(totalTax);
-                    $("#TotalOrderAmt").val(totalOder);
-                    SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                }
+function SetSelectedRowPOByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsPOByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
 
 
-            }
+$(document).on("keydown", ".POItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayPO,
+        select: function (event, ui) {
+            SetSelectedRowPO(this, ui.item.label);
+
         }
+    });
+});
+$(document).on("keydown", ".POName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayPOByName,
+        select: function (event, ui) {
+            SetSelectedRowPOByName(this, ui.item.label);
 
+        }
+    });
+});
+$(document).on("keydown", ".POTaxPer", function (e) {
+    $(this).autocomplete({
+        source: itemTaxCodes,
+        select: function (event, ui) {
+            event.preventDefault();
+            setSelectedTaxCode(this, ui.item.label);
+
+        },
+        change: function (event, ui) {
+            if (ui.item === null || !ui.item)
+                $(this).val(''); /* clear the value */
+        }
+    });
+});
+$(document).on("focusout", "#POQuantity", function (e) {
+    iSQuantityAvailablePO(this);
+});
+$(document).on("focusout", "#PORate", function (e) {
+    CalculatePOAmount(this);
+});
+$(document).on("focusout", "#PODiscPer", function (e) {
+    CalculatePOAmount(this);
+});
+$(document).on("focusout", "#POTaxPer", function (e) {
+    CalculatePOAmount(this);
+});
+$(document).on("focusout", "#PODiscAmt", function (e) {
+    CalculatePOAmount(this);
+});
+//$(".MIItemRate").attr('readonly', 'readonly');
+$("#POTotalAmount").attr('readonly', 'readonly');
+$("#POTotalDiscountAmt").attr('readonly', 'readonly');
+$("#POTotalTaxAmt").attr('readonly', 'readonly');
+$("#POTotalOrderAmt").attr('readonly', 'readonly');
+function CalculatePOAmount(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+        var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+        var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+        if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+            var rowTotalRate = qnty * rate;
+            if ($(txtBox).attr("id") == "PODiscAmt") {
+                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            }
+            else {
+                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+            }
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+            var orderAmount = netAmount;
+            if ($(txtBox).attr("id") == "PODiscAmt") {
+                row.cells[6].getElementsByTagName("input")[0].value = discountPer;
+            }
+            else {
+                row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
+
+            }
+            row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+            if (!POItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                if ($("#POTotalAmount").val() == "") {
+                    $("#POTotalAmount").val(netAmount);
+                    $("#Amount").val(netAmount);
+                }
+                else {
+                    $("#POTotalAmount").val(parseFloat($("#POTotalAmount").val()) + parseFloat(netAmount));
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                }
+                if ($("#POTotalDiscountAmt").val() == "") {
+                    $("#POTotalDiscountAmt").val(discountAmt);
+                }
+                else {
+                    $("#POTotalDiscountAmt").val(parseFloat($("#POTotalDiscountAmt").val()) + parseFloat(discountAmt));
+                }
+                if ($("#POTotalTaxAmt").val() == "") {
+                    $("#POTotalTaxAmt").val(taxAmount);
+                }
+                else {
+                    $("#POTotalTaxAmt").val(parseFloat($("#POTotalTaxAmt").val()) + parseFloat(taxAmount));
+                }
+                if ($("#POTotalOrderAmt").val() == "") {
+                    $("#POTotalOrderAmt").val(orderAmount);
+                }
+                else {
+                    $("#POTotalOrderAmt").val(parseFloat($("#POTotalOrderAmt").val()) + parseFloat(orderAmount));
+                }
+            }
+            else {
+                var itemArray = POItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#POTotalAmount").val());
+                var totalDiscount = parseFloat($("#POTotalDiscountAmt").val());
+                var totalTax = parseFloat($("#POTotalTaxAmt").val());
+                var totalOder = parseFloat($("#POTotalOrderAmt").val());
+                var oldAmount = parseFloat(itemArray[6]);
+                var oldDiscount = parseFloat(itemArray[3]);
+                var oldTax = parseFloat(itemArray[5]);
+                var oldOder = parseFloat(itemArray[7]);
+                totalAmt -= parseFloat(oldAmount);
+                totalDiscount -= parseFloat(oldDiscount);
+                totalTax -= parseFloat(oldTax);
+                totalOder -= parseFloat(oldOder);
+                totalAmt += parseFloat(netAmount);
+                totalDiscount += parseFloat(discountAmt);
+                totalTax += parseFloat(taxAmount);
+                totalOder += parseFloat(orderAmount);
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                $("#POTotalAmount").val(totalAmt);
+                $("#Amount").val(totalAmt);
+                $("#POTotalDiscountAmt").val(totalDiscount);
+                $("#POTotalTaxAmt").val(totalTax);
+                $("#POTotalOrderAmt").val(totalOder);
+                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+            }
+
+
+        }
     }
 
-    function iSQuantityAvailablePO(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != ""
-            && row.cells[4].getElementsByTagName("input")[0].value != "") {
-            var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
-            var itemArr = itemMasterQuantityPO[itemCode];
-            if (typeof (itemArr) === "undefined") {
-                var obj = {};
-                obj.companyCode = $.trim($("#CompanyCode").val()); 
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: "PriceBookEdit.aspx/GetItemMasters",
-                    data: JSON.stringify(obj),
-                    dataType: "json",
-                    success: function (data) {
-                        itemMasterQuantityPO = {};
-                        $.each(data.d, function (i, j) {
-                            itemMasterQuantityPO[j.code] = [j.Qnty];
-                        });
-                        itemArr = itemMasterQuantityPO[itemCode];
-                        if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
-                            CalculatePOAmount(txtBox);
-                        }
-                        else {
-                            row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                            alert("Sorry,Avilable Items:" + itemArr[0]);
-                        }
-                    },
-                    error: function (result) {
-                        alert("Error");
-                    }
-                });
+}
+
+$(document).on("focusout", "#ReceivedQuantity", function (e) {
+    var row = this.parentNode.parentNode;
+    var qty = parseInt(row.cells[5].getElementsByTagName("input")[0].value);
+    var preQnty = parseInt(row.cells[5].getElementsByTagName("input")[1].value);
+    var currentTotal = parseInt($("#TotalQty").val());
+    $("#TotalQty").val((currentTotal - preQnty) + qty);
+});
+
+function SetSelectedRowSalesReturn(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsSalesReturn[selectedItem];
+    row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+function SetSelectedRowSalesReturnByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsSalesReturnByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    return false;
+}
+
+
+$(document).on("keydown", ".SRItem", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArraySalesReturn,
+        select: function (event, ui) {
+            SetSelectedRowSalesReturn(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".SRItemName", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArraySalesReturnByName,
+        select: function (event, ui) {
+            SetSelectedRowSalesReturnByName(this, ui.item.label);
+
+        }
+    });
+});
+$(document).on("keydown", ".SRTaxPer", function (e) {
+    $(this).autocomplete({
+        source: itemTaxCodes,
+        select: function (event, ui) {
+            event.preventDefault();
+            setSelectedTaxCode(this, ui.item.label);
+
+        },
+        change: function (event, ui) {
+            if (ui.item === null || !ui.item)
+                $(this).val(''); /* clear the value */
+        }
+    });
+});
+$(document).on("focusout", "#SRItemRate", function (e) {
+    CalculateSRAmount(this);
+});
+$(document).on("focusout", "#SRDiscPer", function (e) {
+    CalculateSRAmount(this);
+});
+$(document).on("focusout", "#SRTaxPer", function (e) {
+    CalculateSRAmount(this);
+});
+$(document).on("focusout", "#SRDiscAmt", function (e) {
+    CalculateSRAmount(this);
+});
+$(document).on("focusout", "#SRQuantity", function (e) {
+    CalculateSRAmount(this);
+});
+function CalculateSRAmount(txtBox) {
+    var row = txtBox.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+        var rate = row.cells[3].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
+        var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
+        var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
+        if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
+            var rowTotalRate = qnty * rate;
+            if ($(txtBox).attr("id") == "SRDiscAmt") {
+                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+            }
+            else {
+                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+            }
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
+            var orderAmount = netAmount;
+            if ($(txtBox).attr("id") == "SRDiscAmt") {
+                row.cells[6].getElementsByTagName("input")[0].value = discountPer;
 
             }
             else {
-                if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
-                    CalculatePOAmount(txtBox);
+                row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
+            }
+            row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
+            if (!SRItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                if ($("#SRTotalAmount").val() == "") {
+                    $("#SRTotalAmount").val(netAmount);
                 }
                 else {
-                    row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                    alert("Sorry,Avilable Items:" + itemArr[0]);
+                    $("#SRTotalAmount").val(parseFloat($("#SRTotalAmount").val()) + parseFloat(netAmount));
+                }
+                if ($("#Amount").val() == "") {
+                    $("#Amount").val(netAmount);
+                }
+                else {
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                }
+                if ($("#SRTotalDiscountAmt").val() == "") {
+                    $("#SRTotalDiscountAmt").val(discountAmt);
+                }
+                else {
+                    $("#SRTotalDiscountAmt").val(parseFloat($("#SRTotalDiscountAmt").val()) + parseFloat(discountAmt));
+                }
+                if ($("#SRTotalTaxAmt").val() == "") {
+                    $("#SRTotalTaxAmt").val(taxAmount);
+                }
+                else {
+                    $("#SRTotalTaxAmt").val(parseFloat($("#SRTotalTaxAmt").val()) + parseFloat(taxAmount));
+                }
+                if ($("#SRTotalOrderAmt").val() == "") {
+                    $("#SRTotalOrderAmt").val(orderAmount);
+                }
+                else {
+                    $("#SRTotalOrderAmt").val(parseFloat($("#SRTotalOrderAmt").val()) + parseFloat(orderAmount));
                 }
             }
+            else {
+                var itemArray = SRItemRowDetails[rowIndex];
+                var totalAmt = parseFloat($("#Amount").val());
+                var totalDiscount = parseFloat($("#SRTotalDiscountAmt").val());
+                var totalTax = parseFloat($("#SRTotalTaxAmt").val());
+                var totalOder = parseFloat($("#SRTotalOrderAmt").val());
+                var oldAmount = parseFloat(itemArray[6]);
+                var oldDiscount = parseFloat(itemArray[3]);
+                var oldTax = parseFloat(itemArray[5]);
+                var oldOder = parseFloat(itemArray[7]);
+                totalAmt -= parseFloat(oldAmount);
+                totalDiscount -= parseFloat(oldDiscount);
+                totalTax -= parseFloat(oldTax);
+                totalOder -= parseFloat(oldOder);
+                totalAmt += parseFloat(netAmount);
+                totalDiscount += parseFloat(discountAmt);
+                totalTax += parseFloat(taxAmount);
+                totalOder += parseFloat(orderAmount);
+                row.cells[10].getElementsByTagName("input")[0].value = netAmount;
+                $("#Amount").val(totalAmt);
+                $("#SRTotalAmount").val(totalAmt);
+                $("#SRTotalDiscountAmt").val(totalDiscount);
+                $("#SRTotalTaxAmt").val(totalTax);
+                $("#SRTotalOrderAmt").val(totalOder);
+                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+            }
+
 
         }
     }
 
-    function SetSelectedRowPO(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsPO[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+}
+
+$(document).on("click", ".ManualInvoiceBtnDetail", function (e) {
+    if ($("#MIShipToAddress").val() == "") {
+        $("#MIShipToAddress").addClass("errorValidation");
         return false;
     }
-
-    function SetSelectedRowPOByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsPOByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+    else {
+        $("#MIShipToAddress").removeClass("errorValidation");
+        return true;
+    }
+});
+$(document).on("click", ".SalesInvoiceBtnDetail", function (e) {
+    if ($("#IShipToAddress").val() == "") {
+        $("#IShipToAddress").addClass("errorValidation");
         return false;
     }
-
-  
-    $(document).on("keydown", ".POItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayPO,
-            select: function (event, ui) {
-                SetSelectedRowPO(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".POName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArrayPOByName,
-            select: function (event, ui) {
-                SetSelectedRowPOByName(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".POTaxPer", function (e) {
-        $(this).autocomplete({
-            source: itemTaxCodes,
-            select: function (event, ui) {
-                event.preventDefault();
-                setSelectedTaxCode(this, ui.item.label);
-
-            },
-            change: function (event, ui) {
-                if (ui.item === null || !ui.item)
-                    $(this).val(''); /* clear the value */
-            }
-        });
-    });
-    $(document).on("focusout", "#POQuantity", function (e) {
-        iSQuantityAvailablePO(this);
-    });
-    $(document).on("focusout", "#PORate", function (e) {
-        CalculatePOAmount(this);
-    });
-    $(document).on("focusout", "#PODiscPer", function (e) {
-        CalculatePOAmount(this);
-    });
-    $(document).on("focusout", "#POTaxPer", function (e) {
-        CalculatePOAmount(this);
-    });
-    $(document).on("focusout", "#PODiscAmt", function (e) {
-        CalculatePOAmount(this);
-    });
-    //$(".MIItemRate").attr('readonly', 'readonly');
-    $("#POTotalAmount").attr('readonly', 'readonly');
-    $("#POTotalDiscountAmt").attr('readonly', 'readonly');
-    $("#POTotalTaxAmt").attr('readonly', 'readonly');
-    $("#POTotalOrderAmt").attr('readonly', 'readonly');
-    function CalculatePOAmount(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
-            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
-            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
-            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-                var rowTotalRate = qnty * rate;
-                if ($(txtBox).attr("id") == "PODiscAmt") {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                }
-                else {
-                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
-                }
-                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-                var netAmount = ((rowTotalRate - discountAmt) +parseFloat(taxAmount)).toFixed(2);
-                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
-                var orderAmount = netAmount;
-                if ($(txtBox).attr("id") == "PODiscAmt") {
-                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
-                }
-                else {
-                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
-
-                }
-                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
-                if (!POItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                    if ($("#POTotalAmount").val() == "") {
-                        $("#POTotalAmount").val(netAmount);
-                        $("#Amount").val(netAmount);
-                    }
-                    else {
-                        $("#POTotalAmount").val(parseFloat($("#POTotalAmount").val()) + parseFloat(netAmount));
-                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#POTotalDiscountAmt").val() == "") {
-                        $("#POTotalDiscountAmt").val(discountAmt);
-                    }
-                    else {
-                        $("#POTotalDiscountAmt").val(parseFloat($("#POTotalDiscountAmt").val()) + parseFloat(discountAmt));
-                    }
-                    if ($("#POTotalTaxAmt").val() == "") {
-                        $("#POTotalTaxAmt").val(taxAmount);
-                    }
-                    else {
-                        $("#POTotalTaxAmt").val(parseFloat($("#POTotalTaxAmt").val()) + parseFloat(taxAmount));
-                    }
-                    if ($("#POTotalOrderAmt").val() == "") {
-                        $("#POTotalOrderAmt").val(orderAmount);
-                    }
-                    else {
-                        $("#POTotalOrderAmt").val(parseFloat($("#POTotalOrderAmt").val()) + parseFloat(orderAmount));
-                    }
-                }
-                else {
-                    var itemArray = POItemRowDetails[rowIndex]; 
-                    var totalAmt = parseFloat($("#POTotalAmount").val());
-                    var totalDiscount = parseFloat($("#POTotalDiscountAmt").val());
-                    var totalTax = parseFloat($("#POTotalTaxAmt").val());
-                    var totalOder = parseFloat($("#POTotalOrderAmt").val());
-                    var oldAmount = parseFloat(itemArray[6]);
-                    var oldDiscount = parseFloat(itemArray[3]);
-                    var oldTax = parseFloat(itemArray[5]);
-                    var oldOder = parseFloat(itemArray[7]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalDiscount -= parseFloat(oldDiscount);
-                    totalTax -= parseFloat(oldTax);
-                    totalOder -= parseFloat(oldOder);
-                    totalAmt += parseFloat(netAmount);
-                    totalDiscount += parseFloat(discountAmt);
-                    totalTax += parseFloat(taxAmount);
-                    totalOder += parseFloat(orderAmount);
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    $("#POTotalAmount").val(totalAmt);
-                    $("#Amount").val(totalAmt);
-                    $("#POTotalDiscountAmt").val(totalDiscount);
-                    $("#POTotalTaxAmt").val(totalTax);
-                    $("#POTotalOrderAmt").val(totalOder);
-                    POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                }
-
-
-            }
-        }
-
+    else {
+        $("#IShipToAddress").removeClass("errorValidation");
+        return true;
     }
-
-    $(document).on("focusout", "#ReceivedQuantity", function (e) {
-        var row = this.parentNode.parentNode;
-        var qty = parseInt(row.cells[5].getElementsByTagName("input")[0].value);
-        var preQnty = parseInt(row.cells[5].getElementsByTagName("input")[1].value);
-        var currentTotal = parseInt($("#TotalQty").val());
-        $("#TotalQty").val((currentTotal - preQnty) + qty);
-    });
-
-    function SetSelectedRowSalesReturn(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsSalesReturn[selectedItem];
-        row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
+});
+$(document).on("click", ".PurchaseOrderBtnDetail", function (e) {
+    if ($("#ShipToAddress").val() == "") {
+        $("#ShipToAddress").addClass("errorValidation");
         return false;
     }
-    function SetSelectedRowSalesReturnByName(lnk, selectedItem) {
-        var row = lnk.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        var itemArr = itemMasterDetailsSalesReturnByName[selectedItem];
-        row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-        row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-        row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
-        row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
-        row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
-        return false;
+    else {
+        $("#ShipToAddress").removeClass("errorValidation");
+        return true;
     }
+});
+function CreateNewRowSQ() {
 
-
-    $(document).on("keydown", ".SRItem", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArraySalesReturn,
-            select: function (event, ui) {
-                SetSelectedRowSalesReturn(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".SRItemName", function (e) {
-        $(this).autocomplete({
-            source: itemMasterArraySalesReturnByName,
-            select: function (event, ui) {
-                SetSelectedRowSalesReturnByName(this, ui.item.label);
-
-            }
-        });
-    });
-    $(document).on("keydown", ".SRTaxPer", function (e) {
-        $(this).autocomplete({
-            source: itemTaxCodes,
-            select: function (event, ui) {
-                event.preventDefault();
-                setSelectedTaxCode(this, ui.item.label);
-
-            },
-            change: function (event, ui) {
-                if (ui.item === null || !ui.item)
-                    $(this).val(''); /* clear the value */
-            }
-        });
-    });
-    $(document).on("focusout", "#SRItemRate", function (e) {
-        CalculateSRAmount(this);
-    });
-    $(document).on("focusout", "#SRDiscPer", function (e) {
-        CalculateSRAmount(this);
-    });
-    $(document).on("focusout", "#SRTaxPer", function (e) {
-        CalculateSRAmount(this);
-    });
-    $(document).on("focusout", "#SRDiscAmt", function (e) {
-        CalculateSRAmount(this);
-    });
-    $(document).on("focusout", "#SRQuantity", function (e) {
-        CalculateSRAmount(this);
-    });
-    function CalculateSRAmount(txtBox) {
-        var row = txtBox.parentNode.parentNode;
-        var rowIndex = row.rowIndex - 1;
-        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-            var rate = row.cells[3].getElementsByTagName("input")[0].value;
-            var qnty = row.cells[4].getElementsByTagName("input")[0].value;
-            var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
-            var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
-            var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
-            if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-                var rowTotalRate = qnty * rate;
-                if ($(txtBox).attr("id") == "SRDiscAmt") {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                }
-                else {
-                    discountAmt = (rowTotalRate * discountPer).toFixed(2);
-                }
-                var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-                var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
-                //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
-                var orderAmount = netAmount;
-                if ($(txtBox).attr("id") == "SRDiscAmt") {
-                    row.cells[6].getElementsByTagName("input")[0].value = discountPer;
-
-                }
-                else {
-                    row.cells[7].getElementsByTagName("input")[0].value = discountAmt;
-                }
-                row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
-                if (!SRItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                    if ($("#SRTotalAmount").val() == "") {
-                        $("#SRTotalAmount").val(netAmount);
-                    }
-                    else {
-                        $("#SRTotalAmount").val(parseFloat($("#SRTotalAmount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#Amount").val() == "") {
-                        $("#Amount").val(netAmount);
-                    }
-                    else {
-                        $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
-                    }
-                    if ($("#SRTotalDiscountAmt").val() == "") {
-                        $("#SRTotalDiscountAmt").val(discountAmt);
-                    }
-                    else {
-                        $("#SRTotalDiscountAmt").val(parseFloat($("#SRTotalDiscountAmt").val()) + parseFloat(discountAmt));
-                    }
-                    if ($("#SRTotalTaxAmt").val() == "") {
-                        $("#SRTotalTaxAmt").val(taxAmount);
-                    }
-                    else {
-                        $("#SRTotalTaxAmt").val(parseFloat($("#SRTotalTaxAmt").val()) + parseFloat(taxAmount));
-                    }
-                    if ($("#SRTotalOrderAmt").val() == "") {
-                        $("#SRTotalOrderAmt").val(orderAmount);
-                    }
-                    else {
-                        $("#SRTotalOrderAmt").val(parseFloat($("#SRTotalOrderAmt").val()) + parseFloat(orderAmount));
-                    }
-                }
-                else {
-                    var itemArray = SRItemRowDetails[rowIndex]; 
-                    var totalAmt = parseFloat($("#Amount").val());
-                    var totalDiscount = parseFloat($("#SRTotalDiscountAmt").val());
-                    var totalTax = parseFloat($("#SRTotalTaxAmt").val());
-                    var totalOder = parseFloat($("#SRTotalOrderAmt").val());
-                    var oldAmount = parseFloat(itemArray[6]);
-                    var oldDiscount = parseFloat(itemArray[3]);
-                    var oldTax = parseFloat(itemArray[5]);
-                    var oldOder = parseFloat(itemArray[7]);
-                    totalAmt -= parseFloat(oldAmount);
-                    totalDiscount -= parseFloat(oldDiscount);
-                    totalTax -= parseFloat(oldTax);
-                    totalOder -= parseFloat(oldOder);
-                    totalAmt += parseFloat(netAmount);
-                    totalDiscount += parseFloat(discountAmt);
-                    totalTax += parseFloat(taxAmount);
-                    totalOder += parseFloat(orderAmount);
-                    row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                    $("#Amount").val(totalAmt);
-                    $("#SRTotalAmount").val(totalAmt);
-                    $("#SRTotalDiscountAmt").val(totalDiscount);
-                    $("#SRTotalTaxAmt").val(totalTax);
-                    $("#SRTotalOrderAmt").val(totalOder);
-                    SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                }
-
-
-            }
-        }
-
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SQItem" type="text" id="SQItem" class="form-control SQItem gridTxtBox required" style="width:70px;"></td><td><input name="SQName" type="text" id="SQName" class="form-control SQName gridTxtBox required"></td><td><input name="SQRate" type="text" id="SQRate" class="form-control SQRate gridTxtBox txtNumeric required"></td><td><input name="SQQuantity" type="text" id="SQQuantity" class="form-control SQQuantity gridTxtBox txtNumeric required"></td><td><input name="SQUnit" type="text" id="SQUnit" class="form-control SQUnit gridTxtBox required" readonly="readonly"></td><td><input name="SQDiscPer" type="text" id="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required"></td><td><input name="SQDiscAmt" type="text" id="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required"></td><td><input name="SQTaxPer" type="text" id="SQTaxPer" class="form-control SQTaxPer gridTxtBox required"><input type="hidden" name="SQTaxCode" id="SQTaxCode"></td><td><input name="SQTaxAmt" type="text" id="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" readonly="readonly"></td><td><input name="SQNetAmt" type="text" id="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" readonly="readonly" style="width:50px;"></td></tr>';
+    //var row = $("#rowTemplate").html(); alert(row);
+    $("#SalesQuotationDetail tbody").append(row);
+}
+$(document).on("keydown", "#SQNetAmt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+        CreateNewRowSQ()
     }
+});
+function CreateNewRowPriceBook() {
 
-    $(document).on("click", ".ManualInvoiceBtnDetail", function (e) {
-        if($("#MIShipToAddress").val()=="")
-        {
-            $("#MIShipToAddress").addClass("errorValidation");
-            return false;
-        }
-        else
-        {
-            $("#MIShipToAddress").removeClass("errorValidation");
-            return true;
-        }
-    });
-    $(document).on("click", ".SalesInvoiceBtnDetail", function (e) {
-        if ($("#IShipToAddress").val() == "") {
-            $("#IShipToAddress").addClass("errorValidation");
-            return false;
-        }
-        else {
-            $("#IShipToAddress").removeClass("errorValidation");
-            return true;
-        }
-    });
-    $(document).on("click", ".PurchaseOrderBtnDetail", function (e) {
-        if ($("#ShipToAddress").val() == "") {
-            $("#ShipToAddress").addClass("errorValidation");
-            return false;
-        }
-        else {
-            $("#ShipToAddress").removeClass("errorValidation");
-            return true;
-        }
-    });
-    function CreateNewRowSQ()
-    {
-        
-        $("#rowCount").val(parseInt($("#rowCount").val()) + 1); 
-        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SQItem" type="text" id="SQItem" class="form-control SQItem gridTxtBox required" style="width:70px;"></td><td><input name="SQName" type="text" id="SQName" class="form-control SQName gridTxtBox required"></td><td><input name="SQRate" type="text" id="SQRate" class="form-control SQRate gridTxtBox txtNumeric required"></td><td><input name="SQQuantity" type="text" id="SQQuantity" class="form-control SQQuantity gridTxtBox txtNumeric required"></td><td><input name="SQUnit" type="text" id="SQUnit" class="form-control SQUnit gridTxtBox required" readonly="readonly"></td><td><input name="SQDiscPer" type="text" id="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required"></td><td><input name="SQDiscAmt" type="text" id="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required"></td><td><input name="SQTaxPer" type="text" id="SQTaxPer" class="form-control SQTaxPer gridTxtBox required"><input type="hidden" name="SQTaxCode" id="SQTaxCode"></td><td><input name="SQTaxAmt" type="text" id="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" readonly="readonly"></td><td><input name="SQNetAmt" type="text" id="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" readonly="readonly" style="width:50px;"></td></tr>';
-        //var row = $("#rowTemplate").html(); alert(row);
-        $("#SalesQuotationDetail tbody").append(row);
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" type="text" id="ItemCode" class="form-control ItemCode required"></td><td><input name="Description" type="text" id="Description" class="form-control valid" aria-invalid="false"></td><td><input name="SupplierBarcode" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly"></td><td><input name="CurrencyCode" type="text" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly"></td><td><input name="MRP" type="text" id="MRP" class="form-control required"></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required"></td><td><a id="lnkDelete" style="cursor:pointer" >Delete</a></td></tr>';
+    $("#PriceBookDetail tbody").append(row);
+}
+$(document).on("keydown", ".priceBookPricetxt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#PageStatus").val() == "create") {
+        CreateNewRowPriceBook()
     }
-    $(document).on("keydown", "#SQNetAmt", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
-            CreateNewRowSQ()
-        }
-    });
-    function CreateNewRowPriceBook() {
-
-        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" type="text" id="ItemCode" class="form-control ItemCode required"></td><td><input name="SupplierBarcode" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly"></td><td><input name="CurrencyCode" type="text" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly"></td><td><input name="MRP" type="text" id="MRP" class="form-control required"></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required"></td></tr>';
-        $("#PriceBookDetail tbody").append(row);
+});
+function CreateNewRowStockEntry() {
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td></tr>';
+    $("#StockEntryDetail tbody").append(row);
+}
+$(document).on("keydown", "#SEAmount", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+        CreateNewRowStockEntry()
     }
-    $(document).on("keydown", ".priceBookPricetxt", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#PageStatus").val() == "create") {
-            CreateNewRowPriceBook()
-        }
-    });
-    function CreateNewRowStockEntry() {
-         $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-         var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td></tr>';
-         $("#StockEntryDetail tbody").append(row);
+});
+function CreateNewRowInvoice() {
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="IItem" type="text" id="IItem" class="form-control IItem required" style="width:70px;" aria-required="true"></td><td><input name="IItemName" type="text" id="IItemName" class="form-control IItemName required" style="width:70px;" aria-required="true"></td><td><input name="IItemRate" type="text" id="IItemRate" class="form-control IItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IQuantity" type="text" id="IQuantity" class="form-control IQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IUnit" type="text" id="IUnit" class="form-control IUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="IDiscPer" type="text" id="IDiscPer" class="form-control IDiscPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IDiscAmt" type="text" id="IDiscAmt" class="form-control IDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="ITaxPer" type="text" id="ITaxPer" class="form-control ITaxPer required" style="width:70px;" aria-required="true"><input type="hidden" name="ITaxCode" id="ITaxCode"></td><td><input name="ITaxAmt" type="text" id="ITaxAmt" class="form-control ITaxAmt required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="INetAmt" type="text" id="INetAmt" class="form-control INetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
+    $("#InvoiceDetail tbody").append(row);
+}
+$(document).on("keydown", "#INetAmt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#SalesInvoiceId").val() == "0") {
+        CreateNewRowInvoice()
     }
-    $(document).on("keydown", "#SEAmount", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
-            CreateNewRowStockEntry()
-        }
-    });
-    function CreateNewRowInvoice() {
-        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-        var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="IItem" type="text" id="IItem" class="form-control IItem required" style="width:70px;" aria-required="true"></td><td><input name="IItemName" type="text" id="IItemName" class="form-control IItemName required" style="width:70px;" aria-required="true"></td><td><input name="IItemRate" type="text" id="IItemRate" class="form-control IItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IQuantity" type="text" id="IQuantity" class="form-control IQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IUnit" type="text" id="IUnit" class="form-control IUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="IDiscPer" type="text" id="IDiscPer" class="form-control IDiscPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="IDiscAmt" type="text" id="IDiscAmt" class="form-control IDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="ITaxPer" type="text" id="ITaxPer" class="form-control ITaxPer required" style="width:70px;" aria-required="true"><input type="hidden" name="ITaxCode" id="ITaxCode"></td><td><input name="ITaxAmt" type="text" id="ITaxAmt" class="form-control ITaxAmt required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="INetAmt" type="text" id="INetAmt" class="form-control INetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
-        $("#InvoiceDetail tbody").append(row);
+});
+function CreateNewRowManualInvoice() {
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="MIItem" type="text" id="MIItem" class="form-control MIItem required" style="width:70px;" aria-required="true"></td><td><input name="MIItemName" type="text" id="MIItemName" class="form-control MIItemName required" style="width:70px;" aria-required="true"></td><td><input name="MIItemRate" type="text" id="MIItemRate" class="form-control MIItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIQuantity" type="text" id="MIQuantity" class="form-control MIQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIUnit" type="text" id="MIUnit" class="form-control MIUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MIDiscPer" type="text" id="MIDiscPer" class="form-control txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscAmt" type="text" id="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxPer" type="text" id="MITaxPer" class="form-control MITaxPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxAmt" type="text" id="MITaxAmt" class="form-control MITaxAmt txtNumeric required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MINetAmt" type="text" id="MINetAmt" class="form-control MINetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
+    $("#ManualInvoiceDetail tbody").append(row);
+}
+$(document).on("keydown", "#MINetAmt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#InvoiceId").val() == "0") {
+        CreateNewRowManualInvoice()
     }
-    $(document).on("keydown", "#INetAmt", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#SalesInvoiceId").val() == "0") {
-            CreateNewRowInvoice()
-        }
-    });
-    function CreateNewRowManualInvoice() {
-        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-        var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="MIItem" type="text" id="MIItem" class="form-control MIItem required" style="width:70px;" aria-required="true"></td><td><input name="MIItemName" type="text" id="MIItemName" class="form-control MIItemName required" style="width:70px;" aria-required="true"></td><td><input name="MIItemRate" type="text" id="MIItemRate" class="form-control MIItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIQuantity" type="text" id="MIQuantity" class="form-control MIQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIUnit" type="text" id="MIUnit" class="form-control MIUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MIDiscPer" type="text" id="MIDiscPer" class="form-control txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscAmt" type="text" id="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxPer" type="text" id="MITaxPer" class="form-control MITaxPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxAmt" type="text" id="MITaxAmt" class="form-control MITaxAmt txtNumeric required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MINetAmt" type="text" id="MINetAmt" class="form-control MINetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
-        $("#ManualInvoiceDetail tbody").append(row);
+});
+function CreateNewRowPO() {
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="POItem" type="text" id="POItem" class="form-control POItem required" style="width:70px;" aria-required="true"></td><td><input name="POName" type="text" id="POName" class="form-control POName required" aria-required="true"></td><td><input name="PORate" type="text" id="PORate" class="form-control PORate txtNumeric required" aria-required="true"></td><td><input name="POQuantity" type="text" id="POQuantity" class="form-control POQuantity txtNumeric required" aria-required="true"></td><td><input name="POUnit" type="text" id="POUnit" readonly="readonly"  class="form-control POUnit required" aria-required="true"></td><td><input name="PODiscPer" type="text" id="PODiscPer" class="form-control PODiscPer txtNumeric required" aria-required="true"></td><td><input name="PODiscAmt" type="text" id="PODiscAmt" class="form-control PODiscAmt txtNumeric"></td><td><input name="POTaxPer" type="text" id="POTaxPer" class="form-control POTaxPer required" aria-required="true"><input type="hidden" name="POTaxCode" id="POTaxCode"></td><td> <input name="POTaxAmt" type="text" id="POTaxAmt" class="form-control POTaxAmt required" readonly="readonly"  aria-required="true"></td><td><input name="PONetAmt" type="text" readonly="readonly" id="PONetAmt" class="form-control PONetAmt required" style="width:50px;" aria-required="true"></td></tr>';
+    $("#PurchaseOrderDetail tbody").append(row);
+}
+$(document).on("keydown", "#PONetAmt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+        CreateNewRowPO()
     }
-    $(document).on("keydown", "#MINetAmt", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#InvoiceId").val() == "0") {
-            CreateNewRowManualInvoice()
-        }
-    });
-    function CreateNewRowPO() {
-        $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-        var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="POItem" type="text" id="POItem" class="form-control POItem required" style="width:70px;" aria-required="true"></td><td><input name="POName" type="text" id="POName" class="form-control POName required" aria-required="true"></td><td><input name="PORate" type="text" id="PORate" class="form-control PORate txtNumeric required" aria-required="true"></td><td><input name="POQuantity" type="text" id="POQuantity" class="form-control POQuantity txtNumeric required" aria-required="true"></td><td><input name="POUnit" type="text" id="POUnit" readonly="readonly"  class="form-control POUnit required" aria-required="true"></td><td><input name="PODiscPer" type="text" id="PODiscPer" class="form-control PODiscPer txtNumeric required" aria-required="true"></td><td><input name="PODiscAmt" type="text" id="PODiscAmt" class="form-control PODiscAmt txtNumeric"></td><td><input name="POTaxPer" type="text" id="POTaxPer" class="form-control POTaxPer required" aria-required="true"><input type="hidden" name="POTaxCode" id="POTaxCode"></td><td> <input name="POTaxAmt" type="text" id="POTaxAmt" class="form-control POTaxAmt required" readonly="readonly"  aria-required="true"></td><td><input name="PONetAmt" type="text" readonly="readonly" id="PONetAmt" class="form-control PONetAmt required" style="width:50px;" aria-required="true"></td></tr>';
-        $("#PurchaseOrderDetail tbody").append(row);
-    }
-    $(document).on("keydown", "#PONetAmt", function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode == 9 && $("#PageStatus").val() == "creating") {
-            CreateNewRowPO()
-        }
-    });
+});
