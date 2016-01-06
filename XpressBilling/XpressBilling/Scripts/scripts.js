@@ -1,5 +1,7 @@
 ﻿var itemMasterArray = []; ""
 var itemMasterDetails = {};
+var itemMasterArrayByName = []; ""
+var itemMasterDetailsByName = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
 var contactArray = [];
@@ -369,9 +371,13 @@ $(document).ready(function () {
             success: function (data) {
                 itemMasterArray = [];
                 itemMasterDetails = {};
+                itemMasterArrayByName = [];
+                itemMasterDetailsByName = {};
                 $.each(data.d, function (i, j) {
                     itemMasterArray.push(j.code);
                     itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
+                    itemMasterArrayByName.push(j.name);
+                    itemMasterDetailsByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
                 });
             },
             error: function (result) {
@@ -901,6 +907,17 @@ function SetSelectedRow(lnk, selectedItem) {
     row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
     return false;
 }
+function SetSelectedRowByName(lnk, selectedItem) {
+    var row = lnk.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    var itemArr = itemMasterDetailsByName[selectedItem];
+    row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
+    row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
+    row.cells[4].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[2];
+    row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
+    return false;
+}
 //var obj = {};
 //obj.companyCode = $.trim($("#CompanyCode").val());
 //$(".ItemCode").autocomplete({
@@ -930,6 +947,49 @@ function SetSelectedRow(lnk, selectedItem) {
 
 //    },
 //});
+$(document).on("keydown", "#Description", function (e) {
+    $(this).autocomplete({
+        source: itemMasterArrayByName,
+        select: function (event, ui) {
+            SetSelectedRowByName(this, ui.item.label);
+
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArrayByName);
+            if (exists < 0) {
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
+                    if (val != ui.item.label) {
+                        return val;
+                    }
+                });
+                var itemArr = itemMasterDetailsByName[ui.item.label];
+                itemMasterArray = $.grep(itemMasterArray, function (val) {
+                    if (val != itemArr[0]) {
+                        return val;
+                    }
+                });
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
 $(document).on("keydown", ".ItemCode", function (e) {
     $(this).autocomplete({
         source: itemMasterArray,
@@ -954,6 +1014,12 @@ $(document).on("keydown", ".ItemCode", function (e) {
             else {
                 itemMasterArray = $.grep(itemMasterArray, function (val) {
                     if (val != ui.item.label) {
+                        return val;
+                    }
+                });
+                var itemArr = itemMasterDetails[ui.item.label];
+                itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
+                    if (val != itemArr[0]) {
                         return val;
                     }
                 });
