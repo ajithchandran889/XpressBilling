@@ -1,6 +1,9 @@
-﻿var itemMasterArray = []; ""
+﻿var itemMasterSelectedItem = [];
+var itemMasterArray = [];
+//var itemMasterArrayOriginal = []; ""
 var itemMasterDetails = {};
 var itemMasterArrayByName = []; ""
+//var itemMasterArrayByNameOriginal = []; ""
 var itemMasterDetailsByName = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
@@ -370,13 +373,17 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 itemMasterArray = [];
+                //itemMasterArrayOriginal = [];
                 itemMasterDetails = {};
                 itemMasterArrayByName = [];
+                //itemMasterArrayByNameOriginal = [];
                 itemMasterDetailsByName = {};
                 $.each(data.d, function (i, j) {
                     itemMasterArray.push(j.code);
+                    //itemMasterArrayOriginal.push(j.code);
                     itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
                     itemMasterArrayByName.push(j.name);
+                    //itemMasterArrayByNameOriginal.push(j.name);
                     itemMasterDetailsByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
                 });
             },
@@ -888,6 +895,7 @@ function SetSelectedRowStockEntry(lnk, selectedItem) {
 function SetSelectedRowStockEntryByName(lnk, selectedItem) {
     var row = lnk.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
+    
     var itemArr = itemMasterDetailsStockEntryByName[selectedItem];
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
@@ -899,6 +907,7 @@ function SetSelectedRowStockEntryByName(lnk, selectedItem) {
 function SetSelectedRow(lnk, selectedItem) {
     var row = lnk.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
+    itemMasterSelectedItem.push(selectedItem);
     var itemArr = itemMasterDetails[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
@@ -911,6 +920,7 @@ function SetSelectedRowByName(lnk, selectedItem) {
     var row = lnk.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsByName[selectedItem];
+    itemMasterSelectedItem.push(itemArr[0]);
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
     row.cells[4].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
@@ -951,11 +961,23 @@ $(document).on("keydown", "#Description", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayByName,
         select: function (event, ui) {
-            SetSelectedRowByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsByName[ui.item.label];
+            exists = $.inArray(itemArr[0], itemMasterSelectedItem);
+            if (exists < 0) {
+                SetSelectedRowByName(this, ui.item.label);
+            }
+            else
+            {
+                alert("Item Already added");
+                $(this).val("");
+                return false;
+                
+            }
+            
 
         },
         change: function (event, ui) {
-            val = $(this).val();
+            val = $(this).val(); 
             exists = $.inArray(val, itemMasterArrayByName);
             if (exists < 0) {
                 $(this).val("");
@@ -968,19 +990,7 @@ $(document).on("keydown", "#Description", function (e) {
                 row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-            else {
-                itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
-                    if (val != ui.item.label) {
-                        return val;
-                    }
-                });
-                var itemArr = itemMasterDetailsByName[ui.item.label];
-                itemMasterArray = $.grep(itemMasterArray, function (val) {
-                    if (val != itemArr[0]) {
-                        return val;
-                    }
-                });
-            }
+            
         },
         response: function (event, ui) {
             if (!ui.content.length) {
@@ -994,7 +1004,16 @@ $(document).on("keydown", ".ItemCode", function (e) {
     $(this).autocomplete({
         source: itemMasterArray,
         select: function (event, ui) {
-            SetSelectedRow(this, ui.item.label);
+            exists = $.inArray(ui.item.label, itemMasterSelectedItem);
+            if (exists < 0) {
+                SetSelectedRow(this, ui.item.label);
+                
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                return false;
+            }
 
         },
         change: function (event, ui) {
@@ -1011,19 +1030,19 @@ $(document).on("keydown", ".ItemCode", function (e) {
                 row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-            else {
-                itemMasterArray = $.grep(itemMasterArray, function (val) {
-                    if (val != ui.item.label) {
-                        return val;
-                    }
-                });
-                var itemArr = itemMasterDetails[ui.item.label];
-                itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
-                    if (val != itemArr[0]) {
-                        return val;
-                    }
-                });
-            }
+            //else {
+            //    itemMasterArray = $.grep(itemMasterArray, function (val) {
+            //        if (val != ui.item.label) {
+            //            return val;
+            //        }
+            //    });
+            //    var itemArr = itemMasterDetails[ui.item.label];
+            //    itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
+            //        if (val != itemArr[0]) {
+            //            return val;
+            //        }
+            //    });
+            //}
         },
         response: function (event, ui) {
             if (!ui.content.length) {

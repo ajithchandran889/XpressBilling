@@ -374,35 +374,38 @@ namespace XpressBilling.Account
                     string[] Names = Request.Form["Description"] != null ? Request.Form["Description"].Split(',') : new string[] { };
                     for (int k = 0; k < ItemCodes.Length; k++)
                     {
-                        dr = dt.NewRow();
-                        dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-                        dr["DocumentNo"] = newDocumentNumber;
-                        dr["DocumentDate"] = DateTime.Now.Date;
-                        dr["PriceType"] = Type.SelectedValue;
-                        if (Type.SelectedValue == "0")
+                        if (ItemCodes[k]!="")
                         {
-                            dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
+                            dr = dt.NewRow();
+                            dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
+                            dr["DocumentNo"] = newDocumentNumber;
+                            dr["DocumentDate"] = DateTime.Now.Date;
+                            dr["PriceType"] = Type.SelectedValue;
+                            if (Type.SelectedValue == "0")
+                            {
+                                dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
+                            }
+                            else
+                            {
+                                dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
+                            }
+                            dr["ItemCode"] = ItemCodes[k];
+                            dr["SupplierBarcode"] = SupplierBarcodes[k];
+                            dr["CurrencyCode"] = CurrencyCodes[k];
+                            dr["MRP"] = float.Parse(Convert.ToDecimal(MRPs[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Price"] = float.Parse(Convert.ToDecimal(Prices[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Reference"] = null;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dr["ApprovalStatus"] = 0;
+                            dr["Status"] = 1;
+                            dr["Name"] = Names[k];
+                            dt.Rows.Add(dr);
                         }
-                        else
-                        {
-                            dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-                        }
-                        dr["ItemCode"] = ItemCodes[k];
-                        dr["SupplierBarcode"] = SupplierBarcodes[k];
-                        dr["CurrencyCode"] = CurrencyCodes[k];
-                        dr["MRP"] = float.Parse(Convert.ToDecimal(MRPs[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Price"] = float.Parse(Convert.ToDecimal(Prices[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                        dr["Reference"] = null;
-                        dr["CreatedBy"] = User.Identity.Name;
-                        dr["UpdatedBy"] = User.Identity.Name;
-                        dr["CreatedDate"] = DateTime.Now.Date;
-                        dr["UpdatedDate"] = DateTime.Now.Date;
-                        dr["ApprovalStatus"] = 0;
-                        dr["Status"] = 1;
-                        dr["Name"] = Names[k];
-                        dt.Rows.Add(dr);
                     }
                 }
                 else
