@@ -49,9 +49,10 @@
                     
                         <label for="TaxCode" runat="server" id="lblTaxCode" class="control-label col-xs-2 col-md-2">Tax</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" class="form-control required" ID="ddlTaxCode" ClientIDMode="Static">                            
+                        <asp:DropDownList runat="server" class="form-control required" ID="ddlTaxCode" AutoPostBack="true" OnSelectedIndexChanged="TaxSelectedIndexChanged" ClientIDMode="Static">                            
                         </asp:DropDownList>
-                    </div><div class="col-xs-10 col-md-2"></div>
+                    </div><label for="Taxpercentage" runat="server" id="lblTaxpercentage" class="control-label col-xs-2 col-md-2"></label>
+                     <div class="col-xs-10 col-md-2"></div>
                     <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:DropDownList runat="server" class="form-control required" ID="ddlStatus" ClientIDMode="Static">

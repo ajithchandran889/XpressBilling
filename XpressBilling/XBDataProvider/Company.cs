@@ -11,7 +11,7 @@ namespace XBDataProvider
 {
     public static class Company
     {
-        public static int SaveCompany(string companyCode, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
+        public static int SaveCompany(string companyCode, string contactCode, string name, string PermanantAccountNo, DateTime FormationDate, string TaxId, string RegistrationNumber,
                                       string contactPerson, string Logo, string Note, bool status, string ErrorMsg, string userName,
                                       string phone,string mobile,string email,string web,string designation,string address1,string address2,
                                       string city, string area, int zipCode, string country, string state, String fax, bool dbstatus, string Currency)
@@ -40,6 +40,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Mobile", mobile));
                 cmd.Parameters.Add(new SqlParameter("@Email", email));
                 cmd.Parameters.Add(new SqlParameter("@Web", web));
+                cmd.Parameters.Add(new SqlParameter("@ContactCode", contactCode));
                 cmd.Parameters.Add(new SqlParameter("@ContactPerson", contactPerson));
                 cmd.Parameters.Add(new SqlParameter("@Designation", designation));
                 cmd.Parameters.Add(new SqlParameter("@Address1", address1));
@@ -64,7 +65,7 @@ namespace XBDataProvider
         }
 
         public static bool SaveCompanyInitail(string companyCode, string name, string PermanantAccountNo, string FormationDate, string TaxId, string RegistrationNumber,
-                                      string Note, bool status)
+                                      string Note, bool status, string AddContactCode)
         {
             try
             {
@@ -72,6 +73,7 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
+                cmd.Parameters.Add(new SqlParameter("@ContactCode", AddContactCode));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
                 cmd.Parameters.Add(new SqlParameter("@PermanantAccountNo", PermanantAccountNo));
                 cmd.Parameters.Add(new SqlParameter("@FormationDate", FormationDate));

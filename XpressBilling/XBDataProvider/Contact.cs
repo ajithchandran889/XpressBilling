@@ -44,7 +44,8 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
-                int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Contact_xpins", cmd);
+                //int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Contact_xpins", cmd);
+                int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_Contactuniquecode_xpins", cmd);                
                 return returnValue;
             }
             catch (Exception ex)
@@ -287,7 +288,22 @@ namespace XBDataProvider
             return dtTable;
         }
 
+        public static DataTable GetLastCreateContactCode()
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetLastUniqueContactCode", cmd);
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return dtTable;
+        }
         public static DataTable GetAllContactCode(string companyCode)
         {
             DataTable dtTable = new DataTable();

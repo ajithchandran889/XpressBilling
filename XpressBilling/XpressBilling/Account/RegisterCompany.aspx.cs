@@ -20,7 +20,11 @@ namespace XpressBilling.Account
         {
            FormationDate.Text= Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
             bool status = false;
-            status = XBDataProvider.Company.SaveCompanyInitail(RgstCompany.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, Note.Text, true);
+            // Unique code generation for Company 
+            Random rnd = new Random();
+            string AddContactCode = string.Concat('C', RgstCompany.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
+            AddContactCode = AddContactCode.Substring(0, 10);
+            status = XBDataProvider.Company.SaveCompanyInitail(RgstCompany.Text, Name.Text, PAN.Text, FormationDate.Text, TIN.Text, RegistrationNo.Text, Note.Text, true, AddContactCode);
             if(status)
             {
                 Response.Redirect("Register");

@@ -54,20 +54,35 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    ContactId.Value = "0"; 
-                    lblusername.Visible = false;
-                    Username.Visible = false;
-                    lblDate.Visible = false;
-                    Date.Visible = false;
-                    ddlStatus.Visible = false;
-                    lblstatus.Visible = false;
-                    Username.Text = User.Identity.Name;
-                    Date.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy"); 
+                    getinitialloadingContact();                     
                 }
             }
 
         }
-
+         public void getinitialloadingContact()
+         {
+             ContactId.Value = "0";
+             DataTable GetLastcontactCode = XBDataProvider.Contact.GetLastCreateContactCode();
+             if (GetLastcontactCode.Rows.Count > 0)
+             {
+                 DataRow row = GetLastcontactCode.Rows[0];
+                 Contact.Text = (Convert.ToInt32(row["Contact"]) + 1).ToString();
+             }
+             else
+             {
+                 Random rnd = new Random();
+                 string addnewContactCode = rnd.Next(1000000000, 1000000001).ToString();
+                 Contact.Text = addnewContactCode;
+             }
+             lblusername.Visible = false;
+             Username.Visible = false;
+             lblDate.Visible = false;
+             Date.Visible = false;
+             ddlStatus.Visible = false;
+             lblstatus.Visible = false;
+             Username.Text = User.Identity.Name;
+             Date.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
+         }
         public void SetContactDetails(DataTable companyDetails)
         {
             DataRow row = companyDetails.Rows[0];
@@ -128,7 +143,7 @@ namespace XpressBilling.Account
                 else
                 {
                     int retunValue = 0;
-                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, hdncompanycode.Value, Designation.Text, txtcompany.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), true, note, errmsg, User.Identity.Name);
+                    retunValue = XBDataProvider.Contact.SaveContact(Contact.Text, Name.Text, hdncompanycode.Value, Designation.Text, txtcompany.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), true, note, errmsg, User.Identity.Name);
                     if (retunValue == 1)
                     {
                         ClearInputs(Page.Controls);
@@ -211,6 +226,7 @@ namespace XpressBilling.Account
 
                 ClearInputs(ctrl.Controls);
             }
+            getinitialloadingContact();  
         }
     }
 

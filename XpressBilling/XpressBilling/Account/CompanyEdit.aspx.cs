@@ -135,7 +135,10 @@ namespace XpressBilling.Account
             }
 
         }
-
+         protected void CancelClick(object sender, EventArgs e)
+        {
+            Server.Transfer("/Account/Company.aspx");
+         }
         protected void SaveClick(object sender, EventArgs e)
         {
             try
@@ -182,8 +185,12 @@ namespace XpressBilling.Account
                 {
                     int retunValue = 0;
                     dbstatus = true;
-                    retunValue = XBDataProvider.Company.SaveCompany(AddCompany.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text,Convert.ToInt32(Zip.Text), Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
+                    // Unique code generation for Company 
+                    Random rnd = new Random();
+                    string AddContactCode = string.Concat('C', AddCompany.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
+                    AddContactCode = AddContactCode.Substring(0, 10);
+                    retunValue = XBDataProvider.Company.SaveCompany(AddCompany.Text, AddContactCode, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, ContactPerson.Text, absolutePath, Note.Text, true, "", User.Identity.Name,
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Convert.ToInt32(Zip.Text), Country.SelectedValue, State.Text, Fax.Text, dbstatus, ddlCurrency.SelectedValue);
 
                     if (retunValue == 1)
                     {

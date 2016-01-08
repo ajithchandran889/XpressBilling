@@ -78,6 +78,24 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static DataTable GetTaxpercentage(string tax)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@tax", tax));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetTaxPercentage", cmd);
+                //dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllItemGroup");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
         public static DataTable GetAllTaxCodes(string companyCode)
         {
             DataTable dtTable = new DataTable();

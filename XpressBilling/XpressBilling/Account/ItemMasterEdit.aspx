@@ -75,9 +75,9 @@
                 </div>
                <hr>
                 <div class="form-group">
-                    <label  class="control-label col-xs-2 col-md-2">Attributes</label>
+                    <label  class="control-label color-blue col-xs-2 col-md-2">Attributes</label>
                     <label class="control-label col-xs-2 col-md-2"></label><label class="control-label col-xs-2 col-md-2"></label>
-                    <label  class="control-label col-xs-2 col-md-2">General Information</label>                   
+                    <label  class="control-label color-blue col-xs-2 col-md-2">General Information</label>                   
                 </div>
                 <div class="form-group">
                    

@@ -19,6 +19,7 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 DataTable dtItemGroups = XBDataProvider.ItemGroup.GetAllTax(Session["CompanyCode"].ToString());
+                
                 ddlTaxCode.DataSource = dtItemGroups;
                 ddlTaxCode.DataValueField = "Tax";
                 ddlTaxCode.DataTextField = "Name";
@@ -26,7 +27,7 @@ namespace XpressBilling.Account
                 ListItem item = new ListItem();
                 item.Text = "Select Tax";
                 item.Value = "0";
-                ddlTaxCode.Items.Insert(0, item);
+                ddlTaxCode.Items.Insert(0, item);                
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -48,6 +49,17 @@ namespace XpressBilling.Account
                 }
             }
         }
+        protected void TaxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtItemGroups = XBDataProvider.ItemGroup.GetTaxpercentage(ddlTaxCode.SelectedValue);
+            if (dtItemGroups.Rows.Count > 0)
+            {
+                DataRow row = dtItemGroups.Rows[0];
+                lblTaxpercentage.InnerText = row["TaxPercentage"].ToString() + "%";
+            }
+            else
+                lblTaxpercentage.InnerText = "";
+        }
 
         public void SetItemGroupDetails(DataTable ItemGroupDetails)
         {
@@ -56,6 +68,15 @@ namespace XpressBilling.Account
             ItemGroup.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             ddlTaxCode.SelectedValue = row["TaxCode"].ToString();
+            if (ddlTaxCode.SelectedValue == "0" || ddlTaxCode.SelectedValue == "")
+            {
+                lblTaxpercentage.Visible = false;
+            }
+            else
+            {
+                lblTaxpercentage.Visible = true;
+                lblTaxpercentage.InnerText = row["TaxPercentage"].ToString()+"%";
+            }
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
             Date.Text = row["CreatedDate"].ToString();

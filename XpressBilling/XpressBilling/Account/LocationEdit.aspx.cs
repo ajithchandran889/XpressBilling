@@ -272,7 +272,11 @@ namespace XpressBilling.Account
                 {
                     dbstatus = true;
                     int retunValue = 0;
-                    retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), Location.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, Location.Text, path, Note.Text, "", User.Identity.Name,
+                    // Unique code generation for Location 
+                    Random rnd = new Random();
+                    string addContactCode = string.Concat('L', Location.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
+                    addContactCode = addContactCode.Substring(0, 10);
+                    retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), Location.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, addContactCode, path, Note.Text, "", User.Identity.Name,
                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Convert.ToInt32(Zip.Text), Country.Text, State.Text, Fax.Text, dbstatus);
                     if (retunValue == 1)
                     {

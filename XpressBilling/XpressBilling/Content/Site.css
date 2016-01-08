@@ -74,7 +74,7 @@ h2 {
 }
 
 h3 {
-    font-size: 1.2em;
+    font-size: 13px;
 }
 
 h4 {
@@ -358,7 +358,7 @@ fieldset.open-auth-providers {
 
 /* contact */
 .contact h3 {
-    font-size: 1.2em;
+    font-size: 13px;
 }
 
 .contact p {
@@ -392,7 +392,7 @@ fieldset {
 
 label {
     display: block;
-    font-size: 1.2em;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -404,7 +404,7 @@ input, textarea {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;
-    font-size: 1.2em;
+    font-size: 13px;
     margin: 5px 0 6px 0;
     padding: 5px;
     width: 300px;
@@ -431,7 +431,7 @@ button {
     /*background-color: #d3dce0;*/
     border: 1px solid #787878;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 13px;
     font-weight: 600;
     padding: 7px;
     margin-right: 8px;
@@ -510,7 +510,7 @@ table {
 }
 
 th {
-    font-size: 1.2em;
+    font-size: 13px;
     text-align: left;
     border: none 0px;
     padding-left: 0;

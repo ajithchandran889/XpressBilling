@@ -265,24 +265,6 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox Note;
         
         /// <summary>
-        /// imgPreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgPreview;
-        
-        /// <summary>
-        /// inputUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload inputUpload;
-        
-        /// <summary>
         /// lblstatus control.
         /// </summary>
         /// <remarks>
@@ -301,6 +283,24 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
         
         /// <summary>
+        /// imgPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgPreview;
+        
+        /// <summary>
+        /// inputUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload inputUpload;
+        
+        /// <summary>
         /// CompanyId control.
         /// </summary>
         /// <remarks>
@@ -317,14 +317,5 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveCompany;
-        
-        /// <summary>
-        /// lblMsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMsg;
     }
 }

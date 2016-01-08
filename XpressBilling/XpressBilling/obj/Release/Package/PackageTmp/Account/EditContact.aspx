@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="Contact" class="control-label col-xs-2 col-md-2">Contact</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Contact" name="Contact" class="form-control" ReadOnly="true" placeholder="Contact" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Contact" name="Contact" class="form-control required" placeholder="Contact" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Name" class="control-label col-xs-2 col-md-2">Name</label>
                     <div class="col-xs-10 col-md-2">

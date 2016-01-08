@@ -68,14 +68,36 @@
 
                     <%--<asp:Label ID="lblSearch" runat="server">Search:</asp:Label>
             &nbsp;&nbsp;--%>
-                    <asp:TextBox ID="txtSearch" runat="server" CssClass="txt"></asp:TextBox>
-                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
+                    <%--<asp:TextBox ID="txtSearch" runat="server" CssClass="txt"></asp:TextBox>
+                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />--%>
+                    <!--click btn-->
+                 <div class="col-xs-12 col-sm-8 col-md-2"> <asp:Button ID="Button1" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" /></div>
+                <!--click btn-->
+                 <!--show div-->
+                 <div class="form-group">
+                      <hr>
+                        <label class="control-label col-xs-12 col-sm-4 col-md-1">Item</label>
+                     <div class="col-xs-12 col-sm-8 col-md-2">
+                            <asp:TextBox runat="server" ID="Note" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        </div>
+                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Description</label>
+                     <div class="col-xs-12 col-sm-8 col-md-2">
+                            <asp:TextBox runat="server" ID="TextBox1" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        </div>
+                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Supplier Barcode</label>
+                     <div class="col-xs-12 col-sm-8 col-md-2">
+                            <asp:TextBox runat="server" ID="TextBox2" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
+                        </div>
+                      <div class="col-xs-12 col-sm-8 col-md-2"> <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" /></div>
+                     <hr>
+                 </div>
+                   <!--show div-->
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="grid_wrapper">
 
-                            <h2 class="page-header">Transaction</h2>
+                            <h2 class="page-header color-blue">Transaction</h2>
 
 
                             <asp:GridView ID="PriceBookDetail" class="table table-fix" ClientIDMode="Static" runat="server" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID"

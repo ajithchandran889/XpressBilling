@@ -21,7 +21,7 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="EditItemGroup?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="ItemGroupCode" HeaderText="Tax"></asp:BoundField>                            
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>  
-                            <asp:BoundField DataField="TaxCodeName" HeaderText="TaxCode"></asp:BoundField> 
+                            <asp:BoundField DataField="TaxCodeName" HeaderText="Tax"></asp:BoundField> 
                             <asp:BoundField DataField="CessCode" HeaderText="CessCode"></asp:BoundField> 
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
