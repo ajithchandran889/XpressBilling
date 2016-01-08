@@ -33,12 +33,12 @@
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Order Type</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
 
-                            <asp:DropDownList runat="server" ID="OrderType_0" class="form-control required" ClientIDMode="Static">
+                            <asp:DropDownList runat="server" ID="OrderType_0" class="form-control required" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrencySelectedIndexChanged">
                                 <asp:ListItem Value="" Text="--Select one--"></asp:ListItem>
                                 <asp:ListItem Value="0" Text="Cash"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="Credit"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required" Style="display: none" ClientIDMode="Static">
+                            <asp:DropDownList runat="server" ID="OrderType_1" class="form-control required" Style="display: none" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrencySelectedIndexChanged">
                                 <asp:ListItem Value="" Text="--Select one--"></asp:ListItem>
                                 <asp:ListItem Value="0" Text="Local"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="Import"></asp:ListItem>
@@ -53,9 +53,9 @@
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Currency</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
-                            <%--<asp:TextBox runat="server" ID="Currency" ReadOnly="true" class="form-control" placeholder="Currrency" ClientIDMode="Static"></asp:TextBox>--%>
-                            <asp:DropDownList runat="server" class="form-control required" ID="ddlCurrency" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrencySelectedIndexChanged">
-                            </asp:DropDownList>
+                            <asp:TextBox runat="server" ID="Currency" ReadOnly="true" class="form-control" placeholder="Currrency" ClientIDMode="Static"></asp:TextBox>
+                            <%--<asp:DropDownList runat="server" class="form-control required" ID="ddlCurrency" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrencySelectedIndexChanged">
+                            </asp:DropDownList>--%>
                         </div>
                         <label id="lblDate" runat="server" class="control-label col-xs-12 col-sm-4 col-md-2">User</label>
                         <div class="col-xs-12 col-sm-8 col-md-2">
@@ -71,27 +71,31 @@
                     <%--<asp:TextBox ID="txtSearch" runat="server" CssClass="txt"></asp:TextBox>
                     <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />--%>
                     <!--click btn-->
-                 <div class="col-xs-12 col-sm-8 col-md-2"> <asp:Button ID="Button1" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" /></div>
-                <!--click btn-->
-                 <!--show div-->
-                 <div class="form-group">
-                      <hr>
+                    <div class="col-xs-12 col-sm-8 col-md-2">
+                        <asp:Button ID="Button1" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
+                    </div>
+                    <!--click btn-->
+                    <!--show div-->
+                    <div class="form-group">
+                        <hr>
                         <label class="control-label col-xs-12 col-sm-4 col-md-1">Item</label>
-                     <div class="col-xs-12 col-sm-8 col-md-2">
+                        <div class="col-xs-12 col-sm-8 col-md-2">
                             <asp:TextBox runat="server" ID="Note" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                         </div>
-                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Description</label>
-                     <div class="col-xs-12 col-sm-8 col-md-2">
+                        <label class="control-label col-xs-12 col-sm-4 col-md-2">Description</label>
+                        <div class="col-xs-12 col-sm-8 col-md-2">
                             <asp:TextBox runat="server" ID="TextBox1" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                         </div>
-                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Supplier Barcode</label>
-                     <div class="col-xs-12 col-sm-8 col-md-2">
+                        <label class="control-label col-xs-12 col-sm-4 col-md-2">Supplier Barcode</label>
+                        <div class="col-xs-12 col-sm-8 col-md-2">
                             <asp:TextBox runat="server" ID="TextBox2" class="form-control" placeholder="Note" ClientIDMode="Static"></asp:TextBox>
                         </div>
-                      <div class="col-xs-12 col-sm-8 col-md-2"> <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" /></div>
-                     <hr>
-                 </div>
-                   <!--show div-->
+                        <div class="col-xs-12 col-sm-8 col-md-2">
+                            <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="BtnSearchClick" />
+                        </div>
+                        <hr>
+                    </div>
+                    <!--show div-->
                 </div>
                 <asp:Panel runat="server" ID="gridDetails">
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -143,7 +147,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderStyle-Width="50">
                                         <ItemTemplate>
-                                            <%--<asp:LinkButton ID="lnkDelete" Text="Delete" runat="server" />--%>
+                                            <asp:LinkButton ID="lnkDelete" Text="Delete" data-id='<%# Eval("ID") %>' runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -153,11 +157,12 @@
                 </asp:Panel>
                 <div class="form-group">
                     <div class="col-xs-10 col-md-8">
+                        <asp:HiddenField ID="DeletedRowIDs" ClientIDMode="Static" runat="server" />
                         <asp:HiddenField ID="PageStatus" ClientIDMode="Static" runat="server" />
                         <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                         <asp:HiddenField ID="PriceBookId" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="LastDocumentNumber" runat="server" />
-                        <a id="cancelPriceBook" href="/Account/PriceBook.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a>
+                        <input id="cancelPriceBook" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/PriceBook';" />
                         <asp:Button ID="savePriceBook" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="savePriceBookClick" />
 
                     </div>

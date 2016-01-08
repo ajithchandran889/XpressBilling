@@ -166,7 +166,25 @@ namespace XBDataProvider
 
         }
 
-        public static int SavePriceBookMasterDetail(DataTable dtPriceBookDetails)
+        public static DataTable GetAddedOrderTypes(string companyCode)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                //DataProvider dtProv = new DataProvider();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dt= DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAddedOrderTypes", cmd);
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return dt;
+        }
+        public static int SavePriceBookMasterDetail(DataTable dtPriceBookDetails,DataTable deletedIDs)
         {
             try
             {
@@ -174,6 +192,7 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@tblPriceBookDtl", dtPriceBookDetails));
+                cmd.Parameters.Add(new SqlParameter("@deletedIDs", deletedIDs));
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_PriceBookDtl_xpins", cmd);
 
             }

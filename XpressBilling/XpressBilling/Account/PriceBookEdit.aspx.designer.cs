@@ -94,13 +94,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox CreatedDate;
         
         /// <summary>
-        /// ddlCurrency control.
+        /// Currency control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCurrency;
+        protected global::System.Web.UI.WebControls.TextBox Currency;
         
         /// <summary>
         /// lblDate control.
@@ -184,6 +184,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.GridView PriceBookDetail;
         
         /// <summary>
+        /// DeletedRowIDs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField DeletedRowIDs;
+        
+        /// <summary>
         /// PageStatus control.
         /// </summary>
         /// <remarks>
@@ -218,15 +227,6 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField LastDocumentNumber;
-        
-        /// <summary>
-        /// cancelPriceBook control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor cancelPriceBook;
         
         /// <summary>
         /// savePriceBook control.

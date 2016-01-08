@@ -31,16 +31,6 @@ namespace XpressBilling.Account
                     lastDocNumber = lastDocNumber.Replace('D', ' ');
                 }
                 LastDocumentNumber.Value = lastDocNumber;
-                DataTable dtCurrency = XBDataProvider.Currency.GetAllActiveCurrencies(Session["CompanyCode"].ToString());
-
-                ddlCurrency.DataSource = dtCurrency;
-                ddlCurrency.DataValueField = "CurrencyCode";
-                ddlCurrency.DataTextField = "Name";
-                ddlCurrency.DataBind();
-                ListItem itemcurrency = new ListItem();
-                itemcurrency.Text = "--Select one--";
-                itemcurrency.Value = "";
-                ddlCurrency.Items.Insert(0, itemcurrency);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -57,16 +47,24 @@ namespace XpressBilling.Account
 
                     PageStatus.Value = "create";
                     PriceBookId.Value = "0";
-                    // Currency.Text = XBDataProvider.Currency.GetCurrencyCodeByCompany(Session["CompanyCode"].ToString()); ;
+                    Currency.Text = XBDataProvider.Currency.GetCurrencyCodeByCompany(Session["CompanyCode"].ToString()); 
                     CreatedUser.Visible = false;
                     CreatedDate.Visible = false;
                     lblDate.Visible = false;
                     lblUser.Visible = false;
-                    txtSearch.Visible = false;
+                    //txtSearch.Visible = false;
                     btnSearch.Visible = false;
                     gridDetails.Visible = false;
                     savePriceBook.Visible = false;
                     SetInitialRow();
+                    DataTable dtAddedOrderTypes = XBDataProvider.PriceBook.GetAddedOrderTypes(Session["CompanyCode"].ToString());
+                    DataRow row = null;
+                    for (int i = 0; i < dtAddedOrderTypes.Rows.Count;i++)
+                    {
+                        row = dtAddedOrderTypes.Rows[i];
+                        Type.Items.Remove(Type.Items.FindByValue(row["PriceType"].ToString()));
+                    }
+                        
                 }
 
 
@@ -96,8 +94,7 @@ namespace XpressBilling.Account
                     OrderType_1.Style.Add("display", "block");
                     OrderType_1.Enabled = false;
                 }
-                //Currency.Text 
-                ddlCurrency.SelectedValue = row["CurrencyCode"].ToString();
+                Currency.Text = row["CurrencyCode"].ToString();
                 PriceBookDocNo.Text = row["DocumentNo"].ToString();
                 CreatedDate.Text = Convert.ToDateTime(row["DocumentDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedUser.Text = row["CreatedBy"].ToString();
@@ -115,15 +112,16 @@ namespace XpressBilling.Account
         public void SetPriceBookDetailsChildGrid()
         {
             DataTable dt = new DataTable();
-            if (txtSearch.Text == "")
-            {
+            //if (txtSearch.Text == "")
+            //{
                 dt = XBDataProvider.PriceBook.GetPriceBookDtlById(Convert.ToInt32(PriceBookId.Value));
-            }
-            else
-            {
-                dt = XBDataProvider.PriceBook.GetPriceBookDtlByIdAndSearchKey(Convert.ToInt32(PriceBookId.Value), txtSearch.Text);
+                rowCount.Value = dt.Rows.Count.ToString();
+            //}
+            //else
+            //{
+            //    dt = XBDataProvider.PriceBook.GetPriceBookDtlByIdAndSearchKey(Convert.ToInt32(PriceBookId.Value), txtSearch.Text);
 
-            }
+            //}
             if (dt.Rows.Count > 0)
             {
                 PriceBookDetail.DataSource = dt;
@@ -259,7 +257,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("ItemCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("Name", typeof(string)));
                 dt.Columns.Add(new DataColumn("SupplierBarcode", typeof(string)));
-                
+
                 dt.Columns.Add(new DataColumn("CurrencyCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("MRP", typeof(float)));
                 dt.Columns.Add(new DataColumn("Price", typeof(float)));
@@ -270,7 +268,7 @@ namespace XpressBilling.Account
                     dr["ItemCode"] = string.Empty;
                     dr["Name"] = string.Empty;
                     dr["SupplierBarcode"] = string.Empty;
-                    
+
                     dr["CurrencyCode"] = string.Empty;
                     dr["MRP"] = DBNull.Value;
                     dr["Price"] = DBNull.Value;
@@ -306,6 +304,9 @@ namespace XpressBilling.Account
                 {
                     orderType = Convert.ToInt32(OrderType_1.SelectedValue);
                 }
+                DataTable dtDeletedIds = new DataTable();
+                DataRow drDeletedIds = null;
+                dtDeletedIds.Columns.Add(new DataColumn("ID", typeof(int)));
                 DataTable dt = new DataTable();
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
@@ -329,88 +330,16 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
                 dt.Columns.Add(new DataColumn("Name", typeof(string)));
                 int i = 0;
-                if (PageStatus.Value == "create")
+                int[] deletedIds = DeletedRowIDs.Value.Split(',').Where(str=>str!="").Select(str => int.Parse(str)).ToArray();
+                for (int k = 0; k < deletedIds.Length;k++ )
                 {
-                    TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
-                    TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("SupplierBarcode");
-                    TextBox box3 = (TextBox)PriceBookDetail.Rows[i].Cells[2].FindControl("Description");
-                    TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("CurrencyCode");
-                    TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("MRP");
-                    TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[6].FindControl("Price");
-                    dr = dt.NewRow();
-                    dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-                    dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                    dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-                    dr["DocumentNo"] = newDocumentNumber;
-                    dr["DocumentDate"] = DateTime.Now.Date;
-                    dr["PriceType"] = Type.SelectedValue;
-                    if (Type.SelectedValue == "0")
-                    {
-                        dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-                    }
-                    else
-                    {
-                        dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-                    }
-                    dr["ItemCode"] = box1.Text;
-                    dr["SupplierBarcode"] = box2.Text;
-                    dr["CurrencyCode"] = box4.Text;
-                    dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                    dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                    dr["Reference"] = null;
-                    dr["CreatedBy"] = User.Identity.Name;
-                    dr["UpdatedBy"] = User.Identity.Name;
-                    dr["CreatedDate"] = DateTime.Now.Date;
-                    dr["UpdatedDate"] = DateTime.Now.Date;
-                    dr["ApprovalStatus"] = 0;
-                    dr["Status"] = 1;
-                    dr["Name"] = box3.Text;
-                    dt.Rows.Add(dr);
-                    string[] ItemCodes = Request.Form["ItemCode"] != null ? Request.Form["ItemCode"].Split(',') : new string[] { };
-                    string[] SupplierBarcodes = Request.Form["SupplierBarcode"] != null ? Request.Form["SupplierBarcode"].Split(',') : new string[] { };
-                    string[] CurrencyCodes = Request.Form["CurrencyCode"] != null ? Request.Form["CurrencyCode"].Split(',') : new string[] { };
-                    string[] MRPs = Request.Form["MRP"] != null ? Request.Form["MRP"].Split(',') : new string[] { };
-                    string[] Prices = Request.Form["Price"] != null ? Request.Form["Price"].Split(',') : new string[] { };
-                    string[] Names = Request.Form["Description"] != null ? Request.Form["Description"].Split(',') : new string[] { };
-                    for (int k = 0; k < ItemCodes.Length; k++)
-                    {
-                        if (ItemCodes[k]!="")
-                        {
-                            dr = dt.NewRow();
-                            dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                            dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-                            dr["DocumentNo"] = newDocumentNumber;
-                            dr["DocumentDate"] = DateTime.Now.Date;
-                            dr["PriceType"] = Type.SelectedValue;
-                            if (Type.SelectedValue == "0")
-                            {
-                                dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-                            }
-                            else
-                            {
-                                dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-                            }
-                            dr["ItemCode"] = ItemCodes[k];
-                            dr["SupplierBarcode"] = SupplierBarcodes[k];
-                            dr["CurrencyCode"] = CurrencyCodes[k];
-                            dr["MRP"] = float.Parse(Convert.ToDecimal(MRPs[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Price"] = float.Parse(Convert.ToDecimal(Prices[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Reference"] = null;
-                            dr["CreatedBy"] = User.Identity.Name;
-                            dr["UpdatedBy"] = User.Identity.Name;
-                            dr["CreatedDate"] = DateTime.Now.Date;
-                            dr["UpdatedDate"] = DateTime.Now.Date;
-                            dr["ApprovalStatus"] = 0;
-                            dr["Status"] = 1;
-                            dr["Name"] = Names[k];
-                            dt.Rows.Add(dr);
-                        }
-                    }
+                    drDeletedIds = dtDeletedIds.NewRow();
+                    drDeletedIds["ID"] = deletedIds[k];
+                    dtDeletedIds.Rows.Add(drDeletedIds);
                 }
-                else
+                foreach (GridViewRow row in PriceBookDetail.Rows)
                 {
-                    foreach (GridViewRow row in PriceBookDetail.Rows)
+                    if(Array.IndexOf(deletedIds,PriceBookDetail.DataKeys[i]["ID"])==-1)
                     {
                         TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
                         TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("SupplierBarcode");
@@ -418,50 +347,88 @@ namespace XpressBilling.Account
                         TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("CurrencyCode");
                         TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("MRP");
                         TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[6].FindControl("Price");
-                        if (box1.Text != "" && box1.Text.Length != 0)
+                        dr = dt.NewRow();
+                        dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
+                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                        dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
+                        dr["DocumentNo"] = newDocumentNumber;
+                        dr["DocumentDate"] = DateTime.Now.Date;
+                        dr["PriceType"] = Type.SelectedValue;
+                        if (Type.SelectedValue == "0")
                         {
-                            dr = dt.NewRow();
-                            dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                            dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-                            dr["DocumentNo"] = PriceBookDocNo.Text;
-                            dr["DocumentDate"] = DateTime.Now.Date;
-                            dr["PriceType"] = Type.SelectedValue;
-                            if (Type.SelectedValue == "0")
-                            {
-                                dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-                            }
-                            else
-                            {
-                                dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-                            }
-                            dr["ItemCode"] = box1.Text;
-                            dr["SupplierBarcode"] = box2.Text;
-                            dr["CurrencyCode"] = box4.Text;
-                            dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Reference"] = null;
-                            dr["CreatedBy"] = User.Identity.Name;
-                            dr["UpdatedBy"] = User.Identity.Name;
-                            dr["CreatedDate"] = DateTime.Now.Date;
-                            dr["UpdatedDate"] = DateTime.Now.Date;
-                            dr["ApprovalStatus"] = 0;
-                            dr["Status"] = 1;
-                            dr["Name"] = box3.Text;
-                            dt.Rows.Add(dr);
-                            i++;
+                            dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
                         }
-
+                        else
+                        {
+                            dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
+                        }
+                        dr["ItemCode"] = box1.Text;
+                        dr["SupplierBarcode"] = box2.Text;
+                        dr["CurrencyCode"] = box4.Text;
+                        dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Reference"] = null;
+                        dr["CreatedBy"] = User.Identity.Name;
+                        dr["UpdatedBy"] = User.Identity.Name;
+                        dr["CreatedDate"] = DateTime.Now.Date;
+                        dr["UpdatedDate"] = DateTime.Now.Date;
+                        dr["ApprovalStatus"] = 0;
+                        dr["Status"] = 1;
+                        dr["Name"] = box3.Text;
+                        dt.Rows.Add(dr);
+                        i++;
+                    }
+                    
+                }
+                string[] ItemCodes = Request.Form["ItemCode"] != null ? Request.Form["ItemCode"].Split(',') : new string[] { };
+                string[] SupplierBarcodes = Request.Form["SupplierBarcode"] != null ? Request.Form["SupplierBarcode"].Split(',') : new string[] { };
+                string[] CurrencyCodes = Request.Form["CurrencyCode"] != null ? Request.Form["CurrencyCode"].Split(',') : new string[] { };
+                string[] MRPs = Request.Form["MRP"] != null ? Request.Form["MRP"].Split(',') : new string[] { };
+                string[] Prices = Request.Form["Price"] != null ? Request.Form["Price"].Split(',') : new string[] { };
+                string[] Names = Request.Form["Description"] != null ? Request.Form["Description"].Split(',') : new string[] { };
+                for (int k = 0; k < ItemCodes.Length; k++)
+                {
+                    if (ItemCodes[k] != "")
+                    {
+                        dr = dt.NewRow();
+                        dr["ID"] = 0;
+                        dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                        dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
+                        dr["DocumentNo"] = newDocumentNumber;
+                        dr["DocumentDate"] = DateTime.Now.Date;
+                        dr["PriceType"] = Type.SelectedValue;
+                        if (Type.SelectedValue == "0")
+                        {
+                            dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
+                        }
+                        else
+                        {
+                            dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
+                        }
+                        dr["ItemCode"] = ItemCodes[k];
+                        dr["SupplierBarcode"] = SupplierBarcodes[k];
+                        dr["CurrencyCode"] = CurrencyCodes[k];
+                        dr["MRP"] = float.Parse(Convert.ToDecimal(MRPs[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Price"] = float.Parse(Convert.ToDecimal(Prices[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
+                        dr["Reference"] = null;
+                        dr["CreatedBy"] = User.Identity.Name;
+                        dr["UpdatedBy"] = User.Identity.Name;
+                        dr["CreatedDate"] = DateTime.Now.Date;
+                        dr["UpdatedDate"] = DateTime.Now.Date;
+                        dr["ApprovalStatus"] = 0;
+                        dr["Status"] = 1;
+                        dr["Name"] = Names[k];
+                        dt.Rows.Add(dr);
                     }
                 }
-                if(Convert.ToInt32(PriceBookId.Value)>0)
+                if (Convert.ToInt32(PriceBookId.Value) > 0)
                 {
-                    XBDataProvider.PriceBook.SavePriceBookMasterDetail(dt);
+                    XBDataProvider.PriceBook.SavePriceBookMasterDetail(dt, dtDeletedIds);
                     SaveSuccess.Visible = true;
                 }
                 else
                 {
-                    int id = XBDataProvider.PriceBook.SavePriceBookMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), orderType, ddlCurrency.SelectedValue, User.Identity.Name, dt);
+                    int id = XBDataProvider.PriceBook.SavePriceBookMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), orderType, Currency.Text, User.Identity.Name, dt);
                     if (id > 0)
                     {
                         Type.Enabled = false;
@@ -483,167 +450,6 @@ namespace XpressBilling.Account
 
         }
 
-        //protected void savePriceBookClickDetails(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        DataTable dt = new DataTable();
-        //        DataRow dr = null;
-        //        dt.Columns.Add(new DataColumn("ID", typeof(int)));
-        //        dt.Columns.Add(new DataColumn("CompanyCode", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("PriceBookMstID", typeof(int)));
-        //        dt.Columns.Add(new DataColumn("DocumentNo", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("DocumentDate", typeof(DateTime)));
-        //        dt.Columns.Add(new DataColumn("PriceType", typeof(int)));
-        //        dt.Columns.Add(new DataColumn("OrderType", typeof(int)));
-        //        dt.Columns.Add(new DataColumn("ItemCode", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("SupplierBarcode", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("CurrencyCode", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("MRP", typeof(float)));
-        //        dt.Columns.Add(new DataColumn("Price", typeof(float)));
-        //        dt.Columns.Add(new DataColumn("Reference", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("CreatedBy", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("UpdatedBy", typeof(string)));
-        //        dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
-        //        dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
-        //        dt.Columns.Add(new DataColumn("ApprovalStatus", typeof(int)));
-        //        dt.Columns.Add(new DataColumn("Status", typeof(int)));
-        //        int i = 0;
-        //        if (PageStatus.Value == "create")
-        //        {
-        //            TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
-        //            TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[2].FindControl("SupplierBarcode");
-        //            //TextBox box3 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[2].FindControl("Description");
-        //            TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("CurrencyCode");
-        //            TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("MRP");
-        //            TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("Price");
-        //            dr = dt.NewRow();
-        //            dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-        //            dr["CompanyCode"] = Session["CompanyCode"].ToString();
-        //            dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-        //            dr["DocumentNo"] = PriceBookDocNo.Text;
-        //            dr["DocumentDate"] = DateTime.Now.Date;
-        //            dr["PriceType"] = Type.SelectedValue;
-        //            if (Type.SelectedValue == "0")
-        //            {
-        //                dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-        //            }
-        //            else
-        //            {
-        //                dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-        //            }
-        //            dr["ItemCode"] = box1.Text;
-        //            dr["SupplierBarcode"] = box2.Text;
-        //            dr["CurrencyCode"] = box4.Text;
-        //            dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //            dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //            dr["Reference"] = null;
-        //            dr["CreatedBy"] = User.Identity.Name;
-        //            dr["UpdatedBy"] = User.Identity.Name;
-        //            dr["CreatedDate"] = DateTime.Now.Date;
-        //            dr["UpdatedDate"] = DateTime.Now.Date;
-        //            dr["ApprovalStatus"] = 0;
-        //            dr["Status"] = 1;
-        //            dt.Rows.Add(dr);
-        //            string[] ItemCodes = Request.Form["ItemCode"]!=null?Request.Form["ItemCode"].Split(','):new string[] {};
-        //            string[] SupplierBarcodes =Request.Form["SupplierBarcode"]!=null? Request.Form["SupplierBarcode"].Split(','):new string[] {};
-        //            string[] CurrencyCodes =Request.Form["CurrencyCode"]!=null? Request.Form["CurrencyCode"].Split(','):new string[] {};
-        //            string[] MRPs = Request.Form["MRP"]!=null?Request.Form["MRP"].Split(','):new string[] {};
-        //            string[] Prices = Request.Form["Price"] != null ? Request.Form["Price"].Split(',') : new string[] { };
-        //            for (int k = 0; k < ItemCodes.Length; k++)
-        //            {
-        //                dr = dt.NewRow();
-        //                dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-        //                dr["CompanyCode"] = Session["CompanyCode"].ToString();
-        //                dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-        //                dr["DocumentNo"] = PriceBookDocNo.Text;
-        //                dr["DocumentDate"] = DateTime.Now.Date;
-        //                dr["PriceType"] = Type.SelectedValue;
-        //                if (Type.SelectedValue == "0")
-        //                {
-        //                    dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-        //                }
-        //                else
-        //                {
-        //                    dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-        //                }
-        //                dr["ItemCode"] = ItemCodes[k];
-        //                dr["SupplierBarcode"] = SupplierBarcodes[k];
-        //                dr["CurrencyCode"] = CurrencyCodes[k];
-        //                dr["MRP"] = float.Parse(Convert.ToDecimal(MRPs[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //                dr["Price"] = float.Parse(Convert.ToDecimal(Prices[k]).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //                dr["Reference"] = null;
-        //                dr["CreatedBy"] = User.Identity.Name;
-        //                dr["UpdatedBy"] = User.Identity.Name;
-        //                dr["CreatedDate"] = DateTime.Now.Date;
-        //                dr["UpdatedDate"] = DateTime.Now.Date;
-        //                dr["ApprovalStatus"] = 0;
-        //                dr["Status"] = 1;
-        //                dt.Rows.Add(dr);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            foreach (GridViewRow row in PriceBookDetail.Rows)
-        //            {
-        //                TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
-        //                TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[2].FindControl("SupplierBarcode");
-        //                //TextBox box3 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[2].FindControl("Description");
-        //                TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("CurrencyCode");
-        //                TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("MRP");
-        //                TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("Price");
-        //                if (box1.Text != "" && box1.Text.Length != 0)
-        //                {
-        //                    dr = dt.NewRow();
-        //                    dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
-        //                    dr["CompanyCode"] = Session["CompanyCode"].ToString();
-        //                    dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
-        //                    dr["DocumentNo"] = PriceBookDocNo.Text;
-        //                    dr["DocumentDate"] = DateTime.Now.Date;
-        //                    dr["PriceType"] = Type.SelectedValue;
-        //                    if (Type.SelectedValue == "0")
-        //                    {
-        //                        dr["OrderType"] = Convert.ToInt32(OrderType_0.SelectedValue);
-        //                    }
-        //                    else
-        //                    {
-        //                        dr["OrderType"] = Convert.ToInt32(OrderType_1.SelectedValue);
-        //                    }
-        //                    dr["ItemCode"] = box1.Text;
-        //                    dr["SupplierBarcode"] = box2.Text;
-        //                    dr["CurrencyCode"] = box4.Text;
-        //                    dr["MRP"] = float.Parse(Convert.ToDecimal(box5.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //                    dr["Price"] = float.Parse(Convert.ToDecimal(box6.Text).ToString("0.00"), CultureInfo.InvariantCulture.NumberFormat);
-        //                    dr["Reference"] = null;
-        //                    dr["CreatedBy"] = User.Identity.Name;
-        //                    dr["UpdatedBy"] = User.Identity.Name;
-        //                    dr["CreatedDate"] = DateTime.Now.Date;
-        //                    dr["UpdatedDate"] = DateTime.Now.Date;
-        //                    dr["ApprovalStatus"] = 0;
-        //                    dr["Status"] = 1;
-        //                    dt.Rows.Add(dr);
-        //                    i++;
-        //                }
-
-        //            }
-        //        }
-        //        if (dt.Rows.Count > 0)
-        //        {
-        //            XBDataProvider.PriceBook.SavePriceBookMasterDetail(dt);
-        //            SaveSuccess.Visible = true;
-        //        }
-        //        SetPriceBookDetailsChildGrid();
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        failureMessage.Visible = true;
-        //        SaveSuccess.Visible = true;
-        //    }
-
-        //}
-
         protected void BtnSearchClick(object sender, EventArgs e)
         {
             SetPriceBookDetailsChildGrid();
@@ -655,11 +461,15 @@ namespace XpressBilling.Account
             string txt = e.Row.Cells[0].Text == "No:" ? "header" : (lbl == null ? String.Empty : lbl.Text);
             if (txt == string.Empty)
                 e.Row.Visible = false;
+            if (e.Row.RowIndex==0)
+            {
+                e.Row.Cells[7].Visible = false;
+            }
         }
 
         protected void ddlCurrencySelectedIndexChanged(object sender, EventArgs e)
         {
-            if(ddlCurrency.SelectedValue!="")
+            if (OrderType_0.SelectedValue != "" || OrderType_1.SelectedValue != "")
             {
                 gridDetails.Visible = true;
                 savePriceBook.Visible = true;

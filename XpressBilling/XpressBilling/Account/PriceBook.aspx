@@ -25,15 +25,15 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="PriceBookEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="DocumentNo" HeaderText="Price Book"></asp:BoundField>
                             <asp:TemplateField HeaderText="Type">
-                                <ItemTemplate><%# Eval("PriceType").ToString()=="0" ? "Cost" : "Purchase" %></ItemTemplate>
+                                <ItemTemplate><%# Eval("PriceType").ToString()=="0" ? "Sales" : "Purchase" %></ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="DocumentDate" HeaderText="Date" DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
                             <asp:TemplateField HeaderText="OrderType">
-                                <ItemTemplate><%# Eval("PriceType").ToString()=="0" ? (Eval("OrderType").ToString()=="0" ? "Local":"Import"):(Eval("OrderType").ToString()=="0" ? "Cash":"Credit") %></ItemTemplate>
+                                <ItemTemplate><%# Eval("PriceType").ToString()=="0" ? (Eval("OrderType").ToString()=="0" ? "Cash":"Credit"):(Eval("OrderType").ToString()=="0" ? "Local":"Import") %></ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Approval Status">
-                                <ItemTemplate><%# Eval("ApprovalStatus").ToString()=="0" ? "Un Approved" : "Approved" %></ItemTemplate>
+                            <asp:TemplateField HeaderText="Status">
+                                <ItemTemplate><%# Eval("ApprovalStatus").ToString()=="0" ? "InActive" : "Active" %></ItemTemplate>
                             </asp:TemplateField>
                             <%--<asp:TemplateField HeaderText="Status">
                                 <ItemTemplate>

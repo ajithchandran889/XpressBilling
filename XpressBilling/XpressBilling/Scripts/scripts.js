@@ -380,7 +380,7 @@ $(document).ready(function () {
                 itemMasterDetailsByName = {};
                 $.each(data.d, function (i, j) {
                     itemMasterArray.push(j.code);
-                    //itemMasterArrayOriginal.push(j.code);
+                    
                     itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.name];
                     itemMasterArrayByName.push(j.name);
                     //itemMasterArrayByNameOriginal.push(j.name);
@@ -711,8 +711,7 @@ $(document).ready(function () {
             $(".POUnit").attr('readonly', 'readonly');
         }
     }
-
-
+    
     $("#mainForm").validate();
 });
 
@@ -911,7 +910,7 @@ function SetSelectedRow(lnk, selectedItem) {
     var itemArr = itemMasterDetails[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
-    row.cells[4].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
+    row.cells[4].getElementsByTagName("input")[0].value = $("#Currency").val();
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[2];
     row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
     return false;
@@ -923,7 +922,7 @@ function SetSelectedRowByName(lnk, selectedItem) {
     itemMasterSelectedItem.push(itemArr[0]);
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[3].getElementsByTagName("input")[0].value = itemArr[1];
-    row.cells[4].getElementsByTagName("input")[0].value = $("#ddlCurrency").val();
+    row.cells[4].getElementsByTagName("input")[0].value = $("#Currency").val();
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[2];
     row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
     return false;
@@ -957,19 +956,36 @@ function SetSelectedRowByName(lnk, selectedItem) {
 
 //    },
 //});
+function CheckItemAlreadyAdded(val)
+{
+    var flag = false;
+    $("tr", $("#PriceBookDetail")).each(function () {
+        if(val==$("input[id*='ItemCode']", $(this)).val())
+        {
+            flag = true;
+        }
+    });
+    return flag;
+}
 $(document).on("keydown", "#Description", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayByName,
         select: function (event, ui) {
             var itemArr = itemMasterDetailsByName[ui.item.label];
-            exists = $.inArray(itemArr[0], itemMasterSelectedItem);
-            if (exists < 0) {
+            if (!CheckItemAlreadyAdded(itemArr[0])) {
                 SetSelectedRowByName(this, ui.item.label);
             }
             else
             {
                 alert("Item Already added");
                 $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
                 
             }
@@ -1005,13 +1021,20 @@ $(document).on("keydown", ".ItemCode", function (e) {
         source: itemMasterArray,
         select: function (event, ui) {
             exists = $.inArray(ui.item.label, itemMasterSelectedItem);
-            if (exists < 0) {
+            if (!CheckItemAlreadyAdded(ui.item.label)) {
                 SetSelectedRow(this, ui.item.label);
                 
             }
             else {
                 alert("Item Already added");
                 $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
             }
 
@@ -1053,16 +1076,17 @@ $(document).on("keydown", ".ItemCode", function (e) {
     });
 });
 $(document).on("click", "#lnkDelete", function (e) {
+    if (typeof $(this).attr('data-id') !== "undefined")
+        $("#DeletedRowIDs").val($("#DeletedRowIDs").val()+$(this).attr('data-id')+",");
     var row = this.parentNode.parentNode;
-    itemMasterArray.push(row.cells[1].getElementsByTagName("input")[0].value);
     row.remove();
     var index = 1;
     $("td:first-child", $("#PriceBookDetail")).each(function () {
         $(this).find("span:first").text(index);
         index++;
 
-    });
-    $("#rowCount").val(index);
+    }); 
+    $("#rowCount").val(--index);
     return false;
 });
 $(document).on("keydown", "#SalesMan", function (e) {
@@ -2279,7 +2303,7 @@ function CreateNewRowPriceBook() {
 }
 $(document).on("keydown", ".priceBookPricetxt", function (e) {
     var keyCode = e.keyCode || e.which;
-    if (keyCode == 9 && $("#PageStatus").val() == "create") {
+    if (keyCode == 9) {
         CreateNewRowPriceBook()
     }
 });

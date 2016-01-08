@@ -126,7 +126,7 @@ namespace XpressBilling.Account
                 string errmsg = "";
                 if (ContactId.Value != "0" && ContactId.Value != "")
                 {
-                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, City.SelectedValue, Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), User.Identity.Name, status,txtcompany.Text);
+                    status = XBDataProvider.Contact.UpdateContact(ContactId.Value.ToString(), Name.Text, Designation.Text, Phone.Text, Mobile.Text, Fax.Text, Email.Text, Web.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, State.Text, Country.SelectedValue, Convert.ToInt32(Zip.Text), User.Identity.Name, status, txtcompany.Text);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
