@@ -19,7 +19,7 @@
                     </div>
                     <label for="FormationDate" class="control-label col-xs-2 col-md-2">Formation Date</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="FormationDate" class="form-control required" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="FormationDate" class="form-control" placeholder="Formation Date" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
 
@@ -27,17 +27,17 @@
                 <div class="form-group">
                     <label for="TIN" class="control-label col-xs-2 col-md-2">TIN</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="TIN" class="form-control required" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="TIN" class="form-control" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="PAN" class="control-label col-xs-2 col-md-2">PAN</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="PAN" class="form-control required" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="PAN" class="form-control" placeholder="PAN" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
                     <label for="RegistrationNo" class="control-label col-xs-2 col-md-2">Registration</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control required" placeholder="Registration No:" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="RegistrationNo" class="form-control" placeholder="Registration No:" ClientIDMode="Static"></asp:TextBox>
                         
                     </div>
 
