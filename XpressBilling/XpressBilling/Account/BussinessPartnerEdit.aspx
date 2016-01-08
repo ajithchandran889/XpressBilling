@@ -9,7 +9,7 @@
             <div class="col-sm-12 col-md-12">
                 <div id="SaveSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
                     <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>
-                    Saved Successfully
+                    Saved Successfully 
                 </div>
                 <div id="UpdateSuccess" visible="false" class="alert alert-success" role="alert" runat="server">
                     <span runat="server"><img src="~/Images/like.png" alt="" runat="server" />	</span>

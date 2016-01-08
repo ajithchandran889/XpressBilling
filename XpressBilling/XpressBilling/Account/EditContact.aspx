@@ -13,7 +13,7 @@
                 </div>
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
-                </div>
+                </div> 
                 <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
                 </div>
