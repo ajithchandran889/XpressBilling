@@ -53,16 +53,24 @@ namespace XpressBilling.Account
                     lblDate.Visible = false;
                     lblUser.Visible = false;
                     //txtSearch.Visible = false;
-                    btnSearch.Visible = false;
+                    //btnSearch.Visible = false;
                     gridDetails.Visible = false;
                     savePriceBook.Visible = false;
+                    filterArea.Visible = false;
                     SetInitialRow();
                     DataTable dtAddedOrderTypes = XBDataProvider.PriceBook.GetAddedOrderTypes(Session["CompanyCode"].ToString());
                     DataRow row = null;
                     for (int i = 0; i < dtAddedOrderTypes.Rows.Count;i++)
                     {
                         row = dtAddedOrderTypes.Rows[i];
-                        Type.Items.Remove(Type.Items.FindByValue(row["PriceType"].ToString()));
+                        if (row["PriceType"].ToString()=="0")
+                        {
+                            OrderType_0.Items.Remove(OrderType_0.Items.FindByValue(row["OrderType"].ToString()));
+                        }
+                        else if (row["PriceType"].ToString() == "1")
+                        {
+                            OrderType_1.Items.Remove(OrderType_0.Items.FindByValue(row["OrderType"].ToString()));
+                        }
                     }
                         
                 }
@@ -339,14 +347,14 @@ namespace XpressBilling.Account
                 }
                 foreach (GridViewRow row in PriceBookDetail.Rows)
                 {
-                    if(Array.IndexOf(deletedIds,PriceBookDetail.DataKeys[i]["ID"])==-1)
+                    TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
+                    TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("SupplierBarcode");
+                    TextBox box3 = (TextBox)PriceBookDetail.Rows[i].Cells[2].FindControl("Description");
+                    TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("CurrencyCode");
+                    TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("MRP");
+                    TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[6].FindControl("Price");
+                    if (Array.IndexOf(deletedIds, PriceBookDetail.DataKeys[i]["ID"]) == -1 && box1.Text!="")
                     {
-                        TextBox box1 = (TextBox)PriceBookDetail.Rows[i].Cells[1].FindControl("ItemCode");
-                        TextBox box2 = (TextBox)PriceBookDetail.Rows[i].Cells[3].FindControl("SupplierBarcode");
-                        TextBox box3 = (TextBox)PriceBookDetail.Rows[i].Cells[2].FindControl("Description");
-                        TextBox box4 = (TextBox)PriceBookDetail.Rows[i].Cells[4].FindControl("CurrencyCode");
-                        TextBox box5 = (TextBox)PriceBookDetail.Rows[i].Cells[5].FindControl("MRP");
-                        TextBox box6 = (TextBox)PriceBookDetail.Rows[i].Cells[6].FindControl("Price");
                         dr = dt.NewRow();
                         dr["ID"] = PriceBookDetail.DataKeys[i]["ID"];
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
@@ -380,6 +388,7 @@ namespace XpressBilling.Account
                     }
                     
                 }
+                string[] Ids = Request.Form["ID"] != null ? Request.Form["ID"].Split(',') : new string[] { };
                 string[] ItemCodes = Request.Form["ItemCode"] != null ? Request.Form["ItemCode"].Split(',') : new string[] { };
                 string[] SupplierBarcodes = Request.Form["SupplierBarcode"] != null ? Request.Form["SupplierBarcode"].Split(',') : new string[] { };
                 string[] CurrencyCodes = Request.Form["CurrencyCode"] != null ? Request.Form["CurrencyCode"].Split(',') : new string[] { };
@@ -391,7 +400,7 @@ namespace XpressBilling.Account
                     if (ItemCodes[k] != "")
                     {
                         dr = dt.NewRow();
-                        dr["ID"] = 0;
+                        dr["ID"] = Convert.ToInt32(Ids[k]);
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["PriceBookMstID"] = Convert.ToInt32(PriceBookId.Value);
                         dr["DocumentNo"] = newDocumentNumber;
@@ -431,6 +440,7 @@ namespace XpressBilling.Account
                     int id = XBDataProvider.PriceBook.SavePriceBookMaster(Session["CompanyCode"].ToString(), newDocumentNumber, Convert.ToInt32(Type.SelectedValue), orderType, Currency.Text, User.Identity.Name, dt);
                     if (id > 0)
                     {
+                        filterArea.Visible = true;
                         Type.Enabled = false;
                         OrderType_0.Enabled = false;
                         OrderType_1.Enabled = false;
@@ -440,7 +450,7 @@ namespace XpressBilling.Account
                         PageStatus.Value = "edit";
                     }
                 }
-                SetPriceBookDetailsChildGrid();
+                //SetPriceBookDetailsChildGrid();
             }
             catch (Exception ex)
             {
@@ -452,7 +462,7 @@ namespace XpressBilling.Account
 
         protected void BtnSearchClick(object sender, EventArgs e)
         {
-            SetPriceBookDetailsChildGrid();
+            //SetPriceBookDetailsChildGrid();
         }
 
         protected void PriceBookDetailRowDataBound(object sender, GridViewRowEventArgs e)
@@ -475,6 +485,15 @@ namespace XpressBilling.Account
                 savePriceBook.Visible = true;
             }
         }
+
+        [WebMethod]
+        public static string GetPriceBookDetails(string searchTerm, int pageIndex, int priceBookId, int filterItem)
+        {
+            return XBDataProvider.PriceBook.GetPriceBookData(searchTerm, pageIndex, priceBookId, filterItem);
+            
+        }
+
+        
     }
 
     public class ItemMasteDetails

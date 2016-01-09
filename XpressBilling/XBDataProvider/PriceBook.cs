@@ -202,5 +202,32 @@ namespace XBDataProvider
             }
 
         }
+
+        public static string GetPriceBookData(string searchTerm, int pageIndex, int priceBookId, int filterItem)
+        {
+            DataTable dtPriceBook = new DataTable("PriceBookDetails");
+            DataSet ds = new DataSet();
+            string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@SearchTerm", searchTerm);
+            cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+            cmd.Parameters.AddWithValue("@PriceBookId", priceBookId);
+            cmd.Parameters.AddWithValue("@PageSize", 20);
+            cmd.Parameters.AddWithValue("@filterItem", filterItem);
+            cmd.Parameters.Add("@RecordCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+            dtPriceBook = DataProvider.GetSQLDataTable(connString, "sp_GetPriceBookDetailsWithPager", cmd);
+            ds.Tables.Add(dtPriceBook);
+            DataTable dt = new DataTable("Pager");
+            dt.Columns.Add("PageIndex");
+            dt.Columns.Add("PageSize");
+            dt.Columns.Add("RecordCount");
+            dt.Rows.Add();
+            dt.Rows[0]["PageIndex"] = pageIndex;
+            dt.Rows[0]["PageSize"] = 20;
+            dt.Rows[0]["RecordCount"] = cmd.Parameters["@RecordCount"].Value;
+            ds.Tables.Add(dt);
+            return ds.GetXml();
+        }
     }
 }

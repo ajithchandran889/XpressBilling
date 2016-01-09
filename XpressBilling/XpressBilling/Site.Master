@@ -493,8 +493,9 @@
     <!-- ace scripts -->
     <script src="/Scripts/ace-elements-mini.js"></script>
     <script src="/Scripts/ace-mini.js"></script>
-
+    <script src="/Scripts/ASPSnippets_Pager.min.js"></script>
     <script src="/Scripts/scripts.js"></script>
+
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
         jQuery(function ($) {

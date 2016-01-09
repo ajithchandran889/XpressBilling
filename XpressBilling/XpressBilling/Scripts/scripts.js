@@ -1197,6 +1197,7 @@ if ($(".ItemCode").val() != "") {
     $(".ItemCode").attr('readonly', 'readonly');
 
 }
+$(".Description").attr('readonly', 'readonly');
 $(".SupplierBarcode").attr('readonly', 'readonly');
 $(".CurrencyCode").attr('readonly', 'readonly');
 $(".OrderType").attr('readonly', 'readonly');
@@ -2298,7 +2299,7 @@ $(document).on("keydown", "#SQNetAmt", function (e) {
 function CreateNewRowPriceBook() {
 
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" type="text" id="ItemCode" class="form-control ItemCode required"></td><td><input name="Description" type="text" id="Description" class="form-control valid" aria-invalid="false"></td><td><input name="SupplierBarcode" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly"></td><td><input name="CurrencyCode" type="text" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly"></td><td><input name="MRP" type="text" id="MRP" class="form-control required"></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required"></td><td><a id="lnkDelete" style="cursor:pointer" >Delete</a></td></tr>';
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" type="text" id="ItemCode" class="form-control ItemCode required"></td><td><input name="Description" type="text" id="Description" class="form-control valid" aria-invalid="false"></td><td><input name="SupplierBarcode" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly"></td><td><input name="CurrencyCode" type="text" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly"></td><td><input name="MRP" type="text" id="MRP" class="form-control required"></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required"></td><td><a id="lnkDelete" style="cursor:pointer" >Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
     $("#PriceBookDetail tbody").append(row);
 }
 $(document).on("keydown", ".priceBookPricetxt", function (e) {
@@ -2351,3 +2352,105 @@ $(document).on("keydown", "#PONetAmt", function (e) {
         CreateNewRowPO()
     }
 });
+$(function () {
+    if (parseInt($("#PriceBookId").val()) > 0) {
+        GetPriceBook(parseInt(1),0);
+    }
+});
+$(document).on("keyup", "#ItemSearch", function () {
+    $("#ItemNameSearch").val('');
+    $("#ItemSCSearch").val('');
+    GetPriceBook(parseInt(1),1);
+});
+$(document).on("keyup", "#ItemNameSearch", function () {
+    $("#ItemSearch").val('');
+    $("#ItemSCSearch").val('');
+    GetPriceBook(parseInt(1),2);
+});
+$(document).on("keyup", "#ItemSCSearch", function () {
+    $("#ItemSearch").val('');
+    $("#ItemNameSearch").val('');
+    GetPriceBook(parseInt(1),3);
+});
+function SearchTerm(filterItem) {
+    if (filterItem == 0)
+    {
+        return "";
+    }
+    else if (filterItem == 1) {
+        return jQuery.trim($("#ItemSearch").val());
+    }
+    else if (filterItem == 2) {
+        return jQuery.trim($("#ItemNameSearch").val());
+    }
+    else if (filterItem == 3) {
+        return jQuery.trim($("#ItemSCSearch").val());
+    }
+};
+function GetPriceBook(pageIndex,filterItem) {
+    $.ajax({
+        type: "POST",
+        url: "PriceBookEdit.aspx/GetPriceBookDetails",
+        data: '{searchTerm: "' + SearchTerm(filterItem) + '", pageIndex: ' + pageIndex + ', priceBookId: ' + parseInt($("#PriceBookId").val()) + ', filterItem: ' + filterItem + '}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccess,
+        failure: function (response) {
+            alert(response.d);
+        },
+        error: function (response) {
+            alert(response.d);
+        }
+    });
+}
+var row;
+function OnSuccess(response) {
+    var xmlDoc = $.parseXML(response.d);
+    var xml = $(xmlDoc);
+    var priceBookDetails = xml.find("Table1");
+    if (row == null) {
+        row = $("#PriceBookDetail tr:last-child").clone(true);
+    }
+    $("#PriceBookDetail tr").not($("#PriceBookDetail tr:first-child")).remove();
+    var index = 0;
+    if (priceBookDetails.length > 0) {
+        $("#rowCount").val('1');
+        $("#DeletedRowIDs").val("");
+        $.each(priceBookDetails, function () {
+            var priceBookDetail = $(this);
+            var row1;
+            if ($("#rowCount").val() == "1")
+            {
+                row1 = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" readonly="readonly" type="text" id="ItemCode" class="form-control ItemCode required" value=' + $(this).find("ItemCode").text() + '></td><td><input name="Description" type="text" readonly="readonly" id="Description" class="form-control valid" aria-invalid="false" value=' + $(this).find("Name").text() + '></td><td><input name="SupplierBarcode"  readonly="readonly" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly" value=' + $(this).find("SupplierBarcode").text() + '></td><td><input name="CurrencyCode" type="text" readonly="readonly" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly" value=' + $(this).find("CurrencyCode").text() + '></td><td><input name="MRP" type="text" id="MRP" class="form-control required" value=' + $(this).find("MRP").text() + '></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required" value=' + $(this).find("Price").text() + '></td><td><input type="hidden" name="ID" value="' + $(this).find("ID").text() + '" /></td></tr>';
+                
+            }
+            else
+            {
+               row1 = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="ItemCode" readonly="readonly" type="text" id="ItemCode" class="form-control ItemCode required" value=' + $(this).find("ItemCode").text() + '></td><td><input name="Description" type="text" readonly="readonly" id="Description" class="form-control valid" aria-invalid="false" value=' + $(this).find("Name").text() + '></td><td><input name="SupplierBarcode"  readonly="readonly" type="text" id="SupplierBarcode" class="form-control SupplierBarcode required" readonly="readonly" value=' + $(this).find("SupplierBarcode").text() + '></td><td><input name="CurrencyCode" type="text" readonly="readonly" id="CurrencyCode" class="form-control CurrencyCode required" readonly="readonly" value=' + $(this).find("CurrencyCode").text() + '></td><td><input name="MRP" type="text" id="MRP" class="form-control required" value=' + $(this).find("MRP").text() + '></td><td><input name="Price" type="text" id="Price" class="form-control priceBookPricetxt required" value=' + $(this).find("Price").text() + '></td><td><a id="lnkDelete" style="cursor:pointer" data-id="' + $(this).find("ID").text() + '" >Delete</a><input type="hidden" name="ID" value="' + $(this).find("ID").text() + '" /></td></tr>';
+            }
+            $("#PriceBookDetail tbody").append(row1);
+            $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+            row = $("#PriceBookDetail tr:last-child").clone(true);
+        });
+        var pager = xml.find("Pager");
+        $(".Pager").ASPSnippets_Pager({
+            ActiveCssClass: "current",
+            PagerCssClass: "pager",
+            PageIndex: parseInt(pager.find("PageIndex").text()),
+            PageSize: parseInt(pager.find("PageSize").text()),
+            RecordCount: parseInt(pager.find("RecordCount").text())
+        });
+
+        //$(".ContactName").each(function () {
+        //    var searchPattern = new RegExp('(' + SearchTerm() + ')', 'ig');
+        //    $(this).html($(this).text().replace(searchPattern, "<span class = 'highlight'>" + SearchTerm() + "</span>"));
+        //});
+    } else {
+        var empty_row = row.clone(true);
+        $("td:first-child", empty_row).attr("colspan", $("td", row).length);
+        $("td:first-child", empty_row).attr("align", "center");
+        $("td:first-child", empty_row).html("No records found for the search criteria.");
+        $("td", empty_row).not($("td:first-child", empty_row)).remove();
+        $("#PriceBookDetail").append(empty_row);
+    }
+};
