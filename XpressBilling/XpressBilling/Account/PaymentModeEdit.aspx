@@ -75,7 +75,9 @@
                     
                     <asp:HiddenField ID="PaymentModeId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <a href="/Account/PaymentMode.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="savePaymentMode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <%--<a href="/Account/PaymentMode.aspx" class="btn btn-primary pull-left">Cancel</a>--%>
+                        <input id="cancelPaymentMode" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/PaymentMode';" />
+                        <asp:Button ID="savePaymentMode" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
                 </div>
 
                 </div>

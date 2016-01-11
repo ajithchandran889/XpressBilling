@@ -65,7 +65,9 @@
                     <asp:HiddenField ID="hdncompanycode" runat="server" />                    
                     <asp:HiddenField ID="hdnreference" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                         <a href="/Account/City.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCity" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                         <%--<a href="/Account/City.aspx" class="btn btn-primary pull-left">Cancel</a>--%>
+                        <input id="cancelCity" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/City';" />
+                        <asp:Button ID="saveCity" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
                     </div>
 
                 </div>

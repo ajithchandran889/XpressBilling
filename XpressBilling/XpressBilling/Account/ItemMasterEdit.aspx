@@ -159,7 +159,9 @@
                 <div class="form-group">
                     <asp:HiddenField ID="ItemMasterId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                       <a href="/Account/ItemMaster.aspx" class="btn btn-primary pull-left">Cancel</a> <asp:Button ID="saveItemMaster" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                       <%--<a href="/Account/ItemMaster.aspx" class="btn btn-primary pull-left">Cancel</a>--%>
+                        <input id="cancelItemMaster" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/ItemMaster';" />
+                         <asp:Button ID="saveItemMaster" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
                 </div>
 
                 </div>

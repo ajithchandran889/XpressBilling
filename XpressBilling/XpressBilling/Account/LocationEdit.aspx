@@ -157,8 +157,9 @@
           
           </div>
         <div class="form-group">
-          <div class="col-xs-10 col-md-8"> <a href="/Account/Location.aspx" class="btn btn-primary pull-left">Cancel</a>
+          <div class="col-xs-10 col-md-8"> <%--<a href="/Account/Location.aspx" class="btn btn-primary pull-left">Cancel</a>--%>
           <%--<asp:Button ID="saveCompany" runat="server" ClientIDMode="Static" CssClass="btn btn-primary pull-left" Text="Cancel"/>--%>
+              <input id="cancelLocation" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/Location';" />
             <asp:Button ID="Button1" runat="server" ClientIDMode="Static" CssClass="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
           </div>
         </div>

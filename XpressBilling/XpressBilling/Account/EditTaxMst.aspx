@@ -82,7 +82,9 @@
                     
                     <asp:HiddenField ID="hdnreference" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                        <a href="/Account/TaxMst.aspx" class="btn btn-primary pull-left">Cancel</a><asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                        <%--<a href="/Account/TaxMst.aspx" class="btn btn-primary pull-left">Cancel</a>--%>
+                        <input id="cancelTaxMst" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/TaxMst';" />
+                        <asp:Button ID="saveCurrency" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
                      </div>
                 </div>
             </div>

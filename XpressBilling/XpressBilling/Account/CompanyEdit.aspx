@@ -191,12 +191,10 @@
                     <div class="form-group">
                     <asp:HiddenField ID="CompanyId" runat="server" />
                     <div class="col-xs-10 col-md-8">
-                       <a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a> 
-                      
-                        <%--<asp:Button ID="btncancel" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Cancel" PostBackUrl="/Account/Company.aspx"  />--%>
-                        <asp:Button ValidationGroup="save" ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
+                       <%--<a href="/Account/Company.aspx" class="btn btn-primary pull-left">Cancel</a> --%>
+                      <input id="cancelCompany" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/Company';" />
+                      <asp:Button ValidationGroup="save" ID="saveCompany" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="SaveClick" />
                     </div>
-
                 </div>
             </div>
         </div>
