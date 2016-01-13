@@ -21,7 +21,7 @@
                             <asp:DropDownList runat="server" ID="Type" class="form-control required" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="TypeSelectedIndexChanged">
                                 <asp:ListItem Value="" Text="--Select one--"></asp:ListItem>
                                 <asp:ListItem Value="0" Text="Company"></asp:ListItem>
-                                <asp:ListItem Value="1" Text="EU"></asp:ListItem>
+                                <asp:ListItem Value="1" Text="Location"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <label class="control-label col-xs-12 col-sm-4 col-md-2">Number Group</label>
@@ -44,6 +44,8 @@
                                 <asp:ListItem Value="6" Text="Material Issue"></asp:ListItem>
                                 <asp:ListItem Value="7" Text="Sales Invoice"></asp:ListItem>
                                 <asp:ListItem Value="8" Text="Goods Receipt"></asp:ListItem>
+                                <asp:ListItem Value="9" Text="Purchase Return"></asp:ListItem>
+                                <asp:ListItem Value="10" Text="Stock Transfer"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
 
@@ -71,9 +73,9 @@
                             <asp:TextBox ID="OrderType" class="form-control OrderType" ClientIDMode="Static" runat="server" Text='<%# Bind("OrderType") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Enterprise Unit">
+                    <asp:TemplateField HeaderText="Location">
                         <ItemTemplate>
-                            <asp:TextBox ID="EnterpriseUnit" class="form-control required" ClientIDMode="Static" runat="server" Text='<%# Bind("EnterpriseUnitCode") %>'></asp:TextBox>
+                            <asp:TextBox ID="EnterpriseUnit" class="form-control required EnterpriseUnitLocation" ClientIDMode="Static" runat="server" Text='<%# Bind("EnterpriseUnitCode") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="No of Digits">
@@ -97,7 +99,7 @@
                     <div class="col-xs-10 col-md-8">
                         <asp:HiddenField ID="FirstFreeNumberId" runat="server" />
                         <asp:HiddenField ID="LastFirstFreeNumber" runat="server" />
-                        <a id="cancelFirstFreeNumber" href="/Account/FirstFreenumber.aspx" runat="server" class="btn btn-primary pull-left">Cancel</a>
+                        <input id="cancelFirstFreeNumber" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/FirstFreenumber';" />
                         <asp:Button ID="saveFirstFreeNumberBtn" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Save" OnClick="saveFirstFreeNumber" />
 
                     </div>

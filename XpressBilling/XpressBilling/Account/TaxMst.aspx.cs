@@ -98,7 +98,7 @@ namespace XpressBilling.Account
                 {
                     row = dtTable.Rows[index];
                     TaxItemDetail itemTax = new TaxItemDetail();
-                    itemTax.code = row["TaxCode"].ToString();
+                    itemTax.code = row["Tax"].ToString();
                     itemTax.Per = Convert.ToInt32(row["TaxPercentage"].ToString());
                     result.Add(itemTax);
                 }

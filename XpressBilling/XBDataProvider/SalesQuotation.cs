@@ -64,8 +64,9 @@ namespace XBDataProvider
 
         }
 
-        public static int SaveSQ(string companyCode, string locationCode, string salesQuotationNo , DateTime salesQuotationDate,
-                                   int orderType, string reference, string bussinesspartnersCode,string salesMan,DateTime validity,int status,string user,int selectedSequenceId,string telephone)
+        public static int SaveSQ(string companyCode, string locationCode, string salesQuotationNo, DateTime salesQuotationDate,
+                                   int orderType, string reference, string bussinesspartnersCode, string salesMan, DateTime validity, int status, string user, int selectedSequenceId, string telephone,
+                                   string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, DataTable SQDetail,string name)
         {
             try
             {
@@ -82,6 +83,15 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Businesspartnercode", bussinesspartnersCode));
                 cmd.Parameters.Add(new SqlParameter("@Validity", validity));
                 cmd.Parameters.Add(new SqlParameter("@Salesman", salesMan));
+
+                cmd.Parameters.Add(new SqlParameter("@paymentTerms", paymentTerms));
+                cmd.Parameters.Add(new SqlParameter("@deliveryTerms", deliveryTerms));
+                cmd.Parameters.Add(new SqlParameter("@totalAmount", totalAmount));
+                cmd.Parameters.Add(new SqlParameter("@totalDiscountAmt", totalDiscountAmt));
+                cmd.Parameters.Add(new SqlParameter("@totalTaxAmt", totalTaxAmt));
+                cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
+                cmd.Parameters.Add(new SqlParameter("@SQDetail", SQDetail));
+                cmd.Parameters.Add(new SqlParameter("@Name", name));
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
@@ -98,7 +108,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SaveSQDetail(int SQMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, DataTable SQDetail)
+        public static bool SaveSQDetail(int SQMasterId, string reference, DateTime validity, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, DataTable SQDetail, DataTable dtDeletedIds)
         {
             try
             {
@@ -106,6 +116,8 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@SQMasterId", SQMasterId));
+                cmd.Parameters.Add(new SqlParameter("@Reference", reference));
+                cmd.Parameters.Add(new SqlParameter("@Validity", validity));
                 cmd.Parameters.Add(new SqlParameter("@paymentTerms", paymentTerms));
                 cmd.Parameters.Add(new SqlParameter("@deliveryTerms", deliveryTerms));
                 cmd.Parameters.Add(new SqlParameter("@totalAmount", totalAmount));
@@ -113,6 +125,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@totalTaxAmt", totalTaxAmt));
                 cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
                 cmd.Parameters.Add(new SqlParameter("@SQDetail", SQDetail));
+                cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_SalesQuotationDtl_xpins", cmd);
@@ -142,7 +155,7 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static bool ConvertToSaleOrder(int Id,string orderType,string orderNo,int salesOrderLastIncId)
+        public static bool ConvertToSaleOrder(int Id, string orderType, string orderNo, int salesOrderLastIncId)
         {
             try
             {
@@ -162,6 +175,24 @@ namespace XBDataProvider
 
             return true;
         }
+        public static DataTable GetItemMasters(string companyCode,int orderType,int priceType)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                cmd.Parameters.Add(new SqlParameter("@orderType", orderType));
+                cmd.Parameters.Add(new SqlParameter("@priceType", priceType));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMasters_SQ", cmd);
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return dtTable;
+        }
     }
 }

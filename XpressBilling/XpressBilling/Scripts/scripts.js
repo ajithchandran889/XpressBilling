@@ -7,7 +7,12 @@ var itemMasterArrayByName = []; ""
 var itemMasterDetailsByName = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
+var customerCodes = [];
+var customerCodesWithDetails = {};
 var contactArray = [];
+var contactArrayWithName = {};
+var locationArray = [];
+var locationArrayWithName = {};
 var itemMasterArrayStockEntry = [];
 var itemMasterDetailsStockEntry = {};
 var itemMasterArrayStockEntryByName = [];
@@ -29,6 +34,7 @@ var itemMasterDetailsSQByName = {};
 var itemMasterQuantitySQ = {};
 var SQItemRowDetails = [];
 var itemTaxCodes = [];
+var itemTaxCodevalues = [];
 var itemTaxDetails = {};
 var MIItemRowDetails = [];
 var IItemRowDetails = [];
@@ -44,6 +50,7 @@ var itemMasterDetailsSalesReturn = {};
 var itemMasterArraySalesReturnByName = [];
 var itemMasterDetailsSalesReturnByName = {};
 var SRItemRowDetails = [];
+var firstFreeSQ = [];
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -68,11 +75,31 @@ $(document).ready(function () {
             success: function (data) {
                 contactArray = [];
                 $.each(data.d, function (i, j) {
-                    contactArray.push(j.code);
+                    contactArray.push(j.name);
+                    contactArrayWithName[j.name] = [j.code];
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
+            }
+        });
+    }
+    if ($("#Location").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetLocationCodes",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                locationArray = [];
+                $.each(data.d, function (i, j) {
+                    locationArray.push(j.name);
+                    locationArrayWithName[j.name] = [j.code];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
             }
         });
     }
@@ -115,7 +142,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
     }
@@ -126,10 +153,52 @@ $(document).ready(function () {
         }
     }
     if ($("#SalesQuotationId").length > 0) {
-        if ($("#Quotation").val() == "") {
-            alert("Please create first free number for Sales Quotation");
-            $("#SaveBtn").attr("disabled", true);
-        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetFirstFreerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                firstFreeSQ = [];
+                $.each(data.d, function (i, j) {
+                    firstFreeSQ.push({
+                        id: j.id,
+                        sequenceNumber: j.sequenceNumber,
+                        seqType: j.seqType,
+                        orderType: j.orderType,
+                        enterpriseUnitCode:j.enterpriseUnitCode
+                    });
+                    if(firstFreeSQ.length==0)
+                    {
+                        alert("Please create first free number for Sales Quotation");
+                        $("#SaveBtn").attr("disabled", true);
+                    }
+                });
+            },
+            error: function (result) {
+               // alert("Error");
+            }
+        });
+       
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetCustomerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                customerCodes = [];
+                customerCodesWithDetails = {};
+                $.each(data.d, function (i, j) {
+                    customerCodes.push(j.code);
+                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -138,56 +207,21 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 itemTaxCodes = [];
+                itemTaxCodevalues = [];
                 itemTaxDetails = {};
                 $.each(data.d, function (i, j) {
                     itemTaxCodes.push(j.code);
+                    itemTaxCodevalues.push(j.Per);
                     itemTaxDetails[j.code] = [j.Per];
                 });
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            success: function (data) {
-                itemMasterArraySQ = [];
-                itemMasterDetailsSQ = {};
-                itemMasterQuantitySQ = {};
-                $.each(data.d, function (i, j) {
-                    itemMasterArraySQ.push(j.code);
-                    itemMasterDetailsSQ[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    itemMasterQuantitySQ[j.code] = [j.Qnty];
-                });
-            },
-            error: function (result) {
-                alert("Error");
-            }
-        });
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            success: function (data) {
-                itemMasterArraySQByName = [];
-                itemMasterDetailsSQByName = {};
-                itemMasterQuantitySQ = {};
-                $.each(data.d, function (i, j) {
-                    itemMasterArraySQByName.push(j.name);
-                    itemMasterDetailsSQByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    itemMasterQuantitySQ[j.code] = [j.Qnty];
-                });
-            },
-            error: function (result) {
-                alert("Error");
-            }
-        });
+        $(".SQTaxAmt").attr('readonly', 'readonly');
+        $(".SQNetAmt").attr('readonly', 'readonly');
+        $(".SQUnit").attr('readonly', 'readonly');
     }
     if ($("#PurchaseOrderId").length > 0) {
         if ($("#OrderNo").val() == "") {
@@ -209,7 +243,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
         $.ajax({
@@ -229,7 +263,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
         $.ajax({
@@ -249,7 +283,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
     }
@@ -273,7 +307,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
         $.ajax({
@@ -294,7 +328,7 @@ $(document).ready(function () {
 
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
         $.ajax({
@@ -314,7 +348,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
     }
@@ -340,7 +374,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
         $.ajax({
@@ -360,7 +394,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+              //  alert("Error");
             }
         });
     }
@@ -388,7 +422,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
     }
@@ -412,7 +446,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
         $.ajax({
@@ -433,7 +467,7 @@ $(document).ready(function () {
 
             },
             error: function (result) {
-                alert("Error");
+                //alert("Error");
             }
         });
         $.ajax({
@@ -453,7 +487,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+              //  alert("Error");
             }
         });
     }
@@ -629,6 +663,35 @@ $(document).ready(function () {
         $(".IUnit").attr('readonly', 'readonly');
     }
     if (($("#SalesQuotationId").val() != "" || $("#SalesQuotationId").val() != "0") && $("#PageStatus").val() != "create") {
+        var obj1 = {};
+        obj1.companyCode = $.trim($("#CompanyCode").val());
+        obj1.orderType = $("#QuotationType").val();
+        obj1.priceType = 0;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj1),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArraySQ = [];
+                itemMasterDetailsSQ = {};
+                itemMasterQuantitySQ = {};
+                itemMasterArraySQByName = [];
+                itemMasterDetailsSQByName = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArraySQ.push(j.code);
+                    itemMasterDetailsSQ[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+                    itemMasterQuantitySQ[j.code] = [j.Qnty];
+                    itemMasterArraySQByName.push(j.name);
+                    itemMasterDetailsSQByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
         itemMasterArraySQ = [];
         itemMasterDetailsSQ = {};
         var i = 0;
@@ -657,11 +720,6 @@ $(document).ready(function () {
             $(".SQUnit").attr('readonly', 'readonly');
             $(".SQItem").attr('readonly', 'readonly');
             $(".SQName").attr('readonly', 'readonly');
-        }
-        else if ($("#PageStatus").val() == "creating") {
-            $(".SQTaxAmt").attr('readonly', 'readonly');
-            $(".SQNetAmt").attr('readonly', 'readonly');
-            $(".SQUnit").attr('readonly', 'readonly');
         }
     }
     if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create") {
@@ -832,7 +890,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-                alert("Error");
+               // alert("Error");
             }
         });
     });
@@ -866,7 +924,7 @@ function SearchText() {
                     response(data.d);
                 },
                 error: function (result) {
-                    alert("Error");
+                  //  alert("Error");
                 }
             });
         },
@@ -989,8 +1047,6 @@ $(document).on("keydown", "#Description", function (e) {
                 return false;
                 
             }
-            
-
         },
         change: function (event, ui) {
             val = $(this).val(); 
@@ -1020,7 +1076,6 @@ $(document).on("keydown", ".ItemCode", function (e) {
     $(this).autocomplete({
         source: itemMasterArray,
         select: function (event, ui) {
-            exists = $.inArray(ui.item.label, itemMasterSelectedItem);
             if (!CheckItemAlreadyAdded(ui.item.label)) {
                 SetSelectedRow(this, ui.item.label);
                 
@@ -1044,6 +1099,7 @@ $(document).on("keydown", ".ItemCode", function (e) {
             exists = $.inArray(val, itemMasterArray);
             if (exists < 0) {
                 $(this).val("");
+                $(this).focus();
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
                 row.cells[2].getElementsByTagName("input")[0].value = "";
@@ -1053,19 +1109,7 @@ $(document).on("keydown", ".ItemCode", function (e) {
                 row.cells[6].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-            //else {
-            //    itemMasterArray = $.grep(itemMasterArray, function (val) {
-            //        if (val != ui.item.label) {
-            //            return val;
-            //        }
-            //    });
-            //    var itemArr = itemMasterDetails[ui.item.label];
-            //    itemMasterArrayByName = $.grep(itemMasterArrayByName, function (val) {
-            //        if (val != itemArr[0]) {
-            //            return val;
-            //        }
-            //    });
-            //}
+            
         },
         response: function (event, ui) {
             if (!ui.content.length) {
@@ -1089,7 +1133,55 @@ $(document).on("click", "#lnkDelete", function (e) {
     $("#rowCount").val(--index);
     return false;
 });
+$(document).on("click", "#lnkDeleteSQ", function (e) {
+    if (typeof $(this).attr('data-id') !== "undefined")
+        $("#DeletedRowIDs").val($("#DeletedRowIDs").val() + $(this).attr('data-id') + ",");
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (SQItemRowDetails[rowIndex])
+    {
+        var itemArray = SQItemRowDetails[rowIndex];
+        var totalAmt = parseFloat($("#TotalAmount").val());
+        var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
+        var totalTax = parseFloat($("#TotalTaxAmt").val());
+        var totalOder = parseFloat($("#TotalOrderAmt").val());
+        var oldAmount = parseFloat(itemArray[6]);
+        var oldDiscount = parseFloat(itemArray[3]);
+        var oldTax = parseFloat(itemArray[5]);
+        var oldOder = parseFloat(itemArray[7]);
+        totalAmt -= parseFloat(oldAmount);
+        totalDiscount -= parseFloat(oldDiscount);
+        totalTax -= parseFloat(oldTax);
+        totalOder -= parseFloat(oldOder);
+        $("#TotalAmount").val(totalAmt);
+        $("#TotalDiscountAmt").val(totalDiscount);
+        $("#TotalTaxAmt").val(totalTax);
+        $("#TotalOrderAmt").val(totalOder);
+        var i;
+        for (i = rowIndex; i < SQItemRowDetails.length; i++)
+        {
+            if (SQItemRowDetails[i + 1])
+            {
+                SQItemRowDetails[i] = SQItemRowDetails[i + 1];
+            }
+            else
+            {
+                SQItemRowDetails.splice(i, 1);
+            }
+        }
+    }
+    row.remove();
+    var index = 1;
+    $("td:first-child", $("#SalesQuotationDetail")).each(function () {
+        $(this).find("span:first").text(index);
+        index++;
+
+    });
+    $("#rowCount").val(--index);
+    return false;
+});
 $(document).on("keydown", "#SalesMan", function (e) {
+    
     $(this).autocomplete({
         source: contactArray,
             change: function (event, ui) {
@@ -1097,9 +1189,120 @@ $(document).on("keydown", "#SalesMan", function (e) {
                 exists = $.inArray(val, contactArray);
                 if (exists < 0) {
                     $(this).val("");
+                    $("#SalesManHidden").val("");
                     return false;
                 }
+                else
+                {
+                    $("#SalesManHidden").val(contactArrayWithName[val]);
+                }
             },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#Location", function (e) {
+
+    $(this).autocomplete({
+        source: locationArray,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, locationArray);
+            if (exists < 0) {
+                $(this).val("");
+                $("#LocationHidden").val("");
+                return false;
+            }
+            else {
+                $("#LocationHidden").val(locationArrayWithName[val]);
+                $.each(firstFreeSQ, function (i, j) {
+                   
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#QuotationType").val()) {
+                        $("#Quotation").val(j.sequenceNumber);
+                        $("#SQSequenceNoID").val(j.id);
+                    }
+                });
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#CustomerId", function (e) {
+
+    $(this).autocomplete({
+        source: customerCodes,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, customerCodes);
+            if (exists < 0) {
+                $(this).val("");
+                $("#Name").val("");
+                $("#Telephone").val("");
+                $("#Quotation").val("");
+                $("#SQSequenceNoID").val("");
+                return false;
+            }
+            else {
+                var item = customerCodesWithDetails[val];
+                $("#Name").val(item[0]);
+                $("#Telephone").val(item[1]);
+                $("#QuotationType").val(item[2]);
+                $('#QuotationType option[value="0"]').attr("selected", null);
+                $('#QuotationType option[value="1"]').attr("selected", null);
+                $('#QuotationType option[value="' + item[2] + '"]').attr("selected", "selected");
+                $("#selectedQuotationType").val(item[2]);
+                $.each(firstFreeSQ, function (i, j) {
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == item[2])
+                    {
+                        $("#Quotation").val(j.sequenceNumber);
+                        $("#SQSequenceNoID").val(j.id);
+                    }
+                    else if (j.seqType == "0" && j.orderType == item[2]) {
+                        $("#Quotation").val(j.sequenceNumber);
+                        $("#SQSequenceNoID").val(j.id);
+                    }
+                });
+                var obj1 = {};
+                obj1.companyCode = $.trim($("#CompanyCode").val());
+                obj1.orderType = item[2];
+                obj1.priceType = 0;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "SQEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj1),
+                    dataType: "json",
+                    success: function (data) {
+                        itemMasterArraySQ = [];
+                        itemMasterDetailsSQ = {};
+                        itemMasterQuantitySQ = {};
+                        itemMasterArraySQByName = [];
+                        itemMasterDetailsSQByName = {};
+                        $.each(data.d, function (i, j) {
+                            itemMasterArraySQ.push(j.code);
+                            itemMasterDetailsSQ[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+                            itemMasterQuantitySQ[j.code] = [j.Qnty];
+                            itemMasterArraySQByName.push(j.name);
+                            itemMasterDetailsSQByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+
+                        });
+                    },
+                    error: function (result) {
+                        //alert("Error");
+                    }
+                });
+                
+            }
+        },
         response: function (event, ui) {
             if (!ui.content.length) {
                 var noResult = { value: "", label: "No results found" };
@@ -1201,6 +1404,7 @@ $(".Description").attr('readonly', 'readonly');
 $(".SupplierBarcode").attr('readonly', 'readonly');
 $(".CurrencyCode").attr('readonly', 'readonly');
 $(".OrderType").attr('readonly', 'readonly');
+$(".EnterpriseUnitLocation").attr('readonly', 'readonly');
 $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
     var prefix = [];
     var sequence = [];
@@ -1221,7 +1425,7 @@ $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
         if (lastValue != "") {
             if (value == lastValue) {
                 if (sequence[i - 1] == sequence[i]) {
-                    alert("Same prefix and sequence number not allowed for more than one time");
+                    
                     flag = 1;
                 }
             }
@@ -1230,6 +1434,7 @@ $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
         i++;
     });
     if (flag == 1) {
+        alert("Same prefix and sequence number not allowed for more than one time");
         return false;
     }
     else {
@@ -1449,7 +1654,7 @@ function iSQuantityAvailableI(txtBox) {
                     }
                 },
                 error: function (result) {
-                    alert("Error");
+                   // alert("Error");
                 }
             });
 
@@ -1470,7 +1675,7 @@ function iSQuantityAvailableSQ(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        && row.cells[3].getElementsByTagName("input")[0].value != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantitySQ[itemCode];
         if (typeof (itemArr) === "undefined") {
@@ -1488,28 +1693,24 @@ function iSQuantityAvailableSQ(txtBox) {
                         itemMasterQuantitySQ[j.code] = [j.Qnty];
                     });
                     itemArr = itemMasterQuantitySQ[itemCode];
-                    if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                        CalculateSQAmount(txtBox);
+                    if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
+                        alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        
                     }
-                    else {
-                        row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                        alert("Sorry,Avilable Items:" + itemArr[0]);
-                    }
+                    CalculateSQAmount(txtBox);
                 },
                 error: function (result) {
-                    alert("Error");
+                    //alert("Error");
                 }
             });
 
         }
         else {
-            if (parseInt(itemArr[0]) >= parseInt(row.cells[4].getElementsByTagName("input")[0].value)) {
-                CalculateSQAmount(txtBox);
+            if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
+                alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                
             }
-            else {
-                row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                alert("Sorry,Avilable Items:" + itemArr[0]);
-            }
+            CalculateSQAmount(txtBox);
         }
 
     }
@@ -1695,8 +1896,8 @@ function SetSelectedRowSQ(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsSQ[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -1706,20 +1907,74 @@ function SetSelectedRowSQByName(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsSQByName[selectedItem];
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
 }
 
-
+function CheckItemAlreadyAddedSQ(val) {
+    var flag = false;
+    $("tr", $("#SalesQuotationDetail")).each(function () {
+        if (val == $("input[id*='SQItem']", $(this)).val()) {
+            flag = true;
+        }
+    });
+    return flag;
+}
 $(document).on("keydown", ".SQItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArraySQ,
         select: function (event, ui) {
-            SetSelectedRowSQ(this, ui.item.label);
+            if (!CheckItemAlreadyAddedSQ(ui.item.label)) {
+                SetSelectedRowSQ(this, ui.item.label);
 
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArraySQ);
+            if (exists < 0) {
+                $(this).val("");
+                $(this).focus();
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
     //$(this).autocomplete(optionsSQ);
@@ -1728,11 +1983,56 @@ $(document).on("keydown", ".SQName", function (e) {
     $(this).autocomplete({
         source: itemMasterArraySQByName,
         select: function (event, ui) {
-            SetSelectedRowSQByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsSQ[ui.item.label];
+            if (!CheckItemAlreadyAddedSQ(itemArr[0])) {
+                SetSelectedRowSQByName(this, ui.item.label);
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
 
+            }
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArraySQByName);
+            if (exists < 0) {
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
-    //$(this).autocomplete(optionsSQByName);
+    
 });
 $(document).on("keydown", ".SQTaxPer", function (e) {
     $(this).autocomplete({
@@ -1743,8 +2043,13 @@ $(document).on("keydown", ".SQTaxPer", function (e) {
 
         },
         change: function (event, ui) {
-            if (ui.item === null || !ui.item)
-                $(this).val(''); /* clear the value */
+             
+            val = $.trim($(this).val()); 
+            exists = $.inArray(4, itemTaxCodevalues); 
+            if (exists < 0) {
+                $(this).val("");
+                return false;
+            }
         }
     });
 });
@@ -1772,23 +2077,24 @@ $("#TotalOrderAmt").attr('readonly', 'readonly');
 function CalculateSQAmount(txtBox) {
 
     var row = txtBox.parentNode.parentNode;
-    var rowIndex = row.rowIndex - 1;
+    var rowIndex = row.rowIndex - 1; 
     if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-        var rate = row.cells[3].getElementsByTagName("input")[0].value;
-        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterDetailsSQ[row.cells[1].getElementsByTagName("input")[0].value];
+        var rate = row.cells[5].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[3].getElementsByTagName("input")[0].value;
         var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
             var rowTotalRate = qnty * rate;
             if ($(txtBox).attr("id") == "SQDiscAmt") {
-                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                discountPer = (discountAmt / rowTotalRate).toFixed(itemArr[9]);
             }
             else {
-                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                discountAmt = (rowTotalRate * discountPer).toFixed(itemArr[9]);
             }
-            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(itemArr[9]);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(itemArr[9]);
             //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
             var orderAmount = netAmount;
             if ($(txtBox).attr("id") == "SQDiscAmt") {
@@ -1890,7 +2196,7 @@ function iSQuantityAvailablePO(txtBox) {
                     }
                 },
                 error: function (result) {
-                    alert("Error");
+                    //alert("Error");
                 }
             });
 
@@ -2286,13 +2592,12 @@ $(document).on("click", ".PurchaseOrderBtnDetail", function (e) {
 function CreateNewRowSQ() {
 
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SQItem" type="text" id="SQItem" class="form-control SQItem gridTxtBox required" style="width:70px;"></td><td><input name="SQName" type="text" id="SQName" class="form-control SQName gridTxtBox required"></td><td><input name="SQRate" type="text" id="SQRate" class="form-control SQRate gridTxtBox txtNumeric required"></td><td><input name="SQQuantity" type="text" id="SQQuantity" class="form-control SQQuantity gridTxtBox txtNumeric required"></td><td><input name="SQUnit" type="text" id="SQUnit" class="form-control SQUnit gridTxtBox required" readonly="readonly"></td><td><input name="SQDiscPer" type="text" id="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required"></td><td><input name="SQDiscAmt" type="text" id="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required"></td><td><input name="SQTaxPer" type="text" id="SQTaxPer" class="form-control SQTaxPer gridTxtBox required"><input type="hidden" name="SQTaxCode" id="SQTaxCode"></td><td><input name="SQTaxAmt" type="text" id="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" readonly="readonly"></td><td><input name="SQNetAmt" type="text" id="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" readonly="readonly" style="width:50px;"></td></tr>';
-    //var row = $("#rowTemplate").html(); alert(row);
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SQItem" type="text" id="SQItem" class="form-control SQItem gridTxtBox required" style="width:70px;"></td><td><input name="SQName" type="text" id="SQName" class="form-control SQName gridTxtBox required"></td><td><input name="SQQuantity" type="text" id="SQQuantity" class="form-control SQQuantity gridTxtBox txtNumeric required"></td><td><input name="SQUnit" type="text" id="SQUnit" class="form-control SQUnit gridTxtBox required" readonly="readonly"></td><td><input name="SQRate" type="text" id="SQRate" class="form-control SQRate gridTxtBox txtNumeric required"></td><td><input name="SQDiscPer" type="text" id="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required"></td><td><input name="SQDiscAmt" type="text" id="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required"></td><td><input name="SQTaxPer" type="text" id="SQTaxPer" class="form-control SQTaxPer gridTxtBox required"><input type="hidden" name="SQTaxCode" id="SQTaxCode"></td><td><input name="SQTaxAmt" type="text" id="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" readonly="readonly"></td><td><input name="SQNetAmt" type="text" id="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" readonly="readonly" style="width:50px;"></td><td><a id="lnkDeleteSQ" style="cursor:pointer" >Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
     $("#SalesQuotationDetail tbody").append(row);
 }
 $(document).on("keydown", "#SQNetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
-    if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+    if (keyCode == 9 && $("#SalesOrder").val()=="" ) {
         CreateNewRowSQ()
     }
 });
@@ -2396,10 +2701,10 @@ function GetPriceBook(pageIndex,filterItem) {
         dataType: "json",
         success: OnSuccess,
         failure: function (response) {
-            alert(response.d);
+            //alert(response.d);
         },
         error: function (response) {
-            alert(response.d);
+            //alert(response.d);
         }
     });
 }

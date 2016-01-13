@@ -140,61 +140,6 @@ namespace XpressBilling.Account
 
         }
 
-        private void AddNewRowToGrid()
-        {
-            try
-            {
-                int rowIndex = 0;
-
-                if (ViewState["CurrentTable"] != null)
-                {
-                    DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
-                    DataRow drCurrentRow = null;
-                    if (dtCurrentTable.Rows.Count > 0)
-                    {
-                        for (int i = 1; i <= dtCurrentTable.Rows.Count; i++)
-                        {
-                            //extract the TextBox values
-                            TextBox box1 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[1].FindControl("ItemCode");
-                            TextBox box2 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[2].FindControl("SupplierBarcode");
-                            //TextBox box3 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[2].FindControl("Description");
-                            TextBox box4 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[3].FindControl("CurrencyCode");
-                            TextBox box5 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[4].FindControl("MRP");
-                            TextBox box6 = (TextBox)PriceBookDetail.Rows[rowIndex].Cells[5].FindControl("Price");
-
-                            drCurrentRow = dtCurrentTable.NewRow();
-                            dtCurrentTable.Rows[i - 1]["ID"] = PriceBookDetail.DataKeys[rowIndex]["ID"]; ;
-                            dtCurrentTable.Rows[i - 1]["ItemCode"] = box1.Text;
-                            dtCurrentTable.Rows[i - 1]["SupplierBarcode"] = box2.Text;
-                            //dtCurrentTable.Rows[i - 1]["Description"] = box3.Text;
-                            dtCurrentTable.Rows[i - 1]["CurrencyCode"] = box4.Text;
-                            dtCurrentTable.Rows[i - 1]["MRP"] = float.Parse(box5.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dtCurrentTable.Rows[i - 1]["Price"] = float.Parse(box6.Text, CultureInfo.InvariantCulture.NumberFormat);
-
-                            rowIndex++;
-                        }
-                        dtCurrentTable.Rows.Add(drCurrentRow);
-                        ViewState["CurrentTable"] = dtCurrentTable;
-
-                        PriceBookDetail.DataSource = dtCurrentTable;
-                        PriceBookDetail.DataBind();
-                    }
-                }
-                else
-                {
-                    Response.Write("ViewState is null");
-                }
-
-                //Set Previous Data on Postbacks
-                SetPreviousData();
-            }
-            catch (Exception e)
-            {
-
-            }
-
-        }
-
         [WebMethod]
         public static List<ItemMasteDetails> GetItemMasters(string companyCode)
         {
@@ -248,11 +193,6 @@ namespace XpressBilling.Account
 
             }
 
-        }
-
-        protected void ButtonAddClick(object sender, EventArgs e)
-        {
-            AddNewRowToGrid();
         }
 
         private void SetInitialRow()
@@ -483,6 +423,18 @@ namespace XpressBilling.Account
             {
                 gridDetails.Visible = true;
                 savePriceBook.Visible = true;
+            }
+            if(Type.SelectedValue=="0")
+            {
+                OrderType_0.Style.Add("display", "block");
+                OrderType_1.Style.Add("display", "none");
+                
+            }
+            else if (Type.SelectedValue == "1")
+            {
+                OrderType_0.Style.Add("display", "none");
+                OrderType_1.Style.Add("display", "block");
+
             }
         }
 

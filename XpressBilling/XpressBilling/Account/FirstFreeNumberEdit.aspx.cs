@@ -10,8 +10,10 @@ namespace XpressBilling.Account
 {
     public partial class FirstFreeNumberEdit : System.Web.UI.Page
     {
+        DataTable dtLocation = null;
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             if (!Page.IsPostBack)
             {
 
@@ -29,7 +31,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-
+                
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -47,7 +49,7 @@ namespace XpressBilling.Account
                     {
                         Type.SelectedValue = prevType.ToString();
                         Type.Enabled = false;
-                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
+                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer" };
                         DataRow row = null;
                         DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
 
@@ -131,13 +133,34 @@ namespace XpressBilling.Account
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
-                dr = dt.NewRow();
-                dr["OrderType"] = "Against Order";
-                dt.Rows.Add(dr);
+                if(Type.SelectedValue=="0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Against Order";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Manual Return Order";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Manual Return Order";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for(int i=0;i<dtLocation.Rows.Count;i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Against Order";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Manual Return Order";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+                    }
+                }
+                
 
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
@@ -164,14 +187,34 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Cash";
-                dt.Rows.Add(dr);
+                
+                if (Type.SelectedValue == "0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Cash";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Credit";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Credit";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
+                        dr = dt.NewRow();
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dr["OrderType"] = "Cash";
+                        dt.Rows.Add(dr);
 
+                        dr = dt.NewRow();
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dr["OrderType"] = "Credit";
+                        dt.Rows.Add(dr);
+                    }
+                }
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
             }
@@ -196,18 +239,43 @@ namespace XpressBilling.Account
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
-                dr = dt.NewRow();
-                dr["OrderType"] = "Addition";
-                dt.Rows.Add(dr);
+                
+                if (Type.SelectedValue == "0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Addition";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Deduction";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Deduction";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Opening";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Opening";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Addition";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
 
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Deduction";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Opening";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+                    }
+                }
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
             }
@@ -233,14 +301,35 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Local";
-                dt.Rows.Add(dr);
+                
+                if (Type.SelectedValue == "0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Local";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Import";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Import";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
+                        
+                        dr = dt.NewRow();
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dr["OrderType"] = "Local";
+                        dt.Rows.Add(dr);
 
+                        dr = dt.NewRow();
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dr["OrderType"] = "Import";
+                        dt.Rows.Add(dr);
+                    }
+                }
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
             }
@@ -266,14 +355,35 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Manual Goods Receipt";
-                dt.Rows.Add(dr);
+                
+                if (Type.SelectedValue == "0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Manual Goods Receipt";
+                    dt.Rows.Add(dr);
 
-                dr = dt.NewRow();
-                dr["OrderType"] = "Goods Receipt Auto";
-                dt.Rows.Add(dr);
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Goods Receipt Auto";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
 
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Manual Goods Receipt";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Goods Receipt Auto";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+                    }
+                }
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
             }
@@ -424,8 +534,8 @@ namespace XpressBilling.Account
 
         protected void TypeSelectedIndexChanged(object sender, EventArgs e)
         {
-
-            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt" };
+            FirstFreeDetail.Visible = false;
+            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer" };
             DataRow row = null;
             DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
 
