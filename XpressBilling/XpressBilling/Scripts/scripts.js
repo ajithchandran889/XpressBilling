@@ -146,7 +146,7 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#GRNId").length > 0) {
+    Fif ($("#GRNId").length > 0) {
         if ($("#GoodsReceipt").val() == "") {
             alert("Please create first free number for goods receipt");
             $("#btnSaveDtl").attr("disabled", true);
@@ -788,16 +788,16 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on("click", "#saveItemMaster", function () {
-        if (parseInt($("#SafetStock").val()) < parseInt($("#ReorderQty").val())) {
-            alert("Reorder quantity should be lesser or equal to safety stock");
-            return false;
-        }
-        else {
-            return true;
-        }
+    //$(document).on("click", "#saveItemMaster", function () {
+    //    if (parseInt($("#SafetStock").val()) < parseInt($("#ReorderQty").val())) {
+    //        alert("Reorder quantity should be lesser or equal to safety stock");
+    //        return false;
+    //    }
+    //    else {
+    //        return true;
+    //    }
 
-    });
+    //});
 
     $(document).on("keyup", "#Currency", function () {
         if (this.id == "Currency") {

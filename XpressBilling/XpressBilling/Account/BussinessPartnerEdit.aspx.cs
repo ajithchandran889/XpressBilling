@@ -51,6 +51,10 @@ namespace XpressBilling.Account
                     ddlStatus.Visible = false;
                     lblstatus.Visible = false;
                     BPId.Value = "0";
+                    CreditLimit.Text = "0";
+                    CreditLimitCust.Text = "0";
+                    CreditLimitCust.Visible = false;
+                    TinCust.Visible = false;
                 }
             }
 
@@ -66,17 +70,28 @@ namespace XpressBilling.Account
             BusinessPartnerType.Enabled = false;
             if (row["BusinessPartnerType"].ToString()=="0")
             {
+                CreditLimit.Visible = true;
+                Tin.Visible = true;
+                CreditLimitCust.Visible = false;
+                TinCust.Visible = false;
+                CreditLimit.Text = row["CreditLimit"].ToString();
+                Tin.Text = row["TaxId1"].ToString();
                 OrderType_0.SelectedValue = row["OrderType"].ToString();
                 OrderType_1.Attributes.Add("class", "hideElement");
             }
             else if (row["BusinessPartnerType"].ToString() == "1")
             {
+                CreditLimitCust.Text = row["CreditLimit"].ToString();
+                TinCust.Text = row["TaxId1"].ToString();
+                CreditLimit.Visible = false;
+                Tin.Visible = false;
+                CreditLimitCust.Visible = true;
+                TinCust.Visible = true;
                 OrderType_1.SelectedValue = row["OrderType"].ToString();
                 OrderType_0.Attributes.Add("class", "hideElement");
             }
             Discount.Text = row["Discount"].ToString();
-            CreditLimit.Text = row["CreditLimit"].ToString();
-            Tin.Text = row["TaxId1"].ToString();
+            
             Cst.Text = row["TaxId2"].ToString();
             Name.Text = row["Name"].ToString();
             //Name.ReadOnly = true;
@@ -119,19 +134,25 @@ namespace XpressBilling.Account
         {
             try
             {
+                int CRlimit;
+                string tinval;
                 int orderType = 0;
                 if (BusinessPartnerType.SelectedValue == "0")
                 {
                     orderType = Convert.ToInt32(OrderType_0.SelectedValue);
+                    CRlimit = Convert.ToInt32(CreditLimit.Text);
+                    tinval = Tin.Text;
                 }
                 else
                 {
                     orderType = Convert.ToInt32(OrderType_1.SelectedValue);
+                    CRlimit = Convert.ToInt32(CreditLimitCust.Text);
+                    tinval = TinCust.Text;
                 }
-                bool status = false;
+                bool status = false;               
                 if (BPId.Value != "0" && BPId.Value != "")
-                {
-                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value,Name.Text, Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), Tin.Text, Cst.Text, Note.Text, User.Identity.Name, Convert.ToInt32(ddlStatus.SelectedValue), orderType);
+                {                    
+                    status = XBDataProvider.BussinessPartner.UpdateBP(BPId.Value, Name.Text, Convert.ToInt32(Discount.Text), CRlimit, tinval, Cst.Text, Note.Text, User.Identity.Name, Convert.ToInt32(ddlStatus.SelectedValue), orderType);
                     if (status)
                     {
                         SaveSuccess.Visible = false;
@@ -148,8 +169,12 @@ namespace XpressBilling.Account
                 else
                 {                    
                     int retunValue = 0;
-                    retunValue = XBDataProvider.BussinessPartner.SaveBP(Session["CompanyCode"].ToString(), BussinessPartner.Text, Name.Text,Convert.ToInt32(BusinessPartnerType.SelectedValue), orderType,Convert.ToInt32(Discount.Text), Convert.ToInt32(CreditLimit.Text), ContactPerson.Text, Tin.Text, Cst.Text, Note.Text,  User.Identity.Name,
-                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text,Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text);
+                    // Unique code generation for Company 
+                    Random rnd = new Random();
+                    string AddContactCode = string.Concat('B', BussinessPartner.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
+                    AddContactCode = AddContactCode.Substring(0, 10);
+                    retunValue = XBDataProvider.BussinessPartner.SaveBP(Session["CompanyCode"].ToString(), BussinessPartner.Text, Name.Text, Convert.ToInt32(BusinessPartnerType.SelectedValue), orderType, Convert.ToInt32(Discount.Text), CRlimit, ContactPerson.Text, tinval, Cst.Text, Note.Text, User.Identity.Name,
+                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, AddContactCode);
                     if (retunValue == 2)
                     {
                         ClearInputs(Page.Controls);
@@ -180,6 +205,24 @@ namespace XpressBilling.Account
                 UpdateSuccess.Visible = false;
                 failure.Visible = true;
                 alreadyexist.Visible = false;
+            }
+        }
+
+        protected void BusinessPartnerTypeelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (BusinessPartnerType.SelectedValue == "0")
+            {
+                CreditLimit.Visible = true;
+                CreditLimitCust.Visible = false;
+                Tin.Visible = true;
+                TinCust.Visible = false;
+            }
+            else
+            {
+                CreditLimit.Visible = false;
+                CreditLimitCust.Visible = true;
+                Tin.Visible = false;
+                TinCust.Visible = true;
             }
         }
 

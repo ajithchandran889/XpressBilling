@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="BusinessPartnerType" class="control-label col-xs-2 col-md-2">Business Partner Type</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:DropDownList runat="server" ID="BusinessPartnerType" class="form-control required" ClientIDMode="Static">
+                        <asp:DropDownList runat="server" ID="BusinessPartnerType" AutoPostBack="true" OnSelectedIndexChanged="BusinessPartnerTypeelectedIndexChanged" class="form-control required" ClientIDMode="Static">
                             <asp:ListItem Value="0" Text="Supplier"></asp:ListItem>
                             <asp:ListItem Value="1" Text="Customer"></asp:ListItem>
                         </asp:DropDownList>
@@ -61,14 +61,15 @@
                     </div>
                     <label for="CreditLimit" class="control-label col-xs-2 col-md-2">Credit Limit</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="CreditLimit" class="form-control required txtNumeric" placeholder="Credit Limit" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="CreditLimit" class="form-control txtNumeric required" placeholder="Credit Limit" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="CreditLimitCust" class="form-control txtNumeric" placeholder="Credit Limit" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Tin" class="control-label col-xs-2 col-md-2">TIN</label>
                     <div class="col-xs-10 col-md-2">
                         <asp:TextBox runat="server" ID="Tin" class="form-control required" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
-
+                        <asp:TextBox runat="server" ID="TinCust" class="form-control" placeholder="TIN" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label for="Cst" class="control-label col-xs-2 col-md-2">CST</label>
                     <div class="col-xs-10 col-md-2">

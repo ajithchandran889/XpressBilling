@@ -15,7 +15,7 @@ namespace XBDataProvider
         public static int SaveBP(string companyCode,string bussinessPartner, string name,int bussinessPartnerType, int OrderType, int Discount, int CreditLimit,
                                       string contactPerson,string tin,string cst, string Note,   string userName,
                                       string phone, string mobile, string email, string web, string designation, string address1, string address2,
-                                      string city, string area, string zipCode, string country, string state, String fax)
+                                      string city, string area, string zipCode, string country, string state, String fax, string AddContactCode)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Email", email));
                 cmd.Parameters.Add(new SqlParameter("@Web", web));
                 cmd.Parameters.Add(new SqlParameter("@ContactPerson", contactPerson));
-                cmd.Parameters.Add(new SqlParameter("@ContactCode", bussinessPartner));
+                cmd.Parameters.Add(new SqlParameter("@ContactCode", AddContactCode));
                 cmd.Parameters.Add(new SqlParameter("@Designation", designation));
                 cmd.Parameters.Add(new SqlParameter("@Address1", address1));
                 cmd.Parameters.Add(new SqlParameter("@Address2", address2));
