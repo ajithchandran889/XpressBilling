@@ -146,7 +146,7 @@ $(document).ready(function () {
             }
         });
     }
-    Fif ($("#GRNId").length > 0) {
+    if ($("#GRNId").length > 0) {
         if ($("#GoodsReceipt").val() == "") {
             alert("Please create first free number for goods receipt");
             $("#btnSaveDtl").attr("disabled", true);
