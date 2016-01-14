@@ -13,7 +13,7 @@
         <div class="form-group">
           <label for="Location" class="control-label col-sm-12 col-md-3">Location</label>
           <div class="control-label col-sm-12  col-md-3">
-            <asp:TextBox runat="server" ID="Location" name="Location" class="form-control required" placeholder="Location" ClientIDMode="Static"></asp:TextBox>
+            <asp:TextBox runat="server" ID="LocationCode" name="Location" class="form-control required" placeholder="Location" ClientIDMode="Static"></asp:TextBox>
           </div>
           <label for="Name" class="control-label col-sm-12 col-md-3">Name</label>
           <div class="control-label col-sm-12  col-md-3">

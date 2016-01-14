@@ -177,8 +177,8 @@ namespace XpressBilling.Account
         public void SetCompanyDetails(DataTable companyDetails)
         {
             DataRow row = companyDetails.Rows[0];
-            Location.Text = row["LocationCode"].ToString();
-            Location.ReadOnly = true;
+            LocationCode.Text = row["LocationCode"].ToString();
+            LocationCode.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
             FormationDate.Text = formationDate;
@@ -240,8 +240,8 @@ namespace XpressBilling.Account
                     {
                         System.IO.Directory.CreateDirectory(Server.MapPath("~") + "/Images/Company/" + Session["CompanyCode"].ToString() + "/Location/");
                     }
-                    path = Server.MapPath(folderPath) + Location.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName);
-                    absolutePath = folderPath + Location.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
+                    path = Server.MapPath(folderPath) + LocationCode.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName);
+                    absolutePath = folderPath + LocationCode.Text + "_location_" + timestamp + Path.GetExtension(inputUpload.FileName); ;
                     imgPreview.ImageUrl = absolutePath;
                     inputUpload.SaveAs(path);
                 }
@@ -274,9 +274,9 @@ namespace XpressBilling.Account
                     int retunValue = 0;
                     // Unique code generation for Location 
                     Random rnd = new Random();
-                    string addContactCode = string.Concat('L', Location.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
+                    string addContactCode = string.Concat('L', LocationCode.Text.Trim(), rnd.Next(100000000, 999999999).ToString());
                     addContactCode = addContactCode.Substring(0, 10);
-                    retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), Location.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, addContactCode, path, Note.Text, "", User.Identity.Name,
+                    retunValue = XBDataProvider.Location.SaveLocation(Session["CompanyCode"].ToString(), LocationCode.Text, Name.Text, PAN.Text, formationDate, TIN.Text, RegistrationNo.Text, addContactCode, path, Note.Text, "", User.Identity.Name,
                                                                     Phone.Text, Mobile.Text, Email.Text, Web.Text, ContactPerson.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Convert.ToInt32(Zip.Text), Country.Text, State.Text, Fax.Text, dbstatus);
                     if (retunValue == 1)
                     {
