@@ -210,6 +210,7 @@
                                 </div>
                                 <label class="control-label col-xs-12 col-sm-4 col-md-4">Order Amount</label>
                                 <div class="col-xs-12 col-sm-8 col-md-8">
+                                    <span id="currencyCode1" runat="server" />
                                     <asp:TextBox runat="server" ID="TotalOrderAmt" class="form-control" placeholder="Order Amount" ClientIDMode="Static"></asp:TextBox>
                                 </div>
                             </div>
@@ -217,6 +218,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
+                            <asp:HiddenField ID="currencyCode" runat="server" />
                             <asp:HiddenField ID="DeletedRowIDs" ClientIDMode="Static" runat="server" />
                             <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />
                             <asp:HiddenField ID="SalesQuotationId" runat="server" ClientIDMode="Static" />

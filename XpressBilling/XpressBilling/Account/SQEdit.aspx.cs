@@ -22,7 +22,9 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
                 CompanyCode.Value = Session["CompanyCode"].ToString();
+                currencyCode1.InnerText = currencyCode.Value;
                 DataRow row = null;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
@@ -252,7 +254,7 @@ namespace XpressBilling.Account
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
-                        dr["Currency"] = "";
+                        dr["Currency"] = currencyCode.Value;
                         dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["TotalRate"] = float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Discount"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
@@ -288,7 +290,7 @@ namespace XpressBilling.Account
 
                     for (int k = 0; k < SQItems.Length; k++)
                     {
-                        if (SQItems[k] != "")
+                        if (SQItems[k] != "" && SQNames[k] != "" && SQRates[k] != "" && SQQuantities[k] != "" && SQDiscPers[k] != "" && SQDiscAmts[k] != "" && SQTaxPers[k] != "")
                         {
                             dr = dt.NewRow();
                             dr["ID"] = DBNull.Value;
@@ -301,7 +303,7 @@ namespace XpressBilling.Account
                             dr["ItemName"] = SQNames[k];
                             dr["BaseUnitCode"] = SQUnits[k];
                             dr["Qty"] = Convert.ToInt32(SQQuantities[k].ToString());
-                            dr["Currency"] = "";
+                            dr["Currency"] = currencyCode.Value;
                             dr["Rate"] = float.Parse(SQRates[k], CultureInfo.InvariantCulture.NumberFormat);
                             dr["TotalRate"] = float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat);
                             dr["Discount"] = float.Parse(SQDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
@@ -330,7 +332,7 @@ namespace XpressBilling.Account
                     SalesManHidden.Value, validity, 1, User.Identity.Name, selectedSequenceId, Telephone.Text,
                     PayTerms.Text, DeliveryTerms.Text, float.Parse(TotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat),
                     float.Parse(TotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalTaxAmt.Text,
-                    CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), dt, Name.Text);
+                    CultureInfo.InvariantCulture.NumberFormat), float.Parse(TotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), dt, Name.Text,currencyCode.Value);
                     if (returnValue > 0)
                     {
                         QuotationType.SelectedValue = selectedQuotationType.Value;
@@ -570,6 +572,7 @@ namespace XpressBilling.Account
 
             return result;
         }
+
         protected void BtnConvertOrderClick(object sender, EventArgs e)
         {
             try

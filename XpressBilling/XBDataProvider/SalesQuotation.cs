@@ -66,7 +66,7 @@ namespace XBDataProvider
 
         public static int SaveSQ(string companyCode, string locationCode, string salesQuotationNo, DateTime salesQuotationDate,
                                    int orderType, string reference, string bussinesspartnersCode, string salesMan, DateTime validity, int status, string user, int selectedSequenceId, string telephone,
-                                   string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, DataTable SQDetail,string name)
+                                   string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, DataTable SQDetail,string name,string currencyCode)
         {
             try
             {
@@ -74,6 +74,7 @@ namespace XBDataProvider
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@selectedSequenceId", selectedSequenceId));
+                cmd.Parameters.Add(new SqlParameter("@Currency", currencyCode));
                 cmd.Parameters.Add(new SqlParameter("@CompanyCode", companyCode));
                 cmd.Parameters.Add(new SqlParameter("@Locationcode", locationCode));
                 cmd.Parameters.Add(new SqlParameter("@Salesquotationno", salesQuotationNo));

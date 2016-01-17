@@ -25,10 +25,10 @@
                             <asp:BoundField DataField="SalesOrderDate" HeaderText="Date" DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
                             <asp:BoundField DataField="Customer" HeaderText="Customer"></asp:BoundField>
-                            <asp:BoundField DataField="Telephone" HeaderText="Telephone"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
+                            <asp:BoundField DataField="BPTelephone" HeaderText="Telephone"></asp:BoundField>
+                            <asp:BoundField DataField="OrderAmount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
-                            <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
+                            <asp:BoundField DataField="Name" HeaderText="Sales Man"></asp:BoundField>
                              <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized") %></ItemTemplate>
                             </asp:TemplateField>

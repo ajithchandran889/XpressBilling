@@ -48,21 +48,22 @@ namespace XBDataProvider
         public static int AddInvoiceWithDetails(string CompanyCode,string CustomerId,string Invoice,int Status,
                                                 int InvoiceType,DateTime Date,string Name,string location,string SalesMan,string Telephone,string Reference,
                                                 string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt,
-                                                float MITotalTaxAmt, float MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails)
+                                                float MITotalTaxAmt, float MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails,string currencyCode)
         {
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 //DataProvider dtProv = new DataProvider();
                 SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Currency", currencyCode));
                 cmd.Parameters.Add(new SqlParameter("@companyCode", CompanyCode));
                 cmd.Parameters.Add(new SqlParameter("@BuisinessPartnerCode", CustomerId));
                 cmd.Parameters.Add(new SqlParameter("@SalesOrderNo", Invoice));
                 cmd.Parameters.Add(new SqlParameter("@Status", Status));
                 cmd.Parameters.Add(new SqlParameter("@OrderType", InvoiceType));
-                //cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                cmd.Parameters.Add(new SqlParameter("@Name", Name));
                 cmd.Parameters.Add(new SqlParameter("@LocationCode", location));
-                //cmd.Parameters.Add(new SqlParameter("@Telephone", Telephone));
+                cmd.Parameters.Add(new SqlParameter("@Telephone", Telephone));
                 cmd.Parameters.Add(new SqlParameter("@Reference", Reference));
                 cmd.Parameters.Add(new SqlParameter("@Salesman", SalesMan));
                 cmd.Parameters.Add(new SqlParameter("@PaymentTerms", MIPayTerms));
@@ -90,7 +91,7 @@ namespace XBDataProvider
             }
         }
 
-        public static bool UpdateInvoiceDetails(int invoiceId,string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt, float MITotalTaxAmt, float MITotalOrderAmt, string userName, DataTable dtDetails)
+        public static bool UpdateInvoiceDetails(int invoiceId,string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt, float MITotalTaxAmt, float MITotalOrderAmt, string userName, DataTable dtDetails,DataTable dtDeletedIds)
         {
             try
             {
@@ -108,6 +109,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@OrderAmount", MITotalOrderAmt));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", userName));
                 cmd.Parameters.Add(new SqlParameter("@dtDetails", dtDetails));
+                cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_SalesInvoiceMst_xpupd", cmd);
                 return true;
