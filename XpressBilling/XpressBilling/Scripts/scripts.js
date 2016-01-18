@@ -1176,6 +1176,7 @@ $(document).on("click", "#lnkDeleteSQ", function (e) {
     var row = this.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (SQItemRowDetails[rowIndex]) {
+        var itemArr = itemMasterDetailsSQ[row.cells[1].getElementsByTagName("input")[0].value];
         var itemArray = SQItemRowDetails[rowIndex];
         var totalAmt = parseFloat($("#TotalAmount").val());
         var totalDiscount = parseFloat($("#TotalDiscountAmt").val());
@@ -1189,10 +1190,10 @@ $(document).on("click", "#lnkDeleteSQ", function (e) {
         totalDiscount -= parseFloat(oldDiscount);
         totalTax -= parseFloat(oldTax);
         totalOder -= parseFloat(oldOder);
-        $("#TotalAmount").val(totalAmt);
-        $("#TotalDiscountAmt").val(totalDiscount);
-        $("#TotalTaxAmt").val(totalTax);
-        $("#TotalOrderAmt").val(totalOder);
+        $("#TotalAmount").val(totalAmt.toFixed(itemArr[9]));
+        $("#TotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+        $("#TotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+        $("#TotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
         var i;
         for (i = rowIndex; i < SQItemRowDetails.length; i++) {
             if (SQItemRowDetails[i + 1]) {
@@ -1219,6 +1220,7 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
     var row = this.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (IItemRowDetails[rowIndex]) {
+        var itemArr = itemMasterDetailsInvoice[row.cells[1].getElementsByTagName("input")[0].value];
         var itemArray = IItemRowDetails[rowIndex]; 
         var totalAmt = parseFloat($("#ITotalAmount").val());
         var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
@@ -1232,11 +1234,11 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
         totalDiscount -= parseFloat(oldDiscount);
         totalTax -= parseFloat(oldTax);
         totalOder -= parseFloat(oldOder);
-        $("#ITotalAmount").val(totalAmt);
-        $("#ITotalDiscountAmt").val(totalDiscount);
-        $("#ITotalTaxAmt").val(totalTax);
-        $("#ITotalOrderAmt").val(totalOder);
-        $("#Amount").val(totalOder);
+        $("#ITotalAmount").val(totalAmt.toFixed(itemArr[9]));
+        $("#ITotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+        $("#ITotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+        $("#ITotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+        $("#Amount").val(totalOder.toFixed(itemArr[9]));
         var i;
         for (i = rowIndex; i < IItemRowDetails.length; i++) {
             if (IItemRowDetails[i + 1]) {
@@ -1715,13 +1717,17 @@ function iSQuantityAvailableI(txtBox) {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantityI[itemCode];
         if (typeof (itemArr) === "undefined") {
-            var obj = {};
-            obj.companyCode = $.trim($("#CompanyCode").val());
+            var val = $("#CustomerIdSI").val();
+            var item = customerCodesWithDetails[val];
+            var obj1 = {};
+            obj1.companyCode = $.trim($("#CompanyCode").val());
+            obj1.orderType = item[2];
+            obj1.priceType = 0;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "PriceBookEdit.aspx/GetItemMasters",
-                data: JSON.stringify(obj),
+                url: "SQEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj1),
                 dataType: "json",
                 success: function (data) {
                     itemMasterQuantityI = {};
@@ -1736,7 +1742,7 @@ function iSQuantityAvailableI(txtBox) {
                         row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
                         alert("Insufficient Qty, Available qty is" + itemArr[0]);
                         CalculateIAmount(txtBox);
-                        //$(txtBox).focus();
+                        row.cells[3].getElementsByTagName("input")[0].focus(); 
                     }
                 },
                 error: function (result) {
@@ -1751,7 +1757,9 @@ function iSQuantityAvailableI(txtBox) {
             }
             else {
                 row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
-                alert("Sorry,Avilable Items:" + itemArr[0]);
+                alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                CalculateIAmount(txtBox);
+                row.cells[3].getElementsByTagName("input")[0].focus(); 
             }
         }
 
@@ -2019,7 +2027,7 @@ function CalculateIAmount(txtBox) {
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-            var rowTotalRate = parseInt(qnty) * parseFloat(rate);
+            var rowTotalRate = (parseInt(qnty) * parseFloat(rate)).toFixed(itemArr[9]);
             if ($(txtBox).attr("id") == "IDiscAmt") {
                 if (parseFloat(rowTotalRate) != 0) {
                     discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
@@ -2079,15 +2087,15 @@ function CalculateIAmount(txtBox) {
                 }
             }
             else {
-                var itemArray = IItemRowDetails[rowIndex];
+                var itemArray1 = IItemRowDetails[rowIndex];
                 var totalAmt = parseFloat($("#ITotalAmount").val());
                 var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
                 var totalTax = parseFloat($("#ITotalTaxAmt").val());
                 var totalOder = parseFloat($("#ITotalOrderAmt").val());
-                var oldAmount = parseFloat(itemArray[6]);
-                var oldDiscount = parseFloat(itemArray[3]);
-                var oldTax = parseFloat(itemArray[5]);
-                var oldOder = parseFloat(itemArray[7]);
+                var oldAmount = parseFloat(itemArray1[6]);
+                var oldDiscount = parseFloat(itemArray1[3]);
+                var oldTax = parseFloat(itemArray1[5]);
+                var oldOder = parseFloat(itemArray1[7]);
                 totalAmt -= parseFloat(oldAmount);
                 totalDiscount -= parseFloat(oldDiscount);
                 totalTax -= parseFloat(oldTax);
@@ -2097,11 +2105,11 @@ function CalculateIAmount(txtBox) {
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                $("#Amount").val(totalOder);
-                $("#ITotalAmount").val(totalAmt);
-                $("#ITotalDiscountAmt").val(totalDiscount);
-                $("#ITotalTaxAmt").val(totalTax);
-                $("#ITotalOrderAmt").val(totalOder);
+                $("#Amount").val(totalOder.toFixed(itemArr[9]));
+                $("#ITotalAmount").val(totalAmt.toFixed(itemArr[9]));
+                $("#ITotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+                $("#ITotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+                $("#ITotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
                 IItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
             }
 
@@ -2313,7 +2321,7 @@ function CalculateSQAmount(txtBox) {
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-            var rowTotalRate = qnty * rate;
+            var rowTotalRate = (qnty * rate).toFixed(itemArr[9]);
             if ($(txtBox).attr("id") == "SQDiscAmt") {
                 if (parseFloat(rowTotalRate) != 0) {
                     discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
@@ -2384,10 +2392,10 @@ function CalculateSQAmount(txtBox) {
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                $("#TotalAmount").val(totalAmt);
-                $("#TotalDiscountAmt").val(totalDiscount);
-                $("#TotalTaxAmt").val(totalTax);
-                $("#TotalOrderAmt").val(totalOder);
+                $("#TotalAmount").val(totalAmt.toFixed(itemArr[9]));
+                $("#TotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+                $("#TotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+                $("#TotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
                 SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
             }
 
