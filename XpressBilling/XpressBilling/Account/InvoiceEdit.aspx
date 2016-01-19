@@ -277,6 +277,7 @@
                 </div>--%>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="row">
+                        <asp:HiddenField ID="currencyDecimal" runat="server" />
                         <asp:HiddenField ID="currencyCode" runat="server" />
                         <asp:HiddenField ID="DeletedRowIDs" ClientIDMode="Static" runat="server" />
                         <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />

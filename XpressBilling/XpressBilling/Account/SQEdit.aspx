@@ -139,19 +139,19 @@
                                         <asp:TextBox ID="SQUnit" class="form-control SQUnit gridTxtBox required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rate" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:TextBox ID="SQRate" class="form-control SQRate gridTxtBox txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
+                                <asp:TemplateField HeaderText="Rate" ControlStyle-Width="50" >
+                                    <ItemTemplate >
+                                        <asp:TextBox ID="SQRate" class="form-control SQRate gridTxtBox txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc%" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Discount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SQDiscPer" class="form-control gridTxtBox SQDiscPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Discount")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disc Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SQDiscAmt" class="form-control SQDiscAmt gridTxtBox txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax%" ControlStyle-Width="50">
@@ -163,12 +163,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SQTaxAmt" class="form-control SQTaxAmt gridTxtBox required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Net Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
+                                        <asp:TextBox ID="SQNetAmt" class="form-control SQNetAmt gridTxtBox required" ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderStyle-Width="50">
@@ -218,6 +218,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
+                            <asp:HiddenField ID="currencyDecimal" runat="server" />
                             <asp:HiddenField ID="currencyCode" runat="server" />
                             <asp:HiddenField ID="DeletedRowIDs" ClientIDMode="Static" runat="server" />
                             <asp:HiddenField ID="rowCount" runat="server" ClientIDMode="Static" Value="1" />

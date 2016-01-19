@@ -27,6 +27,7 @@ namespace XpressBilling.Account
                 currencyCode1.InnerText = currencyCode.Value;
                 DataRow row = null;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
+                currencyDecimal.Value = XBDataProvider.Currency.GetCurrencyDecimalByCompany(CompanyCode.Value).ToString();
                 if (id != null && id != 0)
                 {
                     DataTable salesQuotationDetails = XBDataProvider.SalesQuotation.GetSalesQuotationById(id);
@@ -80,7 +81,7 @@ namespace XpressBilling.Account
                 Status.Enabled = false;
                 CustomerId.Text = row["BusinessPartnerCode"].ToString();
                 CustomerId.ReadOnly = true;
-                Name.Text = row["BusinessPartnerCode"].ToString();
+                Name.Text = row["Name"].ToString();
                 Name.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
                 Reference.ReadOnly = true;
@@ -91,11 +92,12 @@ namespace XpressBilling.Account
                 Validity.ReadOnly = true;
                 PayTerms.Text = row["PaymentTerms"].ToString();
                 DeliveryTerms.Text = row["DeliveryTerms"].ToString();
-                TotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
-                TotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("0.00");
-                TotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("0.00");
-                TotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
-                Telephone.Text = row["OrderAmount"].ToString();
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                TotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
+                TotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("f" + decimalPoints);
+                TotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("f" + decimalPoints);
+                TotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
+                Telephone.Text = row["Telephone"].ToString();
                 Telephone.ReadOnly = true;
                 CreatedDate.Text = Convert.ToDateTime(row["SalesQuotationDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedDate.ReadOnly = true;
@@ -561,6 +563,7 @@ namespace XpressBilling.Account
                     itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;
                     itemMasteDetails.currencyCode = row["CurrencyCode"].ToString();
                     itemMasteDetails.decimalPoint = row["Decimal"].ToString();
+                    
                     result.Add(itemMasteDetails);
                 }
             }
@@ -652,6 +655,26 @@ namespace XpressBilling.Account
             {
                 e.Row.Cells[11].Visible = false;
             }
+            if (e.Row.RowIndex != -1)
+            {
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                TextBox Rate = e.Row.Cells[5].FindControl("SQRate") as TextBox;
+                TextBox Discount = e.Row.Cells[6].FindControl("SQDiscPer") as TextBox;
+                TextBox DiscountAmt = e.Row.Cells[7].FindControl("SQDiscAmt") as TextBox;
+                TextBox NetAmount = e.Row.Cells[9].FindControl("SQNetAmt") as TextBox;
+                TextBox TaxAmount = e.Row.Cells[8].FindControl("SQTaxAmt") as TextBox;
+                double rate = Convert.ToDouble(Rate.Text);
+                double discount = Convert.ToDouble(Discount.Text);
+                double discountAmt = Convert.ToDouble(DiscountAmt.Text);
+                double netAmount = Convert.ToDouble(NetAmount.Text);
+                double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                Rate.Text = rate.ToString("f" + decimalPoints);
+                Discount.Text = discount.ToString("f" + decimalPoints);
+                DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
+                NetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+            }
+            
         }
 
 

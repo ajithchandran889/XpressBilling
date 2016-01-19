@@ -25,6 +25,7 @@ namespace XpressBilling.Account
                 currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
                 currencyCode1.InnerText = currencyCode.Value;
                 currencyCode2.InnerText = currencyCode.Value;
+                currencyDecimal.Value = XBDataProvider.Currency.GetCurrencyDecimalByCompany(CompanyCode.Value).ToString();
                 DataRow row = null;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != 0)
@@ -91,15 +92,16 @@ namespace XpressBilling.Account
                 Telephone.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
                 Reference.ReadOnly = true;
-                Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
                 Amount.ReadOnly = true;
                 IPayTerms.Text = row["PaymentTerms"].ToString();
                 IDeliveryTerms.Text = row["DeliveryTerms"].ToString();
                 IShipToAddress.Text = row["ShiptoAddress"].ToString();
-                ITotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
-                ITotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("0.00");
-                ITotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("0.00");
-                ITotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
+                ITotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
+                ITotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("f" + decimalPoints);
+                ITotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("f" + decimalPoints);
+                ITotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
                 if (row["Status"].ToString() == "2")
                 {
                     btnFinalizeI.Visible = false;
@@ -453,6 +455,25 @@ namespace XpressBilling.Account
             if (Status.SelectedValue == "2")
             {
                 e.Row.Cells[11].Visible = false;
+            }
+            if (e.Row.RowIndex != -1)
+            {
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                TextBox Rate = e.Row.Cells[5].FindControl("IItemRate") as TextBox;
+                TextBox Discount = e.Row.Cells[6].FindControl("IDiscPer") as TextBox;
+                TextBox DiscountAmt = e.Row.Cells[7].FindControl("IDiscAmt") as TextBox;
+                TextBox NetAmount = e.Row.Cells[9].FindControl("INetAmt") as TextBox;
+                TextBox TaxAmount = e.Row.Cells[8].FindControl("ITaxAmt") as TextBox;
+                double rate = Convert.ToDouble(Rate.Text);
+                double discount = Convert.ToDouble(Discount.Text);
+                double discountAmt = Convert.ToDouble(DiscountAmt.Text);
+                double netAmount = Convert.ToDouble(NetAmount.Text);
+                double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                Rate.Text = rate.ToString("f" + decimalPoints);
+                Discount.Text = discount.ToString("f" + decimalPoints);
+                DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
+                NetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
             }
         }
     }

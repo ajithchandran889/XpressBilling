@@ -185,5 +185,25 @@ namespace XBDataProvider
             }
             return "";
         }
+        public static int GetCurrencyDecimalByCompany(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetCurrencyDecimalByCompany", cmd);
+                if (dtTable.Rows.Count > 0)
+                {
+                    return Convert.ToInt32(dtTable.Rows[0]["Decimal"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return 0;
+        }
     }
 }
