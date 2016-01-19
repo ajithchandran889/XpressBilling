@@ -458,22 +458,26 @@ namespace XpressBilling.Account
             }
             if (e.Row.RowIndex != -1)
             {
-                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
-                TextBox Rate = e.Row.Cells[5].FindControl("IItemRate") as TextBox;
-                TextBox Discount = e.Row.Cells[6].FindControl("IDiscPer") as TextBox;
-                TextBox DiscountAmt = e.Row.Cells[7].FindControl("IDiscAmt") as TextBox;
-                TextBox NetAmount = e.Row.Cells[9].FindControl("INetAmt") as TextBox;
-                TextBox TaxAmount = e.Row.Cells[8].FindControl("ITaxAmt") as TextBox;
-                double rate = Convert.ToDouble(Rate.Text);
-                double discount = Convert.ToDouble(Discount.Text);
-                double discountAmt = Convert.ToDouble(DiscountAmt.Text);
-                double netAmount = Convert.ToDouble(NetAmount.Text);
-                double taxAmount = Convert.ToDouble(TaxAmount.Text);
-                Rate.Text = rate.ToString("f" + decimalPoints);
-                Discount.Text = discount.ToString("f" + decimalPoints);
-                DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
-                NetAmount.Text = netAmount.ToString("f" + decimalPoints);
-                TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+                TextBox item = e.Row.Cells[5].FindControl("IItem") as TextBox;
+                if (item.Text != "")
+                {
+                    int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                    TextBox Rate = e.Row.Cells[5].FindControl("IItemRate") as TextBox;
+                    TextBox Discount = e.Row.Cells[6].FindControl("IDiscPer") as TextBox;
+                    TextBox DiscountAmt = e.Row.Cells[7].FindControl("IDiscAmt") as TextBox;
+                    TextBox NetAmount = e.Row.Cells[9].FindControl("INetAmt") as TextBox;
+                    TextBox TaxAmount = e.Row.Cells[8].FindControl("ITaxAmt") as TextBox;
+                    double rate = Convert.ToDouble(Rate.Text);
+                    double discount = Convert.ToDouble(Discount.Text);
+                    double discountAmt = Convert.ToDouble(DiscountAmt.Text);
+                    double netAmount = Convert.ToDouble(NetAmount.Text);
+                    double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                    Rate.Text = rate.ToString("f" + decimalPoints);
+                    Discount.Text = discount.ToString("f" + decimalPoints);
+                    DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
+                    NetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                    TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+                }
             }
         }
     }
