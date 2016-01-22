@@ -743,7 +743,7 @@ $(document).ready(function () {
                         var taxAmount = ((rowTotalRate - discountAmt) / 100) * taxPer;
                         var netAmount = (rowTotalRate - discountAmt) + taxAmount;
                         var orderAmount = netAmount;
-                        SQItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                        SQItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
                         i++;
                     }
 
@@ -1837,7 +1837,7 @@ function CheckItemAlreadyAddedSI(val, rowIndex) {
     var rowIndexCurrent = -1;
     $("tr", $("#InvoiceDetail")).each(function () {
         var row = this.parentNode.parentNode;
-        if (val == $("input[id*='IItem']", $(this)).val() && rowIndexCurrent != rowIndex) {
+        if (val == $("input[id*='IItem']", $(this)).val() && rowIndex !== rowIndexCurrent) {
             flag = true;
         }
         rowIndexCurrent = rowIndexCurrent + 1;
@@ -1892,13 +1892,15 @@ $(document).on("keydown", ".IItem", function (e) {
 
         },
         change: function (event, ui) {
+            
             val = $(this).val();
             exists = $.inArray(val, itemMasterArrayInvoice);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
             if (exists < 0) {
                 $(this).val("");
                 $(this).focus();
-                var row = this.parentNode.parentNode;
-                var rowIndex = row.rowIndex - 1;
+                
                 row.cells[2].getElementsByTagName("input")[0].value = "";
                 row.cells[3].getElementsByTagName("input")[0].value = "";
                 row.cells[4].getElementsByTagName("input")[0].value = "";
@@ -1910,7 +1912,21 @@ $(document).on("keydown", ".IItem", function (e) {
                 row.cells[10].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-
+            else {
+                if (!CheckItemAlreadyAddedSI($(this).val(), rowIndex)) {
+                    if (IsItemAvailableSi($(this).val())) {
+                        SetSelectedRowInvoice(this, $(this).val());
+                    }
+                    else {
+                        $(this).val("");
+                        $(this).focus();
+                    }
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
         },
         response: function (event, ui) {
             if (!ui.content.length) {
@@ -1928,7 +1944,13 @@ $(document).on("keydown", ".IItemName", function (e) {
             var row = this.parentNode.parentNode;
             var rowIndex = row.rowIndex - 1;
             if (!CheckItemAlreadyAddedSI(itemArr[0], rowIndex)) {
-                SetSelectedRowInvoiceByName(this, ui.item.label);
+                if (IsItemAvailableSi(itemArr[0])) {
+                    SetSelectedRowInvoiceByName(this, ui.item.label);
+                }
+                else {
+                    $(this).val("");
+                }
+                
             }
             else {
                 alert("Item Already added");
@@ -1951,10 +1973,10 @@ $(document).on("keydown", ".IItemName", function (e) {
         change: function (event, ui) {
             val = $(this).val();
             exists = $.inArray(val, itemMasterArrayInvoiceByName);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
             if (exists < 0) {
                 $(this).val("");
-                var row = this.parentNode.parentNode;
-                var rowIndex = row.rowIndex - 1;
                 row.cells[1].getElementsByTagName("input")[0].value = "";
                 row.cells[3].getElementsByTagName("input")[0].value = "";
                 row.cells[4].getElementsByTagName("input")[0].value = "";
@@ -1965,6 +1987,23 @@ $(document).on("keydown", ".IItemName", function (e) {
                 row.cells[9].getElementsByTagName("input")[0].value = "";
                 row.cells[10].getElementsByTagName("input")[0].value = "";
                 return false;
+            }
+            else {
+                var itemArr = itemMasterDetailsInvoiceByName[$(this).val()];
+                if (!CheckItemAlreadyAddedSI(itemArr[0], rowIndex)) {
+                    if (IsItemAvailableSi(itemArr[0])) {
+                        SetSelectedRowInvoiceByName(this, $(this).val());
+                    }
+                    else {
+                        $(this).val("");
+                        $(this).focus();
+                    }
+
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
             }
 
         },
@@ -2184,8 +2223,11 @@ $(document).on("keydown", ".SQItem", function (e) {
         },
         change: function (event, ui) {
             val = $(this).val();
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
             exists = $.inArray(val, itemMasterArraySQ);
             if (exists < 0) {
+
                 $(this).val("");
                 $(this).focus();
                 var row = this.parentNode.parentNode;
@@ -2201,15 +2243,24 @@ $(document).on("keydown", ".SQItem", function (e) {
                 row.cells[10].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-
-        },
-        response: function (event, ui) {
-            if (!ui.content.length) {
-                var noResult = { value: "", label: "No item found" };
-                ui.content.push(noResult);
+            else {
+                if (!CheckItemAlreadyAddedSQ($(this).val(), rowIndex)) {
+                    SetSelectedRowSQ(this, $(this).val());
+                }
+                else
+                {
+                    $(this).val("");
+                    $(this).focus();
+                }
             }
-        }
-    });
+        },
+            response: function (event, ui) {
+                if (!ui.content.length) {
+                    var noResult = { value: "", label: "No item found" };
+                    ui.content.push(noResult);
+                }
+            }
+        });
     //$(this).autocomplete(optionsSQ);
 });
 $(document).on("keydown", ".SQName", function (e) {
@@ -2242,6 +2293,8 @@ $(document).on("keydown", ".SQName", function (e) {
         },
         change: function (event, ui) {
             val = $(this).val();
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
             exists = $.inArray(val, itemMasterArraySQByName);
             if (exists < 0) {
                 $(this).val("");
@@ -2257,6 +2310,17 @@ $(document).on("keydown", ".SQName", function (e) {
                 row.cells[9].getElementsByTagName("input")[0].value = "";
                 row.cells[10].getElementsByTagName("input")[0].value = "";
                 return false;
+            }
+            else {
+                var itemArr = itemMasterDetailsSQByName[$(this).val()];
+                if (!CheckItemAlreadyAddedSQ(itemArr[0], rowIndex)) {
+                    SetSelectedRowSQByName(this, $(this).val());
+                }
+                else
+                {
+                    $(this).val("");
+                    $(this).focus();
+                }
             }
 
         },
@@ -2347,12 +2411,12 @@ function CalculateSQAmount(txtBox) {
             row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
             if (!SQItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
                 if ($("#TotalAmount").val() == "") {
-                    $("#TotalAmount").val(netAmount);
+                    $("#TotalAmount").val(rowTotalRate);
                 }
                 else {
-                    $("#TotalAmount").val((parseFloat($("#TotalAmount").val()) + parseFloat(netAmount)).toFixed(itemArr[9]));
+                    $("#TotalAmount").val((parseFloat($("#TotalAmount").val()) + parseFloat(rowTotalRate)).toFixed(itemArr[9]));
                 }
                 if ($("#TotalDiscountAmt").val() == "") {
                     $("#TotalDiscountAmt").val(discountAmt);
@@ -2387,7 +2451,7 @@ function CalculateSQAmount(txtBox) {
                 totalDiscount -= parseFloat(oldDiscount);
                 totalTax -= parseFloat(oldTax);
                 totalOder -= parseFloat(oldOder);
-                totalAmt += parseFloat(netAmount);
+                totalAmt += parseFloat(rowTotalRate);
                 totalDiscount += parseFloat(discountAmt);
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
@@ -2396,7 +2460,7 @@ function CalculateSQAmount(txtBox) {
                 $("#TotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
                 $("#TotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
                 $("#TotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
-                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                SQItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
             }
 
 
