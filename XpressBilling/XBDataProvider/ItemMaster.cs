@@ -294,6 +294,24 @@ namespace XBDataProvider
             return dtTable;
         }
 
+        public static DataTable GetItemMastersSE(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMastersSE", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
         public static DataTable GetAllActiveItemGroup(string companyCode)
         {
             DataTable dtTable = new DataTable();

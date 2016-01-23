@@ -176,9 +176,10 @@ namespace XpressBilling.Account
 
             if (dt.Rows.Count > 0)
             {
+                rowCount.Value = dt.Rows.Count.ToString();
                 SalesQuotationDetail.DataSource = dt;
                 SalesQuotationDetail.DataBind();
-                rowCount.Value = dt.Rows.Count.ToString();
+                
                 return;
             }
 
@@ -563,7 +564,7 @@ namespace XpressBilling.Account
                     itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;
                     itemMasteDetails.currencyCode = row["CurrencyCode"].ToString();
                     itemMasteDetails.decimalPoint = row["Decimal"].ToString();
-
+                    itemMasteDetails.itemType = Convert.ToInt32(row["ItemType"].ToString());
                     result.Add(itemMasteDetails);
                 }
             }
@@ -647,9 +648,10 @@ namespace XpressBilling.Account
 
         protected void SalesQuotationDetailRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowIndex == 0)
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
             {
-                e.Row.Cells[11].Visible = false;
+                LinkButton lnkDtn = e.Row.Cells[11].FindControl("lnkDeleteSQ") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
             }
             if (SalesOrder.Text != "")
             {
@@ -717,5 +719,6 @@ namespace XpressBilling.Account
         public int Qnty { get; set; }
         public string currencyCode { get; set; }
         public string decimalPoint { get; set; }
+        public int itemType { get; set; }
     }
 }

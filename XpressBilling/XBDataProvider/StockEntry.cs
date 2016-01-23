@@ -47,7 +47,7 @@ namespace XBDataProvider
         }
 
         public static int SaveSE(string companyCode, int adjustmentType, string stockEntrynNo, int status, DateTime documentDate,
-                           string locationCode, string createdUser, string currentUser, string reference, float amount, string currencyCode, int selectedSequenceId)
+                           string locationCode, string createdUser, string currentUser, string reference, float amount, string currencyCode, int selectedSequenceId, DataTable dtSEDetail)
         {
             try
             {
@@ -68,6 +68,8 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Updatedby", currentUser));
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@SEDetail", dtSEDetail));
+                
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_StockAdjustmentMst_xpins", cmd);
 
             }
@@ -78,7 +80,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SaveSEDetail(int SEMasterId, float totalAmount, string user, DataTable SEDetail)
+        public static bool SaveSEDetail(int SEMasterId, float totalAmount, string user, DataTable SEDetail, DateTime date, DataTable dtDeletedIds)
         {
             try
             {
@@ -89,6 +91,8 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@SEDetail", SEDetail));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@date", date));
+                cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_StockAdjustmentDtl_xpins", cmd);
                 return true;
 

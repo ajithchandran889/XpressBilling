@@ -120,23 +120,15 @@ namespace XpressBilling.Account
         public void SetPriceBookDetailsChildGrid()
         {
             DataTable dt = new DataTable();
-            //if (txtSearch.Text == "")
-            //{
-                dt = XBDataProvider.PriceBook.GetPriceBookDtlById(Convert.ToInt32(PriceBookId.Value));
-                rowCount.Value = dt.Rows.Count.ToString();
-            //}
-            //else
-            //{
-            //    dt = XBDataProvider.PriceBook.GetPriceBookDtlByIdAndSearchKey(Convert.ToInt32(PriceBookId.Value), txtSearch.Text);
-
-            //}
+            dt = XBDataProvider.PriceBook.GetPriceBookDtlById(Convert.ToInt32(PriceBookId.Value));
+                
             if (dt.Rows.Count > 0)
             {
+                rowCount.Value = dt.Rows.Count.ToString();
                 PriceBookDetail.DataSource = dt;
                 PriceBookDetail.DataBind();
                 return;
             }
-            //SetInitialRow();
 
         }
 
@@ -411,9 +403,10 @@ namespace XpressBilling.Account
             string txt = e.Row.Cells[0].Text == "No:" ? "header" : (lbl == null ? String.Empty : lbl.Text);
             if (txt == string.Empty)
                 e.Row.Visible = false;
-            if (e.Row.RowIndex==0)
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
             {
-                e.Row.Cells[7].Visible = false;
+                LinkButton lnkDtn = e.Row.Cells[7].FindControl("lnkDelete") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
             }
         }
 

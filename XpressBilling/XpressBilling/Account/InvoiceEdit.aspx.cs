@@ -126,9 +126,10 @@ namespace XpressBilling.Account
 
             if (dt.Rows.Count > 0)
             {
+                rowCount.Value = dt.Rows.Count.ToString();
                 InvoiceDetail.DataSource = dt;
                 InvoiceDetail.DataBind();
-                rowCount.Value = dt.Rows.Count.ToString();
+                
             }
         }
 
@@ -448,9 +449,10 @@ namespace XpressBilling.Account
 
         protected void InvoiceDetailRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowIndex == 0)
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
             {
-                e.Row.Cells[11].Visible = false;
+                LinkButton lnkDtn = e.Row.Cells[11].FindControl("lnkDeleteSI") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
             }
             if (Status.SelectedValue == "2")
             {
