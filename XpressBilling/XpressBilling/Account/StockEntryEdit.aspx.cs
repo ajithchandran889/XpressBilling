@@ -504,6 +504,7 @@ namespace XpressBilling.Account
                     itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;
                     itemMasteDetails.decimalPoint = row["Decimal"].ToString();
                     itemMasteDetails.currencyCode = row["CurrencyCode"].ToString();
+                    itemMasteDetails.itemType = Convert.ToInt32(row["ItemType"].ToString());
                     result.Add(itemMasteDetails);
                 }
             }
@@ -550,5 +551,6 @@ namespace XpressBilling.Account
         public int Qnty { get; set; }
         public string currencyCode { get; set; }
         public string decimalPoint { get; set; }
+        public int itemType { get; set; }
     }
 }

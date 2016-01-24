@@ -126,11 +126,12 @@ $(document).ready(function () {
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
                     });
-                    if (firstFreeSE.length == 0) {
-                        alert("Please create first free number for Sales Quotation");
-                        $("#SaveBtn").attr("disabled", true);
-                    }
+                    
                 });
+                if (firstFreeSE.length == 0) {
+                    alert("Please create first free number for Sales Quotation");
+                    $("#SaveBtn").attr("disabled", true);
+                }
             },
             error: function (result) {
                 // alert("Error");
@@ -151,9 +152,9 @@ $(document).ready(function () {
                 itemMasterDetailsStockEntryByName = {};
                 $.each(data.d, function (i, j) {
                     itemMasterArrayStockEntry.push(j.code);
-                    itemMasterDetailsStockEntry[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.currencyCode, j.decimalPoint];
+                    itemMasterDetailsStockEntry[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.currencyCode, j.decimalPoint, j.itemType];
                     itemMasterArrayStockEntryByName.push(j.name);
-                    itemMasterDetailsStockEntryByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.currencyCode, j.decimalPoint];
+                    itemMasterDetailsStockEntryByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.currencyCode, j.decimalPoint, j.itemType];
                     itemMasterQuantitySE[j.code] = [j.Qnty];
                 });
             },
@@ -185,11 +186,12 @@ $(document).ready(function () {
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
                     });
-                    if (firstFreeSQ.length == 0) {
-                        alert("Please create first free number for Sales Quotation");
-                        $("#SaveBtn").attr("disabled", true);
-                    }
+                    
                 });
+                if (firstFreeSQ.length == 0) {
+                    alert("Please create first free number for Sales Quotation");
+                    $("#SaveBtn").attr("disabled", true);
+                }
             },
             error: function (result) {
                 // alert("Error");
@@ -457,12 +459,13 @@ $(document).ready(function () {
                         seqType: j.seqType,
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
-                    });
-                    if (firstFreeSI.length == 0) {
-                        alert("Please create first free number for Sales Quotation");
-                        $("#btnSaveDtl").attr("disabled", true);
-                    }
+                    }); 
+                    
                 });
+                if (firstFreeSI.length == 0) {
+                    alert("Please create first free number for Sales Quotation");
+                    $("#btnSaveDtl").attr("disabled", true);
+                }
             },
             error: function (result) {
                 // alert("Error");
@@ -1201,13 +1204,13 @@ $(document).on("click", "#lnkDelete", function (e) {
     if (newIndex == 1) {
         $("tr", $("#PriceBookDetail")).each(function () {
             var val = $("input[id*='ItemCode']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDelete']", $(this)).css("display", "none");
             }
 
 
         });
-    }
+    } 
     $("#rowCount").val(newIndex);
     return false;
 });
@@ -1256,7 +1259,7 @@ $(document).on("click", "#lnkDeleteSQ", function (e) {
     if (newIndex == 1) {
         $("tr", $("#SalesQuotationDetail")).each(function () {
             var val = $("input[id*='SQItem']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDeleteSQ']", $(this)).css("display", "none");
             }
 
@@ -1295,13 +1298,14 @@ $(document).on("click", "#lnkDeleteSE", function (e) {
         index++;
 
     });
-    var newIndex = --index; alert(newIndex);
+    var newIndex = --index; 
     if (newIndex==1)
     {
+        
         $("tr", $("#StockEntryDetail")).each(function () {
             var val = $("input[id*='Item']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
-                $("a[id*='lnkDeleteSE']", $(this)).css("display", "none");
+            if (typeof (val) !== "undefined"  && val != "undefined") {
+                $("a[id*='lnkDeleteSE']", $(this)).css("display", "none"); 
             }
             
 
@@ -1356,7 +1360,7 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
     if (newIndex == 1) {
         $("tr", $("#InvoiceDetail")).each(function () {
             var val = $("input[id*='IItem']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDeleteSI']", $(this)).css("display", "none");
             }
 
@@ -1540,7 +1544,18 @@ $(document).on("keydown", ".StockItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayStockEntry,
         select: function (event, ui) {
-            SetSelectedRowStockEntry(this, ui.item.label);
+            var itemArr = itemMasterDetailsStockEntry[ui.item.label];
+            if (parseInt(itemArr[7]) == 1)
+            {
+                SetSelectedRowStockEntry(this, ui.item.label);
+            }
+            else
+            {
+                alert("Non inventory Item – Not allowed");
+                $(this).val("");
+                $(this).focus();
+                return false;
+            }
 
         },
         change: function (event, ui) {
@@ -1561,7 +1576,16 @@ $(document).on("keydown", ".StockItem", function (e) {
                 return false;
             }
             else {
-                SetSelectedRowStockEntry(this, $(this).val());
+                var itemArr = itemMasterDetailsStockEntry[$(this).val()];
+                if (parseInt(itemArr[7]) == 1) {
+                    SetSelectedRowStockEntry(this, $(this).val());
+                }
+                else {
+                    alert("Non inventory Item – Not allowed");
+                    $(this).val("");
+                    $(this).focus();
+                }
+                
                   
             }
         }
@@ -1571,7 +1595,17 @@ $(document).on("keydown", ".StockName", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayStockEntryByName,
         select: function (event, ui) {
-            SetSelectedRowStockEntryByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsStockEntryByName[ui.item.label];
+            if (parseInt(itemArr[7]) == 1) {
+                SetSelectedRowStockEntryByName(this, ui.item.label);
+            }
+            else {
+                alert("Non inventory Item – Not allowed");
+                $(this).val("");
+                $(this).focus();
+                return false;
+            }
+            
 
         },
         change: function (event, ui) {
@@ -1589,7 +1623,16 @@ $(document).on("keydown", ".StockName", function (e) {
                 return false;
             }
             else {
-                SetSelectedRowStockEntryByName(this, $(this).val());
+                var itemArr = itemMasterDetailsStockEntryByName[$(this).val()];
+                if (parseInt(itemArr[7]) == 1) {
+                    SetSelectedRowStockEntryByName(this, $(this).val());
+                }
+                else {
+                    alert("Non inventory Item – Not allowed");
+                    $(this).val("");
+                    $(this).focus();
+                }
+                
                    
             }
 
@@ -3181,7 +3224,7 @@ function CreateNewRowPriceBook() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#PriceBookDetail")).each(function () {
             var val = $("input[id*='ItemCode']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDelete']", $(this)).css("display", "block");
             }
 
