@@ -55,6 +55,7 @@ var SRItemRowDetails = [];
 var firstFreeSQ = [];
 var firstFreeSI = [];
 var firstFreeSE = [];
+var firstFreeMI = [];
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -106,10 +107,10 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-    } 
+    }
 
     if ($("#StokeEntryMstId").length > 0) {
-        
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -126,7 +127,7 @@ $(document).ready(function () {
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
                     });
-                    
+
                 });
                 if (firstFreeSE.length == 0) {
                     alert("Please create first free number for Sales Quotation");
@@ -159,7 +160,7 @@ $(document).ready(function () {
                 });
             },
             error: function (result) {
-               // alert("Error");
+                // alert("Error");
             }
         });
     }
@@ -186,7 +187,7 @@ $(document).ready(function () {
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
                     });
-                    
+
                 });
                 if (firstFreeSQ.length == 0) {
                     alert("Please create first free number for Sales Quotation");
@@ -370,48 +371,70 @@ $(document).ready(function () {
         });
     }
     if ($("#InvoiceId").length > 0) {
-        if ($("#Invoice").val() == "") {
-            alert("Please create first free number for Manual Invoice");
-            $("#btnSaveDtl").attr("disabled", true);
-        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
+            url: "ManualInvoiceEdit.aspx/GetFirstFreerDetails",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
-                itemMasterArrayManualInvoice = [];
-                itemMasterDetailsManualInvoice = {};
-                //itemMasterQuantityMI = {};
+                firstFreeMI = [];
                 $.each(data.d, function (i, j) {
-                    itemMasterArrayManualInvoice.push(j.code);
-                    itemMasterDetailsManualInvoice[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    //itemMasterQuantityMI[j.code] = [j.Qnty];
+                    firstFreeMI.push({
+                        id: j.id,
+                        sequenceNumber: j.sequenceNumber,
+                        seqType: j.seqType,
+                        orderType: j.orderType,
+                        enterpriseUnitCode: j.enterpriseUnitCode
+                    });
+
                 });
+                if (firstFreeMI.length == 0) {
+                    alert("Please create first free number for Manual Invoice");
+                    $("#btnSaveDtl").attr("disabled", true);
+                }
             },
             error: function (result) {
                 // alert("Error");
             }
         });
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
+            url: "SQEdit.aspx/GetCustomerDetails",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
-                itemMasterArrayManualInvoiceByName = [];
-                itemMasterDetailsManualInvoiceByName = {};
-                //itemMasterQuantityMI = {};
+                customerCodes = [];
+                customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    itemMasterArrayManualInvoiceByName.push(j.name);
-                    itemMasterDetailsManualInvoiceByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    //itemMasterQuantityMI[j.code] = [j.Qnty];
+                    customerCodes.push(j.code);
+                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
                 });
             },
             error: function (result) {
-                //  alert("Error");
+                //alert("Error");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "TaxMst.aspx/GetAllTaxDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemTaxCodes = [];
+                itemTaxCodevalues = [];
+                itemTaxDetails = {};
+                $.each(data.d, function (i, j) {
+                    itemTaxCodes.push(j.code);
+                    itemTaxCodevalues.push(j.Per);
+                    itemTaxDetails[j.code] = [j.Per];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
             }
         });
     }
@@ -459,8 +482,8 @@ $(document).ready(function () {
                         seqType: j.seqType,
                         orderType: j.orderType,
                         enterpriseUnitCode: j.enterpriseUnitCode
-                    }); 
-                    
+                    });
+
                 });
                 if (firstFreeSI.length == 0) {
                     alert("Please create first free number for Sales Quotation");
@@ -543,8 +566,7 @@ $(document).ready(function () {
         $(".StockUnit").attr('readonly', 'readonly');
         $(".StockAmount").attr('readonly', 'readonly');
     }
-    else if ($("#StokeEntryMstId").length > 0 && $("#PageStatus").val() == "edit")
-    {
+    else if ($("#StokeEntryMstId").length > 0 && $("#PageStatus").val() == "edit") {
         if ($("#Status").val() == "2") {
             $(".StockItem").attr('readonly', 'readonly');
             $(".StockName").attr('readonly', 'readonly');
@@ -615,30 +637,57 @@ $(document).ready(function () {
         }
     }
     if ($("#InvoiceId").length > 0 && $("#PageStatus").val() != "create") {
-        itemMasterArrayManualInvoice = [];
-        itemMasterDetailsManualInvoice = {};
-        var i = 0;
-        $("tr", $("#ManualInvoiceDetail")).each(function () {
+        var obj1 = {};
+        obj1.companyCode = $.trim($("#CompanyCode").val());
+        obj1.orderType = $("#InvoiceType").val();
+        obj1.priceType = 0;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj1),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArrayManualInvoice = [];
+                itemMasterDetailsManualInvoice = {};
+                itemMasterArrayManualInvoiceByName = [];
+                itemMasterDetailsManualInvoiceByName = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArrayManualInvoice.push(j.code);
+                    itemMasterDetailsManualInvoice[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+                    itemMasterArrayManualInvoiceByName.push(j.name);
+                    itemMasterDetailsManualInvoiceByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
 
-            var val = $("input[id*='MIItem']", $(this)).val();
-            var qnty = parseInt($("input[id*='MIQuantity']", $(this)).val());
-            var rate = parseFloat($("input[id*='MIItemRate']", $(this)).val());
-            var discountAmt = parseFloat($("input[id*='MIDiscAmt']", $(this)).val());
-            var taxPer = parseFloat($("input[id*='MITaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
-                var rowTotalRate = qnty * rate;
-                var discountPer = 0;
-                if (rowTotalRate != 0) {
-                    discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                }
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
-                var orderAmount = netAmount;
-                MIItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                i++;
+                });
+                var i = 0;
+                $("tr", $("#ManualInvoiceDetail")).each(function () {
+
+                    var val = $("input[id*='MIItem']", $(this)).val();
+                    var qnty = parseInt($("input[id*='MIQuantity']", $(this)).val());
+                    var rate = parseFloat($("input[id*='MIItemRate']", $(this)).val());
+                    var discountAmt = parseFloat($("input[id*='MIDiscAmt']", $(this)).val());
+                    var taxPer = parseFloat($("input[id*='MITaxPer']", $(this)).val());
+                    if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+                        var itemArr = itemMasterDetailsManualInvoice[$("input[id*='MIItem']", $(this)).val()];
+                        var rowTotalRate = qnty * rate;
+                        var discountPer = 0;
+                        if (rowTotalRate != 0) {
+                            discountPer = ((discountAmt / rowTotalRate) * 100).toFixed(itemArr[9]);
+                        }
+                        var taxAmount = ((rowTotalRate - discountAmt) / 100) * taxPer;
+                        var netAmount = rowTotalRate
+                        var orderAmount = (rowTotalRate - discountAmt) + taxAmount;
+                        MIItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                        i++;
+                    }
+
+                });
+            },
+            error: function (result) {
+                //alert("Error");
             }
-
         });
+        
         if ($("#PageStatus").val() == "edit") {
             $(".MITaxAmt").attr('readonly', 'readonly');
             $(".MINetAmt").attr('readonly', 'readonly');
@@ -706,7 +755,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-        
+
         if ($("#Status").val() == "1") {
             $(".ITaxAmt").attr('readonly', 'readonly');
             $(".INetAmt").attr('readonly', 'readonly');
@@ -786,7 +835,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-        
+
         if ($("#PageStatus").val() == "edit") {
             $(".SQTaxAmt").attr('readonly', 'readonly');
             $(".SQNetAmt").attr('readonly', 'readonly');
@@ -1210,7 +1259,7 @@ $(document).on("click", "#lnkDelete", function (e) {
 
 
         });
-    } 
+    }
     $("#rowCount").val(newIndex);
     return false;
 });
@@ -1277,9 +1326,9 @@ $(document).on("click", "#lnkDeleteSE", function (e) {
     if (SEItemRowDetails[rowIndex]) {
         var itemArr = itemMasterDetailsStockEntry[row.cells[1].getElementsByTagName("input")[0].value];
         var itemArray = SEItemRowDetails[rowIndex];
-        var totalAmt = parseFloat($("#Amount").val()); 
-        var oldAmount = parseFloat(itemArray[2]); 
-        totalAmt -= parseFloat(oldAmount); 
+        var totalAmt = parseFloat($("#Amount").val());
+        var oldAmount = parseFloat(itemArray[2]);
+        totalAmt -= parseFloat(oldAmount);
         $("#Amount").val(totalAmt.toFixed(itemArr[6]));
         var i;
         for (i = rowIndex; i < SEItemRowDetails.length; i++) {
@@ -1298,16 +1347,71 @@ $(document).on("click", "#lnkDeleteSE", function (e) {
         index++;
 
     });
-    var newIndex = --index; 
-    if (newIndex==1)
-    {
-        
+    var newIndex = --index;
+    if (newIndex == 1) {
+
         $("tr", $("#StockEntryDetail")).each(function () {
             var val = $("input[id*='Item']", $(this)).val();
-            if (typeof (val) !== "undefined"  && val != "undefined") {
-                $("a[id*='lnkDeleteSE']", $(this)).css("display", "none"); 
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeleteSE']", $(this)).css("display", "none");
             }
-            
+
+
+        });
+    }
+    $("#rowCount").val(newIndex);
+    return false;
+});
+$(document).on("click", "#lnkDeleteMI", function (e) {
+    if (typeof $(this).attr('data-id') !== "undefined")
+        $("#DeletedRowIDs").val($("#DeletedRowIDs").val() + $(this).attr('data-id') + ",");
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (MIItemRowDetails[rowIndex]) {
+        var itemArr = itemMasterDetailsManualInvoice[row.cells[1].getElementsByTagName("input")[0].value];
+        var itemArray = MIItemRowDetails[rowIndex];
+        var totalAmt = parseFloat($("#MITotalAmount").val());
+        var totalDiscount = parseFloat($("#MITotalDiscountAmt").val());
+        var totalTax = parseFloat($("#MITotalTaxAmt").val());
+        var totalOder = parseFloat($("#MITotalOrderAmt").val());
+        var oldAmount = parseFloat(itemArray[6]);
+        var oldDiscount = parseFloat(itemArray[3]);
+        var oldTax = parseFloat(itemArray[5]);
+        var oldOder = parseFloat(itemArray[7]);
+        totalAmt -= parseFloat(oldAmount);
+        totalDiscount -= parseFloat(oldDiscount);
+        totalTax -= parseFloat(oldTax);
+        totalOder -= parseFloat(oldOder);
+        $("#MITotalAmount").val(totalAmt.toFixed(itemArr[9]));
+        $("#MITotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+        $("#MITotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+        $("#MITotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+        $("#Amount").val(totalOder.toFixed(itemArr[9]));
+        var i;
+        for (i = rowIndex; i < MIItemRowDetails.length; i++) {
+            if (MIItemRowDetails[i + 1]) {
+                MIItemRowDetails[i] = MIItemRowDetails[i + 1];
+            }
+            else {
+                MIItemRowDetails.splice(i, 1);
+            }
+        }
+    }
+    row.remove();
+    var index = 1;
+    $("td:first-child", $("#ManualInvoiceDetail")).each(function () {
+        $(this).find("span:first").text(index);
+        index++;
+
+    });
+    var newIndex = --index;
+    if (newIndex == 1) {
+        $("tr", $("#ManualInvoiceDetail")).each(function () {
+            var val = $("input[id*='MIItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeleteMI']", $(this)).css("display", "none");
+            }
+
 
         });
     }
@@ -1321,7 +1425,7 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
     var rowIndex = row.rowIndex - 1;
     if (IItemRowDetails[rowIndex]) {
         var itemArr = itemMasterDetailsInvoice[row.cells[1].getElementsByTagName("input")[0].value];
-        var itemArray = IItemRowDetails[rowIndex]; 
+        var itemArray = IItemRowDetails[rowIndex];
         var totalAmt = parseFloat($("#ITotalAmount").val());
         var totalDiscount = parseFloat($("#ITotalDiscountAmt").val());
         var totalTax = parseFloat($("#ITotalTaxAmt").val());
@@ -1425,17 +1529,27 @@ $(document).on("keydown", "#Location", function (e) {
 
                         if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#InvoiceType").val()) {
                             $("#Invoice").val(j.sequenceNumber);
-                            $("#SISequenceNoID").val(j.id); 
+                            $("#SISequenceNoID").val(j.id);
                         }
 
                     });
-                    
+
                 }
                 else if ($("#StokeEntryMstId").length > 0) {
-                   $.each(firstFreeSE, function (i, j) {
+                    $.each(firstFreeSE, function (i, j) {
                         if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#AdjustmentType").val()) {
                             $("#Document").val(j.sequenceNumber);
                             $("#SESequenceNoID").val(j.id);
+                        }
+
+                    });
+
+                }
+                else if ($("#InvoiceId").length > 0) {
+                    $.each(firstFreeMI, function (i, j) {
+                        if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#InvoiceType").val()) {
+                            $("#Invoice").val(j.sequenceNumber);
+                            $("#MISequenceNoID").val(j.id);
                         }
 
                     });
@@ -1539,18 +1653,43 @@ if ($("#SalesOrder").val() != "") {
     $(".gridTxtBox").attr('readonly', 'readonly');
 }
 
-
+function CheckItemAlreadyAddedSE(val, rowIndex) {
+    var flag = false;
+    var rowIndexCurrent = -1;
+    $("tr", $("#StockEntryDetail")).each(function () {
+        var row = this.parentNode.parentNode;
+        if (val == $("input[id*='Item']", $(this)).val() && rowIndex !== rowIndexCurrent) {
+            flag = true;
+        }
+        rowIndexCurrent = rowIndexCurrent + 1;
+    });
+    return flag;
+}
 $(document).on("keydown", ".StockItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayStockEntry,
         select: function (event, ui) {
             var itemArr = itemMasterDetailsStockEntry[ui.item.label];
-            if (parseInt(itemArr[7]) == 1)
-            {
-                SetSelectedRowStockEntry(this, ui.item.label);
+            if (parseInt(itemArr[7]) == 1) {
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                if (!CheckItemAlreadyAddedSE(ui.item.label, rowIndex)) {
+                    SetSelectedRowStockEntry(this, ui.item.label);
+
+                }
+                else {
+                    alert("Item already added");
+                    row.cells[1].getElementsByTagName("input")[0].value = "";
+                    row.cells[2].getElementsByTagName("input")[0].value = "";
+                    row.cells[3].getElementsByTagName("input")[0].value = "";
+                    row.cells[4].getElementsByTagName("input")[0].value = "";
+                    row.cells[5].getElementsByTagName("input")[0].value = "";
+                    row.cells[6].getElementsByTagName("input")[0].value = "";
+                    $(this).focus();
+                    return false;
+                }
             }
-            else
-            {
+            else {
                 alert("Non inventory Item – Not allowed");
                 $(this).val("");
                 $(this).focus();
@@ -1578,15 +1717,34 @@ $(document).on("keydown", ".StockItem", function (e) {
             else {
                 var itemArr = itemMasterDetailsStockEntry[$(this).val()];
                 if (parseInt(itemArr[7]) == 1) {
-                    SetSelectedRowStockEntry(this, $(this).val());
+                    if (!CheckItemAlreadyAddedSE($(this).val(), rowIndex)) {
+                        SetSelectedRowStockEntry(this, $(this).val());
+                    }
+                    else {
+                        alert("Item already added");
+                        row.cells[1].getElementsByTagName("input")[0].value = "";
+                        row.cells[2].getElementsByTagName("input")[0].value = "";
+                        row.cells[3].getElementsByTagName("input")[0].value = "";
+                        row.cells[4].getElementsByTagName("input")[0].value = "";
+                        row.cells[5].getElementsByTagName("input")[0].value = "";
+                        row.cells[6].getElementsByTagName("input")[0].value = "";
+                        $(this).focus();
+                    }
                 }
                 else {
                     alert("Non inventory Item – Not allowed");
                     $(this).val("");
                     $(this).focus();
                 }
-                
-                  
+
+
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
             }
         }
     });
@@ -1597,7 +1755,22 @@ $(document).on("keydown", ".StockName", function (e) {
         select: function (event, ui) {
             var itemArr = itemMasterDetailsStockEntryByName[ui.item.label];
             if (parseInt(itemArr[7]) == 1) {
-                SetSelectedRowStockEntryByName(this, ui.item.label);
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                if (!CheckItemAlreadyAddedSE(itemArr[0], rowIndex)) {
+                    SetSelectedRowStockEntryByName(this, ui.item.label);
+                }
+                else {
+                    alert("Item already added");
+                    row.cells[1].getElementsByTagName("input")[0].value = "";
+                    row.cells[2].getElementsByTagName("input")[0].value = "";
+                    row.cells[3].getElementsByTagName("input")[0].value = "";
+                    row.cells[4].getElementsByTagName("input")[0].value = "";
+                    row.cells[5].getElementsByTagName("input")[0].value = "";
+                    row.cells[6].getElementsByTagName("input")[0].value = "";
+                    $(this).focus();
+                    return false;
+                }
             }
             else {
                 alert("Non inventory Item – Not allowed");
@@ -1605,7 +1778,7 @@ $(document).on("keydown", ".StockName", function (e) {
                 $(this).focus();
                 return false;
             }
-            
+
 
         },
         change: function (event, ui) {
@@ -1625,23 +1798,42 @@ $(document).on("keydown", ".StockName", function (e) {
             else {
                 var itemArr = itemMasterDetailsStockEntryByName[$(this).val()];
                 if (parseInt(itemArr[7]) == 1) {
-                    SetSelectedRowStockEntryByName(this, $(this).val());
+                    if (!CheckItemAlreadyAddedSE(itemArr[0], rowIndex)) {
+                        SetSelectedRowStockEntryByName(this, $(this).val());
+                    }
+                    else {
+                        alert("Item already added");
+                        row.cells[1].getElementsByTagName("input")[0].value = "";
+                        row.cells[2].getElementsByTagName("input")[0].value = "";
+                        row.cells[3].getElementsByTagName("input")[0].value = "";
+                        row.cells[4].getElementsByTagName("input")[0].value = "";
+                        row.cells[5].getElementsByTagName("input")[0].value = "";
+                        row.cells[6].getElementsByTagName("input")[0].value = "";
+                        $(this).focus();
+                        return false;
+                    }
                 }
                 else {
                     alert("Non inventory Item – Not allowed");
                     $(this).val("");
                     $(this).focus();
                 }
-                
-                   
+
+
             }
 
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
         }
     });
     //$(this).autocomplete(optionsStockEntryByName);
 });
 function CalculateSEAmount(txtBox) {
-    
+
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != "") {
@@ -1662,7 +1854,7 @@ function CalculateSEAmount(txtBox) {
                 }
             }
             else {
-                var itemArray = SEItemRowDetails[rowIndex]; 
+                var itemArray = SEItemRowDetails[rowIndex];
                 var totalAmt = parseFloat($("#Amount").val());
                 var oldAmount = parseFloat(itemArray[2]);
                 totalAmt -= parseFloat(oldAmount);
@@ -1719,7 +1911,7 @@ function iSQuantityAvailableSE(txtBox) {
                 data: JSON.stringify(obj1),
                 dataType: "json",
                 success: function (data) {
-                    
+
                     itemMasterQuantitySE = {};
                     $.each(data.d, function (i, j) {
                         itemMasterQuantitySE[j.code] = [j.Qnty];
@@ -1728,13 +1920,12 @@ function iSQuantityAvailableSE(txtBox) {
                     if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
                         alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
                         row.cells[3].getElementsByTagName("input")[0].focus();
-                        row.cells[3].getElementsByTagName("input")[0].value="";
+                        row.cells[3].getElementsByTagName("input")[0].value = "";
                     }
-                    else
-                    {
+                    else {
                         CalculateSEAmount(txtBox);
                     }
-                    
+
                 },
                 error: function (result) {
                     // alert("Error");
@@ -1747,25 +1938,22 @@ function iSQuantityAvailableSE(txtBox) {
                 row.cells[3].getElementsByTagName("input")[0].focus();
                 row.cells[3].getElementsByTagName("input")[0].value = "";
             }
-            else
-            {
+            else {
                 CalculateSEAmount(txtBox);
             }
-            
+
         }
 
     }
 }
 $(document).on("focusout", "#SEQuantity", function (e) {
-    if ($("#AdjustmentType").val() == "3")
-    {
+    if ($("#AdjustmentType").val() == "3") {
         iSQuantityAvailableSE(this);
     }
-    else
-    {
+    else {
         CalculateSEAmount(this);
     }
-    
+
 });
 $(document).on("focusout", "#SERate", function (e) {
     CalculateSEAmount(this);
@@ -1835,8 +2023,8 @@ function SetSelectedRowManualInvoice(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsManualInvoice[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     return false;
 }
@@ -1845,8 +2033,8 @@ function SetSelectedRowManualInvoiceByName(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsManualInvoiceByName[selectedItem];
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     return false;
 }
@@ -1861,13 +2049,90 @@ function setSelectedTaxCode(lnk, selectedItem) {
     return false;
 }
 
+function CheckItemAlreadyAddedMI(val, rowIndex) {
+    var flag = false;
+    var rowIndexCurrent = -1;
+    $("tr", $("#ManualInvoiceDetail")).each(function () {
+        var row = this.parentNode.parentNode;
+        if (val == $("input[id*='MIItem']", $(this)).val() && rowIndex !== rowIndexCurrent) {
+            flag = true;
+        }
+        rowIndexCurrent = rowIndexCurrent + 1;
+    });
+    return flag;
+}
 
 $(document).on("keydown", ".MIItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayManualInvoice,
         select: function (event, ui) {
-            SetSelectedRowManualInvoice(this, ui.item.label);
+            if (!CheckItemAlreadyAddedMI(ui.item.label, rowIndex)) {
+                SetSelectedRowManualInvoice(this, ui.item.label);
+            }
+            else {
+                alert("Item already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            
+        },
+        change: function (event, ui) {
 
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArrayManualInvoice);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                $(this).focus();
+
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                if (!CheckItemAlreadyAddedMI($(this).val(), rowIndex)) {
+                    SetSelectedRowManualInvoice(this, $(this).val());
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                    row.cells[2].getElementsByTagName("input")[0].value = "";
+                    row.cells[3].getElementsByTagName("input")[0].value = "";
+                    row.cells[4].getElementsByTagName("input")[0].value = "";
+                    row.cells[5].getElementsByTagName("input")[0].value = "";
+                    row.cells[6].getElementsByTagName("input")[0].value = "";
+                    row.cells[7].getElementsByTagName("input")[0].value = "";
+                    row.cells[8].getElementsByTagName("input")[0].value = "";
+                    row.cells[9].getElementsByTagName("input")[0].value = "";
+                    row.cells[10].getElementsByTagName("input")[0].value = "";
+                    return false;
+                }
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -1875,8 +2140,66 @@ $(document).on("keydown", ".MIItemName", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayManualInvoiceByName,
         select: function (event, ui) {
-            SetSelectedRowManualInvoiceByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsManualInvoiceByName[ui.item.label];
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (!CheckItemAlreadyAddedMI(itemArr[0], rowIndex)) {
+                SetSelectedRowManualInvoiceByName(this, ui.item.label);
 
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+
+            }
+
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArrayManualInvoiceByName);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                var itemArr = itemMasterDetailsInvoiceByName[$(this).val()];
+                if (!CheckItemAlreadyAddedMI(itemArr[0], rowIndex)) {
+                    SetSelectedRowManualInvoiceByName(this, $(this).val());
+
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
         }
     });
     //$(this).autocomplete(optionsManualInvoiceByName);
@@ -1906,21 +2229,27 @@ function CalculateMIAmount(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-        var rate = row.cells[3].getElementsByTagName("input")[0].value;
-        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterDetailsManualInvoice[row.cells[1].getElementsByTagName("input")[0].value];
+        var rate = row.cells[5].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[3].getElementsByTagName("input")[0].value;
         var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-            var rowTotalRate = qnty * rate;
+            var rowTotalRate = (parseInt(qnty) * parseFloat(rate)).toFixed(itemArr[9]);
             if ($(txtBox).attr("id") == "MIDiscAmt") {
-                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                if (parseFloat(rowTotalRate) != 0) {
+                    discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
+                }
+                else {
+                    discountPer = 0;
+                }
             }
             else {
-                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                discountAmt = ((rowTotalRate * parseFloat(discountPer)) / 100).toFixed(itemArr[9]);
             }
-            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            var taxAmount = (((rowTotalRate - discountAmt) / 100) * taxPer).toFixed(itemArr[9]);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(itemArr[9]);
             //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
             var orderAmount = netAmount;
             if ($(txtBox).attr("id") == "MIDiscAmt") {
@@ -1933,18 +2262,18 @@ function CalculateMIAmount(txtBox) {
 
             if (!MIItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
                 if ($("#MITotalAmount").val() == "") {
-                    $("#MITotalAmount").val(netAmount);
+                    $("#MITotalAmount").val(rowTotalRate);
                 }
                 else {
-                    $("#MITotalAmount").val(parseFloat($("#MITotalAmount").val()) + parseFloat(netAmount));
+                    $("#MITotalAmount").val(parseFloat($("#MITotalAmount").val()) + parseFloat(rowTotalRate));
                 }
                 if ($("#Amount").val() == "") {
-                    $("#Amount").val(netAmount);
+                    $("#Amount").val(orderAmount);
                 }
                 else {
-                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(orderAmount));
                 }
                 if ($("#MITotalDiscountAmt").val() == "") {
                     $("#MITotalDiscountAmt").val(discountAmt);
@@ -1967,7 +2296,7 @@ function CalculateMIAmount(txtBox) {
             }
             else {
                 var itemArray = MIItemRowDetails[rowIndex];
-                var totalAmt = parseFloat($("#Amount").val());
+                var totalAmt = parseFloat($("#MITotalAmount").val());
                 var totalDiscount = parseFloat($("#MITotalDiscountAmt").val());
                 var totalTax = parseFloat($("#MITotalTaxAmt").val());
                 var totalOder = parseFloat($("#MITotalOrderAmt").val());
@@ -1979,17 +2308,17 @@ function CalculateMIAmount(txtBox) {
                 totalDiscount -= parseFloat(oldDiscount);
                 totalTax -= parseFloat(oldTax);
                 totalOder -= parseFloat(oldOder);
-                totalAmt += parseFloat(netAmount);
+                totalAmt += parseFloat(rowTotalRate);
                 totalDiscount += parseFloat(discountAmt);
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                $("#Amount").val(totalAmt);
-                $("#MITotalAmount").val(totalAmt);
-                $("#MITotalDiscountAmt").val(totalDiscount);
-                $("#MITotalTaxAmt").val(totalTax);
-                $("#MITotalOrderAmt").val(totalOder);
-                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                $("#Amount").val(totalOder.toFixed(itemArr[9]));
+                $("#MITotalAmount").val(totalAmt.toFixed(itemArr[9]));
+                $("#MITotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+                $("#MITotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+                $("#MITotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+                MIItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
             }
 
 
@@ -2029,8 +2358,7 @@ function iSQuantityAvailableI(txtBox) {
                     itemArr = itemMasterQuantityI[itemCode];
                     itemArray = itemMasterDetailsInvoice[itemCode];
                     console.log(itemMasterDetailsInvoice); console.log(itemArray);
-                    if (parseInt(itemArray[10]) == 0)
-                    {
+                    if (parseInt(itemArray[10]) == 0) {
                         CalculateIAmount(txtBox);
                     }
                     else if (parseInt(itemArr[0]) >= parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
@@ -2040,7 +2368,7 @@ function iSQuantityAvailableI(txtBox) {
                         row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
                         alert("Insufficient Qty, Available qty is" + itemArr[0]);
                         CalculateIAmount(txtBox);
-                        row.cells[3].getElementsByTagName("input")[0].focus(); 
+                        row.cells[3].getElementsByTagName("input")[0].focus();
                     }
                 },
                 error: function (result) {
@@ -2060,7 +2388,7 @@ function iSQuantityAvailableI(txtBox) {
                 row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
                 alert("Insufficient Qty, Available qty is" + itemArr[0]);
                 CalculateIAmount(txtBox);
-                row.cells[3].getElementsByTagName("input")[0].focus(); 
+                row.cells[3].getElementsByTagName("input")[0].focus();
             }
         }
 
@@ -2145,20 +2473,16 @@ function CheckItemAlreadyAddedSI(val, rowIndex) {
     });
     return flag;
 }
-function IsItemAvailableSi(item)
-{
+function IsItemAvailableSi(item) {
     var itemArr = itemMasterQuantityI[item];
     var itemArray = itemMasterDetailsInvoice[item];
-    if (parseInt(itemArray[10]) == 0)
-    {
+    if (parseInt(itemArray[10]) == 0) {
         return true;
     }
-    else if(parseInt(itemArr[0])>0)
-    {
+    else if (parseInt(itemArr[0]) > 0) {
         return true;
     }
-    else
-    {
+    else {
         alert("Available qty is 0");
         return false;
     }
@@ -2170,12 +2494,10 @@ $(document).on("keydown", ".IItem", function (e) {
             var row = this.parentNode.parentNode;
             var rowIndex = row.rowIndex - 1;
             if (!CheckItemAlreadyAddedSI(ui.item.label, rowIndex)) {
-                if(IsItemAvailableSi(ui.item.label))
-                {
+                if (IsItemAvailableSi(ui.item.label)) {
                     SetSelectedRowInvoice(this, ui.item.label);
                 }
-                else
-                {
+                else {
                     $(this).val("");
                 }
             }
@@ -2198,7 +2520,7 @@ $(document).on("keydown", ".IItem", function (e) {
 
         },
         change: function (event, ui) {
-            
+
             val = $(this).val();
             exists = $.inArray(val, itemMasterArrayInvoice);
             var row = this.parentNode.parentNode;
@@ -2206,7 +2528,7 @@ $(document).on("keydown", ".IItem", function (e) {
             if (exists < 0) {
                 $(this).val("");
                 $(this).focus();
-                
+
                 row.cells[2].getElementsByTagName("input")[0].value = "";
                 row.cells[3].getElementsByTagName("input")[0].value = "";
                 row.cells[4].getElementsByTagName("input")[0].value = "";
@@ -2256,7 +2578,7 @@ $(document).on("keydown", ".IItemName", function (e) {
                 else {
                     $(this).val("");
                 }
-                
+
             }
             else {
                 alert("Item Already added");
@@ -2336,6 +2658,12 @@ $(document).on("keydown", ".ITaxPer", function (e) {
             if (exists < 0) {
                 $(this).val("");
                 return false;
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
             }
         }
     });
@@ -2553,20 +2881,19 @@ $(document).on("keydown", ".SQItem", function (e) {
                 if (!CheckItemAlreadyAddedSQ($(this).val(), rowIndex)) {
                     SetSelectedRowSQ(this, $(this).val());
                 }
-                else
-                {
+                else {
                     $(this).val("");
                     $(this).focus();
                 }
             }
         },
-            response: function (event, ui) {
-                if (!ui.content.length) {
-                    var noResult = { value: "", label: "No item found" };
-                    ui.content.push(noResult);
-                }
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
             }
-        });
+        }
+    });
     //$(this).autocomplete(optionsSQ);
 });
 $(document).on("keydown", ".SQName", function (e) {
@@ -2622,8 +2949,7 @@ $(document).on("keydown", ".SQName", function (e) {
                 if (!CheckItemAlreadyAddedSQ(itemArr[0], rowIndex)) {
                     SetSelectedRowSQByName(this, $(this).val());
                 }
-                else
-                {
+                else {
                     $(this).val("");
                     $(this).focus();
                 }
@@ -2654,6 +2980,12 @@ $(document).on("keydown", ".SQTaxPer", function (e) {
             if (exists < 0) {
                 $(this).val("");
                 return false;
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
             }
         }
     });
@@ -3203,7 +3535,7 @@ function CreateNewRowSQ() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#SalesQuotationDetail")).each(function () {
             var val = $("input[id*='SQItem']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDeleteSQ']", $(this)).css("display", "block");
             }
 
@@ -3245,7 +3577,7 @@ function CreateNewRowStockEntry() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#StockEntryDetail")).each(function () {
             var val = $("input[id*='Item']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined"  && val != "undefined") {
                 $("a[id*='lnkDeleteSE']", $(this)).css("display", "block");
             }
 
@@ -3257,7 +3589,7 @@ function CreateNewRowStockEntry() {
     $("#StockEntryDetail tbody").append(row);
 }
 $(document).on("keydown", "#SEAmount", function (e) {
-    var keyCode = e.keyCode || e.which; 
+    var keyCode = e.keyCode || e.which;
     if (keyCode == 9 && $("#Status").val() != 2) {
         CreateNewRowStockEntry()
     }
@@ -3266,7 +3598,7 @@ function CreateNewRowInvoice() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#InvoiceDetail")).each(function () {
             var val = $("input[id*='IItem']", $(this)).val();
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+            if (typeof (val) !== "undefined"  && val != "undefined") {
                 $("a[id*='lnkDeleteSI']", $(this)).css("display", "block");
             }
 
@@ -3279,18 +3611,28 @@ function CreateNewRowInvoice() {
 }
 $(document).on("keydown", "#INetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
-    if (keyCode == 9 && $("#Status").val()!=2) {
+    if (keyCode == 9 && $("#Status").val() != 2) {
         CreateNewRowInvoice()
     }
 });
 function CreateNewRowManualInvoice() {
+    if (parseInt($("#rowCount").val()) == 1) {
+        $("tr", $("#ManualInvoiceDetail")).each(function () {
+            var val = $("input[id*='MIItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeleteMI']", $(this)).css("display", "block");
+            }
+
+
+        });
+    }
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="MIItem" type="text" id="MIItem" class="form-control MIItem required" style="width:70px;" aria-required="true"></td><td><input name="MIItemName" type="text" id="MIItemName" class="form-control MIItemName required" style="width:70px;" aria-required="true"></td><td><input name="MIItemRate" type="text" id="MIItemRate" class="form-control MIItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIQuantity" type="text" id="MIQuantity" class="form-control MIQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIUnit" type="text" id="MIUnit" class="form-control MIUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MIDiscPer" type="text" id="MIDiscPer" class="form-control txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscAmt" type="text" id="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxPer" type="text" id="MITaxPer" class="form-control MITaxPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxAmt" type="text" id="MITaxAmt" class="form-control MITaxAmt txtNumeric required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MINetAmt" type="text" id="MINetAmt" class="form-control MINetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td></tr>';
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="MIItem" type="text" id="MIItem" class="form-control MIItem required" style="width:70px;" aria-required="true"></td><td><input name="MIItemName" type="text" id="MIItemName" class="form-control MIItemName required" style="width:70px;" aria-required="true"></td><td><input name="MIQuantity" type="text" id="MIQuantity" class="form-control MIQuantity txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIUnit" type="text" id="MIUnit" class="form-control MIUnit required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MIItemRate" type="text" id="MIItemRate" class="form-control MIItemRate txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscPer" type="text" id="MIDiscPer" class="form-control txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MIDiscAmt" type="text" id="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxPer" type="text" id="MITaxPer" class="form-control MITaxPer txtNumeric required" style="width:70px;" aria-required="true"></td><td><input name="MITaxAmt" type="text" id="MITaxAmt" class="form-control MITaxAmt txtNumeric required" style="width:70px;" readonly="readonly" aria-required="true"></td><td><input name="MINetAmt" type="text" id="MINetAmt" class="form-control MINetAmt required" style="width:50px;" readonly="readonly" aria-required="true"></td><td><a id="lnkDeleteMI" style="cursor:pointer" >Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
     $("#ManualInvoiceDetail tbody").append(row);
 }
 $(document).on("keydown", "#MINetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
-    if (keyCode == 9 && $("#InvoiceId").val() == "0") {
+    if (keyCode == 9) {
         CreateNewRowManualInvoice()
     }
 });
@@ -3404,6 +3746,78 @@ function OnSuccess(response) {
         $("#PriceBookDetail").append(empty_row);
     }
 };
+$(document).on("keydown", "#CustomerIdMI", function (e) {
+
+    $(this).autocomplete({
+        source: customerCodes,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, customerCodes);
+            if (exists < 0) {
+                $(this).val("");
+                $("#Name").val("");
+                $("#Telephone").val("");
+                $("#Invoice").val("");
+                $("#MISequenceNoID").val("");
+                return false;
+            }
+            else {
+                var item = customerCodesWithDetails[val];
+                $("#Name").val(item[0]);
+                $("#Telephone").val(item[1]);
+                $("#InvoiceType").val(item[2]);
+                $('#InvoiceType option[value="0"]').attr("selected", null);
+                $('#InvoiceType option[value="1"]').attr("selected", null);
+                $('#InvoiceType option[value="' + item[2] + '"]').attr("selected", "selected");
+                $("#selectedInvoiceType").val(item[2]);
+                $.each(firstFreeMI, function (i, j) {
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == item[2]) {
+                        $("#Invoice").val(j.sequenceNumber);
+                        $("#MISequenceNoID").val(j.id);
+                    }
+                    else if (j.seqType == "0" && j.orderType == item[2]) {
+                        $("#Invoice").val(j.sequenceNumber);
+                        $("#MISequenceNoID").val(j.id);
+                    }
+                });
+                var obj1 = {};
+                obj1.companyCode = $.trim($("#CompanyCode").val());
+                obj1.orderType = item[2];
+                obj1.priceType = 0;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "SQEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj1),
+                    dataType: "json",
+                    success: function (data) {
+                        itemMasterArrayManualInvoice = [];
+                        itemMasterDetailsManualInvoice = {};
+                        itemMasterArrayManualInvoiceByName = [];
+                        itemMasterDetailsManualInvoiceByName = {};
+                        $.each(data.d, function (i, j) {
+                            itemMasterArrayManualInvoice.push(j.code);
+                            itemMasterDetailsManualInvoice[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+                            itemMasterArrayManualInvoiceByName.push(j.name);
+                            itemMasterDetailsManualInvoiceByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+
+                        });
+                    },
+                    error: function (result) {
+                        //alert("Error");
+                    }
+                });
+
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
 $(document).on("keydown", "#CustomerIdSI", function (e) {
 
     $(this).autocomplete({
@@ -3491,13 +3905,12 @@ $(document).on("click", "#btnFinalizeI", function (e) {
     });
 });
 $("#AdjustmentType").change(function () {
-    
-    if($("#Document").val()!="")
-    {
+
+    if ($("#Document").val() != "") {
         var val = this.value;
         $.each(firstFreeSE, function (i, j) {
             if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == val) {
-                 $("#Document").val(j.sequenceNumber);
+                $("#Document").val(j.sequenceNumber);
                 $("#SESequenceNoID").val(j.id);
             }
 

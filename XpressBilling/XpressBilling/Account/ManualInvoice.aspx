@@ -23,13 +23,11 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="ManualInvoiceEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="SalesOrderNo" HeaderText="Invoice"></asp:BoundField>
                             <asp:BoundField DataField="SalesOrderDate" HeaderText="Date" DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
+                            <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
                             <asp:BoundField DataField="Customer" HeaderText="Customer"></asp:BoundField>
                             <asp:BoundField DataField="Telephone" HeaderText="Telephone"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
-                            <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
-                            <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
-                             <asp:TemplateField HeaderText="Status">
+                            <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Paid")  %></ItemTemplate>
                             </asp:TemplateField>
                             
