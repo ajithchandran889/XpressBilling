@@ -7,13 +7,14 @@
                 <div class="form-group">
                    <label class="control-label col-xs-12 col-sm-4 col-md-2">Item </label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:DropDownList runat="server" ID="ItemCode" class="form-control required" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ItemCodeSelectedIndexChanged">
+                        <%--<asp:DropDownList runat="server" ID="ItemCode" class="form-control required" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ItemCodeSelectedIndexChanged">
                             
-                        </asp:DropDownList>
+                        </asp:DropDownList>--%>
+                        <asp:TextBox runat="server" ID="ItemCodeSR" class="form-control required" placeholder="Item Code"  ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Description</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:TextBox runat="server" ID="ItemName" class="form-control required" placeholder="Item Name" ReadOnly="true" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="ItemNameSR" class="form-control required" placeholder="Item Name"  ClientIDMode="Static"></asp:TextBox>
                      </div>
                 </div>
                 <div class="form-group">
@@ -24,8 +25,7 @@
                     </div>
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Location</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
-                        <asp:DropDownList runat="server" ID="Location" class="form-control required" ClientIDMode="Static" AutoPostBack="true">
-                        </asp:DropDownList>
+                        <asp:TextBox runat="server" ID="LocationSR" class="form-control required" placeholder="Location"  ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,6 +35,8 @@
                     </div>
                 </div>
                 <div>
+                    <asp:HiddenField ID="StockRegisterPage" ClientIDMode="Static" runat="server" />
+                    <asp:HiddenField ID="CompanyCode" ClientIDMode="Static" runat="server" />
                     <asp:Label ID="message" runat="server"></asp:Label>
                 </div>
                 <asp:Panel runat="server" ID="gridDetails" Visible="false">
@@ -70,6 +72,7 @@
                 </asp:Panel>
                 <div class="form-group">
                     <div class="col-xs-10 col-md-8">
+
                         <asp:Button ID="SearchBtn" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Search" OnClick="SearchBtnClick" />
                     </div>
                 </div>

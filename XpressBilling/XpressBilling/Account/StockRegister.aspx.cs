@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -19,16 +20,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                DataTable dtTable = XBDataProvider.ItemMaster.GetAllItemMaster(Session["CompanyCode"].ToString());
-                Session["ItemMaster"] = dtTable;
-                ItemCode.DataSource = dtTable;
-                ItemCode.DataValueField = "ItemCode";
-                ItemCode.DataTextField = "ItemCode";
-                ItemCode.DataBind();
-                ListItem item = new ListItem();
-                item.Text = "Select Item";
-                item.Value = "";
-                ItemCode.Items.Insert(0, item);
+                CompanyCode.Value = Session["CompanyCode"].ToString();
             }
            
         }
@@ -39,7 +31,7 @@ namespace XpressBilling.Account
             {
                 DateTime periodFrom = DateTime.ParseExact(PeriodFrom.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 DateTime periodTo = DateTime.ParseExact(PeriodTo.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                DataTable dtTable = XBDataProvider.StockRegister.GetItemDetails(ItemCode.SelectedValue, Location.SelectedValue, periodFrom,periodTo);
+                DataTable dtTable = XBDataProvider.StockRegister.GetItemDetails(Request.Form[ItemCodeSR.UniqueID],Request.Form[LocationSR.UniqueID], periodFrom,periodTo);
                 if(dtTable.Rows.Count>0)
                 {
                     int i = 0;
@@ -123,22 +115,38 @@ namespace XpressBilling.Account
             }
         }
 
-
-        protected void ItemCodeSelectedIndexChanged(object sender, EventArgs e)
+        [WebMethod]
+        public static List<ItemDetails> GetItemMasters(string companyCode)
         {
-            DataTable dtTable = Session["ItemMaster"] as DataTable;
-            foreach(DataRow row in dtTable.Rows)
+            List<ItemDetails> result = new List<ItemDetails>();
+            try
             {
-                if(row["ItemCode"].ToString() == ItemCode.SelectedValue)
+                DataTable dtTable = XBDataProvider.ItemMaster.GetAllItemMaster(companyCode);
+                DataRow row = null;
+                for (int index = 0; index < dtTable.Rows.Count; index++)
                 {
-                    ItemName.Text = row["Name"].ToString();
-                    DataTable dtLocation = XBDataProvider.StockRegister.GetLocationByItemCode(ItemCode.SelectedValue);
-                    Location.DataSource = dtLocation;
-                    Location.DataValueField = "LocationCode";
-                    Location.DataTextField = "LocationCode";
-                    Location.DataBind();
+                    row = dtTable.Rows[index];
+                    ItemDetails itemMasteDetails = new ItemDetails();
+                    itemMasteDetails.itemCode = row["ItemCode"].ToString();
+                    itemMasteDetails.itemName = row["Name"].ToString();
+                    itemMasteDetails.itemType = Convert.ToInt32(row["ItemType"].ToString());
+                    result.Add(itemMasteDetails);
                 }
             }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
         }
+
+    }
+    public class ItemDetails
+    {
+        public string itemCode { get; set; }
+        public string itemName { get; set; }
+        public int itemType { get; set; }
     }
 }

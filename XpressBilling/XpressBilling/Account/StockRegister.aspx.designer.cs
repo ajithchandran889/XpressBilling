@@ -13,22 +13,22 @@ namespace XpressBilling.Account {
     public partial class StockRegister {
         
         /// <summary>
-        /// ItemCode control.
+        /// ItemCodeSR control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ItemCode;
+        protected global::System.Web.UI.WebControls.TextBox ItemCodeSR;
         
         /// <summary>
-        /// ItemName control.
+        /// ItemNameSR control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ItemName;
+        protected global::System.Web.UI.WebControls.TextBox ItemNameSR;
         
         /// <summary>
         /// PeriodFrom control.
@@ -40,13 +40,13 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.TextBox PeriodFrom;
         
         /// <summary>
-        /// Location control.
+        /// LocationSR control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Location;
+        protected global::System.Web.UI.WebControls.TextBox LocationSR;
         
         /// <summary>
         /// PeriodTo control.
@@ -56,6 +56,24 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PeriodTo;
+        
+        /// <summary>
+        /// StockRegisterPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField StockRegisterPage;
+        
+        /// <summary>
+        /// CompanyCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField CompanyCode;
         
         /// <summary>
         /// message control.

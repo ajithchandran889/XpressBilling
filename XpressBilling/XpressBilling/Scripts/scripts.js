@@ -52,6 +52,10 @@ var itemMasterDetailsSalesReturn = {};
 var itemMasterArraySalesReturnByName = [];
 var itemMasterDetailsSalesReturnByName = {};
 var SRItemRowDetails = [];
+var itemDetailsStockRegCodeArray = [];
+var itemDetailsStockRegNameArray = [];
+var itemDetailsStockRegCode = {};
+var itemDetailsStockRegName = {};
 var firstFreeSQ = [];
 var firstFreeSI = [];
 var firstFreeSE = [];
@@ -110,7 +114,50 @@ $(document).ready(function () {
             }
         });
     }
+    if ($("#LocationSR").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetLocationCodes",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                locationArray = [];
+                $.each(data.d, function (i, j) {
+                    locationArray.push(j.name);
+                    locationArrayWithName[j.name] = [j.code];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
+    } 
+    if ($("#StockRegisterPage").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "StockRegister.aspx/GetItemMasters",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                itemDetailsStockRegCodeArray = [];
+                itemDetailsStockRegNameArray = [];
+                itemDetailsStockRegCode = {};
+                itemDetailsStockRegName = {};
+                $.each(data.d, function (i, j) {
+                    itemDetailsStockRegCodeArray.push(j.itemCode);
+                    itemDetailsStockRegNameArray.push(j.itemName);
+                    itemDetailsStockRegCode[j.itemCode] = [j.itemName, j.itemType];
+                    itemDetailsStockRegName[j.itemName] = [j.itemCode, j.itemType];
 
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
+    }
     if ($("#StokeEntryMstId").length > 0) {
 
         $.ajax({
@@ -1768,7 +1815,18 @@ $(document).on("keydown", "#CustomerId", function (e) {
         }
     });
 });
+$(document).on("keydown", "#LocationSR", function (e) {
 
+    $(this).autocomplete({
+        source: locationArray,
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
 
 $(".Name").attr('readonly', 'readonly');
 $(".Rate").attr('readonly', 'readonly');
@@ -4351,4 +4409,91 @@ $("#AdjustmentType").change(function () {
         });
     }
     return false;
+});
+$(document).on("keydown", "#ItemCodeSR", function (e) {
+    $(this).autocomplete({
+        source: itemDetailsStockRegCodeArray,
+        select: function (event, ui) {
+            var itemArr = itemDetailsStockRegCode[ui.item.label];
+            if(itemArr[1]=="0")
+            {
+                alert("Non inventory Item – Not allowed");
+                $(this).val('');
+                return false;
+            }
+            else
+            {
+                $("#ItemNameSR").val(itemArr[0]);
+            }
+        },
+        change: function (event, ui) {
+
+            val = $(this).val();
+            exists = $.inArray(val, itemDetailsStockRegCodeArray);
+            if (exists >= 0) {
+                var itemArr = itemDetailsStockRegCode[val];
+                if (itemArr[1] == "0") {
+                    alert("Non inventory Item – Not allowed");
+                    $(this).val('');
+                    return false;
+                }
+                else {
+                    $("#ItemNameSR").val(itemArr[0]);
+                }
+            }
+            else {
+                $("#ItemCodeSR").val('');
+                $("#ItemNameSR").val('');
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#ItemNameSR", function (e) {
+    $(this).autocomplete({
+        source: itemDetailsStockRegNameArray,
+        select: function (event, ui) {
+            var itemArr = itemDetailsStockRegName[ui.item.label];
+            if (itemArr[1] == "0") {
+                alert("Non inventory Item – Not allowed");
+                $(this).val('');
+                return false;
+            }
+            else {
+                $("#ItemCodeSR").val(itemArr[0]);
+            }
+        },
+        change: function (event, ui) {
+
+            val = $(this).val();
+            exists = $.inArray(val, itemDetailsStockRegNameArray);
+            if (exists >= 0) {
+                var itemArr = itemDetailsStockRegName[val];
+                if (itemArr[1] == "0") {
+                    alert("Non inventory Item – Not allowed");
+                    $(this).val('');
+                    return false;
+                }
+                else {
+                    $("#ItemCodeSR").val(itemArr[0]);
+                }
+            }
+            else
+            {
+                $("#ItemCodeSR").val('');
+                $("#ItemNameSR").val('');
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
 });
