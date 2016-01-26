@@ -326,6 +326,7 @@ namespace XpressBilling.Account
                         }
                     }
                 }
+                
 
                 if (SalesQuotationId.Value == "0")
                 {
@@ -624,6 +625,7 @@ namespace XpressBilling.Account
                         Validity.ReadOnly = true;
                         Reference.ReadOnly = true;
                         SalesQuotationDetail.Columns[11].Visible = false;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
                     }
                     else
                     {

@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -38,41 +39,41 @@ namespace XpressBilling.Account
                     CreatedDate.Text = DateTime.Now.Date.ToString("MM'/'dd'/'yyyy");
                     CreatedUser.Text = User.Identity.Name;
                     DataRow row = null;
-                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(Session["CompanyCode"].ToString());
-                    for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
-                    {
-                        row = dtTableSequenceDetails.Rows[i];
-                        string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                    //DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(Session["CompanyCode"].ToString());
+                    //for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                    //{
+                    //    row = dtTableSequenceDetails.Rows[i];
+                    //    string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
 
-                        if (row["OrderType"].ToString() == "Goods Receipt Auto")
-                        {
-                            GoodsReceipt.Text = sequenceNo;
-                            AutoSequenceNo.Value = sequenceNo;
-                            AutoSequenceNoID.Value = row["ID"].ToString();
-                        }
-                        else if (row["OrderType"].ToString() == "Manual Goods Receipt")
-                        {
-                            ManualSequenceNo.Value = sequenceNo;
-                            ManualSequenceNoID.Value = row["ID"].ToString();
-                        }
-                    }
+                    //    if (row["OrderType"].ToString() == "Goods Receipt Auto")
+                    //    {
+                    //        GoodsReceipt.Text = sequenceNo;
+                    //        AutoSequenceNo.Value = sequenceNo;
+                    //        AutoSequenceNoID.Value = row["ID"].ToString();
+                    //    }
+                    //    else if (row["OrderType"].ToString() == "Manual Goods Receipt")
+                    //    {
+                    //        ManualSequenceNo.Value = sequenceNo;
+                    //        ManualSequenceNoID.Value = row["ID"].ToString();
+                    //    }
+                    //}
                     gridDetails.Visible = false;
 
-                    DataTable dtGRNSuppliers = XBDataProvider.GRN.GetSupplierCodesFromPurchaseOrder(Session["CompanyCode"].ToString());
+                    //DataTable dtGRNSuppliers = XBDataProvider.GRN.GetSupplierCodesFromPurchaseOrder(Session["CompanyCode"].ToString());
                    
-                    SupplierId.Items.Clear();
-                    for (int i = 0; i < dtGRNSuppliers.Rows.Count; i++)
-                    {
-                        row = dtGRNSuppliers.Rows[i];
-                        ListItem list = new ListItem();
-                        list.Value = row["BussinessPartnerCode"].ToString();
-                        list.Text = row["BussinessPartnerCode"].ToString();
-                        SupplierId.Items.Add(list);
-                    }
-                    ListItem item = new ListItem();
-                    item.Text = "Select Supplier";
-                    item.Value = string.Empty;
-                    SupplierId.Items.Insert(0, item);
+                    //SupplierId.Items.Clear();
+                    //for (int i = 0; i < dtGRNSuppliers.Rows.Count; i++)
+                    //{
+                    //    row = dtGRNSuppliers.Rows[i];
+                    //    ListItem list = new ListItem();
+                    //    list.Value = row["BussinessPartnerCode"].ToString();
+                    //    list.Text = row["BussinessPartnerCode"].ToString();
+                    //    SupplierId.Items.Add(list);
+                    //}
+                    //ListItem item = new ListItem();
+                    //item.Text = "Select Supplier";
+                    //item.Value = string.Empty;
+                    //SupplierId.Items.Insert(0, item);
 
                 }
             }
@@ -89,9 +90,8 @@ namespace XpressBilling.Account
                 GRNType.Enabled = false;
                 GoodsReceipt.Text = row["GoodsReceiptNo"].ToString();
                 Status.SelectedValue = row["Status"].ToString();
-                SupplierIdText.Text = row["BussinessPartnerCode"].ToString();
-                SupplierIdText.Visible = true;
-                SupplierId.Visible = false;
+                SupplierIdGrn.Text = row["BussinessPartnerCode"].ToString();
+                SupplierIdGrn.ReadOnly = true;
                 Name.Text = row["Name"].ToString();
                 Reference.Text = row["Reference"].ToString();
                 PurchaseOrderText.Text = row["PurchaseOrderNo"].ToString();
@@ -137,13 +137,50 @@ namespace XpressBilling.Account
 
         }
 
-        protected void SupplierIdSelectedIndexChanged(object sender, EventArgs e)
+        //protected void SupplierIdSelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        DataRow row = null;
+        //        string selectedBP = SupplierId.SelectedValue;
+        //        if (selectedBP!=string.Empty)
+        //        {
+        //            DataTable dtDetails = XBDataProvider.GRN.GetSupplierDetails(selectedBP);
+        //            if (dtDetails.Rows.Count > 0)
+        //            {
+        //                Name.Text = dtDetails.Rows[0]["Name"].ToString();
+        //                Name.ReadOnly = true;
+        //                Location.Text = dtDetails.Rows[0]["LocationCode"].ToString();
+        //                Location.ReadOnly = true;
+        //            }
+        //            for (int i = 0; i < dtDetails.Rows.Count; i++)
+        //            {
+        //                row = dtDetails.Rows[i];
+        //                ListItem list = new ListItem();
+        //                list.Value = row["PurchaseOrderNo"].ToString();
+        //                list.Text = row["PurchaseOrderNo"].ToString();
+        //                PurchaseOrder.Items.Add(list);
+        //            }
+        //            ListItem item = new ListItem();
+        //            item.Text = "Select Purchase Order";
+        //            item.Value = string.Empty;
+        //            PurchaseOrder.Items.Insert(0, item);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+        protected void buttonUpdate_Click(object sender, EventArgs e)
         {
             try
             {
                 DataRow row = null;
-                string selectedBP = SupplierId.SelectedValue;
-                if (selectedBP!=string.Empty)
+                string selectedBP = selectedSupplier.Value;
+                SupplierIdGrn.Text = selectedBP;
+                if (selectedBP != string.Empty)
                 {
                     DataTable dtDetails = XBDataProvider.GRN.GetSupplierDetails(selectedBP);
                     if (dtDetails.Rows.Count > 0)
@@ -151,7 +188,6 @@ namespace XpressBilling.Account
                         Name.Text = dtDetails.Rows[0]["Name"].ToString();
                         Name.ReadOnly = true;
                         Location.Text = dtDetails.Rows[0]["LocationCode"].ToString();
-                        Location.ReadOnly = true;
                     }
                     for (int i = 0; i < dtDetails.Rows.Count; i++)
                     {
@@ -165,14 +201,29 @@ namespace XpressBilling.Account
                     item.Text = "Select Purchase Order";
                     item.Value = string.Empty;
                     PurchaseOrder.Items.Insert(0, item);
+                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(CompanyCode.Value);
+                    for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                    {
+                        row = dtTableSequenceDetails.Rows[i];
+                        if (row["SeqType"].ToString() == "1" && row["OrderType"].ToString() == GRNType.SelectedItem.Text && row["EnterpriseUnitCode"].ToString() == Location.Text)
+                        {
+                            GoodsReceipt.Text = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                            GrnSequenceNoID.Value = row["ID"].ToString();
+                        }
+                        else if (row["SeqType"].ToString() == "0" && row["OrderType"].ToString() == GRNType.SelectedItem.Text)
+                        {
+                            GoodsReceipt.Text = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                            GrnSequenceNoID.Value = row["ID"].ToString();
+                        }
+                    }
                 }
+                
             }
             catch (Exception ex)
             {
 
             }
         }
-
         protected void PurchaseOrderSelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -181,6 +232,7 @@ namespace XpressBilling.Account
                 if (selectedPO != string.Empty)
                 {
                     SetGRNChildGrid(selectedPO);
+                    cancelGrn.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -210,7 +262,7 @@ namespace XpressBilling.Account
                     dr["ID"] = Convert.ToInt32(GRNDetail.DataKeys[i]["ID"]);
                         
                     dr["GoodsReceiptMstId"] = Convert.ToInt32(GRNId.Value);
-                    dr["GoodsReceiptNo"] = GoodsReceipt.Text;
+                    dr["GoodsReceiptNo"] = Request.Form[GoodsReceipt.UniqueID];
                     dr["GoodsReceiptDate"] = date;
                     dr["ReceivedQty"] = box3.Text;
                     dt.Rows.Add(dr);
@@ -219,26 +271,27 @@ namespace XpressBilling.Account
                 }
                 if (PageStatus.Value=="create")
                 {
-                    int selectedSequenceID = 0;
-                    if (GRNType.SelectedValue == "0")
-                    {
-                        selectedSequenceID = Convert.ToInt32(AutoSequenceNoID.Value);
-                    }
-                    else
-                    {
-                        selectedSequenceID = Convert.ToInt32(ManualSequenceNoID.Value);
-                    }
-                    XBDataProvider.GRN.SaveGRNDetail(Convert.ToInt32(GRNId.Value), GoodsReceipt.Text, date, PackingSlip.Text, Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, Convert.ToInt32(GRNType.SelectedValue), dt, selectedSequenceID);
-                    btnConverGRN.Visible = true;
-                    btnPrint.Visible = true;
-                    PageStatus.Value = "edit";
-                    Status.SelectedValue = "1";
+                    int selectedSequenceID = Convert.ToInt32(GrnSequenceNoID.Value);
+                   if(XBDataProvider.GRN.SaveGRNDetail(Convert.ToInt32(GRNId.Value),Request.Form[GoodsReceipt.UniqueID], date, PackingSlip.Text, Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, Convert.ToInt32(GRNType.SelectedValue), dt, selectedSequenceID))
+                   {
+                       btnConverGRN.Visible = true;
+                       btnPrint.Visible = true;
+                       PageStatus.Value = "edit";
+                       Status.SelectedValue = "1";
+                       Location.ReadOnly = true;
+                       SupplierIdGrn.ReadOnly = true;
+                       SetGRNChildGrid(Request.Form[PurchaseOrderText.UniqueID]);
+                   }
+                    
                 }
                 else
                 {
-                    XBDataProvider.GRN.UpdateGRNDetail(Convert.ToInt32(GRNId.Value), Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, dt);
+                    if(XBDataProvider.GRN.UpdateGRNDetail(Convert.ToInt32(GRNId.Value), Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, dt))
+                    {
+                        SetGRNChildGrid(Request.Form[PurchaseOrderText.UniqueID]);
+                    }
                 }
-                SetGRNChildGrid(PurchaseOrderText.Text);
+               
 
             }
             catch (Exception ex)
@@ -249,12 +302,81 @@ namespace XpressBilling.Account
 
         protected void BtnConvertGRNClick(object sender, EventArgs e)
         {
-            if (XBDataProvider.GRN.FinalizeGrn(Convert.ToInt32(GRNId.Value)))
+            int i = 0;
+            int purchaseOrderStatus = 5;
+            foreach (GridViewRow row in GRNDetail.Rows)
+            {
+                TextBox box3 = (TextBox)GRNDetail.Rows[i].Cells[5].FindControl("ReceivedQuantity");
+                HiddenField hdn = (HiddenField)GRNDetail.Rows[i].Cells[5].FindControl("prevRecvdQnty");
+                if(Convert.ToInt32(box3.Text)!=Convert.ToInt32(hdn.Value))
+                {
+                    purchaseOrderStatus = 4;
+                    break;
+                }
+                i++;
+            }
+            if (XBDataProvider.GRN.FinalizeGrn(Convert.ToInt32(GRNId.Value),purchaseOrderStatus))
             {
                 Status.SelectedValue = 2.ToString();
                 btnConverGRN.Visible = false;
                 btnSaveDtl.Visible = false;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
             }
+        }
+
+        [WebMethod]
+        public static List<FirstFreeDetails> GetFirstFreerDetails(string companyCode)
+        {
+            List<FirstFreeDetails> result = new List<FirstFreeDetails>();
+            try
+            {
+                DataRow row = null;
+                DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(companyCode);
+                for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                {
+                    row = dtTableSequenceDetails.Rows[i];
+                    FirstFreeDetails firstFreeDetails = new FirstFreeDetails();
+                    string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                    firstFreeDetails.id = row["ID"].ToString();
+                    firstFreeDetails.sequenceNumber = sequenceNo;
+                    firstFreeDetails.seqType = row["SeqType"].ToString();
+                    firstFreeDetails.orderType = row["OrderType"].ToString() == "Goods Receipt Auto" ? "0" : "1";
+                    firstFreeDetails.enterpriseUnitCode = row["EnterpriseUnitCode"].ToString();
+                    result.Add(firstFreeDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+
+        protected void GRNTypeSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(Location.Text!="")
+            {
+                DataRow row = null;
+                DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(CompanyCode.Value);
+                for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                {
+                    row = dtTableSequenceDetails.Rows[i];
+                    if (row["SeqType"].ToString() == "1" && row["OrderType"].ToString() == GRNType.SelectedItem.Text && row["EnterpriseUnitCode"].ToString() == Location.Text)
+                    {
+                        GoodsReceipt.Text = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                        GrnSequenceNoID.Value = row["ID"].ToString();
+                    }
+                    else if (row["SeqType"].ToString() == "0" && row["OrderType"].ToString() == GRNType.SelectedItem.Text)
+                    {
+                        GoodsReceipt.Text = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                        GrnSequenceNoID.Value = row["ID"].ToString();
+                    }
+                }
+            }
+            
         }
     }
 }

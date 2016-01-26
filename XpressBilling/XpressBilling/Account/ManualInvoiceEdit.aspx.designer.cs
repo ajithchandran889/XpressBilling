@@ -175,6 +175,15 @@ namespace XpressBilling.Account {
         protected global::System.Web.UI.WebControls.HiddenField SalesManHidden;
         
         /// <summary>
+        /// currencyCode1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currencyCode1;
+        
+        /// <summary>
         /// Amount control.
         /// </summary>
         /// <remarks>
@@ -254,6 +263,15 @@ namespace XpressBilling.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox MITotalTaxAmt;
+        
+        /// <summary>
+        /// currencyCode2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currencyCode2;
         
         /// <summary>
         /// MITotalOrderAmt control.

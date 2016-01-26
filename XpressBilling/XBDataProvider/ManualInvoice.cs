@@ -48,7 +48,7 @@ namespace XBDataProvider
         public static int AddManualInvoiceWithDetails(string CompanyCode,string CustomerId,string Invoice,int Status,
                                                 int InvoiceType,DateTime Date,string Name,string location,string SalesMan,string Telephone,string Reference,
                                                 string MIPayTerms,string MIDeliveryTerms,string MIShipToAddress,float MITotalAmount,float MITotalDiscountAmt,
-                                                float MITotalTaxAmt, float MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails)
+                                                float MITotalTaxAmt, float MITotalOrderAmt, string userName, int selectedSequenceId, DataTable dtDetails,string currency)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@DiscountAmount", MITotalDiscountAmt));
                 cmd.Parameters.Add(new SqlParameter("@TaxAmount", MITotalTaxAmt));
                 cmd.Parameters.Add(new SqlParameter("@OrderAmount", MITotalOrderAmt));
-                //cmd.Parameters.Add(new SqlParameter("@Cash", Cash));
+                cmd.Parameters.Add(new SqlParameter("@Currency", currency));
                 //cmd.Parameters.Add(new SqlParameter("@Card", Card));
                 //cmd.Parameters.Add(new SqlParameter("@RoundOff", RoundOff));
                 cmd.Parameters.Add(new SqlParameter("@selectedSequenceId", selectedSequenceId));

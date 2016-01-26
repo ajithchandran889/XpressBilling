@@ -24,13 +24,10 @@
                             <asp:BoundField DataField="PurchaseOrderNo" HeaderText="Purchase Order"></asp:BoundField>
                             <asp:BoundField DataField="PurchaseOrderDate" HeaderText="Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
-                            <asp:BoundField DataField="BussinessPartnerCode" HeaderText="Supplier"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
-                            <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="Buyer" HeaderText="Buyer"></asp:BoundField>
-                            <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
+                            <asp:BoundField DataField="Telephone" HeaderText="Telephone "></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
-                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized")  %></ItemTemplate>
+                                <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":(Eval("Status").ToString()=="2"?"Finalized":(Eval("Status").ToString()=="4"?"Partially Received":(Eval("Status").ToString()=="5"?"Closed":"Error"))))  %></ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>  
                                 <ItemTemplate>  

@@ -22,6 +22,9 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 CompanyCode.Value = Session["CompanyCode"].ToString();
+                currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
+                currencyCode1.InnerText = currencyCode.Value;
+                currencyCode2.InnerText = currencyCode.Value;
                 currencyDecimal.Value = XBDataProvider.Currency.GetCurrencyDecimalByCompany(CompanyCode.Value).ToString();
                 DataRow row = null;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
@@ -241,7 +244,7 @@ namespace XpressBilling.Account
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
-                        dr["Currency"] = "";
+                        dr["Currency"] = currencyCode.Value;
                         dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                         dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
@@ -334,7 +337,7 @@ namespace XpressBilling.Account
                     returnValue = XBDataProvider.ManualInvoice.AddManualInvoiceWithDetails(Session["CompanyCode"].ToString(), Request.Form[CustomerIdMI.UniqueID], Request.Form[Invoice.UniqueID], 1,
                                                Convert.ToInt32(InvoiceType.SelectedValue), date, Request.Form[Name.UniqueID], LocationHidden.Value, SalesManHidden.Value, Request.Form[Telephone.UniqueID], Reference.Text,
                                                 MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, float.Parse(MITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalDiscountAmt.Text,
-                                                CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, selectedSequenceId, dt);
+                                                CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, selectedSequenceId, dt, currencyCode.Value);
                     if (returnValue > 0)
                     {
                         Invoice.Text = Request.Form[Invoice.UniqueID];

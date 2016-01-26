@@ -4,6 +4,8 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,20 +22,13 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
                 CompanyCode.Value = Session["CompanyCode"].ToString();
-                DataTable dtTable = XBDataProvider.BussinessPartner.GetAllSupplierCodes(Session["CompanyCode"].ToString());
-                Session["BPDetails"] = dtTable;
+                currencyCode1.InnerText = currencyCode.Value;
+                currencyCode2.InnerText = currencyCode.Value;
                 DataRow row = null;
-                SupplierId.Items.Clear();
-                for (int i = 0; i < dtTable.Rows.Count; i++)
-                {
-                    row = dtTable.Rows[i];
-                    ListItem list = new ListItem();
-                    list.Value = row["BusinessPartnerCode"].ToString();
-                    list.Text = row["BusinessPartnerCode"].ToString();
-                    SupplierId.Items.Add(list);
-                }
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
+                currencyDecimal.Value = XBDataProvider.Currency.GetCurrencyDecimalByCompany(CompanyCode.Value).ToString();
                 if (id != null && id != 0)
                 {
                     DataTable purchaseOrderDetails = XBDataProvider.PurchaseOrder.GetPurchaseOrderById(id);
@@ -46,40 +41,25 @@ namespace XpressBilling.Account
                 else
                 {
                     PageStatus.Value = "create";
-                    if (dtTable.Rows.Count > 0)
-                    {
-                        Name.Text = dtTable.Rows[0]["Name"].ToString();
-                        Name.ReadOnly = true;
-                        Location.Text = dtTable.Rows[0]["CountryCode"].ToString();
-                        Location.ReadOnly = true;
-                        Telephone.Text = dtTable.Rows[0]["Phone"].ToString();
-                        Telephone.ReadOnly = true;
-                        OrderType.SelectedValue = dtTable.Rows[0]["OrderType"].ToString();
-                        OrderType.Enabled = false;
-                    }
                     CreatedDate.Text = DateTime.Now.Date.ToString("MM'/'dd'/'yyyy");
                     CreatedDate.ReadOnly = true;
-
-                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetPurchaseOrderSequenceDetails(Session["CompanyCode"].ToString());
-                    for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                    
+                    PurchaseOrderId.Value = "0";
+                    DataTable dtUser = XBDataProvider.User.GetUserById(Membership.GetUser().ProviderUserKey.ToString());
+                    row = dtUser.Rows[0];
+                    if (User.IsInRole("User"))
                     {
-                        row = dtTableSequenceDetails.Rows[i];
-                        string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
-
-                        if (row["OrderType"].ToString() == "Local")
-                        {
-                            OrderNo.Text = sequenceNo;
-                            LocalSequenceNo.Value = sequenceNo;
-                            LocalSequenceNoID.Value = row["ID"].ToString();
-                        }
-                        else if (row["OrderType"].ToString() == "Import")
-                        {
-                            ImportSequenceNo.Value = sequenceNo;
-                            ImportSequenceNoID.Value = row["ID"].ToString();
-                        }
-                        OrderNo.ReadOnly = true;
+                        Location.Text = row["LocationName"].ToString();
+                        LocationHidden.Value = row["LocationCode"].ToString();
                     }
-                    gridDetails.Visible = false;
+                    else
+                    {
+                        Location.Text = row["DefaultLocationName"].ToString();
+                        LocationHidden.Value = row["DefaultLocation"].ToString();
+                    }
+                    SalesMan.Text = row["EmployeeName"].ToString();
+                    SalesManHidden.Value = row["EmployeeId"].ToString();
+                    SetInitialRows();
                 }
             }
         }
@@ -88,9 +68,6 @@ namespace XpressBilling.Account
         {
             try
             {
-                SaveBtn.Visible = false;
-                CancelBtn.Visible = false;
-                
                 btnPrint.Visible = true;
                 DataRow row = purchaseOrderDetails.Rows[0];
                 PurchaseOrderId.Value = row["ID"].ToString();
@@ -102,19 +79,20 @@ namespace XpressBilling.Account
                 Status.SelectedValue = row["Status"].ToString();
                 Status.Enabled = false;
                 SupplierId.Text = row["BussinessPartnerCode"].ToString();
-                SupplierId.Enabled = false;
+                SupplierId.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
                 Reference.ReadOnly = true;
                 SalesMan.Text = row["Buyer"].ToString();
                 SalesMan.ReadOnly = true;
-                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
                 Amount.ReadOnly = true;
                 PayTerms.Text = row["PaymentTerms"].ToString();
                 DeliveryTerms.Text = row["DeliveryTerms"].ToString();
-                POTotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
-                POTotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("0.00");
-                POTotalTaxAmt.Text =  Convert.ToDecimal(row["TaxAmount"]).ToString("0.00");
-                POTotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("0.00");
+                POTotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
+                POTotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("f" + decimalPoints);
+                POTotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("f" + decimalPoints);
+                POTotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
                 Telephone.Text = row["Telephone"].ToString();
                 ShipToAddress.Text = row["ShipToAddress"].ToString();
                 Telephone.ReadOnly = true;
@@ -122,14 +100,15 @@ namespace XpressBilling.Account
                 CreatedDate.ReadOnly = true;
                 Location.Text = row["LocationCode"].ToString();
                 Location.ReadOnly = true;
-                IsFinalized.Value = row["IsFialized"].ToString();
                 if (Convert.ToInt32(row["IsFialized"].ToString()) > 0)
                 {
+                    IsFinalized.Value = "1";
                     btnConverOrder.Visible = false;
                     btnSaveDtl.Visible = false;
                 }
                 else
                 {
+                    IsFinalized.Value = "0";
                     btnConverOrder.Visible = true;
                 }
                 SetPurchaseOrderChildGrid();
@@ -149,46 +128,9 @@ namespace XpressBilling.Account
 
             if (dt.Rows.Count > 0)
             {
+                rowCount.Value = dt.Rows.Count.ToString();
                 PurchaseOrderDetail.DataSource = dt;
                 PurchaseOrderDetail.DataBind();
-            }
-        }
-
-        protected void SupplierIdSelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable dtTable = Session["BPDetails"] as DataTable;
-                DataRow row = null;
-                string selectedBP = SupplierId.SelectedValue;
-                for (int i = 0; i < dtTable.Rows.Count; i++)
-                {
-                    row = dtTable.Rows[i];
-                    if (selectedBP == row["BusinessPartnerCode"].ToString())
-                    {
-                        Name.Text = row["Name"].ToString();
-                        Name.ReadOnly = true;
-                        Location.Text = row["CountryCode"].ToString();
-                        Location.ReadOnly = true;
-                        Telephone.Text = row["Phone"].ToString();
-                        Telephone.ReadOnly = true;
-                        OrderType.SelectedValue = row["OrderType"].ToString();
-                        OrderType.Enabled = false;
-                        if (row["OrderType"].ToString() == "0")
-                        {
-                            OrderNo.Text = LocalSequenceNo.Value;
-                        }
-                        else
-                        {
-                            OrderNo.Text = ImportSequenceNo.Value;
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
             }
         }
 
@@ -227,12 +169,7 @@ namespace XpressBilling.Account
                     dr["NetAmount"] = DBNull.Value;
                     dt.Rows.Add(dr);
                 }
-
-                //dr = dt.NewRow();
-
-                //Store the DataTable in ViewState
-                ViewState["CurrentTable"] = dt;
-
+                rowCount.Value = dt.Rows.Count.ToString();
                 PurchaseOrderDetail.DataSource = dt;
                 PurchaseOrderDetail.DataBind();
             }
@@ -243,179 +180,20 @@ namespace XpressBilling.Account
 
         }
 
-        private void SetPreviousData()
-        {
-            int rowIndex = 0;
-            if (ViewState["CurrentTable"] != null)
-            {
-                DataTable dt = (DataTable)ViewState["CurrentTable"];
-                if (dt.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        TextBox box2 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[1].FindControl("POItem");
-                        TextBox box3 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[2].FindControl("POName");
-                        TextBox box4 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[3].FindControl("PORate");
-                        TextBox box5 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[4].FindControl("POQuantity");
-                        TextBox box6 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[5].FindControl("POUnit");
-                        TextBox box7 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[6].FindControl("PODiscPer");
-                        TextBox box8 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[7].FindControl("PODiscAmt");
-                        TextBox box9 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxPer");
-                        TextBox box10 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[9].FindControl("POTaxAmt");
-                        TextBox box11 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[10].FindControl("PONetAmt");
-                        HiddenField hdnFld = (HiddenField)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxCode");
-                        box2.Text = dt.Rows[i]["ItemCode"].ToString();
-                        box3.Text = dt.Rows[i]["ItemName"].ToString();
-                        box4.Text = dt.Rows[i]["Rate"].ToString();
-                        box5.Text = dt.Rows[i]["Qty"].ToString();
-                        box6.Text = dt.Rows[i]["BaseUnitCode"].ToString();
-                        box7.Text = dt.Rows[i]["Discount"].ToString();
-                        box8.Text = dt.Rows[i]["DiscountAmt"].ToString();
-                        box9.Text = dt.Rows[i]["TaxPercentage"].ToString();
-                        hdnFld.Value = dt.Rows[i]["Tax"].ToString();
-                        box10.Text = dt.Rows[i]["TaxAmount"].ToString();
-                        box11.Text = dt.Rows[i]["NetAmount"].ToString();
-
-                        rowIndex++;
-                    }
-                }
-            }
-        }
-
-        private void AddNewRowToGrid()
-        {
-            int rowIndex = 0;
-            Amount.Text = Request.Form[Amount.UniqueID];
-            if (ViewState["CurrentTable"] != null)
-            {
-                DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
-                DataRow drCurrentRow = null;
-                if (dtCurrentTable.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dtCurrentTable.Rows.Count; i++)
-                    {
-                        TextBox box2 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[1].FindControl("POItem");
-                        TextBox box3 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[2].FindControl("POName");
-                        TextBox box4 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[3].FindControl("PORate");
-                        TextBox box5 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[4].FindControl("POQuantity");
-                        TextBox box6 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[5].FindControl("POUnit");
-                        TextBox box7 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[6].FindControl("PODiscPer");
-                        TextBox box8 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[7].FindControl("PODiscAmt");
-                        TextBox box9 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxPer");
-                        TextBox box10 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[9].FindControl("POTaxAmt");
-                        TextBox box11 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[10].FindControl("PONetAmt");
-                        HiddenField hdnFld = (HiddenField)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxCode");
-
-                        //drCurrentRow["RowNumber"] = i + 1;
-                        dtCurrentTable.Rows[i]["ID"] = Convert.ToInt32(PurchaseOrderDetail.DataKeys[i]["ID"]); ;
-                        dtCurrentTable.Rows[i]["ItemCode"] = box2.Text;
-                        dtCurrentTable.Rows[i]["ItemName"] = box3.Text;
-                        if (box4.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["Rate"] = box4.Text;
-                        }
-                        if (box5.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["Qty"] = box5.Text;
-                        }
-                        if (box8.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["DiscountAmt"] = box8.Text;
-                        }
-                        if (box10.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["TaxAmount"] = box10.Text;
-                        }
-                        dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
-                        if (box7.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["Discount"] = box7.Text;
-                        }
-                        if (box9.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["TaxPercentage"] = box9.Text;
-                        }
-                        dtCurrentTable.Rows[i]["Tax"] = hdnFld.Value;
-                        if (box11.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["NetAmount"] = box11.Text;
-                        }
-                        rowIndex++;
-                    }
-                    for (int j = 0; j < 5; j++)
-                    {
-                        drCurrentRow = dtCurrentTable.NewRow();
-                        dtCurrentTable.Rows.Add(drCurrentRow);
-                    }
-
-                    ViewState["CurrentTable"] = dtCurrentTable;
-
-                    PurchaseOrderDetail.DataSource = dtCurrentTable;
-                    PurchaseOrderDetail.DataBind();
-                }
-            }
-            else
-            {
-                Response.Write("ViewState is null");
-            }
-
-            //Set Previous Data on Postbacks
-            SetPreviousData();
-
-        }
-
-        protected void AddNewRowClick(object sender, EventArgs e)
-        {
-            AddNewRowToGrid();
-        }
-        
-        protected void SaveBtnClick(object sender, EventArgs e)
-        {
-            try
-            {
-                int returnValue = 0;
-                int selectedSequenceId = 0;
-                if (OrderType.SelectedValue == "0")
-                {
-                    selectedSequenceId = Convert.ToInt32(LocalSequenceNoID.Value);
-                }
-                else
-                {
-                    selectedSequenceId = Convert.ToInt32(ImportSequenceNoID.Value);
-                }
-                returnValue = XBDataProvider.PurchaseOrder.SavePO(Session["CompanyCode"].ToString(), Location.Text, OrderNo.Text,
-                    DateTime.Today.Date, Convert.ToInt32(OrderType.SelectedValue), Reference.Text, SupplierId.SelectedValue,
-                    SalesMan.Text, 1, User.Identity.Name, selectedSequenceId, Telephone.Text,Name.Text,ShipToAddress.Text);
-                if (returnValue > 0)
-                {
-                    PurchaseOrderId.Value = returnValue.ToString();
-                    PageStatus.Value = "creating";
-                    gridDetails.Visible = true;
-                    SaveBtn.Visible = false;
-                    CancelBtn.Visible = false;
-                    SetInitialRows();
-                    SaveSuccess.Visible = true;
-                    failure.Visible = false;
-                }
-                else
-                {
-                    failure.Visible = true;
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-        }
-
         protected void SaveBtnDetailClick(object sender, EventArgs e)
         {
             try
             {
-
+                int selectedSequenceId = 0;
+                int returnValue = 0;
+                if (POSequenceNoID.Value!="")
+                {
+                    selectedSequenceId = Convert.ToInt32(POSequenceNoID.Value);
+                }
+                
+                DataTable dtDeletedIds = new DataTable();
+                DataRow drDeletedIds = null;
+                dtDeletedIds.Columns.Add(new DataColumn("ID", typeof(int)));
                 DataTable dt = new DataTable();
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
@@ -447,23 +225,30 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
-                if (PageStatus.Value == "creating")
+                int[] deletedIds = DeletedRowIDs.Value.Split(',').Where(str => str != "").Select(str => int.Parse(str)).ToArray();
+                for (int k = 0; k < deletedIds.Length; k++)
+                {
+                    drDeletedIds = dtDeletedIds.NewRow();
+                    drDeletedIds["ID"] = deletedIds[k];
+                    dtDeletedIds.Rows.Add(drDeletedIds);
+                }
+                foreach (GridViewRow row in PurchaseOrderDetail.Rows)
                 {
                     TextBox box2 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[1].FindControl("POItem");
                     TextBox box3 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[2].FindControl("POName");
-                    TextBox box4 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[3].FindControl("PORate");
-                    TextBox box5 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[4].FindControl("POQuantity");
-                    TextBox box6 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[5].FindControl("POUnit");
+                    TextBox box4 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[5].FindControl("PORate");
+                    TextBox box5 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[3].FindControl("POQuantity");
+                    TextBox box6 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[4].FindControl("POUnit");
                     TextBox box7 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[6].FindControl("PODiscPer");
                     TextBox box8 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[7].FindControl("PODiscAmt");
                     TextBox box9 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxPer");
                     TextBox box10 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[9].FindControl("POTaxAmt");
                     TextBox box11 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[10].FindControl("PONetAmt");
                     HiddenField hdnFld = (HiddenField)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxCode");
-                    if (box2.Text != "" && box2.Text.Length != 0)
+                    if (Array.IndexOf(deletedIds, PurchaseOrderDetail.DataKeys[i]["ID"]) == -1 && box2.Text != "" && box2.Text.Length != 0)
                     {
                         dr = dt.NewRow();
-                        dr["ID"] = DBNull.Value;
+                        dr["ID"] = PurchaseOrderDetail.DataKeys[i]["ID"]; 
                         DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
                         dr["LocationCode"] = Location.Text;
@@ -476,7 +261,7 @@ namespace XpressBilling.Account
                         dr["OrderQty"] = Convert.ToInt32(box5.Text);
                         dr["ReceivedQty"] = 0;
                         dr["InOrderQty"] = Convert.ToInt32(box5.Text);
-                        dr["Currency"] = "";
+                        dr["Currency"] = currencyCode.Value;
                         dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                         dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
@@ -493,22 +278,28 @@ namespace XpressBilling.Account
                         dr["CreatedDate"] = DateTime.Now.Date;
                         dr["UpdatedDate"] = DateTime.Now.Date;
                         dt.Rows.Add(dr);
+                        i++;
                     }
-                    if(Request.Form["POItem"]!=null)
-                    {
-                        string[] POItems = Request.Form["POItem"].Split(',');
-                        string[] PONames = Request.Form["POName"].Split(',');
-                        string[] PORates = Request.Form["PORate"].Split(',');
-                        string[] POQuantitys = Request.Form["POQuantity"].Split(',');
-                        string[] POUnits = Request.Form["POUnit"].Split(',');
-                        string[] PODiscPers = Request.Form["PODiscPer"].Split(',');
-                        string[] PODiscAmts = Request.Form["PODiscAmt"].Split(',');
-                        string[] POTaxPers = Request.Form["POTaxPer"].Split(',');
-                        string[] POTaxAmts = Request.Form["POTaxAmt"].Split(',');
-                        string[] PONetAmts = Request.Form["PONetAmt"].Split(',');
-                        string[] POTaxCodes = Request.Form["POTaxCode"].Split(',');
+                    
 
-                        for (int k = 0; k < POItems.Length; k++)
+                }
+                if (Request.Form["POItem"] != null)
+                {
+                    string[] POItems = Request.Form["POItem"].Split(',');
+                    string[] PONames = Request.Form["POName"].Split(',');
+                    string[] PORates = Request.Form["PORate"].Split(',');
+                    string[] POQuantitys = Request.Form["POQuantity"].Split(',');
+                    string[] POUnits = Request.Form["POUnit"].Split(',');
+                    string[] PODiscPers = Request.Form["PODiscPer"].Split(',');
+                    string[] PODiscAmts = Request.Form["PODiscAmt"].Split(',');
+                    string[] POTaxPers = Request.Form["POTaxPer"].Split(',');
+                    string[] POTaxAmts = Request.Form["POTaxAmt"].Split(',');
+                    string[] PONetAmts = Request.Form["PONetAmt"].Split(',');
+                    string[] POTaxCodes = Request.Form["POTaxCode"].Split(',');
+
+                    for (int k = 0; k < POItems.Length; k++)
+                    {
+                        if (POItems[k] != "" && PONames[k] != "" && PORates[k] != "" && POQuantitys[k] != "" && PODiscPers[k] != "" && PODiscAmts[k] != "" && POTaxPers[k] != "")
                         {
                             dr = dt.NewRow();
                             dr["ID"] = DBNull.Value;
@@ -543,88 +334,61 @@ namespace XpressBilling.Account
                             dt.Rows.Add(dr);
                         }
                     }
-                    
+                }
+                if(PurchaseOrderId.Value=="0")
+                {
+                    returnValue = XBDataProvider.PurchaseOrder.SavePO(Session["CompanyCode"].ToString(), LocationHidden.Value,Request.Form[OrderNo.UniqueID],
+                    DateTime.Today.Date, Convert.ToInt32(OrderType.SelectedValue), Reference.Text,Request.Form[SupplierId.UniqueID],
+                    SalesManHidden.Value, 1, User.Identity.Name, selectedSequenceId, Request.Form[Telephone.UniqueID],Request.Form[Name.UniqueID],
+                     PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[POTotalAmount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat),
+                    float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), ShipToAddress.Text, dt, currencyCode.Value);
+                    if (returnValue > 0)
+                    {
+                        OrderNo.Text = Request.Form[OrderNo.UniqueID];
+                        SupplierId.ReadOnly = true;
+                        Amount.Text = Request.Form[Amount.UniqueID];
+                        Telephone.Text = Request.Form[Telephone.UniqueID];
+                        Name.Text = Request.Form[Name.UniqueID];
+                        SupplierId.Text = Request.Form[SupplierId.UniqueID];
+                        PurchaseOrderId.Value = returnValue.ToString();
+                        PageStatus.Value = "edit";
+                        SaveSuccess.Visible = true;
+                        failure.Visible = false;
+                        Status.SelectedValue = "1";
+                        btnConverOrder.Visible = true;
+                        btnPrint.Visible = true;
+                        SetPurchaseOrderChildGrid();
+                    }
+                    else
+                    {
+                        failure.Visible = true;
+                    }
                 }
                 else
                 {
-                    foreach (GridViewRow row in PurchaseOrderDetail.Rows)
+                    if (dt.Rows.Count > 0)
                     {
-                        TextBox box2 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[1].FindControl("POItem");
-                        TextBox box3 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[2].FindControl("POName");
-                        TextBox box4 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[3].FindControl("PORate");
-                        TextBox box5 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[4].FindControl("POQuantity");
-                        TextBox box6 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[5].FindControl("POUnit");
-                        TextBox box7 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[6].FindControl("PODiscPer");
-                        TextBox box8 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[7].FindControl("PODiscAmt");
-                        TextBox box9 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxPer");
-                        TextBox box10 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[9].FindControl("POTaxAmt");
-                        TextBox box11 = (TextBox)PurchaseOrderDetail.Rows[i].Cells[10].FindControl("PONetAmt");
-                        HiddenField hdnFld = (HiddenField)PurchaseOrderDetail.Rows[i].Cells[8].FindControl("POTaxCode");
-                        if (box2.Text != "" && box2.Text.Length != 0)
-                        {
-                            dr = dt.NewRow();
-                            if (string.IsNullOrEmpty(PurchaseOrderDetail.DataKeys[i]["ID"].ToString()))
-                            {
-                                dr["ID"] = DBNull.Value;
-                            }
-                            else
-                            {
-                                dr["ID"] = Convert.ToInt32(PurchaseOrderDetail.DataKeys[i]["ID"]);
-                            }
-                            DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                            dr["LocationCode"] = Location.Text;
-                            dr["PurchaseOrderMstId"] = Convert.ToInt32(PurchaseOrderId.Value);
-                            dr["PurchaseOrderNo"] = OrderNo.Text;
-                            dr["PurchaseOrderDate"] = date;
-                            dr["ItemCode"] = box2.Text;
-                            dr["ItemName"] = box3.Text;
-                            dr["BaseUnitCode"] = box6.Text;
-                            dr["OrderQty"] = Convert.ToInt32(box5.Text);
-                            dr["ReceivedQty"] = 0;
-                            dr["InOrderQty"] = Convert.ToInt32(box5.Text);
-                            dr["Currency"] = "";
-                            dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
-                            dr["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Tax"] = hdnFld.Value;
-                            dr["TaxPercentage"] = float.Parse(box9.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["TaxAmount"] = float.Parse(box10.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["NetAmount"] = float.Parse(box11.Text, CultureInfo.InvariantCulture.NumberFormat);
-                            dr["Status"] = 1;
-                            dr["ErrorMsg"] = null;
-                            dr["Reference"] = Reference.Text;
-                            dr["CreatedBy"] = User.Identity.Name;
-                            dr["UpdatedBy"] = User.Identity.Name;
-                            dr["CreatedDate"] = DateTime.Now.Date;
-                            dr["UpdatedDate"] = DateTime.Now.Date;
-                            dt.Rows.Add(dr);
-                            i++;
-                        }
-
+                        XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value), PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, ShipToAddress.Text, dt, dtDeletedIds);
+                        btnConverOrder.Visible = true;
+                        btnPrint.Visible = true;
+                        PageStatus.Value = "edit";
+                        Status.SelectedValue = "1";
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
+                        Amount.Text = Request.Form[Amount.UniqueID];
+                        SetPurchaseOrderChildGrid();
+                        
+                    }
+                    else
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
                     }
                 }
                 
-                if (dt.Rows.Count > 0)
-                {
-                    XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value), PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, ShipToAddress.Text, dt);
-                    btnConverOrder.Visible = true;
-                    btnPrint.Visible = true;
-                    PageStatus.Value = "edit";
-                    Status.SelectedValue = "1";
-                    SaveSuccess.Visible = false;
-                    UpdateSuccess.Visible = true;
-                    failure.Visible = false;
-                    Amount.Text = Request.Form[Amount.UniqueID];
-                }
-                else
-                {
-                    SaveSuccess.Visible = false;
-                    UpdateSuccess.Visible = false;
-                    failure.Visible = true;
-                }
-                SetPurchaseOrderChildGrid();
+                
 
             }
             catch (Exception ex)
@@ -635,33 +399,17 @@ namespace XpressBilling.Account
 
         protected void BtnConvertOrderClick(object sender, EventArgs e)
         {
-            //DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetGRNSequenceDetails(Session["CompanyCode"].ToString());
-            //DataRow row = null;
-            //string orderNo = "";
-            //for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
-            //{
-            //    row = dtTableSequenceDetails.Rows[i];
-
-            //    if (row["OrderType"].ToString() == "Cash" && QuotationType.SelectedValue == "0")
-            //    {
-            //        orderNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
-            //        salesOrderLastIncId.Value = row["ID"].ToString();
-            //    }
-            //    else if (row["OrderType"].ToString() == "Credit" && QuotationType.SelectedValue == "1")
-            //    {
-            //        orderNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
-            //        salesOrderLastIncId.Value = row["ID"].ToString();
-            //    }
-            //}
-
             if (XBDataProvider.PurchaseOrder.ConvertToGRN(Convert.ToInt32(PurchaseOrderId.Value), OrderType.SelectedItem.Text))
             {
+                IsFinalized.Value = "2";
                 btnConverOrder.Visible = false;
                 btnSaveDtl.Visible = false;
                 SaveSuccess.Visible = false;
                 UpdateSuccess.Visible = false;
                 FinalizeSuccess.Visible = true;
                 failure.Visible = false;
+                SetPurchaseOrderChildGrid();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
             }
             else
             {
@@ -672,5 +420,99 @@ namespace XpressBilling.Account
             }
         }
 
+        [WebMethod]
+        public static List<FirstFreeDetails> GetFirstFreerDetails(string companyCode)
+        {
+            List<FirstFreeDetails> result = new List<FirstFreeDetails>();
+            try
+            {
+                DataRow row = null;
+                DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetPurchaseOrderSequenceDetails(companyCode);
+                for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                {
+                    row = dtTableSequenceDetails.Rows[i];
+                    FirstFreeDetails firstFreeDetails = new FirstFreeDetails();
+                    string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                    firstFreeDetails.id = row["ID"].ToString();
+                    firstFreeDetails.sequenceNumber = sequenceNo;
+                    firstFreeDetails.seqType = row["SeqType"].ToString();
+                    firstFreeDetails.orderType = row["OrderType"].ToString() == "Local" ? "0" : "1";
+                    firstFreeDetails.enterpriseUnitCode = row["EnterpriseUnitCode"].ToString();
+                    result.Add(firstFreeDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+        [WebMethod]
+        public static List<CustomerDetails> GetPurchaseCustomerDetails(string companyCode)
+        {
+            List<CustomerDetails> result = new List<CustomerDetails>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.BussinessPartner.GetAllBussinessPartnerSuplierCodes(companyCode);
+                //Session["BPDetails"] = dtTable;
+
+                for (int i = 0; i < dtTable.Rows.Count; i++)
+                {
+                    CustomerDetails custDetails = new CustomerDetails();
+                    custDetails.name = dtTable.Rows[i]["Name"].ToString();
+                    custDetails.code = dtTable.Rows[i]["BusinessPartnerCode"].ToString();
+                    custDetails.telephone = dtTable.Rows[i]["Phone"].ToString();
+                    custDetails.orderType = dtTable.Rows[i]["OrderType"].ToString();
+                    result.Add(custDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+
+        protected void PurchaseOrderDetailRowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
+            {
+                LinkButton lnkDtn = e.Row.Cells[11].FindControl("lnkDeletePO") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
+            }
+            if (IsFinalized.Value == "1")
+            {
+                e.Row.Cells[11].Visible = false;
+            }
+            if (e.Row.RowIndex != -1)
+            {
+                TextBox item = e.Row.Cells[5].FindControl("POItem") as TextBox;
+                if (item.Text != "")
+                {
+                    int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                    TextBox Rate = e.Row.Cells[5].FindControl("PORate") as TextBox;
+                    TextBox Discount = e.Row.Cells[6].FindControl("PODiscPer") as TextBox;
+                    TextBox DiscountAmt = e.Row.Cells[7].FindControl("PODiscAmt") as TextBox;
+                    TextBox NetAmount = e.Row.Cells[9].FindControl("PONetAmt") as TextBox;
+                    TextBox TaxAmount = e.Row.Cells[8].FindControl("POTaxAmt") as TextBox;
+                    double rate = Convert.ToDouble(Rate.Text);
+                    double discount = Convert.ToDouble(Discount.Text);
+                    double discountAmt = Convert.ToDouble(DiscountAmt.Text);
+                    double netAmount = Convert.ToDouble(NetAmount.Text);
+                    double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                    Rate.Text = rate.ToString("f" + decimalPoints);
+                    Discount.Text = discount.ToString("f" + decimalPoints);
+                    DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
+                    NetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                    TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+                }
+            }
+        }
     }
 }

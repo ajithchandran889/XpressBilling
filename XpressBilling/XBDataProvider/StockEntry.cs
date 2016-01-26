@@ -69,7 +69,6 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@SEDetail", dtSEDetail));
-                
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_StockAdjustmentMst_xpins", cmd);
 
             }

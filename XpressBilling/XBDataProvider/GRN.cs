@@ -162,13 +162,14 @@ namespace XBDataProvider
             }
         }
 
-        public static bool FinalizeGrn(int GRNMasterID)
+        public static bool FinalizeGrn(int GRNMasterID, int purchaseOrderStatus)
         {
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@GRNMasterID", GRNMasterID));
+                cmd.Parameters.Add(new SqlParameter("@purchaseOrderStatus", purchaseOrderStatus));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_FinalizeGrn", cmd);
                 return true;
 

@@ -21,6 +21,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
                 CompanyCode.Value = Session["CompanyCode"].ToString();
                 DataTable dtUsers = XBDataProvider.User.GetAllUsersByCompany(Session["CompanyCode"].ToString());
                 CreatedUser.DataSource = dtUsers;
@@ -222,7 +223,7 @@ namespace XpressBilling.Account
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
-                        dr["Currency"] = "";
+                        dr["Currency"] = currencyCode.Value;
                         dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Amount"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Status"] = 1;
@@ -441,6 +442,7 @@ namespace XpressBilling.Account
                 failure.Visible = false;
                 btnSaveDtl.Visible = false;
                 btnConvertStockRegister.Visible = false;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
             }
             else
             {

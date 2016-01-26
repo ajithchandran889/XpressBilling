@@ -66,7 +66,8 @@ namespace XBDataProvider
 
         public static int SavePO(string companyCode, string locationCode, string purchaseOrderNo, DateTime purchaseOrderDate,
                            int orderType, string reference, string bussinesspartnersCode, string salesMan, int status,
-                           string user, int selectedSequenceId, string telephone,string name,string shipToAddress)
+                           string user, int selectedSequenceId, string telephone,string name, string paymentTerms, string deliveryTerms,
+                           float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string shipToAddress, DataTable PODetail,string currency)
         {
             try
             {
@@ -82,7 +83,6 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Ordertype", orderType));
                 cmd.Parameters.Add(new SqlParameter("@Businesspartnercode", bussinesspartnersCode));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
-                cmd.Parameters.Add(new SqlParameter("@ShipToAddress", shipToAddress));
                 cmd.Parameters.Add(new SqlParameter("@Salesman", salesMan));
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@CreatedBY", user));
@@ -90,6 +90,15 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@Telephone", telephone));
+                cmd.Parameters.Add(new SqlParameter("@Paymentterms", paymentTerms));
+                cmd.Parameters.Add(new SqlParameter("@Deliveryterms", deliveryTerms));
+                cmd.Parameters.Add(new SqlParameter("@Amount", totalAmount));
+                cmd.Parameters.Add(new SqlParameter("@Discountamount", totalDiscountAmt));
+                cmd.Parameters.Add(new SqlParameter("@Taxamount", totalTaxAmt));
+                cmd.Parameters.Add(new SqlParameter("@Orderamount", totalNetAmt));
+                cmd.Parameters.Add(new SqlParameter("@ShipToAddress", shipToAddress));
+                cmd.Parameters.Add(new SqlParameter("@PODetail", PODetail));
+                cmd.Parameters.Add(new SqlParameter("@Currency", currency));
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_PurchaseOrderMst_xpins", cmd);
 
             }
@@ -100,7 +109,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SavePODetail(int POMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, string shipToAddress, DataTable PODetail)
+        public static bool SavePODetail(int POMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, string shipToAddress, DataTable PODetail, DataTable dtDeletedIds)
         {
             try
             {
@@ -115,6 +124,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@totalTaxAmt", totalTaxAmt));
                 cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
                 cmd.Parameters.Add(new SqlParameter("@PODetail", PODetail));
+                cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@ShipToAddress", shipToAddress));

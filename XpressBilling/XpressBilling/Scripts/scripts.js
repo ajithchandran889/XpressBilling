@@ -56,6 +56,8 @@ var firstFreeSQ = [];
 var firstFreeSI = [];
 var firstFreeSE = [];
 var firstFreeMI = [];
+var firstFreePO = [];
+var firstFreeGrn = [];
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -165,10 +167,52 @@ $(document).ready(function () {
         });
     }
     if ($("#GRNId").length > 0) {
-        if ($("#GoodsReceipt").val() == "") {
-            alert("Please create first free number for goods receipt");
-            $("#btnSaveDtl").attr("disabled", true);
-        }
+        
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "GrnEdit.aspx/GetFirstFreerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                firstFreeGrn = [];
+                $.each(data.d, function (i, j) {
+                    firstFreeGrn.push({
+                        id: j.id,
+                        sequenceNumber: j.sequenceNumber,
+                        seqType: j.seqType,
+                        orderType: j.orderType,
+                        enterpriseUnitCode: j.enterpriseUnitCode
+                    });
+
+                });
+                if (firstFreeGrn.length == 0) {
+                    alert("Please create first free number for goods receipt");
+                    $("#btnSaveDtl").attr("disabled", true);
+                }
+            },
+            error: function (result) {
+                // alert("Error");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PurchaseOrderEdit.aspx/GetPurchaseCustomerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                customerCodes = [];
+                customerCodesWithDetails = {};
+                $.each(data.d, function (i, j) {
+                    customerCodes.push(j.code);
+                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
     }
     if ($("#SalesQuotationId").length > 0) {
         $.ajax({
@@ -242,10 +286,52 @@ $(document).ready(function () {
         $(".SQUnit").attr('readonly', 'readonly');
     }
     if ($("#PurchaseOrderId").length > 0) {
-        if ($("#OrderNo").val() == "") {
-            alert("Please create first free number for purchase order");
-            $("#SaveBtn").attr("disabled", true);
-        }
+        
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PurchaseOrderEdit.aspx/GetFirstFreerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                firstFreePO = [];
+                $.each(data.d, function (i, j) {
+                    firstFreePO.push({
+                        id: j.id,
+                        sequenceNumber: j.sequenceNumber,
+                        seqType: j.seqType,
+                        orderType: j.orderType,
+                        enterpriseUnitCode: j.enterpriseUnitCode
+                    });
+
+                });
+                if (firstFreePO.length == 0) {
+                    alert("Please create first free number for Purchase Order");
+                    $("#btnSaveDtl").attr("disabled", true);
+                }
+            },
+            error: function (result) {
+                // alert("Error");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "PurchaseOrderEdit.aspx/GetPurchaseCustomerDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                customerCodes = [];
+                customerCodesWithDetails = {};
+                $.each(data.d, function (i, j) {
+                    customerCodes.push(j.code);
+                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -254,9 +340,11 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 itemTaxCodes = [];
+                itemTaxCodevalues = [];
                 itemTaxDetails = {};
                 $.each(data.d, function (i, j) {
                     itemTaxCodes.push(j.code);
+                    itemTaxCodevalues.push(j.Per);
                     itemTaxDetails[j.code] = [j.Per];
                 });
             },
@@ -264,46 +352,11 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            success: function (data) {
-                itemMasterArrayPO = [];
-                itemMasterDetailsPO = {};
-                itemMasterQuantityPO = {};
-                $.each(data.d, function (i, j) {
-                    itemMasterArrayPO.push(j.code);
-                    itemMasterDetailsPO[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    itemMasterQuantityPO[j.code] = [j.Qnty];
-                });
-            },
-            error: function (result) {
-                //alert("Error");
-            }
-        });
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            success: function (data) {
-                itemMasterArrayPOByName = [];
-                itemMasterDetailsPOByName = {};
-                itemMasterQuantityPO = {};
-                $.each(data.d, function (i, j) {
-                    itemMasterArrayPOByName.push(j.name);
-                    itemMasterDetailsPOByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    itemMasterQuantityPO[j.code] = [j.Qnty];
-                });
-            },
-            error: function (result) {
-                //alert("Error");
-            }
-        });
+        if ($("#PageStatus").val() == "create") {
+            $(".POTaxAmt").attr('readonly', 'readonly');
+            $(".PONetAmt").attr('readonly', 'readonly');
+            $(".POUnit").attr('readonly', 'readonly');
+        }
     }
     if ($("#SalesReturnMstId").length > 0) {
         if ($("#SalesReturn").val() == "") {
@@ -845,35 +898,60 @@ $(document).ready(function () {
         }
     }
     if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create") {
-        itemMasterArrayPO = [];
-        itemMasterDetailsPO = {};
-        var i = 0;
-        $("tr", $("#PurchaseOrderDetail")).each(function () {
+        
+        var obj1 = {};
+        obj1.companyCode = $.trim($("#CompanyCode").val());
+        obj1.orderType = $("#OrderType").val();
+        obj1.priceType = 0;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj1),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArrayPO = [];
+                itemMasterDetailsPO = {};
+                itemMasterQuantityPO = {};
+                itemMasterArrayPOByName = [];
+                itemMasterDetailsPOByName = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArrayPO.push(j.code);
+                    itemMasterDetailsPO[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+                    itemMasterQuantityPO[j.code] = [j.Qnty];
+                    itemMasterArrayPOByName.push(j.name);
+                    itemMasterDetailsPOByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
 
-            var val = $("input[id*='POItem']", $(this)).val();
-            var qnty = parseInt($("input[id*='POQuantity']", $(this)).val());
-            var rate = parseFloat($("input[id*='PORate']", $(this)).val());
-            var discountAmt = parseFloat($("input[id*='PODiscAmt']", $(this)).val());
-            var taxPer = parseFloat($("input[id*='POTaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
-                var rowTotalRate = qnty * rate;
-                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
-                var orderAmount = netAmount;
-                POItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                i++;
+                });
+                var i = 0;
+                $("tr", $("#PurchaseOrderDetail")).each(function () {
+
+                    var val = $("input[id*='POItem']", $(this)).val();
+                    var qnty = parseInt($("input[id*='POQuantity']", $(this)).val());
+                    var rate = parseFloat($("input[id*='PORate']", $(this)).val());
+                    var discountAmt = parseFloat($("input[id*='PODiscAmt']", $(this)).val());
+                    var taxPer = parseFloat($("input[id*='POTaxPer']", $(this)).val());
+                    if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+                        var itemArr = itemMasterDetailsPO[$("input[id*='POItem']", $(this)).val()];
+                        var rowTotalRate = qnty * rate;
+                        var discountPer = 0;
+                        if (rowTotalRate != 0) {
+                            discountPer = ((discountAmt / rowTotalRate) * 100).toFixed(itemArr[9]);
+                        }
+                        var taxAmount = ((rowTotalRate - discountAmt) / 100) * taxPer;
+                        var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                        var orderAmount = netAmount;
+                        POItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
+                        i++;
+                    }
+
+                });
+            },
+            error: function (result) {
+                //alert("Error");
             }
-
         });
-        if ($("#Status").val() == "1") {
-            $(".POTaxAmt").attr('readonly', 'readonly');
-            $(".PONetAmt").attr('readonly', 'readonly');
-            $(".POUnit").attr('readonly', 'readonly');
-            $(".POItem").attr('readonly', 'readonly');
-            $(".POName").attr('readonly', 'readonly');
-        }
-        else if ($("#Status").val() == "2" || $("#IsFinalized").val() != "0") {
+         if ($("#IsFinalized").val() == "1") {
             $(".POTaxAmt").attr('readonly', 'readonly');
             $(".PONetAmt").attr('readonly', 'readonly');
             $(".POUnit").attr('readonly', 'readonly');
@@ -884,12 +962,15 @@ $(document).ready(function () {
             $(".PODiscPer").attr('readonly', 'readonly');
             $(".PODiscAmt").attr('readonly', 'readonly');
             $(".POTaxPer").attr('readonly', 'readonly');
-        }
-        else if ($("#PageStatus").val() == "creating") {
-            $(".POTaxAmt").attr('readonly', 'readonly');
-            $(".PONetAmt").attr('readonly', 'readonly');
-            $(".POUnit").attr('readonly', 'readonly');
-        }
+         }
+         else if ($("#Status").val() == "1") {
+             $(".POTaxAmt").attr('readonly', 'readonly');
+             $(".PONetAmt").attr('readonly', 'readonly');
+             $(".POUnit").attr('readonly', 'readonly');
+             $(".POItem").attr('readonly', 'readonly');
+             $(".POName").attr('readonly', 'readonly');
+         }
+         
     }
 
     $("#mainForm").validate();
@@ -972,17 +1053,19 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("change", "#BusinessPartnerType", function () {
+    //$(document).on("change", "#BusinessPartnerType", function () {
 
-        if ($("#BusinessPartnerType").val() == "0") {
-            $("#OrderType_0").show();
-            $("#OrderType_1").hide();
-        }
-        else if ($("#BusinessPartnerType").val() == "1") {
-            $("#OrderType_0").hide();
-            $("#OrderType_1").show();
-        }
-    });
+    //    if ($("#BusinessPartnerType").val() == "0") {
+    //        alert("ok1");
+    //        $("#OrderType_0").show();
+    //        $("#OrderType_1").hide();
+    //    }
+    //    else if ($("#BusinessPartnerType").val() == "1") {
+    //        alert("ok2");
+    //        $("#OrderType_0").hide();
+    //        $("#OrderType_1").show();
+    //    }
+    //});
 
     $(document).on("change", "#Transaction", function () {
 
@@ -1107,35 +1190,7 @@ function SetSelectedRowByName(lnk, selectedItem) {
     row.cells[6].getElementsByTagName("input")[0].value = itemArr[3];
     return false;
 }
-//var obj = {};
-//obj.companyCode = $.trim($("#CompanyCode").val());
-//$(".ItemCode").autocomplete({
-//    source: function (request, response) {
-//        $.ajax({
-//            type: "POST",
-//            contentType: "application/json; charset=utf-8",
-//            url: "PriceBookEdit.aspx/GetItemMasters",
-//            data: JSON.stringify(obj),
-//            dataType: "json",
-//            success: function (data) {
-//                itemMasterArray = [];
-//                itemMasterDetails = {};
-//                $.each(data.d, function (i, j) {
-//                    itemMasterArray.push(j.code);
-//                    itemMasterDetails[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice];
-//                });
-//                response(itemMasterArray);
-//            },
-//            error: function (result) {
-//                alert("Error");
-//            }
-//        });
-//    },
-//    select: function (event, ui) {
-//        SetSelectedRow(this, ui.item.label);
 
-//    },
-//});
 function CheckItemAlreadyAdded(val) {
     var flag = false;
     $("tr", $("#PriceBookDetail")).each(function () {
@@ -1474,6 +1529,62 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
     $("#rowCount").val(newIndex);
     return false;
 });
+$(document).on("click", "#lnkDeletePO", function (e) {
+    if (typeof $(this).attr('data-id') !== "undefined")
+        $("#DeletedRowIDs").val($("#DeletedRowIDs").val() + $(this).attr('data-id') + ",");
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (POItemRowDetails[rowIndex]) {
+        var itemArr = itemMasterDetailsPO[row.cells[1].getElementsByTagName("input")[0].value];
+        var itemArray = POItemRowDetails[rowIndex];
+        var totalAmt = parseFloat($("#POTotalAmount").val());
+        var totalDiscount = parseFloat($("#POTotalDiscountAmt").val());
+        var totalTax = parseFloat($("#POTotalTaxAmt").val());
+        var totalOder = parseFloat($("#POTotalOrderAmt").val());
+        var oldAmount = parseFloat(itemArray[6]);
+        var oldDiscount = parseFloat(itemArray[3]);
+        var oldTax = parseFloat(itemArray[5]);
+        var oldOder = parseFloat(itemArray[7]);
+        totalAmt -= parseFloat(oldAmount);
+        totalDiscount -= parseFloat(oldDiscount);
+        totalTax -= parseFloat(oldTax);
+        totalOder -= parseFloat(oldOder);
+        $("#POTotalAmount").val(totalAmt.toFixed(itemArr[9]));
+        $("#POTotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+        $("#POTotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+        $("#POTotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+        $("#Amount").val(totalOder.toFixed(itemArr[9]));
+        var i;
+        for (i = rowIndex; i < POItemRowDetails.length; i++) {
+            if (POItemRowDetails[i + 1]) {
+                POItemRowDetails[i] = POItemRowDetails[i + 1];
+            }
+            else {
+                POItemRowDetails.splice(i, 1);
+            }
+        }
+    }
+    row.remove();
+    var index = 1;
+    $("td:first-child", $("#PurchaseOrderDetail")).each(function () {
+        $(this).find("span:first").text(index);
+        index++;
+
+    });
+    var newIndex = --index;
+    if (newIndex == 1) {
+        $("tr", $("#PurchaseOrderDetail")).each(function () {
+            var val = $("input[id*='POItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeletePO']", $(this)).css("display", "none");
+            }
+
+
+        });
+    }
+    $("#rowCount").val(newIndex);
+    return false;
+});
 $(document).on("keydown", "#SalesMan", function (e) {
 
     $(this).autocomplete({
@@ -1498,8 +1609,6 @@ $(document).on("keydown", "#SalesMan", function (e) {
         }
     });
 });
-
-
 $(document).on("keydown", "#Location", function (e) {
 
     $(this).autocomplete({
@@ -1555,6 +1664,26 @@ $(document).on("keydown", "#Location", function (e) {
                     });
 
                 }
+                else if ($("#PurchaseOrderId").length > 0) {
+                    $.each(firstFreePO, function (i, j) {
+                        if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#OrderType").val()) {
+                            $("#OrderNo").val(j.sequenceNumber);
+                            $("#POSequenceNoID").val(j.id);
+                        }
+
+                    });
+
+                }
+                else if ($("#GRNId").length > 0) {
+                    $.each(firstFreeGrn, function (i, j) {
+                        if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#GRNType").val()) {
+                            $("#GoodsReceipt").val(j.sequenceNumber);
+                            $("#GrnSequenceNoID").val(j.id);
+                            }
+
+                        });
+
+                    } 
             }
         },
         response: function (event, ui) {
@@ -2331,7 +2460,7 @@ function iSQuantityAvailableI(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        && row.cells[3].getElementsByTagName("input")[0].value != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantityI[itemCode];
         var itemArray = itemMasterDetailsInvoice[itemCode];
@@ -3111,45 +3240,63 @@ function iSQuantityAvailablePO(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[4].getElementsByTagName("input")[0].value != "") {
+        && row.cells[3].getElementsByTagName("input")[0].value != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantityPO[itemCode];
+        var itemArray = itemMasterDetailsPO[itemCode];
         if (typeof (itemArr) === "undefined") {
-            var obj = {};
-            obj.companyCode = $.trim($("#CompanyCode").val());
+            var val = $("#SupplierId").val();
+            var item = customerCodesWithDetails[val];
+            var obj1 = {};
+            obj1.companyCode = $.trim($("#CompanyCode").val());
+            obj1.orderType = item[2];
+            obj1.priceType = 0;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "PriceBookEdit.aspx/GetItemMasters",
-                data: JSON.stringify(obj),
+                url: "SQEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj1),
                 dataType: "json",
                 success: function (data) {
                     itemMasterQuantityPO = {};
+                    itemMasterDetailsInvoice = {};
                     $.each(data.d, function (i, j) {
                         itemMasterQuantityPO[j.code] = [j.Qnty];
+                        itemMasterDetailsPO[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
                     });
                     itemArr = itemMasterQuantityPO[itemCode];
-                    if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
+                    itemArray = itemMasterDetailsPO[itemCode];
+                    if (parseInt(itemArray[10]) == 0) {
+                        CalculatePOAmount(txtBox);
+                    }
+                    else if (parseInt(itemArr[0]) >= parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
                         CalculatePOAmount(txtBox);
                     }
                     else {
-                        row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                        alert("Sorry,Avilable Items:" + itemArr[0]);
+                        row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
+                        alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                        CalculatePOAmount(txtBox);
+                        row.cells[3].getElementsByTagName("input")[0].focus();
                     }
                 },
                 error: function (result) {
-                    //alert("Error");
+                    // alert("Error");
                 }
             });
 
         }
         else {
-            if (parseFloat(itemArr[0]) >= parseFloat(row.cells[4].getElementsByTagName("input")[0].value)) {
+            if (parseInt(itemArray[10]) == 0) {
+                CalculatePOAmount(txtBox);
+            }
+            else if (parseInt(itemArr[0]) >= parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
                 CalculatePOAmount(txtBox);
             }
             else {
-                row.cells[4].getElementsByTagName("input")[0].value = itemArr[0];
-                alert("Sorry,Avilable Items:" + itemArr[0]);
+                row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
+                alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                CalculatePOAmount(txtBox);
+                row.cells[3].getElementsByTagName("input")[0].focus();
             }
         }
 
@@ -3161,8 +3308,8 @@ function SetSelectedRowPO(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsPO[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -3173,20 +3320,114 @@ function SetSelectedRowPOByName(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsPOByName[selectedItem];
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
 }
 
+function CheckItemAlreadyAddedPO(val, rowIndex) {
+    var flag = false;
+    var rowIndexCurrent = -1;
+    $("tr", $("#PurchaseOrderDetail")).each(function () {
+        var row = this.parentNode.parentNode;
+        if (val == $("input[id*='POItem']", $(this)).val() && rowIndex !== rowIndexCurrent) {
+            flag = true;
+        }
+        rowIndexCurrent = rowIndexCurrent + 1;
+    });
+    return flag;
+}
+function IsItemAvailablePO(item) {
+    var itemArr = itemMasterQuantityPO[item];
+    var itemArray = itemMasterDetailsPO[item];
+    if (parseInt(itemArray[10]) == 0) {
+        return true;
+    }
+    else if (parseInt(itemArr[0]) > 0) {
+        return true;
+    }
+    else {
+        alert("Available qty is 0");
+        return false;
+    }
+}
 
 $(document).on("keydown", ".POItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayPO,
         select: function (event, ui) {
-            SetSelectedRowPO(this, ui.item.label);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (!CheckItemAlreadyAddedPO(ui.item.label, rowIndex)) {
+                if (IsItemAvailablePO(ui.item.label)) {
+                    SetSelectedRowPO(this, ui.item.label);
+                }
+                else {
+                    $(this).val("");
+                }
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
 
+        },
+        change: function (event, ui) {
+
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArrayPO);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                $(this).focus();
+
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                if (!CheckItemAlreadyAddedPO($(this).val(), rowIndex)) {
+                    if (IsItemAvailablePO($(this).val())) {
+                        SetSelectedRowPO(this, $(this).val());
+                    }
+                    else {
+                        $(this).val("");
+                        $(this).focus();
+                    }
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -3194,8 +3435,78 @@ $(document).on("keydown", ".POName", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayPOByName,
         select: function (event, ui) {
-            SetSelectedRowPOByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsPOByName[ui.item.label];
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (!CheckItemAlreadyAddedPO(itemArr[0], rowIndex)) {
+                if (IsItemAvailablePO(itemArr[0])) {
+                    SetSelectedRowPOByName(this, ui.item.label);
+                }
+                else {
+                    $(this).val("");
+                }
 
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+
+            }
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArrayPOByName);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                var itemArr = itemMasterDetailsPOByName[$(this).val()];
+                if (!CheckItemAlreadyAddedPO(itemArr[0], rowIndex)) {
+                    if (IsItemAvailablePO(itemArr[0])) {
+                        SetSelectedRowPOByName(this, $(this).val());
+                    }
+                    else {
+                        $(this).val("");
+                        $(this).focus();
+                    }
+
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -3208,8 +3519,19 @@ $(document).on("keydown", ".POTaxPer", function (e) {
 
         },
         change: function (event, ui) {
-            if (ui.item === null || !ui.item)
-                $(this).val(''); /* clear the value */
+
+            val = $.trim($(this).val());
+            exists = $.inArray(parseInt(val), itemTaxCodevalues);
+            if (exists < 0) {
+                $(this).val("");
+                return false;
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -3237,21 +3559,29 @@ function CalculatePOAmount(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-        var rate = row.cells[3].getElementsByTagName("input")[0].value;
-        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterDetailsPO[row.cells[1].getElementsByTagName("input")[0].value];
+        var rate = row.cells[5].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[3].getElementsByTagName("input")[0].value;
         var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-            var rowTotalRate = qnty * rate;
+            var rowTotalRate = (parseInt(qnty) * parseFloat(rate)).toFixed(itemArr[9]);
+            
             if ($(txtBox).attr("id") == "PODiscAmt") {
-                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                if (parseFloat(rowTotalRate) != 0) {
+                    discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
+                }
+                else {
+                    discountPer = 0;
+                }
+
             }
             else {
-                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                discountAmt = ((rowTotalRate * parseFloat(discountPer)) / 100).toFixed(itemArr[9]);
             }
-            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            var taxAmount = (((rowTotalRate - discountAmt) / 100) * taxPer).toFixed(itemArr[9]);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(itemArr[9]);
             //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
             var orderAmount = netAmount;
             if ($(txtBox).attr("id") == "PODiscAmt") {
@@ -3265,14 +3595,14 @@ function CalculatePOAmount(txtBox) {
             if (!POItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
 
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
                 if ($("#POTotalAmount").val() == "") {
-                    $("#POTotalAmount").val(netAmount);
-                    $("#Amount").val(netAmount);
+                    $("#POTotalAmount").val(rowTotalRate);
+                    $("#Amount").val(orderAmount);
                 }
                 else {
-                    $("#POTotalAmount").val(parseFloat($("#POTotalAmount").val()) + parseFloat(netAmount));
-                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                    $("#POTotalAmount").val(parseFloat($("#POTotalAmount").val()) + parseFloat(rowTotalRate));
+                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(orderAmount));
                 }
                 if ($("#POTotalDiscountAmt").val() == "") {
                     $("#POTotalDiscountAmt").val(discountAmt);
@@ -3307,17 +3637,17 @@ function CalculatePOAmount(txtBox) {
                 totalDiscount -= parseFloat(oldDiscount);
                 totalTax -= parseFloat(oldTax);
                 totalOder -= parseFloat(oldOder);
-                totalAmt += parseFloat(netAmount);
+                totalAmt += parseFloat(rowTotalRate);
                 totalDiscount += parseFloat(discountAmt);
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                $("#POTotalAmount").val(totalAmt);
-                $("#Amount").val(totalAmt);
-                $("#POTotalDiscountAmt").val(totalDiscount);
-                $("#POTotalTaxAmt").val(totalTax);
-                $("#POTotalOrderAmt").val(totalOder);
-                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                $("#POTotalAmount").val(totalAmt.toFixed(itemArr[9]));
+                $("#Amount").val(totalOder.toFixed(itemArr[9]));
+                $("#POTotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+                $("#POTotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+                $("#POTotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+                POItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
             }
 
 
@@ -3637,13 +3967,23 @@ $(document).on("keydown", "#MINetAmt", function (e) {
     }
 });
 function CreateNewRowPO() {
+    if (parseInt($("#rowCount").val()) == 1) {
+        $("tr", $("#PurchaseOrderDetail")).each(function () {
+            var val = $("input[id*='POItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeletePO']", $(this)).css("display", "block");
+            }
+
+
+        });
+    }
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="POItem" type="text" id="POItem" class="form-control POItem required" style="width:70px;" aria-required="true"></td><td><input name="POName" type="text" id="POName" class="form-control POName required" aria-required="true"></td><td><input name="PORate" type="text" id="PORate" class="form-control PORate txtNumeric required" aria-required="true"></td><td><input name="POQuantity" type="text" id="POQuantity" class="form-control POQuantity txtNumeric required" aria-required="true"></td><td><input name="POUnit" type="text" id="POUnit" readonly="readonly"  class="form-control POUnit required" aria-required="true"></td><td><input name="PODiscPer" type="text" id="PODiscPer" class="form-control PODiscPer txtNumeric required" aria-required="true"></td><td><input name="PODiscAmt" type="text" id="PODiscAmt" class="form-control PODiscAmt txtNumeric"></td><td><input name="POTaxPer" type="text" id="POTaxPer" class="form-control POTaxPer required" aria-required="true"><input type="hidden" name="POTaxCode" id="POTaxCode"></td><td> <input name="POTaxAmt" type="text" id="POTaxAmt" class="form-control POTaxAmt required" readonly="readonly"  aria-required="true"></td><td><input name="PONetAmt" type="text" readonly="readonly" id="PONetAmt" class="form-control PONetAmt required" style="width:50px;" aria-required="true"></td></tr>';
+    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="POItem" type="text" id="POItem" class="form-control POItem required" style="width:70px;" aria-required="true"></td><td><input name="POName" type="text" id="POName" class="form-control POName required" aria-required="true"></td><td><input name="POQuantity" type="text" id="POQuantity" class="form-control POQuantity txtNumeric required" aria-required="true"></td><td><input name="POUnit" type="text" id="POUnit" readonly="readonly"  class="form-control POUnit required" aria-required="true"></td><td><input name="PORate" type="text" id="PORate" class="form-control PORate txtNumeric required" aria-required="true"></td><td><input name="PODiscPer" type="text" id="PODiscPer" class="form-control PODiscPer txtNumeric required" aria-required="true"></td><td><input name="PODiscAmt" type="text" id="PODiscAmt" class="form-control PODiscAmt txtNumeric"></td><td><input name="POTaxPer" type="text" id="POTaxPer" class="form-control POTaxPer required" aria-required="true"><input type="hidden" name="POTaxCode" id="POTaxCode"></td><td> <input name="POTaxAmt" type="text" id="POTaxAmt" class="form-control POTaxAmt required" readonly="readonly"  aria-required="true"></td><td><input name="PONetAmt" type="text" readonly="readonly" id="PONetAmt" class="form-control PONetAmt required" style="width:50px;" aria-required="true"></td><td><a id="lnkDeletePO" style="cursor:pointer" >Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
     $("#PurchaseOrderDetail tbody").append(row);
 }
 $(document).on("keydown", "#PONetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
-    if (keyCode == 9 && $("#PageStatus").val() == "creating") {
+    if (keyCode == 9 && $("#Status").val() != 2) {
         CreateNewRowPO()
     }
 });
@@ -3882,6 +4222,100 @@ $(document).on("keydown", "#CustomerIdSI", function (e) {
                     }
                 });
 
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#SupplierId", function (e) {
+
+    $(this).autocomplete({
+        source: customerCodes,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, customerCodes);
+            if (exists < 0) {
+                $(this).val("");
+                $("#Name").val("");
+                $("#Telephone").val("");
+                $("#OrderNo").val("");
+                $("#POSequenceNoID").val("");
+                return false;
+            }
+            else {
+                var item = customerCodesWithDetails[val];
+                $("#Name").val(item[0]);
+                $("#Telephone").val(item[1]);
+                $("#OrderType").val(item[2]);
+                $('#OrderType option[value="0"]').attr("selected", null);
+                $('#OrderType option[value="1"]').attr("selected", null);
+                $('#OrderType option[value="' + item[2] + '"]').attr("selected", "selected");
+                $("#selectedOrderType").val(item[2]);
+                $.each(firstFreePO, function (i, j) {
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == item[2]) {
+                        $("#OrderNo").val(j.sequenceNumber);
+                        $("#POSequenceNoID").val(j.id);
+                    }
+                    else if (j.seqType == "0" && j.orderType == item[2]) {
+                        $("#OrderNo").val(j.sequenceNumber);
+                        $("#POSequenceNoID").val(j.id);
+                    }
+                });
+                var obj1 = {};
+                obj1.companyCode = $.trim($("#CompanyCode").val());
+                obj1.orderType = item[2];
+                obj1.priceType = 0;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "SQEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj1),
+                    dataType: "json",
+                    success: function (data) {
+                        itemMasterArrayPO = [];
+                        itemMasterDetailsPO = {};
+                        itemMasterQuantityPO = {};
+                        itemMasterArrayPOByName = [];
+                        itemMasterDetailsPOByName = {};
+                        $.each(data.d, function (i, j) {
+                            itemMasterArrayPO.push(j.code);
+                            itemMasterDetailsPO[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+                            itemMasterQuantityPO[j.code] = [j.Qnty];
+                            itemMasterArrayPOByName.push(j.name);
+                            itemMasterDetailsPOByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+
+                        });
+                    },
+                    error: function (result) {
+                        //alert("Error");
+                    }
+                });
+
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#SupplierIdGrn", function (e) {
+
+    $(this).autocomplete({
+        source: customerCodes,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, customerCodes);
+            if (exists >= 0) {
+                $("#selectedSupplier").val($("#SupplierIdGrn").val());
+                $("#buttonUpdate").click();
             }
         },
         response: function (event, ui) {

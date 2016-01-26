@@ -406,6 +406,7 @@ namespace XpressBilling.Account
                 UpdateSuccess.Visible = false;
                 FinalizeSuccess.Visible = true;
                 failure.Visible = false;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
             }
             else
             {

@@ -63,7 +63,7 @@
                                 <asp:BoundField DataField="OutQnty" HeaderText="Out Qty"></asp:BoundField>
                                 <asp:BoundField DataField="AvilableQnty" HeaderText="Avilable Qty"></asp:BoundField>
                                 <asp:BoundField DataField="UnitCost" HeaderText="Unit Cost"></asp:BoundField>
-                                <asp:BoundField DataField="Total" HeaderText="Total"></asp:BoundField>
+                                <%--<asp:BoundField DataField="Total" HeaderText="Total"></asp:BoundField>--%>
                             </Columns>
                         </asp:GridView>
                     </div>

@@ -77,7 +77,8 @@ namespace XpressBilling.Account
                 CreditLimit.Text = row["CreditLimit"].ToString();
                 Tin.Text = row["TaxId1"].ToString();
                 OrderType_0.SelectedValue = row["OrderType"].ToString();
-                OrderType_1.Attributes.Add("class", "hideElement");
+                OrderType_0.Visible = true;
+                OrderType_1.Visible = false;
             }
             else if (row["BusinessPartnerType"].ToString() == "1")
             {
@@ -88,7 +89,8 @@ namespace XpressBilling.Account
                 CreditLimitCust.Visible = true;
                 TinCust.Visible = true;
                 OrderType_1.SelectedValue = row["OrderType"].ToString();
-                OrderType_0.Attributes.Add("class", "hideElement");
+                OrderType_0.Visible = false;
+                OrderType_1.Visible = true;
             }
             Discount.Text = row["Discount"].ToString();
             
@@ -216,6 +218,8 @@ namespace XpressBilling.Account
                 CreditLimitCust.Visible = false;
                 Tin.Visible = true;
                 TinCust.Visible = false;
+                OrderType_0.Visible = true;
+                OrderType_1.Visible = false;
             }
             else
             {
@@ -223,6 +227,8 @@ namespace XpressBilling.Account
                 CreditLimitCust.Visible = true;
                 Tin.Visible = false;
                 TinCust.Visible = true;
+                OrderType_0.Visible = false;
+                OrderType_1.Visible = true;
             }
         }
 
