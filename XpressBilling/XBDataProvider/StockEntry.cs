@@ -79,7 +79,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SaveSEDetail(int SEMasterId, float totalAmount, string user, DataTable SEDetail, DateTime date, DataTable dtDeletedIds)
+        public static bool SaveSEDetail(int SEMasterId, string reference,float totalAmount, string user, DataTable SEDetail, DateTime date, DataTable dtDeletedIds)
         {
             try
             {
@@ -91,6 +91,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@date", date));
+                cmd.Parameters.Add(new SqlParameter("@reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_StockAdjustmentDtl_xpins", cmd);
                 return true;

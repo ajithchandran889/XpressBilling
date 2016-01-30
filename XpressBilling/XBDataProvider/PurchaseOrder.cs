@@ -109,7 +109,7 @@ namespace XBDataProvider
 
         }
 
-        public static bool SavePODetail(int POMasterId, string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, string shipToAddress, DataTable PODetail, DataTable dtDeletedIds)
+        public static bool SavePODetail(int POMasterId,string reference ,string paymentTerms, string deliveryTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, string shipToAddress, DataTable PODetail, DataTable dtDeletedIds)
         {
             try
             {
@@ -125,6 +125,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
                 cmd.Parameters.Add(new SqlParameter("@PODetail", PODetail));
                 cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
+                cmd.Parameters.Add(new SqlParameter("@reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@ShipToAddress", shipToAddress));

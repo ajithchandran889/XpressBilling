@@ -333,7 +333,7 @@ namespace XpressBilling.Account
 
                 if (SalesInvoiceId.Value != "" && SalesInvoiceId.Value != "0")
                 {
-                    if (XBDataProvider.Invoice.UpdateInvoiceDetails(Convert.ToInt32(SalesInvoiceId.Value), IPayTerms.Text, IDeliveryTerms.Text, IShipToAddress.Text, float.Parse(ITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, dtDeletedIds))
+                    if (XBDataProvider.Invoice.UpdateInvoiceDetails(Convert.ToInt32(SalesInvoiceId.Value), IPayTerms.Text, IDeliveryTerms.Text, IShipToAddress.Text, float.Parse(ITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(ITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, dtDeletedIds,Reference.Text))
                     {
                         Amount.Text = Request.Form[Amount.UniqueID];
                         SaveSuccess.Visible = false;

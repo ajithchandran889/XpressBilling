@@ -260,7 +260,7 @@ namespace XpressBilling.Account
                             dr["ItemName"] = Names[k];
                             dr["BaseUnitCode"] = Units[k];
                             dr["Qty"] = Convert.ToInt32(SEQuantitys[k]);
-                            dr["Currency"] = "";
+                            dr["Currency"] = currencyCode.Value;
                             dr["Rate"] = float.Parse(SERates[k], CultureInfo.InvariantCulture.NumberFormat);
                             dr["Amount"] = float.Parse(SEAmounts[k], CultureInfo.InvariantCulture.NumberFormat);
                             dr["Status"] = 1;
@@ -313,7 +313,7 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value), float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, date, dtDeletedIds);
+                    XBDataProvider.StockEntry.SaveSEDetail(Convert.ToInt32(StokeEntryMstId.Value),Reference.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, date, dtDeletedIds);
                     btnConvertStockRegister.Visible = true;
                     btnPrint.Visible = true;
                     Amount.Text = Request.Form[Amount.UniqueID].ToString();

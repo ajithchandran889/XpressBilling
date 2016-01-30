@@ -97,7 +97,8 @@ namespace XBDataProvider
             return dtTable;
         }
         public static int SaveSalesReturn(string companyCode, int salesReturnType, string customerId, string salesReturnNo, int status, DateTime documentDate,
-                                   string locationCode, string salesMan, string currentUser, string reference, float amount, string telephone,string invoiceNo, int selectedSequenceId)
+                                   string locationCode, string salesMan, string currentUser, string reference, float amount,string name, string telephone,string invoiceNo, int selectedSequenceId
+                                 , string paymentTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, float Demurages, string user, DataTable SQDetail)
         {
             try
             {
@@ -113,14 +114,21 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Transactiontype", salesReturnType));
                 cmd.Parameters.Add(new SqlParameter("@Reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@DocumentDate", documentDate));
+                cmd.Parameters.Add(new SqlParameter("@name", name));
                 cmd.Parameters.Add(new SqlParameter("@telephone", telephone));
-                cmd.Parameters.Add(new SqlParameter("@Amount", amount));
                 cmd.Parameters.Add(new SqlParameter("@salesMan", salesMan));
                 cmd.Parameters.Add(new SqlParameter("@Status", status));
                 cmd.Parameters.Add(new SqlParameter("@Createdby", currentUser));
                 cmd.Parameters.Add(new SqlParameter("@Updatedby", currentUser));
                 cmd.Parameters.Add(new SqlParameter("@CreatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
+                cmd.Parameters.Add(new SqlParameter("@paymentTerms", paymentTerms));
+                cmd.Parameters.Add(new SqlParameter("@totalAmount", totalAmount));
+                cmd.Parameters.Add(new SqlParameter("@totalDiscountAmt", totalDiscountAmt));
+                cmd.Parameters.Add(new SqlParameter("@totalTaxAmt", totalTaxAmt));
+                cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
+                cmd.Parameters.Add(new SqlParameter("@Demurages", Demurages));
+                cmd.Parameters.Add(new SqlParameter("@SRDetail", SQDetail));
                 return DataProvider.ExecuteScalarInt(connString, "dbo.sp_SalesreturnMst_xpins", cmd);
 
             }
@@ -149,7 +157,7 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static bool SaveSRDetail(int SQMasterId, string paymentTerms, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, string user, DataTable SQDetail)
+        public static bool SaveSRDetail(int SQMasterId, string paymentTerms,string reference, float totalAmount, float totalDiscountAmt, float totalTaxAmt, float totalNetAmt, float demurages, string user, DataTable SQDetail, DataTable dtDeletedIds)
         {
             try
             {
@@ -162,7 +170,10 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@totalDiscountAmt", totalDiscountAmt));
                 cmd.Parameters.Add(new SqlParameter("@totalTaxAmt", totalTaxAmt));
                 cmd.Parameters.Add(new SqlParameter("@totalNetAmt", totalNetAmt));
+                cmd.Parameters.Add(new SqlParameter("@demurages", demurages));
+                cmd.Parameters.Add(new SqlParameter("@reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@SRDetail", SQDetail));
+                cmd.Parameters.Add(new SqlParameter("@dtDeletedIds", dtDeletedIds));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", user));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 DataProvider.ExecuteScalarInt(connString, "dbo.sp_SalesReturnDtl_xpins", cmd);
@@ -191,6 +202,23 @@ namespace XBDataProvider
             }
 
             return true;
+        }
+
+        public static DataTable GetFinalizedSalesOrderDetails(string bpCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@codBP", bpCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetFinalizedSalesOrderDetails", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dtTable;
         }
     }
 }

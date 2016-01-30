@@ -289,7 +289,7 @@ namespace XpressBilling.Account
                             dr["ItemName"] = MIItemNames[k];
                             dr["BaseUnitCode"] = MIUnits[k];
                             dr["Qty"] = Convert.ToInt32(MIQuantitys[k]);
-                            dr["Currency"] = "";
+                            dr["Currency"] = currencyCode.Value;
                             dr["Rate"] = float.Parse(MIItemRates[k], CultureInfo.InvariantCulture.NumberFormat);
                             dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                             dr["DiscountPercentage"] = float.Parse(MIDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
@@ -314,7 +314,7 @@ namespace XpressBilling.Account
 
                 if (InvoiceId.Value != "" && InvoiceId.Value != "0")
                 {
-                    if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, float.Parse(MITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, dtDeletedIds))
+                    if (XBDataProvider.ManualInvoice.UpdateManualInvoiceDetails(Convert.ToInt32(InvoiceId.Value), MIPayTerms.Text, MIDeliveryTerms.Text, MIShipToAddress.Text, float.Parse(MITotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(MITotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, dtDeletedIds,Reference.Text))
                     {
                         Amount.Text = Request.Form[Amount.UniqueID];
                         SaveSuccess.Visible = false;

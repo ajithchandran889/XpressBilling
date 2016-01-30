@@ -315,7 +315,7 @@ namespace XpressBilling.Account
                             dr["OrderQty"] = Convert.ToInt32(POQuantitys[k]);
                             dr["ReceivedQty"] = 0;
                             dr["InOrderQty"] = Convert.ToInt32(POQuantitys[k]);
-                            dr["Currency"] = "";
+                            dr["Currency"] = currencyCode.Value;
                             dr["Rate"] = float.Parse(PORates[k], CultureInfo.InvariantCulture.NumberFormat);
                             dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                             dr["DiscountPercentage"] = float.Parse(PODiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
@@ -368,7 +368,7 @@ namespace XpressBilling.Account
                 {
                     if (dt.Rows.Count > 0)
                     {
-                        XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value), PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, ShipToAddress.Text, dt, dtDeletedIds);
+                        XBDataProvider.PurchaseOrder.SavePODetail(Convert.ToInt32(PurchaseOrderId.Value),Reference.Text, PayTerms.Text, DeliveryTerms.Text, float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(POTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, ShipToAddress.Text, dt, dtDeletedIds);
                         btnConverOrder.Visible = true;
                         btnPrint.Visible = true;
                         PageStatus.Value = "edit";

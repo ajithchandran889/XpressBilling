@@ -42,6 +42,7 @@ var MIItemRowDetails = [];
 var IItemRowDetails = [];
 var itemMasterQuantityI = {};
 var itemMasterQuantityPO = {};
+var itemMasterQuantitySR = {};
 var itemMasterArrayPO = [];
 var itemMasterDetailsPO = {};
 var itemMasterArrayPOByName = [];
@@ -56,12 +57,15 @@ var itemDetailsStockRegCodeArray = [];
 var itemDetailsStockRegNameArray = [];
 var itemDetailsStockRegCode = {};
 var itemDetailsStockRegName = {};
+var salesOrderDetails = {};
+var salesOrderNos = {};
 var firstFreeSQ = [];
 var firstFreeSI = [];
 var firstFreeSE = [];
 var firstFreeMI = [];
 var firstFreePO = [];
 var firstFreeGrn = [];
+var firstFreeSR = [];
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -132,7 +136,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-    } 
+    }
     if ($("#StockRegisterPage").length > 0) {
         $.ajax({
             type: "POST",
@@ -214,7 +218,7 @@ $(document).ready(function () {
         });
     }
     if ($("#GRNId").length > 0) {
-        
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -333,7 +337,7 @@ $(document).ready(function () {
         $(".SQUnit").attr('readonly', 'readonly');
     }
     if ($("#PurchaseOrderId").length > 0) {
-        
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -406,10 +410,80 @@ $(document).ready(function () {
         }
     }
     if ($("#SalesReturnMstId").length > 0) {
-        if ($("#SalesReturn").val() == "") {
-            alert("Please create first free number for Sales Return");
-            $("#SaveBtn").attr("disabled", true);
+        if ($("#SalesReturnType").val() == "0") {
+            $("#Location").attr("readonly", "readonly");
+            $("#SalesMan").attr("readonly", "readonly");
+            $(".SRItem").attr('readonly', 'readonly');
+            $(".SRItemName").attr('readonly', 'readonly');
+            $(".SRItemRate").attr('readonly', 'readonly');
+            $(".SRUnit").attr('readonly', 'readonly');
+            $(".SRDiscPer").attr('readonly', 'readonly');
+            $(".SRDiscAmt").attr('readonly', 'readonly');
+            $(".SRTaxPer").attr('readonly', 'readonly');
+            $(".SRTaxAmt").attr('readonly', 'readonly');
+            $(".SRNetAmt").attr('readonly', 'readonly');
+            $("#SRTotalAmount").attr('readonly', 'readonly');
+            $("#SRTotalDiscountAmt").attr('readonly', 'readonly');
+            $("#SRTotalTaxAmt").attr('readonly', 'readonly');
+            $("#SRTotalOrderAmt").attr('readonly', 'readonly');
+            
         }
+        var i = 0;
+        if ($("#PageStatus").val() == "create") {
+            var obj1 = {};
+            obj1.companyCode = $.trim($("#CompanyCode").val());
+            obj1.orderType = $("#SalesReturnType").val();
+            obj1.priceType = 0;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "SQEdit.aspx/GetItemMasters",
+                data: JSON.stringify(obj1),
+                dataType: "json",
+                success: function (data) {
+                    itemMasterArraySalesReturn = [];
+                    itemMasterDetailsSalesReturn = {};
+                    itemMasterQuantitySR = {};
+                    itemMasterArraySalesReturnByName = [];
+                    itemMasterDetailsSalesReturnByName = {};
+                    $.each(data.d, function (i, j) {
+                        itemMasterArraySalesReturn.push(j.code);
+                        itemMasterDetailsSalesReturn[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+                        itemMasterQuantitySR[j.code] = [j.Qnty];
+                        itemMasterArraySalesReturnByName.push(j.name);
+                        itemMasterDetailsSalesReturnByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+
+                    });
+                    var i = 0;
+                    $("tr", $("#SalesReturnDetail")).each(function () {
+
+                        var val = $("input[id*='SRItem']", $(this)).val();
+                        var qnty = parseInt($("input[id*='SRQuantity']", $(this)).val());
+                        var rate = parseFloat($("input[id*='SRItemRate']", $(this)).val());
+                        var discountAmt = parseFloat($("input[id*='SRDiscAmt']", $(this)).val());
+                        var taxPer = parseFloat($("input[id*='SRTaxPer']", $(this)).val());
+                        if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+                            var itemArr = itemMasterDetailsSalesReturn[$("input[id*='SRItem']", $(this)).val()];
+                            var rowTotalRate = qnty * rate;
+                            var discountPer = 0;
+                            if (rowTotalRate != 0) {
+                                discountPer = ((discountAmt / rowTotalRate) * 100).toFixed(itemArr[9]);
+                            }
+                            var taxAmount = ((rowTotalRate - discountAmt) / 100) * taxPer;
+                            var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                            var orderAmount = netAmount;
+                            SRItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
+                            i++;
+                        }
+
+                    });
+                },
+                error: function (result) {
+                    //alert("Error");
+                }
+            });
+        }
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -418,57 +492,78 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 itemTaxCodes = [];
+                itemTaxCodevalues = [];
                 itemTaxDetails = {};
                 $.each(data.d, function (i, j) {
                     itemTaxCodes.push(j.code);
+                    itemTaxCodevalues.push(j.Per);
                     itemTaxDetails[j.code] = [j.Per];
                 });
             },
             error: function (result) {
-                // alert("Error");
+                //alert("Error");
             }
         });
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
+            url: "SalesReturnEdit.aspx/GetFirstFreerDetails",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
-                itemMasterArraySalesReturn = [];
-                itemMasterDetailsSalesReturn = {};
-                //itemMasterQuantityI = {};
+                firstFreeSR = [];
                 $.each(data.d, function (i, j) {
-                    itemMasterArraySalesReturn.push(j.code);
-                    itemMasterDetailsSalesReturn[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    //itemMasterQuantityI[j.code] = [j.Qnty];
-                });
+                    firstFreeSR.push({
+                        id: j.id,
+                        sequenceNumber: j.sequenceNumber,
+                        seqType: j.seqType,
+                        orderType: j.orderType,
+                        enterpriseUnitCode: j.enterpriseUnitCode
+                    });
 
+                });
+                if (firstFreeSR.length == 0) {
+                    alert("Please create first free number for Sales Return");
+                    $("#SaveBtn").attr("disabled", true);
+                }
+                //else
+                //{
+                //    $.each(firstFreeSR, function (i, j) {
+                //        if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                //            $("#SalesReturn").val(j.sequenceNumber);
+                //            $("#SRSequenceNoID").val(j.id);
+                //        }
+                //        else if (j.seqType == "0" && j.orderType == $("#SalesReturnType").val()) {
+                //            $("#SalesReturn").val(j.sequenceNumber);
+                //            $("#SRSequenceNoID").val(j.id);
+                //        }
+                //    });
+                //}
             },
             error: function (result) {
                 // alert("Error");
             }
         });
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "PriceBookEdit.aspx/GetItemMasters",
+            url: "SQEdit.aspx/GetCustomerDetails",
             data: JSON.stringify(obj),
             dataType: "json",
             success: function (data) {
-                itemMasterArraySalesReturnByName = [];
-                itemMasterDetailsSalesReturnByName = {};
-                //itemMasterQuantityI = {};
+                customerCodes = [];
+                customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    itemMasterArraySalesReturnByName.push(j.name);
-                    itemMasterDetailsSalesReturnByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty];
-                    //itemMasterQuantityI[j.code] = [j.Qnty];
+                    customerCodes.push(j.code);
+                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
                 });
             },
             error: function (result) {
-                // alert("Error");
+                //alert("Error");
             }
         });
+
     }
     if ($("#InvoiceId").length > 0) {
         $.ajax({
@@ -683,27 +778,59 @@ $(document).ready(function () {
         }
     }
     if (($("#SalesReturnMstId").val() != "" || $("#SalesReturnMstId").val() != "0") && $("#PageStatus").val() != "create") {
-        itemMasterArraySalesReturn = [];
-        itemMasterDetailsSalesReturn = {};
-        var i = 0;
-        $("tr", $("#SalesReturnDetail")).each(function () {
+        var obj1 = {};
+        obj1.companyCode = $.trim($("#CompanyCode").val());
+        obj1.orderType = $("#SalesReturnType").val();
+        obj1.priceType = 0;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SQEdit.aspx/GetItemMasters",
+            data: JSON.stringify(obj1),
+            dataType: "json",
+            success: function (data) {
+                itemMasterArraySalesReturn = [];
+                itemMasterDetailsSalesReturn = {};
+                itemMasterQuantitySR = {};
+                itemMasterArraySalesReturnByName = [];
+                itemMasterDetailsSalesReturnByName = {};
+                $.each(data.d, function (i, j) {
+                    itemMasterArraySalesReturn.push(j.code);
+                    itemMasterDetailsSalesReturn[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
+                    itemMasterQuantitySR[j.code] = [j.Qnty];
+                    itemMasterArraySalesReturnByName.push(j.name);
+                    itemMasterDetailsSalesReturnByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint, j.itemType];
 
-            var val = $("input[id*='SRItem']", $(this)).val();
-            var qnty = parseInt($("input[id*='SRQuantity']", $(this)).val());
-            var rate = parseFloat($("input[id*='SRItemRate']", $(this)).val());
-            var discountAmt = parseFloat($("input[id*='SRDiscAmt']", $(this)).val());
-            var taxPer = parseFloat($("input[id*='SRTaxPer']", $(this)).val());
-            if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
-                var rowTotalRate = qnty * rate;
-                var discountPer = (discountAmt / rowTotalRate).toFixed(2);
-                var taxAmount = (rowTotalRate - discountAmt) * taxPer;
-                var netAmount = (rowTotalRate - discountAmt) + taxAmount;
-                var orderAmount = netAmount;
-                SRItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
-                i++;
+                });
+                var i = 0;
+                $("tr", $("#SalesReturnDetail")).each(function () {
+
+                    var val = $("input[id*='SRItem']", $(this)).val();
+                    var qnty = parseInt($("input[id*='SRQuantity']", $(this)).val());
+                    var rate = parseFloat($("input[id*='SRItemRate']", $(this)).val());
+                    var discountAmt = parseFloat($("input[id*='SRDiscAmt']", $(this)).val());
+                    var taxPer = parseFloat($("input[id*='SRTaxPer']", $(this)).val());
+                    if (typeof (val) !== "undefined" && val != "" && val != "undefined") {
+                        var itemArr = itemMasterDetailsSalesReturn[$("input[id*='SRItem']", $(this)).val()];
+                        var rowTotalRate = qnty * rate;
+                        var discountPer = 0;
+                        if (rowTotalRate != 0) {
+                            discountPer = ((discountAmt / rowTotalRate) * 100).toFixed(itemArr[9]);
+                        }
+                        var taxAmount = ((rowTotalRate - discountAmt) / 100) * taxPer;
+                        var netAmount = (rowTotalRate - discountAmt) + taxAmount;
+                        var orderAmount = netAmount;
+                        SRItemRowDetails[i] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
+                        i++;
+                    }
+
+                });
+            },
+            error: function (result) {
+                //alert("Error");
             }
-
         });
+
         if ($("#Status").val() == "2") {
             $(".SRItem").attr('readonly', 'readonly');
             $(".SRItemName").attr('readonly', 'readonly');
@@ -787,7 +914,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-        
+
         if ($("#PageStatus").val() == "edit") {
             $(".MITaxAmt").attr('readonly', 'readonly');
             $(".MINetAmt").attr('readonly', 'readonly');
@@ -945,7 +1072,7 @@ $(document).ready(function () {
         }
     }
     if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create") {
-        
+
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#OrderType").val();
@@ -998,7 +1125,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-         if ($("#IsFinalized").val() == "1") {
+        if ($("#IsFinalized").val() == "1") {
             $(".POTaxAmt").attr('readonly', 'readonly');
             $(".PONetAmt").attr('readonly', 'readonly');
             $(".POUnit").attr('readonly', 'readonly');
@@ -1009,15 +1136,15 @@ $(document).ready(function () {
             $(".PODiscPer").attr('readonly', 'readonly');
             $(".PODiscAmt").attr('readonly', 'readonly');
             $(".POTaxPer").attr('readonly', 'readonly');
-         }
-         else if ($("#Status").val() == "1") {
-             $(".POTaxAmt").attr('readonly', 'readonly');
-             $(".PONetAmt").attr('readonly', 'readonly');
-             $(".POUnit").attr('readonly', 'readonly');
-             $(".POItem").attr('readonly', 'readonly');
-             $(".POName").attr('readonly', 'readonly');
-         }
-         
+        }
+        else if ($("#Status").val() == "1") {
+            $(".POTaxAmt").attr('readonly', 'readonly');
+            $(".PONetAmt").attr('readonly', 'readonly');
+            $(".POUnit").attr('readonly', 'readonly');
+            $(".POItem").attr('readonly', 'readonly');
+            $(".POName").attr('readonly', 'readonly');
+        }
+
     }
 
     $("#mainForm").validate();
@@ -1576,6 +1703,63 @@ $(document).on("click", "#lnkDeleteSI", function (e) {
     $("#rowCount").val(newIndex);
     return false;
 });
+$(document).on("click", "#lnkDeleteSR", function (e) {
+    if (typeof $(this).attr('data-id') !== "undefined")
+        $("#DeletedRowIDs").val($("#DeletedRowIDs").val() + $(this).attr('data-id') + ",");
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (SRItemRowDetails[rowIndex]) {
+        var itemArr = itemMasterDetailsSalesReturn[row.cells[1].getElementsByTagName("input")[0].value];
+        var itemArray = SRItemRowDetails[rowIndex];
+        var totalAmt = parseFloat($("#SRTotalAmount").val());
+        var totalDiscount = parseFloat($("#SRTotalDiscountAmt").val());
+        var totalTax = parseFloat($("#SRTotalTaxAmt").val());
+        var totalOder = parseFloat($("#SRCorrectTotalOrderAmtHidden").val());
+        var oldAmount = parseFloat(itemArray[6]);
+        var oldDiscount = parseFloat(itemArray[3]);
+        var oldTax = parseFloat(itemArray[5]);
+        var oldOder = parseFloat(itemArray[7]);
+        totalAmt -= parseFloat(oldAmount);
+        totalDiscount -= parseFloat(oldDiscount);
+        totalTax -= parseFloat(oldTax);
+        totalOder -= parseFloat(oldOder);
+        $("#SRTotalAmount").val(totalAmt.toFixed(itemArr[9]));
+        $("#SRTotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+        $("#SRTotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+        $("#SRTotalOrderAmt").val((totalOder - parseFloat($("#Demurages").val())).toFixed(itemArr[9]));
+        $("#Amount").val((totalOder - parseFloat($("#Demurages").val())).toFixed(itemArr[9]));
+        $("#SRCorrectTotalOrderAmtHidden").val(totalOder.toFixed(itemArr[9]));
+        var i;
+        for (i = rowIndex; i < SRItemRowDetails.length; i++) {
+            if (SRItemRowDetails[i + 1]) {
+                SRItemRowDetails[i] = SRItemRowDetails[i + 1];
+            }
+            else {
+                SRItemRowDetails.splice(i, 1);
+            }
+        }
+    }
+    row.remove();
+    var index = 1;
+    $("td:first-child", $("#SalesReturnDetail")).each(function () {
+        $(this).find("span:first").text(index);
+        index++;
+
+    });
+    var newIndex = --index;
+    if (newIndex == 1) {
+        $("tr", $("#SalesReturnDetail")).each(function () {
+            var val = $("input[id*='SRItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeleteSR']", $(this)).css("display", "none");
+            }
+
+
+        });
+    }
+    $("#rowCount").val(newIndex);
+    return false;
+});
 $(document).on("click", "#lnkDeletePO", function (e) {
     if (typeof $(this).attr('data-id') !== "undefined")
         $("#DeletedRowIDs").val($("#DeletedRowIDs").val() + $(this).attr('data-id') + ",");
@@ -1726,11 +1910,21 @@ $(document).on("keydown", "#Location", function (e) {
                         if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#GRNType").val()) {
                             $("#GoodsReceipt").val(j.sequenceNumber);
                             $("#GrnSequenceNoID").val(j.id);
-                            }
+                        }
 
-                        });
+                    });
 
-                    } 
+                }
+                else if ($("#SalesReturnMstId").length > 0) {
+                    $.each(firstFreeSR, function (i, j) {
+                        if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                            $("#SalesReturn").val(j.sequenceNumber);
+                            $("#SRSequenceNoID").val(j.id);
+                        }
+
+                    });
+
+                }
             }
         },
         response: function (event, ui) {
@@ -1827,7 +2021,139 @@ $(document).on("keydown", "#LocationSR", function (e) {
         }
     });
 });
+$(document).on("keydown", "#SRCustomerId", function (e) {
 
+    $(this).autocomplete({
+        source: customerCodes,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, customerCodes);
+            if (exists < 0) {
+                $(this).val("");
+                $("#Name").val("");
+                $("#Telephone").val("");
+                $("#SalesReturn").val("");
+                $("#SRSequenceNoID").val("");
+                return false;
+            }
+            else {
+                var item = customerCodesWithDetails[val];
+                $("#Name").val(item[0]);
+                $("#Telephone").val(item[1]);
+                $.each(firstFreeSR, function (i, j) {
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                        $("#SalesReturn").val(j.sequenceNumber);
+                        $("#SRSequenceNoID").val(j.id);
+                    }
+                    else if (j.seqType == "0" && j.orderType == $("#SalesReturnType").val()) {
+                        $("#SalesReturn").val(j.sequenceNumber);
+                        $("#SRSequenceNoID").val(j.id);
+                    }
+                });
+                var obj1 = {};
+                obj1.companyCode = $.trim($("#CompanyCode").val());
+                obj1.orderType = item[2];
+                obj1.priceType = 0;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "SQEdit.aspx/GetItemMasters",
+                    data: JSON.stringify(obj1),
+                    dataType: "json",
+                    success: function (data) {
+                        itemMasterArraySalesReturn = [];
+                        itemMasterDetailsSalesReturn = {};
+                        itemMasterArraySalesReturnByName = [];
+                        itemMasterDetailsSalesReturnByName = {};
+                        $.each(data.d, function (i, j) {
+                            itemMasterArraySalesReturn.push(j.code);
+                            itemMasterDetailsSalesReturn[j.code] = [j.name, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+                            itemMasterArraySalesReturnByName.push(j.name);
+                            itemMasterDetailsSalesReturnByName[j.name] = [j.code, j.supplierBarcode, j.mrp, j.retailPrice, j.BaseUnitCode, j.TaxCode, j.TaxPer, j.Qnty, j.currencyCode, j.decimalPoint];
+
+                        });
+                    },
+                    error: function (result) {
+                        //alert("Error");
+                    }
+                });
+                var obj2 = {};
+                obj2.bpCode = val;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "SalesReturnEdit.aspx/GetFinalizedSalesOrderDetails",
+                    data: JSON.stringify(obj2),
+                    dataType: "json",
+                    success: function (data) {
+                        salesOrderNos = [];
+                        salesOrderDetails = {};
+                        $.each(data.d, function (i, j) {
+                            salesOrderNos.push(j.salesOrderNo);
+                            salesOrderDetails[j.salesOrderNo] = [j.locationCode, j.locationName, j.salesMan, j.salesManName, j.amount, j.taxAmount, j.discountAmount, j.orderAmount, j.salesOrderDate];
+                        });
+                    },
+                    error: function (result) {
+                        //alert("Error");
+                    }
+                });
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+$(document).on("keydown", "#SalesOrderNo", function (e) {
+
+    $(this).autocomplete({
+        source: salesOrderNos,
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, salesOrderNos);
+            if (exists < 0) {
+                $(this).val("");
+                $("#Location").val("");
+                $("#LocationHidden").val("");
+                $("#SalesMan").val("");
+                $("#SalesManHidden").val("");
+                return false;
+            }
+            else {
+                var item = salesOrderDetails[val];
+                $("#Location").val(item[1]);
+                $("#LocationHidden").val(item[0]);
+                $("#SalesMan").val(item[3]);
+                $("#SalesManHidden").val(item[2]);
+                $("#SRTotalAmountHidden").val(item[4]);
+                $("#SRTotalDiscountAmtHidden").val(item[5]);
+                $("#SRTotalTaxAmtHidden").val(item[6]);
+                $("#SRTotalOrderAmtHidden").val(item[7]);
+                $("#SalesOrderDate").val(item[8]);
+                $.each(firstFreeSR, function (i, j) {
+                    if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                        $("#SalesReturn").val(j.sequenceNumber);
+                        $("#SRSequenceNoID").val(j.id);
+                    }
+                    else if (j.seqType == "0" && j.orderType == $("#SalesReturnType").val()) {
+                        $("#SalesReturn").val(j.sequenceNumber);
+                        $("#SRSequenceNoID").val(j.id);
+                    }
+                    $("#buttonUpdate").click();
+                });
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No results found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
 $(".Name").attr('readonly', 'readonly');
 $(".Rate").attr('readonly', 'readonly');
 $(".Unit").attr('readonly', 'readonly');
@@ -2134,13 +2460,35 @@ function iSQuantityAvailableSE(txtBox) {
     }
 }
 $(document).on("focusout", "#SEQuantity", function (e) {
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
     if ($("#AdjustmentType").val() == "3") {
-        iSQuantityAvailableSE(this);
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            iSQuantityAvailableSE(this);
+        }
+        else {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            alert("Please fill an item with quantity");
+            return false;
+        }
     }
     else {
-        CalculateSEAmount(this);
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CalculateSEAmount(this);
+        }
+        else {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            alert("Please fill an item with quantity");
+            return false;
+        }
+        
     }
-
+    
+    
 });
 $(document).on("focusout", "#SERate", function (e) {
     CalculateSEAmount(this);
@@ -2212,6 +2560,8 @@ function SetSelectedRowManualInvoice(lnk, selectedItem) {
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     return false;
 }
@@ -2222,6 +2572,8 @@ function SetSelectedRowManualInvoiceByName(lnk, selectedItem) {
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     return false;
 }
@@ -2272,7 +2624,7 @@ $(document).on("keydown", ".MIItem", function (e) {
                 row.cells[10].getElementsByTagName("input")[0].value = "";
                 return false;
             }
-            
+
         },
         change: function (event, ui) {
 
@@ -2392,8 +2744,18 @@ $(document).on("keydown", ".MIItemName", function (e) {
     //$(this).autocomplete(optionsManualInvoiceByName);
 });
 $(document).on("focusout", "#MIQuantity", function (e) {
-
-    CalculateMIAmount(this);
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+        CalculateMIAmount(this);
+    }
+    else {
+        row.cells[3].getElementsByTagName("input")[0].value = "";
+        row.cells[3].getElementsByTagName("input")[0].focus();
+        alert("Please fill an item with quantity");
+        return false;
+    }
 });
 $(document).on("focusout", "#MIItemRate", function (e) {
     CalculateMIAmount(this);
@@ -2518,7 +2880,7 @@ function iSQuantityAvailableI(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[3].getElementsByTagName("input")[0].value != "") {
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantityI[itemCode];
         var itemArray = itemMasterDetailsInvoice[itemCode];
@@ -2580,12 +2942,18 @@ function iSQuantityAvailableI(txtBox) {
         }
 
     }
+    else {
+        row.cells[3].getElementsByTagName("input")[0].value = "";
+        row.cells[3].getElementsByTagName("input")[0].focus();
+        alert("Please fill an item with quantity");
+        return false;
+    }
 }
 function iSQuantityAvailableSQ(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[3].getElementsByTagName("input")[0].value != "") {
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantitySQ[itemCode];
         if (typeof (itemArr) === "undefined") {
@@ -2624,6 +2992,13 @@ function iSQuantityAvailableSQ(txtBox) {
         }
 
     }
+    else
+    {
+        row.cells[3].getElementsByTagName("input")[0].value = "";
+        row.cells[3].getElementsByTagName("input")[0].focus();
+        alert("Please fill an item with quantity");
+        return false;
+    }
 }
 
 function SetSelectedRowInvoice(lnk, selectedItem) {
@@ -2633,6 +3008,8 @@ function SetSelectedRowInvoice(lnk, selectedItem) {
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -2644,6 +3021,8 @@ function SetSelectedRowInvoiceByName(lnk, selectedItem) {
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -2987,6 +3366,8 @@ function SetSelectedRowSQ(lnk, selectedItem) {
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
 }
@@ -2997,6 +3378,8 @@ function SetSelectedRowSQByName(lnk, selectedItem) {
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -3298,7 +3681,7 @@ function iSQuantityAvailablePO(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
-        && row.cells[3].getElementsByTagName("input")[0].value != "") {
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
         var itemCode = row.cells[1].getElementsByTagName("input")[0].value;
         var itemArr = itemMasterQuantityPO[itemCode];
         var itemArray = itemMasterDetailsPO[itemCode];
@@ -3359,6 +3742,12 @@ function iSQuantityAvailablePO(txtBox) {
         }
 
     }
+    else {
+        row.cells[3].getElementsByTagName("input")[0].value = "";
+        row.cells[3].getElementsByTagName("input")[0].focus();
+        alert("Please fill an item with quantity");
+        return false;
+    }
 }
 
 function SetSelectedRowPO(lnk, selectedItem) {
@@ -3368,6 +3757,8 @@ function SetSelectedRowPO(lnk, selectedItem) {
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -3380,6 +3771,8 @@ function SetSelectedRowPOByName(lnk, selectedItem) {
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
     row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
     row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -3625,7 +4018,7 @@ function CalculatePOAmount(txtBox) {
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
             var rowTotalRate = (parseInt(qnty) * parseFloat(rate)).toFixed(itemArr[9]);
-            
+
             if ($(txtBox).attr("id") == "PODiscAmt") {
                 if (parseFloat(rowTotalRate) != 0) {
                     discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
@@ -3727,8 +4120,10 @@ function SetSelectedRowSalesReturn(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsSalesReturn[selectedItem];
     row.cells[2].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
@@ -3738,20 +4133,106 @@ function SetSelectedRowSalesReturnByName(lnk, selectedItem) {
     var rowIndex = row.rowIndex - 1;
     var itemArr = itemMasterDetailsSalesReturnByName[selectedItem];
     row.cells[1].getElementsByTagName("input")[0].value = itemArr[0];
-    row.cells[3].getElementsByTagName("input")[0].value = itemArr[3];
-    row.cells[5].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[5].getElementsByTagName("input")[0].value = itemArr[3];
+    row.cells[4].getElementsByTagName("input")[0].value = itemArr[4];
+    row.cells[6].getElementsByTagName("input")[0].value = 0;
+    row.cells[7].getElementsByTagName("input")[0].value = 0;
     row.cells[8].getElementsByTagName("input")[0].value = itemArr[6];
     row.cells[8].getElementsByTagName("input")[1].value = itemArr[5];
     return false;
 }
 
+function CheckItemAlreadyAddedSR(val, rowIndex) {
+    var flag = false;
+    var rowIndexCurrent = -1;
+    $("tr", $("#SalesReturnDetail")).each(function () {
+        var row = this.parentNode.parentNode;
+        if (val == $("input[id*='SRItem']", $(this)).val() && rowIndex !== rowIndexCurrent) {
+            flag = true;
+        }
+        rowIndexCurrent = rowIndexCurrent + 1;
+    });
+    return flag;
+}
+function IsItemAvailableSR(item) {
+    var itemArr = itemMasterQuantitySR[item];
+    var itemArray = itemMasterArraySalesReturn[item];
+    if (parseInt(itemArray[10]) == 0) {
+        return true;
+    }
+    else if (parseInt(itemArr[0]) > 0) {
+        return true;
+    }
+    else {
+        alert("Available qty is 0");
+        return false;
+    }
+}
 
 $(document).on("keydown", ".SRItem", function (e) {
     $(this).autocomplete({
         source: itemMasterArraySalesReturn,
         select: function (event, ui) {
-            SetSelectedRowSalesReturn(this, ui.item.label);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (!CheckItemAlreadyAddedSR(ui.item.label, rowIndex)) {
+                SetSelectedRowSalesReturn(this, ui.item.label);
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
 
+        },
+        change: function (event, ui) {
+
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArraySalesReturn);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                $(this).focus();
+
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                if (!CheckItemAlreadyAddedSR($(this).val(), rowIndex)) {
+                    SetSelectedRowSalesReturn(this, $(this).val());
+                    
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -3759,8 +4240,67 @@ $(document).on("keydown", ".SRItemName", function (e) {
     $(this).autocomplete({
         source: itemMasterArraySalesReturnByName,
         select: function (event, ui) {
-            SetSelectedRowSalesReturnByName(this, ui.item.label);
+            var itemArr = itemMasterDetailsSalesReturnByName[ui.item.label];
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (!CheckItemAlreadyAddedSR(itemArr[0], rowIndex)) {
+                SetSelectedRowSalesReturnByName(this, ui.item.label);
+               
+            }
+            else {
+                alert("Item Already added");
+                $(this).val("");
+                var row = this.parentNode.parentNode;
+                var rowIndex = row.rowIndex - 1;
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
 
+            }
+        },
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, itemMasterArraySalesReturnByName);
+            var row = this.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            if (exists < 0) {
+                $(this).val("");
+                row.cells[1].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[4].getElementsByTagName("input")[0].value = "";
+                row.cells[5].getElementsByTagName("input")[0].value = "";
+                row.cells[6].getElementsByTagName("input")[0].value = "";
+                row.cells[7].getElementsByTagName("input")[0].value = "";
+                row.cells[8].getElementsByTagName("input")[0].value = "";
+                row.cells[9].getElementsByTagName("input")[0].value = "";
+                row.cells[10].getElementsByTagName("input")[0].value = "";
+                return false;
+            }
+            else {
+                var itemArr = itemMasterDetailsSalesReturnByName[$(this).val()];
+                if (!CheckItemAlreadyAddedSR(itemArr[0], rowIndex)) {
+                    SetSelectedRowSalesReturnByName(this, $(this).val());
+                    
+                }
+                else {
+                    $(this).val("");
+                    $(this).focus();
+                }
+            }
+
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
 });
@@ -3773,10 +4313,28 @@ $(document).on("keydown", ".SRTaxPer", function (e) {
 
         },
         change: function (event, ui) {
-            if (ui.item === null || !ui.item)
-                $(this).val(''); /* clear the value */
+
+            val = $.trim($(this).val());
+            exists = $.inArray(parseInt(val), itemTaxCodevalues);
+            if (exists < 0) {
+                $(this).val("");
+                return false;
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
         }
     });
+});
+$(document).on("focusout", "#Demurages", function (e) {
+    if($(this).val()!="")
+    {
+        $("#SRTotalOrderAmt").val((parseFloat($("#SRCorrectTotalOrderAmtHidden").val()) - parseFloat($("#Demurages").val())).toFixed(parseInt($("#currencyDecimal").val())));
+        $("#Amount").val(parseFloat(parseFloat($("#SRCorrectTotalOrderAmtHidden").val()) - parseFloat($("#Demurages").val())).toFixed(parseInt($("#currencyDecimal").val())));
+    }
 });
 $(document).on("focusout", "#SRItemRate", function (e) {
     CalculateSRAmount(this);
@@ -3791,27 +4349,46 @@ $(document).on("focusout", "#SRDiscAmt", function (e) {
     CalculateSRAmount(this);
 });
 $(document).on("focusout", "#SRQuantity", function (e) {
-    CalculateSRAmount(this);
+    var row = this.parentNode.parentNode;
+    var rowIndex = row.rowIndex - 1;
+    if (row.cells[1].getElementsByTagName("input")[0].value != ""
+        && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+        CalculateSRAmount(this);
+    }
+    else {
+        row.cells[3].getElementsByTagName("input")[0].value = "";
+        row.cells[3].getElementsByTagName("input")[0].focus();
+        alert("Please fill an item with quantity");
+        return false;
+    }
+    
 });
 function CalculateSRAmount(txtBox) {
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != "") {
-        var rate = row.cells[3].getElementsByTagName("input")[0].value;
-        var qnty = row.cells[4].getElementsByTagName("input")[0].value;
+        var itemArr = itemMasterDetailsSalesReturn[row.cells[1].getElementsByTagName("input")[0].value];
+        var rate = row.cells[5].getElementsByTagName("input")[0].value;
+        var qnty = row.cells[3].getElementsByTagName("input")[0].value;
         var discountPer = row.cells[6].getElementsByTagName("input")[0].value;
         var discountAmt = row.cells[7].getElementsByTagName("input")[0].value;
         var taxPer = row.cells[8].getElementsByTagName("input")[0].value;
         if (qnty != "" && (discountPer != "" || discountAmt != "") && taxPer != "") {
-            var rowTotalRate = qnty * rate;
+            var rowTotalRate = (parseInt(qnty) * parseFloat(rate)).toFixed(itemArr[9]);
             if ($(txtBox).attr("id") == "SRDiscAmt") {
-                discountPer = (discountAmt / rowTotalRate).toFixed(2);
+                if (parseFloat(rowTotalRate) != 0) {
+                    discountPer = ((parseFloat(discountAmt) / parseFloat(rowTotalRate)) * 100).toFixed(itemArr[9]);
+                }
+                else {
+                    discountPer = 0;
+                }
+
             }
             else {
-                discountAmt = (rowTotalRate * discountPer).toFixed(2);
+                discountAmt = ((rowTotalRate * parseFloat(discountPer)) / 100).toFixed(itemArr[9]);
             }
-            var taxAmount = ((rowTotalRate - discountAmt) * taxPer).toFixed(2);
-            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(2);
+            var taxAmount = (((rowTotalRate - discountAmt) / 100) * taxPer).toFixed(itemArr[9]);
+            var netAmount = ((rowTotalRate - discountAmt) + parseFloat(taxAmount)).toFixed(itemArr[9]);
             //var orderAmount = ((qnty * rowTotalRate) - discountAmt) * taxAmount;
             var orderAmount = netAmount;
             if ($(txtBox).attr("id") == "SRDiscAmt") {
@@ -3824,44 +4401,47 @@ function CalculateSRAmount(txtBox) {
             row.cells[9].getElementsByTagName("input")[0].value = taxAmount;
             if (!SRItemRowDetails[rowIndex] && row.cells[10].getElementsByTagName("input")[0].value == "") {
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
                 if ($("#SRTotalAmount").val() == "") {
-                    $("#SRTotalAmount").val(netAmount);
+                    $("#SRTotalAmount").val(rowTotalRate);
                 }
                 else {
-                    $("#SRTotalAmount").val(parseFloat($("#SRTotalAmount").val()) + parseFloat(netAmount));
+                    $("#SRTotalAmount").val((parseFloat($("#SRTotalAmount").val()) + parseFloat(rowTotalRate)).toFixed(itemArr[9]));
                 }
-                if ($("#Amount").val() == "") {
-                    $("#Amount").val(netAmount);
+                if ($("#Amount").val() == "0") {
+                    $("#Amount").val((netAmount - parseFloat($("#Demurages").val())).toFixed(itemArr[9]));
                 }
                 else {
-                    $("#Amount").val(parseFloat($("#Amount").val()) + parseFloat(netAmount));
+                    $("#Amount").val((parseFloat($("#SRCorrectTotalOrderAmtHidden").val()) + parseFloat(netAmount)).toFixed(itemArr[9]));
                 }
                 if ($("#SRTotalDiscountAmt").val() == "") {
                     $("#SRTotalDiscountAmt").val(discountAmt);
                 }
                 else {
-                    $("#SRTotalDiscountAmt").val(parseFloat($("#SRTotalDiscountAmt").val()) + parseFloat(discountAmt));
+                    $("#SRTotalDiscountAmt").val((parseFloat($("#SRTotalDiscountAmt").val()) + parseFloat(discountAmt)).toFixed(itemArr[9]));
                 }
                 if ($("#SRTotalTaxAmt").val() == "") {
                     $("#SRTotalTaxAmt").val(taxAmount);
                 }
                 else {
-                    $("#SRTotalTaxAmt").val(parseFloat($("#SRTotalTaxAmt").val()) + parseFloat(taxAmount));
+                    $("#SRTotalTaxAmt").val((parseFloat($("#SRTotalTaxAmt").val()) + parseFloat(taxAmount)).toFixed(itemArr[9]));
                 }
                 if ($("#SRTotalOrderAmt").val() == "") {
-                    $("#SRTotalOrderAmt").val(orderAmount);
+                    $("#SRCorrectTotalOrderAmtHidden").val(orderAmount);
+                    $("#SRTotalOrderAmt").val((orderAmount-parseFloat($("#Demurages").val())).toFixed(itemArr[9]));
                 }
                 else {
-                    $("#SRTotalOrderAmt").val(parseFloat($("#SRTotalOrderAmt").val()) + parseFloat(orderAmount));
+                   
+                    $("#SRTotalOrderAmt").val(((parseFloat($("#SRCorrectTotalOrderAmtHidden").val()) + parseFloat(orderAmount)) - parseFloat($("#Demurages").val())).toFixed(itemArr[9]));
+                    $("#SRCorrectTotalOrderAmtHidden").val(parseFloat($("#SRCorrectTotalOrderAmtHidden").val()) + parseFloat(orderAmount));
                 }
             }
             else {
                 var itemArray = SRItemRowDetails[rowIndex];
-                var totalAmt = parseFloat($("#Amount").val());
+                var totalAmt = parseFloat($("#SRTotalAmount").val());
                 var totalDiscount = parseFloat($("#SRTotalDiscountAmt").val());
                 var totalTax = parseFloat($("#SRTotalTaxAmt").val());
-                var totalOder = parseFloat($("#SRTotalOrderAmt").val());
+                var totalOder = parseFloat($("#SRCorrectTotalOrderAmtHidden").val());
                 var oldAmount = parseFloat(itemArray[6]);
                 var oldDiscount = parseFloat(itemArray[3]);
                 var oldTax = parseFloat(itemArray[5]);
@@ -3870,17 +4450,19 @@ function CalculateSRAmount(txtBox) {
                 totalDiscount -= parseFloat(oldDiscount);
                 totalTax -= parseFloat(oldTax);
                 totalOder -= parseFloat(oldOder);
-                totalAmt += parseFloat(netAmount);
+                totalAmt += parseFloat(rowTotalRate);
                 totalDiscount += parseFloat(discountAmt);
                 totalTax += parseFloat(taxAmount);
                 totalOder += parseFloat(orderAmount);
+                $("#SRCorrectTotalOrderAmtHidden").val(totalOder.toFixed(itemArr[9]));
+                totalOder -= parseFloat($("#Demurages").val());
                 row.cells[10].getElementsByTagName("input")[0].value = netAmount;
-                $("#Amount").val(totalAmt);
-                $("#SRTotalAmount").val(totalAmt);
-                $("#SRTotalDiscountAmt").val(totalDiscount);
-                $("#SRTotalTaxAmt").val(totalTax);
-                $("#SRTotalOrderAmt").val(totalOder);
-                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, netAmount, orderAmount];
+                $("#Amount").val(totalOder.toFixed(itemArr[9]));
+                $("#SRTotalAmount").val(totalAmt.toFixed(itemArr[9]));
+                $("#SRTotalDiscountAmt").val(totalDiscount.toFixed(itemArr[9]));
+                $("#SRTotalTaxAmt").val(totalTax.toFixed(itemArr[9]));
+                $("#SRTotalOrderAmt").val(totalOder.toFixed(itemArr[9]));
+                SRItemRowDetails[rowIndex] = [qnty, rate, discountPer, discountAmt, taxPer, taxAmount, rowTotalRate, orderAmount];
             }
 
 
@@ -3919,6 +4501,37 @@ $(document).on("click", ".PurchaseOrderBtnDetail", function (e) {
         return true;
     }
 });
+function CreateNewRowSR() {
+    if (parseInt($("#rowCount").val()) == 1) {
+        $("tr", $("#SalesReturnDetail")).each(function () {
+            var val = $("input[id*='SRItem']", $(this)).val();
+            if (typeof (val) !== "undefined" && val != "undefined") {
+                $("a[id*='lnkDeleteSR']", $(this)).css("display", "block");
+            }
+
+
+        });
+    }
+    $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
+    var row = '<tr><td><span>' + $("#rowCount").val() + '</span></td><td><input name="SRItem" type="text" id="SRItem" class="form-control SRItem required" style="width:70px;"></td><td><input name="SRItemName" type="text" id="SRItemName" class="form-control SRItemName required" style="width:70px;" ></td><td><input name="SRQuantity" type="text" id="SRQuantity" class="form-control SRQuantity txtNumeric required" style="width:70px;"></td><td><input name="SRUnit" type="text" id="SRUnit" class="form-control SRUnit" style="width:70px;" readonly="readonly"></td><td><input name="SRItemRate" type="text" id="SRItemRate" class="form-control SRItemRate txtNumeric required" style="width:70px;"></td><td><input name="SRDiscPer" type="text" id="SRDiscPer" class="form-control SRDiscPer txtNumeric" style="width:70px;"></td><td><input name="SRDiscAmt" type="text" id="SRDiscAmt" class="form-control SRDiscAmt txtNumeric required" style="width:70px;"></td><td><input name="SRTaxPer" type="text" id="SRTaxPer" class="form-control SRTaxPer required" style="width:70px;"><input type="hidden" name="SRTaxCode" id="SRTaxCode"></td><td><input name="SRTaxAmt" type="text" id="SRTaxAmt" class="form-control SRTaxAmt " style="width:70px;" readonly="readonly"></td><td><input name="SRNetAmt" type="text" id="SRNetAmt" class="form-control SRNetAmt" style="width:50px;" readonly="readonly"></td><td><a id="lnkDeleteSR" data-id="0" >Delete</a></td></tr>';
+    $("#SalesReturnDetail tbody").append(row);
+}
+$(document).on("keydown", "#SRNetAmt", function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == 9 && $("#SalesReturnType").val() == 1 && $("#Status").val() != 2) {
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowSR();
+        }
+        else {
+            alert("Please fill an item with quantity");
+            return false;
+        }
+        
+    }
+});
 function CreateNewRowSQ() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#SalesQuotationDetail")).each(function () {
@@ -3937,7 +4550,17 @@ function CreateNewRowSQ() {
 $(document).on("keydown", "#SQNetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode == 9 && $("#SalesOrder").val() == "") {
-        CreateNewRowSQ()
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowSQ();
+        }
+        else
+        {
+            alert("Please fill an item with quantity");
+            return false;
+        }
     }
 });
 function CreateNewRowPriceBook() {
@@ -3965,7 +4588,7 @@ function CreateNewRowStockEntry() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#StockEntryDetail")).each(function () {
             var val = $("input[id*='Item']", $(this)).val();
-            if (typeof (val) !== "undefined"  && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDeleteSE']", $(this)).css("display", "block");
             }
 
@@ -3979,14 +4602,24 @@ function CreateNewRowStockEntry() {
 $(document).on("keydown", "#SEAmount", function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode == 9 && $("#Status").val() != 2) {
-        CreateNewRowStockEntry()
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowStockEntry();
+        }
+        else {
+            alert("Please fill an item with quantity");
+            return false;
+        }
+        
     }
 });
 function CreateNewRowInvoice() {
     if (parseInt($("#rowCount").val()) == 1) {
         $("tr", $("#InvoiceDetail")).each(function () {
             var val = $("input[id*='IItem']", $(this)).val();
-            if (typeof (val) !== "undefined"  && val != "undefined") {
+            if (typeof (val) !== "undefined" && val != "undefined") {
                 $("a[id*='lnkDeleteSI']", $(this)).css("display", "block");
             }
 
@@ -4000,7 +4633,16 @@ function CreateNewRowInvoice() {
 $(document).on("keydown", "#INetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode == 9 && $("#Status").val() != 2) {
-        CreateNewRowInvoice()
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowInvoice();
+        }
+        else {
+            alert("Please fill an item with quantity");
+            return false;
+        }
     }
 });
 function CreateNewRowManualInvoice() {
@@ -4021,7 +4663,17 @@ function CreateNewRowManualInvoice() {
 $(document).on("keydown", "#MINetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode == 9) {
-        CreateNewRowManualInvoice()
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowManualInvoice();
+        }
+        else {
+            alert("Please fill an item with quantity");
+            return false;
+        }
+        
     }
 });
 function CreateNewRowPO() {
@@ -4042,7 +4694,16 @@ function CreateNewRowPO() {
 $(document).on("keydown", "#PONetAmt", function (e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode == 9 && $("#Status").val() != 2) {
-        CreateNewRowPO()
+        var row = this.parentNode.parentNode;
+        var rowIndex = row.rowIndex - 1;
+        if (row.cells[1].getElementsByTagName("input")[0].value != ""
+            && $.trim(row.cells[3].getElementsByTagName("input")[0].value) != "") {
+            CreateNewRowPO();
+        }
+        else {
+            alert("Please fill an item with quantity");
+            return false;
+        }
     }
 });
 $(function () {
@@ -4415,14 +5076,12 @@ $(document).on("keydown", "#ItemCodeSR", function (e) {
         source: itemDetailsStockRegCodeArray,
         select: function (event, ui) {
             var itemArr = itemDetailsStockRegCode[ui.item.label];
-            if(itemArr[1]=="0")
-            {
+            if (itemArr[1] == "0") {
                 alert("Non inventory Item – Not allowed");
                 $(this).val('');
                 return false;
             }
-            else
-            {
+            else {
                 $("#ItemNameSR").val(itemArr[0]);
             }
         },
@@ -4483,8 +5142,7 @@ $(document).on("keydown", "#ItemNameSR", function (e) {
                     $("#ItemCodeSR").val(itemArr[0]);
                 }
             }
-            else
-            {
+            else {
                 $("#ItemCodeSR").val('');
                 $("#ItemNameSR").val('');
             }
@@ -4496,4 +5154,82 @@ $(document).on("keydown", "#ItemNameSR", function (e) {
             }
         }
     });
+});
+$("#SalesReturnType").change(function () {
+
+    if ($("#SalesReturnType").val() == "0") {
+        $("#Location").attr("readonly", "readonly");
+        $("#SalesMan").attr("readonly", "readonly");
+        $("#SalesOrderNo").attr("readonly", false);
+        if(!$("#SalesOrderNo").hasClass("required"))
+        {
+            $("#SalesOrderNo").addClass("required");
+        }
+        $("tr", $("#SalesReturnDetail")).each(function () {
+
+            if ($("input[id*='SRItem']", $(this)).hasClass("required")) {
+                $("input[id*='SRItem']", $(this)).removeClass("required");
+            }
+            if ($("input[id*='SRItemName']", $(this)).hasClass("required")) {
+                $("input[id*='SRItemName']", $(this)).removeClass("required");
+            }
+            if ($("input[id*='SRQuantity']", $(this)).hasClass("required")) {
+                $("input[id*='SRQuantity']", $(this)).removeClass("required");
+            }
+        });
+        $.each(firstFreeSR, function (i, j) {
+            if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                $("#SalesReturn").val(j.sequenceNumber);
+                $("#SRSequenceNoID").val(j.id);
+            }
+            else if (j.seqType == "0" && j.orderType == $("#SalesReturnType").val()) {
+                $("#SalesReturn").val(j.sequenceNumber);
+                $("#SRSequenceNoID").val(j.id);
+            }
+        });
+    }
+    else {
+        $("#Location").attr("readonly", false);
+        $("#SalesMan").attr("readonly", false);
+        $("#SalesOrderNo").attr("readonly", "readonly");
+        $(".SRItem").attr('readonly', false);
+        $(".SRItemName").attr('readonly', false);
+        $(".SRItemRate").attr('readonly', false);
+        $(".SRDiscPer").attr('readonly', false);
+        $(".SRDiscAmt").attr('readonly', false);
+        $(".SRTaxPer").attr('readonly', false);
+        if ($("#SalesOrderNo").hasClass("required")) {
+            $("#SalesOrderNo").removeClass("required");
+        }
+        $("tr", $("#SalesReturnDetail")).each(function () {
+
+            if (!$("input[id*='SRItem']", $(this)).hasClass("required")) {
+                $("input[id*='SRItem']", $(this)).addClass("required");
+            }
+            if (!$("input[id*='SRItemName']", $(this)).hasClass("required")) {
+                $("input[id*='SRItemName']", $(this)).addClass("required");
+            }
+            if (!$("input[id*='SRQuantity']", $(this)).hasClass("required")) {
+                $("input[id*='SRQuantity']", $(this)).addClass("required");
+            }
+        });
+        $.each(firstFreeSR, function (i, j) {
+            if (j.seqType == "1" && j.enterpriseUnitCode == $("#LocationHidden").val() && j.orderType == $("#SalesReturnType").val()) {
+                $("#SalesReturn").val(j.sequenceNumber);
+                $("#SRSequenceNoID").val(j.id);
+            }
+            else if (j.seqType == "0" && j.orderType == $("#SalesReturnType").val()) {
+                $("#SalesReturn").val(j.sequenceNumber);
+                $("#SRSequenceNoID").val(j.id);
+            }
+        });
+        if ($("#SalesOrderNo").val()!="")
+        {
+            $("#buttonUpdate").click();
+        }
+
+        
+    } 
+    
+    return false;
 });

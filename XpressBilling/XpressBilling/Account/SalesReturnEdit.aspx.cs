@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,36 +21,10 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 CompanyCode.Value = Session["CompanyCode"].ToString();
-                DataTable dtTable = XBDataProvider.SalesRetrun.GetAllFinalizedBussinessPartnerCodesFromInvoice(Session["CompanyCode"].ToString());
-                Session["BPDetails"] = dtTable;
-                DataRow row = null;
-                CustomerId.Items.Clear();
-                string firstCustomer = "";
-                if (dtTable.Rows.Count > 0)
-                {
-                    Name.Text = dtTable.Rows[0]["Name"].ToString();
-                    Location.Text = dtTable.Rows[0]["CountryCode"].ToString();
-                    Telephone.Text = dtTable.Rows[0]["Phone"].ToString();
-                    firstCustomer = dtTable.Rows[0]["BusinessPartnerCode"].ToString();
-                }
-                for (int i = 0; i < dtTable.Rows.Count; i++)
-                {
-                    row = dtTable.Rows[i];
-                    if (!CustomerId.Items.Contains(new ListItem(row["BusinessPartnerCode"].ToString())))
-                    {
-                        ListItem list = new ListItem();
-                        list.Value = row["BusinessPartnerCode"].ToString();
-                        list.Text = row["BusinessPartnerCode"].ToString();
-                        CustomerId.Items.Add(list);
-                    }
-                    if (firstCustomer == row["BusinessPartnerCode"].ToString())
-                    {
-                        ListItem list = new ListItem();
-                        list.Value = row["SalesOrderNo"].ToString();
-                        list.Text = row["SalesOrderNo"].ToString();
-                        InvoiceNoList.Items.Add(list);
-                    }
-                }
+                currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
+                currencyDecimal.Value = XBDataProvider.Currency.GetCurrencyDecimalByCompany(CompanyCode.Value).ToString();
+                currencyCode1.InnerText = currencyCode.Value;
+                currencyCode2.InnerText = currencyCode.Value;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -62,28 +37,11 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    Date.Text = DateTime.Now.Date.ToString("MM'/'dd'/'yyyy");
-                    DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetSalesReturnSequenceDetails(Session["CompanyCode"].ToString());
-                    for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
-                    {
-                        row = dtTableSequenceDetails.Rows[i];
-                        string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
-                        if (row["OrderType"].ToString() == "Against Order")
-                        {
-                            SalesReturn.Text = sequenceNo;
-                            AgainstSequenceNo.Value = sequenceNo;
-                            AgainstSequenceNoID.Value = row["ID"].ToString();
-                        }
-                        else if (row["OrderType"].ToString() == "Manual Return Order")
-                        {
-                            ManualSequenceNo.Value = sequenceNo;
-                            ManualSequenceNoID.Value = row["ID"].ToString();
-                        }
-
-                    }
-                    PageStatus.Value = "create";
+                    Date.Text = DateTime.Now.Date.ToString("MM'/'dd'/'yyyy"); PageStatus.Value = "create";
                     SalesReturnMstId.Value = "0";
-                    gridDetails.Visible = false;
+                    btnFinalize.Visible = false;
+                    btnPrint.Visible = false;
+                    SetInitialRows();
                 }
             }
         }
@@ -92,73 +50,48 @@ namespace XpressBilling.Account
         {
             try
             {
-                SaveBtn.Visible = false;
-                CancelBtn.Visible = false;
                 DataRow row = salesReturnDetails.Rows[0];
                 SalesReturnMstId.Value = row["ID"].ToString();
                 SalesReturnType.SelectedValue = row["SalesReturnOrderType"].ToString();
                 SalesReturnType.Enabled = false;
                 SalesReturn.Text = row["SalesReturnNo"].ToString();
                 Status.SelectedValue = row["Status"].ToString();
-                Location.Text = row["LocationCode"].ToString();
-                Name.Text = row["LocationCode"].ToString();
+                Location.Text = row["LocationName"].ToString();
+                Name.Text = row["BPName"].ToString();
                 Reference.Text = row["Reference"].ToString();
                 Telephone.Text = row["Telephone"].ToString();
                 Reference.ReadOnly = true;
                 Date.Text = Convert.ToDateTime(row["SalesReturnDate"]).ToString("MM'/'dd'/'yyyy");
                 Date.ReadOnly = true;
-                SalesMan.Text = row["SalesMan"].ToString();
-                SalesMan.Enabled = false;
+                SalesMan.Text = row["SalesManName"].ToString();
+                SalesMan.ReadOnly = true;
                 Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
                 Amount.ReadOnly = true;
-                CustomerIdText.Visible = true;
-                CustomerId.Visible = false;
-                CustomerIdText.Text = row["BusinessPartnerCode"].ToString();
-                InvoiceNoText.Visible = true;
-                InvoiceNoList.Visible = false;
-                InvoiceNoText.Text = row["SalesOrderNo"].ToString();
+                SRCustomerId.ReadOnly = true;
+                SRCustomerId.Text = row["BusinessPartnerCode"].ToString();
+                SalesOrderNo.ReadOnly = true;
+                SalesOrderNo.Text = row["SalesOrderNo"].ToString();
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
+                SRTotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
+                SRTotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("f" + decimalPoints);
+                SRTotalTaxAmt.Text = Convert.ToDecimal(row["TaxAmount"]).ToString("f" + decimalPoints);
+                SRTotalOrderAmt.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
+                Demurages.Text = Convert.ToDecimal(row["Demurages"]).ToString("f" + decimalPoints);
+                SRCorrectTotalOrderAmtHidden.Value = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints) + Convert.ToDecimal(row["Demurages"]).ToString("f" + decimalPoints);
                 DisplaySalesReturnDetails();
                 if(row["Status"].ToString()=="2")
                 {
                     btnSaveDtl.Visible = false;
                     btnFinalize.Visible = false;
                 }
-                //int i = 0;
-                //if (row["Status"].ToString() == "2")
-                //{
-
-                //    foreach (GridViewRow gvr in StockEntryDetail.Rows)
-                //    {
-                //        TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
-                //        TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
-                //        TextBox box4 = (TextBox)StockEntryDetail.Rows[i].Cells[3].FindControl("SERate");
-                //        TextBox box5 = (TextBox)StockEntryDetail.Rows[i].Cells[4].FindControl("SEQuantity");
-                //        TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
-                //        TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
-                //        box2.Enabled = false;
-                //        box3.Enabled = false;
-                //        box4.Enabled = false;
-                //        box5.Enabled = false;
-                //        box6.Enabled = false;
-                //        box7.Enabled = false;
-                //        i++;
-                //    }
-                //}
-                //else if (row["Status"].ToString() == "1")
-                //{
-                //    foreach (GridViewRow gvr in StockEntryDetail.Rows)
-                //    {
-                //        TextBox box2 = (TextBox)StockEntryDetail.Rows[i].Cells[1].FindControl("Item");
-                //        TextBox box3 = (TextBox)StockEntryDetail.Rows[i].Cells[2].FindControl("Name");
-                //        TextBox box6 = (TextBox)StockEntryDetail.Rows[i].Cells[5].FindControl("Unit");
-                //        TextBox box7 = (TextBox)StockEntryDetail.Rows[i].Cells[6].FindControl("SEAmount");
-                //        box2.Enabled = false;
-                //        box3.Enabled = false;
-                //        box6.Enabled = false;
-                //        box7.Enabled = false;
-                //        i++;
-                //    }
-                //}
+                else
+                {
+                    if(SalesReturnType.SelectedValue=="1")
+                        {
+                            SalesOrderNo.Attributes["class"]="form-control";
+                        }
+                }
             }
             catch (Exception e)
             {
@@ -168,106 +101,28 @@ namespace XpressBilling.Account
 
         }
 
-        protected void CustomerIdSelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable dtTable = Session["BPDetails"] as DataTable;
-                DataRow row = null;
-                string selectedBP = CustomerId.SelectedValue;
-                InvoiceNoList.Items.Clear();
-                for (int i = 0; i < dtTable.Rows.Count; i++)
-                {
-                    row = dtTable.Rows[i];
-                    if (selectedBP == row["BusinessPartnerCode"].ToString())
-                    {
-                        Name.Text = row["Name"].ToString();
-                        Location.Text = row["CountryCode"].ToString();
-                        Telephone.Text = row["Phone"].ToString();
-                        if (row["OrderType"].ToString() == "0")
-                        {
-                            SalesReturn.Text = AgainstSequenceNo.Value;
-                        }
-                        else if (row["OrderType"].ToString() == "1")
-                        {
-                            SalesReturn.Text = ManualSequenceNo.Value;
-                        }
-                        ListItem list = new ListItem();
-                        list.Value = row["SalesOrderNo"].ToString();
-                        list.Text = row["SalesOrderNo"].ToString();
-                        InvoiceNoList.Items.Add(list);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
         private void DisplaySalesReturnDetails()
         {
             try
             {
-                DataTable dtTable = XBDataProvider.SalesRetrun.GetSalesReturnDetailsByID(Convert.ToInt32(SalesReturnMstId.Value));
-                if(dtTable.Rows.Count==0 && SalesReturnType.SelectedValue=="0")
+                DataTable dt = new DataTable();
+                dt = XBDataProvider.SalesRetrun.GetSalesReturnDetailsByID(Convert.ToInt32(SalesReturnMstId.Value));
+
+                if (dt.Rows.Count > 0)
                 {
-                    dtTable = XBDataProvider.SalesRetrun.GetInvoiceDetailsUsingInvoiceNo(InvoiceNoList.SelectedValue);
-                    btnFinalize.Visible = false;
-                }
-                if(dtTable.Rows.Count>0)
-                {
-                    SalesReturnDetail.DataSource = dtTable;
+                    rowCount.Value = dt.Rows.Count.ToString();
+                    SalesReturnDetail.DataSource = dt;
                     SalesReturnDetail.DataBind();
-                    SRTotalAmount.Text = Convert.ToDecimal(dtTable.Rows[0]["TotalAmount"]).ToString("0.00");
-                    Amount.Text = Convert.ToDecimal(dtTable.Rows[0]["TotalAmount"]).ToString("0.00");
-                    SRTotalDiscountAmt.Text = Convert.ToDecimal(dtTable.Rows[0]["TotalDiscountAmount"]).ToString("0.00");
-                    SRTotalTaxAmt.Text = Convert.ToDecimal(dtTable.Rows[0]["TotalTaxAmount"]).ToString("0.00");
-                    SRTotalOrderAmt.Text = Convert.ToDecimal(dtTable.Rows[0]["TotalOrderAmount"]).ToString("0.00");
-                    SalesOrderDate.Value = dtTable.Rows[0]["SalesOrderDate"].ToString();
+                    if (SalesOrderNo.Text != "")
+                    {
+                        SalesOrderDate.Value = dt.Rows[0]["SalesOrderDate"].ToString();
+                    }
                 }
-                
             }
             catch (Exception ex)
             {
 
             }
-        }
-
-        protected void SalesReturnTypeSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(SalesReturnType.SelectedValue=="1")
-            {
-                InvoiceNoList.Items.Clear();
-                InvoiceNoList.Enabled = false;
-                Reference.ReadOnly = false;
-                Reference.CssClass = "form-control required";
-                SalesReturn.Text = ManualSequenceNo.Value;
-            }
-            else if (SalesReturnType.SelectedValue == "0")
-            {
-                InvoiceNoList.Enabled = true;
-                Reference.ReadOnly = true;
-                Reference.CssClass = "form-control" ;
-                DataTable dtTable = Session["BPDetails"] as DataTable;
-                DataRow row = null;
-                string selectedBP = CustomerId.SelectedValue;
-                InvoiceNoList.Items.Clear();
-                for (int i = 0; i < dtTable.Rows.Count; i++)
-                {
-                    row = dtTable.Rows[i];
-                    if (selectedBP == row["BusinessPartnerCode"].ToString())
-                    {
-                        ListItem list = new ListItem();
-                        list.Value = row["SalesOrderNo"].ToString();
-                        list.Text = row["SalesOrderNo"].ToString();
-                        InvoiceNoList.Items.Add(list);
-                    }
-                }
-                SalesReturn.Text = AgainstSequenceNo.Value;
-            }
-
         }
 
         private void SetInitialRows()
@@ -288,7 +143,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("TaxPercentage", typeof(string)));
                 dt.Columns.Add(new DataColumn("TaxAmount", typeof(int)));
                 dt.Columns.Add(new DataColumn("NetAmount", typeof(string)));
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     dr = dt.NewRow();
                     dr["ID"] = "0";
@@ -321,74 +176,15 @@ namespace XpressBilling.Account
 
         }
 
-        protected void SaveBtnClick(object sender, EventArgs e)
-        {
-            try
-            {
-                #region Save
-                int returnValue = 0;
-                int selectedSequenceId = 0;
-                string reference = "";
-                string invoiceNo = "";
-                if (SalesReturnType.SelectedValue == "0")
-                {
-                    selectedSequenceId = Convert.ToInt32(AgainstSequenceNoID.Value);
-                    invoiceNo = InvoiceNoList.SelectedValue;
-                }
-                else if (SalesReturnType.SelectedValue == "1")
-                {
-                    reference = Reference.Text;
-                    selectedSequenceId = Convert.ToInt32(ManualSequenceNoID.Value);
-                }
-                DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                float amount = 0;
-                if (Amount.Text != "")
-                {
-                    amount = float.Parse(Amount.Text, CultureInfo.InvariantCulture.NumberFormat);
-                }
-                returnValue = XBDataProvider.SalesRetrun.SaveSalesReturn(Session["CompanyCode"].ToString(), Convert.ToInt32(SalesReturnType.SelectedValue), CustomerId.SelectedValue, SalesReturn.Text, 1, date, Location.Text, SalesMan.Text,
-                    User.Identity.Name, reference, amount, Telephone.Text, invoiceNo, selectedSequenceId);
-                if (returnValue > 0)
-                {
-                    SalesReturnMstId.Value = returnValue.ToString();
-                    PageStatus.Value = "creating";
-                    gridDetails.Visible = true;
-                    SaveBtn.Visible = false;
-                    CancelBtn.Visible = false;
-                    SetInitialRows();
-                    SaveSuccess.Visible = true;
-                    failure.Visible = false;
-                    if(SalesReturnType.SelectedValue=="0")
-                    {
-                        DisplaySalesReturnDetails();
-                    }
-                    else
-                    {
-                        AddNewRow.Visible = true;
-                        SetInitialRows();
-                        SalesOrderDate.Value = DateTime.Now.ToString();
-                    }
-                    btnFinalize.Visible = false;
-                }
-                else
-                {
-                    failure.Visible = true;
-                }
-                #endregion
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-        }
-
         protected void SaveBtnDetailClick(object sender, EventArgs e)
         {
             try
             {
-
+                int returnValue = 0;
                 DataTable dt = new DataTable();
+                DataTable dtDeletedIds = new DataTable();
+                DataRow drDeletedIds = null;
+                dtDeletedIds.Columns.Add(new DataColumn("ID", typeof(int)));
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("CompanyCode", typeof(string)));
@@ -420,20 +216,34 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("CreatedDate", typeof(DateTime)));
                 dt.Columns.Add(new DataColumn("UpdatedDate", typeof(DateTime)));
                 int i = 0;
+                int[] deletedIds = DeletedRowIDs.Value.Split(',').Where(str => str != "").Select(str => int.Parse(str)).ToArray();
+                for (int k = 0; k < deletedIds.Length; k++)
+                {
+                    drDeletedIds = dtDeletedIds.NewRow();
+                    if (deletedIds[k]!=0)
+                    {
+                        drDeletedIds["ID"] = deletedIds[k];
+                        dtDeletedIds.Rows.Add(drDeletedIds);
+                    }
+                    else
+                    {
+                        deletedIds[k]=-1;
+                    }
+                }
                 foreach (GridViewRow row in SalesReturnDetail.Rows)
                 {
                     TextBox box2 = (TextBox)SalesReturnDetail.Rows[i].Cells[1].FindControl("SRItem");
                     TextBox box3 = (TextBox)SalesReturnDetail.Rows[i].Cells[2].FindControl("SRItemName");
-                    TextBox box4 = (TextBox)SalesReturnDetail.Rows[i].Cells[3].FindControl("SRItemRate");
-                    TextBox box5 = (TextBox)SalesReturnDetail.Rows[i].Cells[4].FindControl("SRQuantity");
-                    TextBox box6 = (TextBox)SalesReturnDetail.Rows[i].Cells[5].FindControl("SRUnit");
+                    TextBox box4 = (TextBox)SalesReturnDetail.Rows[i].Cells[5].FindControl("SRItemRate");
+                    TextBox box5 = (TextBox)SalesReturnDetail.Rows[i].Cells[3].FindControl("SRQuantity");
+                    TextBox box6 = (TextBox)SalesReturnDetail.Rows[i].Cells[4].FindControl("SRUnit");
                     TextBox box7 = (TextBox)SalesReturnDetail.Rows[i].Cells[6].FindControl("SRDiscPer");
                     TextBox box8 = (TextBox)SalesReturnDetail.Rows[i].Cells[7].FindControl("SRDiscAmt");
                     TextBox box9 = (TextBox)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxPer");
                     TextBox box10 = (TextBox)SalesReturnDetail.Rows[i].Cells[9].FindControl("SRTaxAmt");
                     TextBox box11 = (TextBox)SalesReturnDetail.Rows[i].Cells[10].FindControl("SRNetAmt");
                     HiddenField hdnFld = (HiddenField)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxCode");
-                    if (box2.Text != "" && box2.Text.Length != 0)
+                    if (box2.Text != "" && box2.Text.Length != 0 && Array.IndexOf(deletedIds, SalesReturnDetail.DataKeys[i]["ID"]) == -1)
                     {
                         dr = dt.NewRow();
                         if (string.IsNullOrEmpty(SalesReturnDetail.DataKeys[i]["ID"].ToString()))
@@ -446,20 +256,27 @@ namespace XpressBilling.Account
                         }
                         DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
+                        dr["LocationCode"] = LocationHidden.Value;
                         dr["SalesReturnMstId"] = Convert.ToInt32(SalesReturnMstId.Value);
                         dr["SalesReturnNo"] = SalesReturn.Text;
                         dr["SalesReturnDate"] = date;
-                        dr["BusinessPartnerCode"] = CustomerIdText.Text;
-                        dr["SalesOrderNo"] = InvoiceNoText.Text;
-                        dr["SalesOrderDate"] = SalesOrderDate.Value;
+                        dr["BusinessPartnerCode"] = SRCustomerId.Text;
+                        dr["SalesOrderNo"] = SalesOrderNo.Text;
+                        if(SalesOrderNo.Text!="")
+                        {
+                            dr["SalesOrderDate"] = SalesOrderDate.Value;
+                        }
+                        else
+                        {
+                            dr["SalesOrderDate"] = DateTime.Now;
+                        }
                         dr["ItemCode"] = box2.Text;
                         dr["ItemName"] = box3.Text;
                         dr["BaseUnitCode"] = box6.Text;
                         dr["Qty"] = Convert.ToInt32(box5.Text);
-                        dr["Currency"] = "";
+                        dr["Currency"] = currencyCode.Value;
                         dr["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        dr["TotalRate"] = float.Parse(Amount.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
                         dr["Discount"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
                         dr["Tax"] = hdnFld.Value;
@@ -478,24 +295,138 @@ namespace XpressBilling.Account
                     }
 
                 }
-                if (dt.Rows.Count > 0)
+                if (Request.Form["SRItem"] != null)
                 {
-                    XBDataProvider.SalesRetrun.SaveSRDetail(Convert.ToInt32(SalesReturnMstId.Value), SRPayTerms.Text, float.Parse(SRTotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalDiscountAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);
-                    PageStatus.Value = "edit";
-                    Amount.Text = Request.Form[Amount.UniqueID];
-                    Status.SelectedValue = "1";
-                    btnFinalize.Visible = true;
-                    btnPrint.Visible = true;
-                    SaveSuccess.Visible = false;
-                    UpdateSuccess.Visible = true;
-                    failure.Visible = false;
+                    string[] IItems = Request.Form["SRItem"].Split(',');
+                    string[] IItemNames = Request.Form["SRItemName"].Split(',');
+                    string[] IItemRates = Request.Form["SRItemRate"].Split(',');
+                    string[] IQuantities = Request.Form["SRQuantity"].Split(',');
+                    string[] IUnits = Request.Form["SRUnit"].Split(',');
+                    string[] IDiscPers = Request.Form["SRDiscPer"].Split(',');
+                    string[] IDiscAmts = Request.Form["SRDiscAmt"].Split(',');
+                    string[] ITaxPers = Request.Form["SRTaxPer"].Split(',');
+                    string[] ITaxAmts = Request.Form["SRTaxAmt"].Split(',');
+                    string[] INetAmts = Request.Form["SRNetAmt"].Split(',');
+                    string[] ITaxCodes = Request.Form["SRTaxCode"].Split(',');
+
+                    for (int k = 0; k < IItems.Length; k++)
+                    {
+                        if (IItems[k] != "" && IItemNames[k] != "" && IItemRates[k] != "" && IQuantities[k] != "" && IDiscPers[k] != "" && IDiscAmts[k] != "" && ITaxPers[k] != "")
+                        {
+                            dr = dt.NewRow();
+                            dr["ID"] = DBNull.Value;
+                           
+                            DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                            dr["CompanyCode"] = Session["CompanyCode"].ToString();
+                            dr["LocationCode"] = LocationHidden.Value;
+                            dr["SalesReturnMstId"] = Convert.ToInt32(SalesReturnMstId.Value);
+                            dr["SalesReturnNo"] = SalesReturn.Text;
+                            dr["SalesReturnDate"] = date;
+                            dr["BusinessPartnerCode"] = SRCustomerId.Text;
+                            dr["SalesOrderNo"] = SalesOrderNo.Text;
+                            if (SalesOrderNo.Text != "")
+                            {
+                                dr["SalesOrderDate"] = SalesOrderDate.Value;
+                            }
+                            else
+                            {
+                                dr["SalesOrderDate"] = DateTime.Now;
+                            }
+                            dr["ItemCode"] = IItems[k];
+                            dr["ItemName"] = IItemNames[k];
+                            dr["BaseUnitCode"] = IUnits[k];
+                            dr["Qty"] = Convert.ToInt32(IQuantities[k]);
+                            dr["Currency"] = currencyCode.Value;
+                            dr["Rate"] = float.Parse(IItemRates[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TotalRate"] = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Discount"] = float.Parse(IDiscPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["DiscountAmt"] = float.Parse(IDiscAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Tax"] = ITaxCodes[k];
+                            dr["TaxPercentage"] = float.Parse(ITaxPers[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["TaxAmount"] = float.Parse(ITaxAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["NetAmount"] = float.Parse(INetAmts[k], CultureInfo.InvariantCulture.NumberFormat);
+                            dr["Status"] = 1;
+                            dr["ErrorMsg"] = null;
+                            dr["Reference"] = Reference.Text;
+                            dr["CreatedBy"] = User.Identity.Name;
+                            dr["UpdatedBy"] = User.Identity.Name;
+                            dr["CreatedDate"] = DateTime.Now.Date;
+                            dr["UpdatedDate"] = DateTime.Now.Date;
+                            dt.Rows.Add(dr);
+                        }
+                    }
+
+
+
+                }
+                if (SalesReturnMstId.Value=="0")
+                {
+                    int selectedSequenceId = Convert.ToInt32(SRSequenceNoID.Value);
+                    DateTime date = DateTime.ParseExact(Date.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    float amount = 0;
+                    if (Request.Form[Amount.UniqueID] != "0")
+                    {
+                        amount = float.Parse(Request.Form[Amount.UniqueID], CultureInfo.InvariantCulture.NumberFormat);
+                    }
+                    returnValue = XBDataProvider.SalesRetrun.SaveSalesReturn(Session["CompanyCode"].ToString(), Convert.ToInt32(SalesReturnType.SelectedValue), SRCustomerId.Text,Request.Form[SalesReturn.UniqueID], 1, date, LocationHidden.Value, SalesManHidden.Value,
+                        User.Identity.Name, Reference.Text, amount,Request.Form[Name.UniqueID] ,Request.Form[Telephone.UniqueID], SalesOrderNo.Text, selectedSequenceId, SRPayTerms.Text,
+                            float.Parse(SRTotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalDiscountAmt.Text,
+                            CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat),
+                            float.Parse(SRTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(Demurages.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt);
+                    if (returnValue > 0)
+                    {
+                        SalesReturnMstId.Value = returnValue.ToString();
+                        SalesReturn.Text = Request.Form[SalesReturn.UniqueID];
+                        Name.Text = Request.Form[Name.UniqueID];
+                        Telephone.Text = Request.Form[Telephone.UniqueID];
+                        int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                        Amount.Text = Convert.ToDecimal(Request.Form[Amount.UniqueID]).ToString("f" + decimalPoints);
+                        PageStatus.Value = "edit";
+                        Status.SelectedValue = "1";
+                        SaveSuccess.Visible = true;
+                        failure.Visible = false;
+                        btnFinalize.Visible = true;
+                        btnPrint.Visible = true;
+                        SRCustomerId.ReadOnly = true;
+                        Location.ReadOnly = true;
+                        SalesOrderNo.ReadOnly = true;
+                        SalesMan.ReadOnly = true;
+                        SalesReturnType.Enabled = false;
+                        if(SalesReturnType.SelectedValue=="1")
+                        {
+                            SalesOrderNo.Attributes["class"]="form-control";
+                        }
+                    }
+                    else
+                    {
+                        failure.Visible = true;
+                    }
                 }
                 else
                 {
-                    SaveSuccess.Visible = false;
-                    UpdateSuccess.Visible = false;
-                    failure.Visible = true;
+                    if (dt.Rows.Count > 0)
+                    {
+                        XBDataProvider.SalesRetrun.SaveSRDetail(Convert.ToInt32(SalesReturnMstId.Value), SRPayTerms.Text,Reference.Text,
+                            float.Parse(SRTotalAmount.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalDiscountAmt.Text,
+                            CultureInfo.InvariantCulture.NumberFormat), float.Parse(SRTotalTaxAmt.Text, CultureInfo.InvariantCulture.NumberFormat),
+                            float.Parse(SRTotalOrderAmt.Text, CultureInfo.InvariantCulture.NumberFormat), float.Parse(Demurages.Text, CultureInfo.InvariantCulture.NumberFormat), User.Identity.Name, dt, dtDeletedIds);
+                        PageStatus.Value = "edit";
+                        Amount.Text = Request.Form[Amount.UniqueID];
+                        Status.SelectedValue = "1";
+                        btnFinalize.Visible = true;
+                        btnPrint.Visible = true;
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = true;
+                        failure.Visible = false;
+                    }
+                    else
+                    {
+                        SaveSuccess.Visible = false;
+                        UpdateSuccess.Visible = false;
+                        failure.Visible = true;
+                    }
                 }
+                
                 DisplaySalesReturnDetails();
 
             }
@@ -530,130 +461,152 @@ namespace XpressBilling.Account
             }
         }
 
-        private void SetPreviousData()
+        protected void buttonUpdate_Click(object sender, EventArgs e)
         {
-            int rowIndex = 0;
-            if (ViewState["CurrentTable"] != null)
+            if (SalesReturnType.SelectedValue == "0")
             {
-                DataTable dt = (DataTable)ViewState["CurrentTable"];
-                if (dt.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        TextBox box2 = (TextBox)SalesReturnDetail.Rows[i].Cells[1].FindControl("SRItem");
-                        TextBox box3 = (TextBox)SalesReturnDetail.Rows[i].Cells[2].FindControl("SRItemName");
-                        TextBox box4 = (TextBox)SalesReturnDetail.Rows[i].Cells[3].FindControl("SRItemRate");
-                        TextBox box5 = (TextBox)SalesReturnDetail.Rows[i].Cells[4].FindControl("SRQuantity");
-                        TextBox box6 = (TextBox)SalesReturnDetail.Rows[i].Cells[5].FindControl("SRUnit");
-                        TextBox box7 = (TextBox)SalesReturnDetail.Rows[i].Cells[6].FindControl("SRDiscPer");
-                        TextBox box8 = (TextBox)SalesReturnDetail.Rows[i].Cells[7].FindControl("SRDiscAmt");
-                        TextBox box9 = (TextBox)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxPer");
-                        TextBox box10 = (TextBox)SalesReturnDetail.Rows[i].Cells[9].FindControl("SRTaxAmt");
-                        TextBox box11 = (TextBox)SalesReturnDetail.Rows[i].Cells[10].FindControl("SRNetAmt");
-                        HiddenField hdnFld = (HiddenField)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxCode");
-                        box2.Text = dt.Rows[i]["ItemCode"].ToString();
-                        box3.Text = dt.Rows[i]["ItemName"].ToString();
-                        box4.Text = dt.Rows[i]["Rate"].ToString();
-                        box5.Text = dt.Rows[i]["Qty"].ToString();
-                        box6.Text = dt.Rows[i]["BaseUnitCode"].ToString();
-                        box7.Text = dt.Rows[i]["DiscountPercentage"].ToString();
-                        box8.Text = dt.Rows[i]["DiscountAmt"].ToString();
-                        box9.Text = dt.Rows[i]["TaxPercentage"].ToString();
-                        hdnFld.Value = dt.Rows[i]["Tax"].ToString();
-                        box10.Text = dt.Rows[i]["TaxAmount"].ToString();
-                        box11.Text = dt.Rows[i]["NetAmount"].ToString();
+                SalesReturn.Text = Request.Form[SalesReturn.UniqueID];
+                DataTable dtTable = XBDataProvider.SalesRetrun.GetInvoiceDetailsUsingInvoiceNo(SalesOrderNo.Text);
+                rowCount.Value = dtTable.Rows.Count.ToString();
+                SalesReturnDetail.DataSource = dtTable;
+                SalesReturnDetail.DataBind();
 
-                        rowIndex++;
-                    }
-                }
-            }
-
-        }
-
-        private void AddNewRowToGrid()
-        {
-            int rowIndex = 0;
-            Amount.Text = Request.Form[Amount.UniqueID];
-            if (ViewState["CurrentTable"] != null)
-            {
-                DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
-                DataRow drCurrentRow = null;
-                if (dtCurrentTable.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dtCurrentTable.Rows.Count; i++)
-                    {
-                        TextBox box2 = (TextBox)SalesReturnDetail.Rows[i].Cells[1].FindControl("SRItem");
-                        TextBox box3 = (TextBox)SalesReturnDetail.Rows[i].Cells[2].FindControl("SRItemName");
-                        TextBox box4 = (TextBox)SalesReturnDetail.Rows[i].Cells[3].FindControl("SRItemRate");
-                        TextBox box5 = (TextBox)SalesReturnDetail.Rows[i].Cells[4].FindControl("SRQuantity");
-                        TextBox box6 = (TextBox)SalesReturnDetail.Rows[i].Cells[5].FindControl("SRUnit");
-                        TextBox box7 = (TextBox)SalesReturnDetail.Rows[i].Cells[6].FindControl("SRDiscPer");
-                        TextBox box8 = (TextBox)SalesReturnDetail.Rows[i].Cells[7].FindControl("SRDiscAmt");
-                        TextBox box9 = (TextBox)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxPer");
-                        TextBox box10 = (TextBox)SalesReturnDetail.Rows[i].Cells[9].FindControl("SRTaxAmt");
-                        TextBox box11 = (TextBox)SalesReturnDetail.Rows[i].Cells[10].FindControl("SRNetAmt");
-                        HiddenField hdnFld = (HiddenField)SalesReturnDetail.Rows[i].Cells[8].FindControl("SRTaxCode");
-
-                        //drCurrentRow["RowNumber"] = i + 1;
-                        dtCurrentTable.Rows[i]["ID"] = Convert.ToInt32(SalesReturnDetail.DataKeys[i]["ID"]); ;
-                        dtCurrentTable.Rows[i]["ItemCode"] = box2.Text;
-                        dtCurrentTable.Rows[i]["ItemName"] = box3.Text;
-                        if (box4.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["Rate"] = float.Parse(box4.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        if (box5.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["Qty"] = box5.Text;
-                        }
-                        if (box8.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["DiscountAmt"] = float.Parse(box8.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        if (box10.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["TaxAmount"] = float.Parse(box10.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        dtCurrentTable.Rows[i]["BaseUnitCode"] = box6.Text;
-                        if (box7.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["DiscountPercentage"] = float.Parse(box7.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        if (box9.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["TaxPercentage"] =  float.Parse(box9.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        dtCurrentTable.Rows[i]["Tax"] = hdnFld.Value;
-                        if (box11.Text != "")
-                        {
-                            dtCurrentTable.Rows[i]["NetAmount"] =  float.Parse(box11.Text, CultureInfo.InvariantCulture.NumberFormat);
-                        }
-                        rowIndex++;
-                    }
-                    for (int j = 0; j < 5; j++)
-                    {
-                        drCurrentRow = dtCurrentTable.NewRow();
-                        dtCurrentTable.Rows.Add(drCurrentRow);
-                    }
-
-                    ViewState["CurrentTable"] = dtCurrentTable;
-
-                    SalesReturnDetail.DataSource = dtCurrentTable;
-                    SalesReturnDetail.DataBind();
-                }
+                Name.Text = Request.Form[Name.UniqueID];
+                Telephone.Text = Request.Form[Telephone.UniqueID];
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                SRTotalAmount.Text = Convert.ToDecimal(SRTotalAmountHidden.Value).ToString("f" + decimalPoints);
+                SRTotalTaxAmt.Text = Convert.ToDecimal(SRTotalTaxAmtHidden.Value).ToString("f" + decimalPoints);
+                SRTotalDiscountAmt.Text = Convert.ToDecimal(SRTotalDiscountAmtHidden.Value).ToString("f" + decimalPoints);
+                SRTotalOrderAmt.Text = Convert.ToDecimal(SRTotalOrderAmtHidden.Value).ToString("f" + decimalPoints);
+                Amount.Text = Convert.ToDecimal(SRTotalOrderAmtHidden.Value).ToString("f" + decimalPoints);
+                SRCorrectTotalOrderAmtHidden.Value = Convert.ToDecimal(SRTotalOrderAmtHidden.Value).ToString("f" + decimalPoints);
+                Demurages.Text = 0.ToString();
             }
             else
             {
-                Response.Write("ViewState is null");
+                SetInitialRows();
+                SalesOrderNo.Text = "";
+                SRTotalAmount.Text = "";
+                SRTotalTaxAmt.Text = "";
+                SRTotalDiscountAmt.Text = "";
+                SRTotalOrderAmt.Text = "";
+                Amount.Text = "0";
+                SalesReturn.Text = Request.Form[SalesReturn.UniqueID];
+            }
+        }
+
+        [WebMethod]
+        public static List<FirstFreeDetails> GetFirstFreerDetails(string companyCode)
+        {
+            List<FirstFreeDetails> result = new List<FirstFreeDetails>();
+            try
+            {
+                DataRow row = null;
+                DataTable dtTableSequenceDetails = XBDataProvider.FirstFreeNumber.GetSalesReturnSequenceDetails(companyCode);
+                for (int i = 0; i < dtTableSequenceDetails.Rows.Count; i++)
+                {
+                    row = dtTableSequenceDetails.Rows[i];
+                    FirstFreeDetails firstFreeDetails = new FirstFreeDetails();
+                    string sequenceNo = XBDataProvider.FirstFreeNumber.FormatSequence(row["Prefix"].ToString(), Convert.ToInt32(row["lastSequenceNo"]), Convert.ToInt32(row["Digits"]));
+                    firstFreeDetails.id = row["ID"].ToString();
+                    firstFreeDetails.sequenceNumber = sequenceNo;
+                    firstFreeDetails.seqType = row["SeqType"].ToString();
+                    firstFreeDetails.orderType = row["OrderType"].ToString() == "Against Order" ? "0" : "1";
+                    firstFreeDetails.enterpriseUnitCode = row["EnterpriseUnitCode"].ToString();
+                    result.Add(firstFreeDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
             }
 
-            //Set Previous Data on Postbacks
-            SetPreviousData();
+
+            return result;
+        }
+        [WebMethod]
+        public static List<SalesOrderDetails> GetFinalizedSalesOrderDetails(string bpCode)
+        {
+            List<SalesOrderDetails> result = new List<SalesOrderDetails>();
+            try
+            {
+                DataRow row = null;
+                DataTable dtTableSalesOrderDetails = XBDataProvider.SalesRetrun.GetFinalizedSalesOrderDetails(bpCode);
+                for (int i = 0; i < dtTableSalesOrderDetails.Rows.Count; i++)
+                {
+                    row = dtTableSalesOrderDetails.Rows[i];
+                    SalesOrderDetails salesOrderDetails = new SalesOrderDetails();
+                    salesOrderDetails.salesOrderNo = row["SalesOrderNo"].ToString();
+                    salesOrderDetails.salesMan = row["SalesMan"].ToString();
+                    salesOrderDetails.salesManName = row["SalesManName"].ToString();
+                    salesOrderDetails.locationCode = row["LocationCode"].ToString();
+                    salesOrderDetails.locationName = row["LocationName"].ToString();
+                    salesOrderDetails.amount = row["Amount"].ToString();
+                    salesOrderDetails.taxAmount = row["DiscountAmount"].ToString();
+                    salesOrderDetails.discountAmount = row["TaxAmount"].ToString();
+                    salesOrderDetails.orderAmount = row["OrderAmount"].ToString();
+                    salesOrderDetails.salesOrderDate = row["SalesOrderDate"].ToString();
+                    result.Add(salesOrderDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
         }
 
-        protected void AddNewRowClick(object sender, EventArgs e)
+        protected void SalesReturnDetailRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            AddNewRowToGrid();
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
+            {
+                LinkButton lnkDtn = e.Row.Cells[11].FindControl("lnkDeleteSR") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
+            }
+            if (Status.SelectedValue == "2")
+            {
+                e.Row.Cells[11].Visible = false;
+            }
+            if (e.Row.RowIndex != -1)
+            {
+                TextBox item = e.Row.Cells[5].FindControl("SRItem") as TextBox;
+                if (item.Text != "")
+                {
+                    int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                    TextBox Rate = e.Row.Cells[5].FindControl("SRItemRate") as TextBox;
+                    TextBox Discount = e.Row.Cells[6].FindControl("SRDiscPer") as TextBox;
+                    TextBox DiscountAmt = e.Row.Cells[7].FindControl("SRDiscAmt") as TextBox;
+                    TextBox NetAmount = e.Row.Cells[9].FindControl("SRNetAmt") as TextBox;
+                    TextBox TaxAmount = e.Row.Cells[8].FindControl("SRTaxPer") as TextBox;
+                    double rate = Convert.ToDouble(Rate.Text);
+                    double discount = Convert.ToDouble(Discount.Text);
+                    double discountAmt = Convert.ToDouble(DiscountAmt.Text);
+                    double netAmount = Convert.ToDouble(NetAmount.Text);
+                    double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                    Rate.Text = rate.ToString("f" + decimalPoints);
+                    Discount.Text = discount.ToString("f" + decimalPoints);
+                    DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
+                    NetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                    TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+                }
+            }
         }
+    }
+    public class SalesOrderDetails
+    {
+        public string salesOrderNo { get; set; }
+        public string salesMan { get; set; }
+        public string salesManName { get; set; }
+        public string locationCode { get; set; }
+        public string locationName { get; set; }
+        public string orderAmount { get; set; }
+        public string taxAmount { get; set; }
+        public string discountAmount { get; set; }
+        public string amount { get; set; }
+        public string salesOrderDate { get; set; }
     }
 }

@@ -91,7 +91,7 @@ namespace XBDataProvider
             }
         }
 
-        public static bool UpdateInvoiceDetails(int invoiceId,string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt, float MITotalTaxAmt, float MITotalOrderAmt, string userName, DataTable dtDetails,DataTable dtDeletedIds)
+        public static bool UpdateInvoiceDetails(int invoiceId,string MIPayTerms, string MIDeliveryTerms, string MIShipToAddress, float MITotalAmount, float MITotalDiscountAmt, float MITotalTaxAmt, float MITotalOrderAmt, string userName, DataTable dtDetails,DataTable dtDeletedIds,string reference)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@DeliveryTerms", MIDeliveryTerms));
                 cmd.Parameters.Add(new SqlParameter("@ShipToAddress", MIShipToAddress));
                 cmd.Parameters.Add(new SqlParameter("@TotalAmount", MITotalAmount));
-                //cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                cmd.Parameters.Add(new SqlParameter("@reference", reference));
                 cmd.Parameters.Add(new SqlParameter("@DiscountAmount", MITotalDiscountAmt));
                 cmd.Parameters.Add(new SqlParameter("@TaxAmount", MITotalTaxAmt));
                 cmd.Parameters.Add(new SqlParameter("@OrderAmount", MITotalOrderAmt));

@@ -89,7 +89,6 @@ namespace XpressBilling.Account
                 SalesMan.Text = row["SalesManName"].ToString();
                 SalesMan.ReadOnly = true;
                 Validity.Text = Convert.ToDateTime(row["Validity"]).ToString("MM'/'dd'/'yyyy"); ;
-                Validity.ReadOnly = true;
                 PayTerms.Text = row["PaymentTerms"].ToString();
                 DeliveryTerms.Text = row["DeliveryTerms"].ToString();
                 int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
@@ -107,6 +106,7 @@ namespace XpressBilling.Account
                 SalesOrder.Text = row["SalesOrderNo"].ToString();
                 if (SalesOrder.Text != "")
                 {
+                    Validity.ReadOnly = true;
                     btnConverOrder.Visible = false;
                     SaveBtn.Visible = false;
                 }
@@ -615,6 +615,7 @@ namespace XpressBilling.Account
 
                     if (XBDataProvider.SalesQuotation.ConvertToSaleOrder(Convert.ToInt32(SalesQuotationId.Value), QuotationType.SelectedItem.Text, orderNo, Convert.ToInt32(salesOrderLastIncId.Value)))
                     {
+                        Validity.ReadOnly = true;
                         SalesOrder.Text = orderNo;
                         btnConverOrder.Visible = false;
                         SaveSuccess.Visible = false;
