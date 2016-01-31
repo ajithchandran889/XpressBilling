@@ -595,6 +595,43 @@ namespace XpressBilling.Account
                 }
             }
         }
+
+        [WebMethod]
+        public static List<ItemMasteDetailsSQ> GetItemMasters(string companyCode)
+        {
+            List<ItemMasteDetailsSQ> result = new List<ItemMasteDetailsSQ>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.SalesRetrun.GetItemMasters(companyCode);
+                DataRow row = null;
+                for (int index = 0; index < dtTable.Rows.Count; index++)
+                {
+                    row = dtTable.Rows[index];
+                    ItemMasteDetailsSQ itemMasteDetails = new ItemMasteDetailsSQ();
+                    itemMasteDetails.code = row["ItemCode"].ToString();
+                    itemMasteDetails.name = row["Name"].ToString();
+                    itemMasteDetails.BaseUnitCode = row["BaseUnitCode"].ToString();
+                    itemMasteDetails.supplierBarcode = row["SupplierBarcode"].ToString();
+                    itemMasteDetails.mrp = Convert.ToInt32(row["MRP"].ToString());
+                    itemMasteDetails.retailPrice = Convert.ToInt32(row["RetailPrice"].ToString());
+                    itemMasteDetails.TaxCode = row["TaxCode"].ToString();
+                    itemMasteDetails.TaxPer = row["TaxPercentage"].ToString() != "" ? Convert.ToInt32(row["TaxPercentage"].ToString()) : 0;
+                    itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;
+                    itemMasteDetails.currencyCode = row["CurrencyCode"].ToString();
+                    itemMasteDetails.decimalPoint = row["Decimal"].ToString();
+                    itemMasteDetails.itemType = Convert.ToInt32(row["ItemType"].ToString());
+                    result.Add(itemMasteDetails);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+
     }
     public class SalesOrderDetails
     {

@@ -20,6 +20,7 @@
 </head>
 
 <body class="no-skin">
+    <div id="sl-loadingscreen"></div>
     <form runat="server" id="mainForm">
         <div id="navbar" class="navbar navbar-default">
             <script type="text/javascript">
@@ -714,6 +715,9 @@
 
         })
     </script>
+    <div id="dialog-alert" style="display: none;">
+        <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><div id="alertMessage"></div></p>
+    </div>
 </body>
 
 <!-- Mirrored from www.iserinfra.com/hrms/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 28 Sep 2015 15:35:18 GMT -->

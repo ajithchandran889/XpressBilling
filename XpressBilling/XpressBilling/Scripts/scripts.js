@@ -1,9 +1,45 @@
-﻿/// <reference path="E:\xpressbilling\XpressBilling\XpressBilling\Account/FirstFreeNumber.aspx" />
+﻿var loading = $("#sl-loadingscreen");
+var minDelay = 500;
+var start = new Date();
+var loaderTime;
+$(document).ajaxStart(function () {
+    loaderTime = setTimeout(function () { showLoader(); }, 1000);
+});
+function showLoader() {
+
+    minDelay = 500;
+    start = new Date();
+    loading.fadeIn("slow");
+}
+$(document).ajaxStop(function () {
+    var end = new Date();
+    var timeInMilliseconds = (end - start);
+    if (timeInMilliseconds < minDelay) {
+        setTimeout(function () { callback(); }, minDelay - timeInMilliseconds);
+    }
+    else callback();
+});
+function callback() {
+    clearTimeout(loaderTime);
+    loading.fadeOut("slow");
+}
+var opt = {
+    autoOpen: false,
+    modal: true,
+    width: 550,
+    title: 'Alert',
+    resizable: false,
+    buttons: {
+        "OK": function () {
+            $(this).dialog("close");
+        }
+    }
+};
 var itemMasterSelectedItem = [];
 var itemMasterArray = [];
 //var itemMasterArrayOriginal = []; ""
 var itemMasterDetails = {};
-var itemMasterArrayByName = []; ""
+var itemMasterArrayByName = []; 
 //var itemMasterArrayByNameOriginal = []; ""
 var itemMasterDetailsByName = {};
 //var itemMasterArraySQ = [];
@@ -183,7 +219,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSE.length == 0) {
-                    alert("Please create first free number for Sales Quotation");
+                    $("#alertMessage").text("Please create first free number for Sales Quotation");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#SaveBtn").attr("disabled", true);
                 }
             },
@@ -238,7 +276,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeGrn.length == 0) {
-                    alert("Please create first free number for goods receipt");
+                    $("#alertMessage").text("Please create first free number for goods receipt");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#btnSaveDtl").attr("disabled", true);
                 }
             },
@@ -256,8 +296,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
                 });
             },
             error: function (result) {
@@ -285,7 +325,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSQ.length == 0) {
-                    alert("Please create first free number for Sales Quotation");
+                    $("#alertMessage").text("Please create first free number for Sales Quotation");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#SaveBtn").attr("disabled", true);
                 }
             },
@@ -304,8 +346,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
                 });
             },
             error: function (result) {
@@ -357,7 +399,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreePO.length == 0) {
-                    alert("Please create first free number for Purchase Order");
+                    $("#alertMessage").text("Please create first free number for Purchase Order");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#btnSaveDtl").attr("disabled", true);
                 }
             },
@@ -375,8 +419,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType,j.code];
                 });
             },
             error: function (result) {
@@ -432,12 +476,10 @@ $(document).ready(function () {
         if ($("#PageStatus").val() == "create") {
             var obj1 = {};
             obj1.companyCode = $.trim($("#CompanyCode").val());
-            obj1.orderType = $("#SalesReturnType").val();
-            obj1.priceType = 0;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "SQEdit.aspx/GetItemMasters",
+                url: "SalesReturnEdit.aspx/GetItemMasters",
                 data: JSON.stringify(obj1),
                 dataType: "json",
                 success: function (data) {
@@ -523,7 +565,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSR.length == 0) {
-                    alert("Please create first free number for Sales Return");
+                    $("#alertMessage").text("Please create first free number for Sales Return");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#SaveBtn").attr("disabled", true);
                 }
                 //else
@@ -555,8 +599,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType,j.code];
                 });
             },
             error: function (result) {
@@ -585,7 +629,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeMI.length == 0) {
-                    alert("Please create first free number for Manual Invoice");
+                    $("#alertMessage").text("Please create first free number for Manual Invoice");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#btnSaveDtl").attr("disabled", true);
                 }
             },
@@ -604,8 +650,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
                 });
             },
             error: function (result) {
@@ -681,7 +727,9 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSI.length == 0) {
-                    alert("Please create first free number for Sales Quotation");
+                    $("#alertMessage").text("Please create first free number for Sales Quotation");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $("#btnSaveDtl").attr("disabled", true);
                 }
             },
@@ -700,8 +748,8 @@ $(document).ready(function () {
                 customerCodes = [];
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
-                    customerCodes.push(j.code);
-                    customerCodesWithDetails[j.code] = [j.name, j.telephone, j.orderType];
+                    customerCodes.push(j.name);
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
                 });
             },
             error: function (result) {
@@ -780,12 +828,10 @@ $(document).ready(function () {
     if (($("#SalesReturnMstId").val() != "" || $("#SalesReturnMstId").val() != "0") && $("#PageStatus").val() != "create") {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
-        obj1.orderType = $("#SalesReturnType").val();
-        obj1.priceType = 0;
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "SQEdit.aspx/GetItemMasters",
+            url: "SalesReturnEdit.aspx/GetItemMasters",
             data: JSON.stringify(obj1),
             dataType: "json",
             success: function (data) {
@@ -1076,7 +1122,7 @@ $(document).ready(function () {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#OrderType").val();
-        obj1.priceType = 0;
+        obj1.priceType = 1;
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1383,7 +1429,9 @@ $(document).on("keydown", "#Description", function (e) {
                 SetSelectedRowByName(this, ui.item.label);
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -1429,7 +1477,9 @@ $(document).on("keydown", ".ItemCode", function (e) {
 
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -1952,6 +2002,7 @@ $(document).on("keydown", "#CustomerId", function (e) {
             }
             else {
                 var item = customerCodesWithDetails[val];
+                $("#CustomerId").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $("#QuotationType").val(item[2]);
@@ -2038,6 +2089,7 @@ $(document).on("keydown", "#SRCustomerId", function (e) {
             }
             else {
                 var item = customerCodesWithDetails[val];
+                $("#SRCustomerId").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $.each(firstFreeSR, function (i, j) {
@@ -2052,12 +2104,10 @@ $(document).on("keydown", "#SRCustomerId", function (e) {
                 });
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
-                obj1.orderType = item[2];
-                obj1.priceType = 0;
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "SQEdit.aspx/GetItemMasters",
+                    url: "SalesReturnEdit.aspx/GetItemMasters",
                     data: JSON.stringify(obj1),
                     dataType: "json",
                     success: function (data) {
@@ -2191,7 +2241,9 @@ $(document).on("keydown", ".StockItem", function (e) {
 
                 }
                 else {
-                    alert("Item already added");
+                    $("#alertMessage").text("Item already added");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     row.cells[1].getElementsByTagName("input")[0].value = "";
                     row.cells[2].getElementsByTagName("input")[0].value = "";
                     row.cells[3].getElementsByTagName("input")[0].value = "";
@@ -2203,7 +2255,9 @@ $(document).on("keydown", ".StockItem", function (e) {
                 }
             }
             else {
-                alert("Non inventory Item – Not allowed");
+                $("#alertMessage").text("Non inventory Item – Not allowed");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 $(this).focus();
                 return false;
@@ -2234,7 +2288,9 @@ $(document).on("keydown", ".StockItem", function (e) {
                         SetSelectedRowStockEntry(this, $(this).val());
                     }
                     else {
-                        alert("Item already added");
+                        $("#alertMessage").text("Item already added");
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         row.cells[1].getElementsByTagName("input")[0].value = "";
                         row.cells[2].getElementsByTagName("input")[0].value = "";
                         row.cells[3].getElementsByTagName("input")[0].value = "";
@@ -2245,7 +2301,9 @@ $(document).on("keydown", ".StockItem", function (e) {
                     }
                 }
                 else {
-                    alert("Non inventory Item – Not allowed");
+                    $("#alertMessage").text("Non inventory Item – Not allowed");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $(this).val("");
                     $(this).focus();
                 }
@@ -2274,7 +2332,9 @@ $(document).on("keydown", ".StockName", function (e) {
                     SetSelectedRowStockEntryByName(this, ui.item.label);
                 }
                 else {
-                    alert("Item already added");
+                    $("#alertMessage").text("Item already added");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     row.cells[1].getElementsByTagName("input")[0].value = "";
                     row.cells[2].getElementsByTagName("input")[0].value = "";
                     row.cells[3].getElementsByTagName("input")[0].value = "";
@@ -2286,7 +2346,9 @@ $(document).on("keydown", ".StockName", function (e) {
                 }
             }
             else {
-                alert("Non inventory Item – Not allowed");
+                $("#alertMessage").text("Non inventory Item – Not allowed");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 $(this).focus();
                 return false;
@@ -2315,7 +2377,9 @@ $(document).on("keydown", ".StockName", function (e) {
                         SetSelectedRowStockEntryByName(this, $(this).val());
                     }
                     else {
-                        alert("Item already added");
+                        $("#alertMessage").text("Item already added");
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         row.cells[1].getElementsByTagName("input")[0].value = "";
                         row.cells[2].getElementsByTagName("input")[0].value = "";
                         row.cells[3].getElementsByTagName("input")[0].value = "";
@@ -2327,7 +2391,9 @@ $(document).on("keydown", ".StockName", function (e) {
                     }
                 }
                 else {
-                    alert("Non inventory Item – Not allowed");
+                    $("#alertMessage").text("Non inventory Item – Not allowed");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $(this).val("");
                     $(this).focus();
                 }
@@ -2405,7 +2471,9 @@ function iSQuantityAvailableSE(txtBox) {
                     });
                     itemArr = itemMasterQuantitySQ[itemCode];
                     if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
-                        alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         row.cells[3].getElementsByTagName("input")[0].focus();
                         row.cells[3].getElementsByTagName("input")[0].value = "";
                     }
@@ -2431,7 +2499,9 @@ function iSQuantityAvailableSE(txtBox) {
                     });
                     itemArr = itemMasterQuantitySE[itemCode];
                     if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
-                        alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         row.cells[3].getElementsByTagName("input")[0].focus();
                         row.cells[3].getElementsByTagName("input")[0].value = "";
                     }
@@ -2447,7 +2517,9 @@ function iSQuantityAvailableSE(txtBox) {
         }
         else {
             if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
-                alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 row.cells[3].getElementsByTagName("input")[0].focus();
                 row.cells[3].getElementsByTagName("input")[0].value = "";
             }
@@ -2470,7 +2542,9 @@ $(document).on("focusout", "#SEQuantity", function (e) {
         else {
             row.cells[3].getElementsByTagName("input")[0].value = "";
             row.cells[3].getElementsByTagName("input")[0].focus();
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
     }
@@ -2480,9 +2554,15 @@ $(document).on("focusout", "#SEQuantity", function (e) {
             CalculateSEAmount(this);
         }
         else {
-            row.cells[3].getElementsByTagName("input")[0].value = "";
-            row.cells[3].getElementsByTagName("input")[0].focus();
-            alert("Please fill an item with quantity");
+            if (row.cells[1].getElementsByTagName("input")[0].value != "")
+            {
+                row.cells[3].getElementsByTagName("input")[0].value = "";
+                row.cells[3].getElementsByTagName("input")[0].focus();
+                $("#alertMessage").text("Please fill an item with quantity");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
+            }
+            
             return false;
         }
         
@@ -2532,7 +2612,9 @@ $(document).on("click", "#saveFirstFreeNumberBtn", function (e) {
         i++;
     });
     if (flag == 1) {
-        alert("Same prefix and sequence number not allowed for more than one time");
+        $("#alertMessage").text("Same prefix and sequence number not allowed for more than one time");
+        var theDialog = $("#dialog-alert").dialog(opt);
+        theDialog.dialog("open");
         return false;
     }
     else {
@@ -2609,7 +2691,9 @@ $(document).on("keydown", ".MIItem", function (e) {
                 SetSelectedRowManualInvoice(this, ui.item.label);
             }
             else {
-                alert("Item already added");
+                $("#alertMessage").text("Item already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -2687,7 +2771,9 @@ $(document).on("keydown", ".MIItemName", function (e) {
 
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 row.cells[1].getElementsByTagName("input")[0].value = "";
                 row.cells[3].getElementsByTagName("input")[0].value = "";
@@ -2751,9 +2837,13 @@ $(document).on("focusout", "#MIQuantity", function (e) {
         CalculateMIAmount(this);
     }
     else {
-        row.cells[3].getElementsByTagName("input")[0].value = "";
-        row.cells[3].getElementsByTagName("input")[0].focus();
-        alert("Please fill an item with quantity");
+        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
+        }
         return false;
     }
 });
@@ -2877,6 +2967,7 @@ function CalculateMIAmount(txtBox) {
 }
 
 function iSQuantityAvailableI(txtBox) {
+    
     var row = txtBox.parentNode.parentNode;
     var rowIndex = row.rowIndex - 1;
     if (row.cells[1].getElementsByTagName("input")[0].value != ""
@@ -2915,7 +3006,9 @@ function iSQuantityAvailableI(txtBox) {
                     }
                     else {
                         row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
-                        alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                        $("#alertMessage").text("Insufficient Qty, Available qty is" + itemArr[0]);
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         CalculateIAmount(txtBox);
                         row.cells[3].getElementsByTagName("input")[0].focus();
                     }
@@ -2935,7 +3028,9 @@ function iSQuantityAvailableI(txtBox) {
             }
             else {
                 row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
-                alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                $("#alertMessage").text("Insufficient Qty, Available qty is" + itemArr[0]);
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 CalculateIAmount(txtBox);
                 row.cells[3].getElementsByTagName("input")[0].focus();
             }
@@ -2943,9 +3038,13 @@ function iSQuantityAvailableI(txtBox) {
 
     }
     else {
-        row.cells[3].getElementsByTagName("input")[0].value = "";
-        row.cells[3].getElementsByTagName("input")[0].focus();
-        alert("Please fill an item with quantity");
+        if (row.cells[1].getElementsByTagName("input")[0].value != "") {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
+        }
         return false;
     }
 }
@@ -2972,8 +3071,10 @@ function iSQuantityAvailableSQ(txtBox) {
                     });
                     itemArr = itemMasterQuantitySQ[itemCode];
                     if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
-                        alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
-
+                        $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
+                        
                     }
                     CalculateSQAmount(txtBox);
                 },
@@ -2985,8 +3086,10 @@ function iSQuantityAvailableSQ(txtBox) {
         }
         else {
             if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
-                alert("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
-
+                $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
+                
             }
             CalculateSQAmount(txtBox);
         }
@@ -2994,9 +3097,15 @@ function iSQuantityAvailableSQ(txtBox) {
     }
     else
     {
-        row.cells[3].getElementsByTagName("input")[0].value = "";
-        row.cells[3].getElementsByTagName("input")[0].focus();
-        alert("Please fill an item with quantity");
+        if (row.cells[1].getElementsByTagName("input")[0].value != "")
+        {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
+        }
+        
         return false;
     }
 }
@@ -3049,7 +3158,9 @@ function IsItemAvailableSi(item) {
         return true;
     }
     else {
-        alert("Available qty is 0");
+        $("#alertMessage").text("Available qty is 0");
+        var theDialog = $("#dialog-alert").dialog(opt);
+        theDialog.dialog("open");
         return false;
     }
 }
@@ -3068,7 +3179,9 @@ $(document).on("keydown", ".IItem", function (e) {
                 }
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -3147,7 +3260,9 @@ $(document).on("keydown", ".IItemName", function (e) {
 
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -3408,7 +3523,9 @@ $(document).on("keydown", ".SQItem", function (e) {
 
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -3477,7 +3594,9 @@ $(document).on("keydown", ".SQName", function (e) {
                 SetSelectedRowSQByName(this, ui.item.label);
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -3715,7 +3834,9 @@ function iSQuantityAvailablePO(txtBox) {
                     }
                     else {
                         row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
-                        alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                        $("#alertMessage").text("Insufficient Qty, Available qty is" + itemArr[0]);
+                        var theDialog = $("#dialog-alert").dialog(opt);
+                        theDialog.dialog("open");
                         CalculatePOAmount(txtBox);
                         row.cells[3].getElementsByTagName("input")[0].focus();
                     }
@@ -3735,7 +3856,9 @@ function iSQuantityAvailablePO(txtBox) {
             }
             else {
                 row.cells[3].getElementsByTagName("input")[0].value = itemArr[0];
-                alert("Insufficient Qty, Available qty is" + itemArr[0]);
+                $("#alertMessage").text("Insufficient Qty, Available qty is" + itemArr[0]);
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 CalculatePOAmount(txtBox);
                 row.cells[3].getElementsByTagName("input")[0].focus();
             }
@@ -3743,9 +3866,15 @@ function iSQuantityAvailablePO(txtBox) {
 
     }
     else {
-        row.cells[3].getElementsByTagName("input")[0].value = "";
-        row.cells[3].getElementsByTagName("input")[0].focus();
-        alert("Please fill an item with quantity");
+        if (row.cells[1].getElementsByTagName("input")[0].value != "")
+        {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
+        }
+        
         return false;
     }
 }
@@ -3806,6 +3935,7 @@ function IsItemAvailablePO(item) {
 }
 
 $(document).on("keydown", ".POItem", function (e) {
+    console.log(itemMasterArrayPO);
     $(this).autocomplete({
         source: itemMasterArrayPO,
         select: function (event, ui) {
@@ -3820,7 +3950,9 @@ $(document).on("keydown", ".POItem", function (e) {
                 }
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -3899,7 +4031,9 @@ $(document).on("keydown", ".POName", function (e) {
 
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -4164,7 +4298,9 @@ function IsItemAvailableSR(item) {
         return true;
     }
     else {
-        alert("Available qty is 0");
+        $("#alertMessage").text("Available qty is 0");
+        var theDialog = $("#dialog-alert").dialog(opt);
+        theDialog.dialog("open");
         return false;
     }
 }
@@ -4179,7 +4315,9 @@ $(document).on("keydown", ".SRItem", function (e) {
                 SetSelectedRowSalesReturn(this, ui.item.label);
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -4248,7 +4386,9 @@ $(document).on("keydown", ".SRItemName", function (e) {
                
             }
             else {
-                alert("Item Already added");
+                $("#alertMessage").text("Item Already added");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val("");
                 var row = this.parentNode.parentNode;
                 var rowIndex = row.rowIndex - 1;
@@ -4356,9 +4496,15 @@ $(document).on("focusout", "#SRQuantity", function (e) {
         CalculateSRAmount(this);
     }
     else {
-        row.cells[3].getElementsByTagName("input")[0].value = "";
-        row.cells[3].getElementsByTagName("input")[0].focus();
-        alert("Please fill an item with quantity");
+        if (row.cells[1].getElementsByTagName("input")[0].value != "")
+        {
+            row.cells[3].getElementsByTagName("input")[0].value = "";
+            row.cells[3].getElementsByTagName("input")[0].focus();
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
+        }
+        
         return false;
     }
     
@@ -4526,7 +4672,9 @@ $(document).on("keydown", "#SRNetAmt", function (e) {
             CreateNewRowSR();
         }
         else {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
         
@@ -4558,7 +4706,9 @@ $(document).on("keydown", "#SQNetAmt", function (e) {
         }
         else
         {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
     }
@@ -4609,7 +4759,9 @@ $(document).on("keydown", "#SEAmount", function (e) {
             CreateNewRowStockEntry();
         }
         else {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
         
@@ -4640,7 +4792,9 @@ $(document).on("keydown", "#INetAmt", function (e) {
             CreateNewRowInvoice();
         }
         else {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
     }
@@ -4670,7 +4824,9 @@ $(document).on("keydown", "#MINetAmt", function (e) {
             CreateNewRowManualInvoice();
         }
         else {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
         
@@ -4701,7 +4857,9 @@ $(document).on("keydown", "#PONetAmt", function (e) {
             CreateNewRowPO();
         }
         else {
-            alert("Please fill an item with quantity");
+            $("#alertMessage").text("Please fill an item with quantity");
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
     }
@@ -4822,6 +4980,7 @@ $(document).on("keydown", "#CustomerIdMI", function (e) {
             }
             else {
                 var item = customerCodesWithDetails[val];
+                $("#CustomerIdMI").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $("#InvoiceType").val(item[2]);
@@ -4893,7 +5052,8 @@ $(document).on("keydown", "#CustomerIdSI", function (e) {
                 return false;
             }
             else {
-                var item = customerCodesWithDetails[val];
+                var item = customerCodesWithDetails[val]; 
+                $("#CustomerIdSI").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $("#InvoiceType").val(item[2]);
@@ -4968,6 +5128,7 @@ $(document).on("keydown", "#SupplierId", function (e) {
             }
             else {
                 var item = customerCodesWithDetails[val];
+                $("#SupplierId").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $("#OrderType").val(item[2]);
@@ -4988,7 +5149,7 @@ $(document).on("keydown", "#SupplierId", function (e) {
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.orderType = item[2];
-                obj1.priceType = 0;
+                obj1.priceType = 1;
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -4996,6 +5157,7 @@ $(document).on("keydown", "#SupplierId", function (e) {
                     data: JSON.stringify(obj1),
                     dataType: "json",
                     success: function (data) {
+                        
                         itemMasterArrayPO = [];
                         itemMasterDetailsPO = {};
                         itemMasterQuantityPO = {};
@@ -5033,7 +5195,9 @@ $(document).on("keydown", "#SupplierIdGrn", function (e) {
             val = $(this).val();
             exists = $.inArray(val, customerCodes);
             if (exists >= 0) {
-                $("#selectedSupplier").val($("#SupplierIdGrn").val());
+                var item = customerCodesWithDetails[val];
+                $("#SupplierIdGrn").val(item[3]);
+                $("#selectedSupplier").val(item[3]);
                 $("#buttonUpdate").click();
             }
         },
@@ -5052,7 +5216,9 @@ $(document).on("click", "#btnFinalizeI", function (e) {
         var qty = parseInt($("input[id*='IQuantity']", $(this)).val());
         var itemArr = itemMasterQuantityI[val];
         if (parseInt(itemArr[0]) < qty) {
-            alert(val + " :Insufficient Qty, Available qty is" + itemArr[0]);
+            $("#alertMessage").text(val + " :Insufficient Qty, Available qty is" + itemArr[0]);
+            var theDialog = $("#dialog-alert").dialog(opt);
+            theDialog.dialog("open");
             return false;
         }
     });
@@ -5077,7 +5243,9 @@ $(document).on("keydown", "#ItemCodeSR", function (e) {
         select: function (event, ui) {
             var itemArr = itemDetailsStockRegCode[ui.item.label];
             if (itemArr[1] == "0") {
-                alert("Non inventory Item – Not allowed");
+                $("#alertMessage").text("Non inventory Item – Not allowed");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val('');
                 return false;
             }
@@ -5092,7 +5260,9 @@ $(document).on("keydown", "#ItemCodeSR", function (e) {
             if (exists >= 0) {
                 var itemArr = itemDetailsStockRegCode[val];
                 if (itemArr[1] == "0") {
-                    alert("Non inventory Item – Not allowed");
+                    $("#alertMessage").text("Non inventory Item – Not allowed");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $(this).val('');
                     return false;
                 }
@@ -5119,7 +5289,9 @@ $(document).on("keydown", "#ItemNameSR", function (e) {
         select: function (event, ui) {
             var itemArr = itemDetailsStockRegName[ui.item.label];
             if (itemArr[1] == "0") {
-                alert("Non inventory Item – Not allowed");
+                $("#alertMessage").text("Non inventory Item – Not allowed");
+                var theDialog = $("#dialog-alert").dialog(opt);
+                theDialog.dialog("open");
                 $(this).val('');
                 return false;
             }
@@ -5134,7 +5306,9 @@ $(document).on("keydown", "#ItemNameSR", function (e) {
             if (exists >= 0) {
                 var itemArr = itemDetailsStockRegName[val];
                 if (itemArr[1] == "0") {
-                    alert("Non inventory Item – Not allowed");
+                    $("#alertMessage").text("Non inventory Item – Not allowed");
+                    var theDialog = $("#dialog-alert").dialog(opt);
+                    theDialog.dialog("open");
                     $(this).val('');
                     return false;
                 }

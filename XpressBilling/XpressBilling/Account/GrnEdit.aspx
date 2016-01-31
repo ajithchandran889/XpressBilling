@@ -6,8 +6,8 @@
         <div class="row content-holder">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="page-header">GRN</div>
-                <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                    <ContentTemplate>
+<%--                <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
+                    <ContentTemplate>--%>
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Order Type</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
@@ -19,7 +19,7 @@
 
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Goods Receipt</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
-                                <asp:TextBox runat="server" ID="GoodsReceipt" ReadOnly="true" class="form-control required" placeholder="Goods Receipt" ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="GoodsReceipt" ReadOnly="true" class="form-control" placeholder="Goods Receipt" ClientIDMode="Static"></asp:TextBox>
                                 <asp:HiddenField runat="server" ID="GrnSequenceNoID" ClientIDMode="Static" />
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Status</label>
@@ -44,18 +44,18 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
-                                <asp:TextBox runat="server" ID="Name" class="form-control required" placeholder="Name" ReadOnly="true" ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="Name" class="form-control" placeholder="Name" ReadOnly="true" ClientIDMode="Static"></asp:TextBox>
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Location</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
-                                <asp:TextBox runat="server" ID="Location" class="form-control required" placeholder="Location"  ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="Location" class="form-control" placeholder="Location"  ClientIDMode="Static"></asp:TextBox>
                                 <asp:HiddenField runat="server" ID="LocationHidden" ClientIDMode="Static" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Purchase Order</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
-                                <asp:DropDownList runat="server" ID="PurchaseOrder" class="form-control required" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="PurchaseOrderSelectedIndexChanged">
+                                <asp:DropDownList runat="server" ID="PurchaseOrder" class="form-control" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="PurchaseOrderSelectedIndexChanged">
                                 </asp:DropDownList>
                                 <asp:TextBox runat="server" ID="PurchaseOrderText" Visible="false" ReadOnly="true" class="form-control required" ClientIDMode="Static"></asp:TextBox>
                             </div>
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Packing Slip</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
-                                <asp:TextBox runat="server" ID="PackingSlip" class="form-control required" placeholder="Packing Slip" ClientIDMode="Static"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="PackingSlip" class="form-control" placeholder="Packing Slip" ClientIDMode="Static"></asp:TextBox>
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Total Qty</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
@@ -148,11 +148,11 @@
                             </div>
                         </asp:Panel>
                         <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static" />
-                    </ContentTemplate>
+                    <%--</ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="buttonUpdate" EventName="Click" />
                     </Triggers>
-                </asp:UpdatePanel>
+                </asp:UpdatePanel>--%>
                 <asp:HiddenField ID="selectedSupplier" runat="server" ClientIDMode="Static" />
                 <asp:Button ID="buttonUpdate"  runat="server" ClientIDMode="Static" OnClick="buttonUpdate_Click" style="display:none;"/>
             </div>
