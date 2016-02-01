@@ -123,43 +123,43 @@
                                         <asp:TextBox ID="MIItem" class="form-control MIItem required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Name" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Name">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIItemName" class="form-control MIItemName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Quantity" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Quantity" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIQuantity" class="form-control MIQuantity txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Unit" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Unit" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIUnit" class="form-control MIUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rate" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Rate" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIItemRate" class="form-control MIItemRate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Disc%" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Disc%" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIDiscPer" class="form-control txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountPercentage","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Disc Amt" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Disc Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MIDiscAmt" class="form-control MIDiscAmt txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt","{0:n}")%>'></asp:TextBox>
 
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Tax%" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Tax%" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MITaxPer" class="form-control MITaxPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Tax Amt" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Tax Amt" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="MITaxAmt" class="form-control MITaxAmt txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>

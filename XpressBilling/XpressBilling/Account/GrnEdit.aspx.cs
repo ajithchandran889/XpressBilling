@@ -233,6 +233,7 @@ namespace XpressBilling.Account
                 {
                     SetGRNChildGrid(selectedPO);
                     cancelGrn.Visible = false;
+                    PackingSlip.Attributes.Add("class", "form-control required");
                 }
             }
             catch (Exception ex)
@@ -280,6 +281,9 @@ namespace XpressBilling.Account
                        Status.SelectedValue = "1";
                        Location.ReadOnly = true;
                        SupplierIdGrn.ReadOnly = true;
+                       GRNType.Enabled = false;
+                       PurchaseOrder.Enabled = false;
+                       PackingSlip.ReadOnly = true;
                        SetGRNChildGrid(Request.Form[PurchaseOrderText.UniqueID]);
                    }
                     
@@ -289,6 +293,9 @@ namespace XpressBilling.Account
                     if(XBDataProvider.GRN.UpdateGRNDetail(Convert.ToInt32(GRNId.Value), Convert.ToInt32(Request.Form[TotalQty.UniqueID]), Reference.Text, dt))
                     {
                         SetGRNChildGrid(Request.Form[PurchaseOrderText.UniqueID]);
+                        GRNType.Enabled = false;
+                        PurchaseOrder.Enabled = false;
+                        PackingSlip.ReadOnly = true;
                     }
                 }
                

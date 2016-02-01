@@ -118,7 +118,7 @@
                                        <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>'  />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Item" ControlStyle-Width="70">
+                                <asp:TemplateField HeaderText="Item" ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="POItem" class="form-control POItem required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
@@ -128,38 +128,38 @@
                                         <asp:TextBox ID="POName" class="form-control POName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Quantity">
+                                <asp:TemplateField HeaderText="Quantity"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="POQuantity" class="form-control POQuantity txtNumeric required"  ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Unit">
+                                <asp:TemplateField HeaderText="Unit"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="POUnit" class="form-control POUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rate">
+                                <asp:TemplateField HeaderText="Rate"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="PORate" class="form-control PORate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Rate","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Disc%">
+                                <asp:TemplateField HeaderText="Disc%"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="PODiscPer" class="form-control PODiscPer txtNumeric required" ClientIDMode="Static" runat="server" Text='<%#Eval("Discount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Disc Amt">
+                                <asp:TemplateField HeaderText="Disc Amt"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="PODiscAmt" class="form-control PODiscAmt txtNumeric" ClientIDMode="Static" runat="server" Text='<%#Eval("DiscountAmt","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Tax%">
+                                <asp:TemplateField HeaderText="Tax%"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="POTaxPer" class="form-control POTaxPer required" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
                                         <asp:HiddenField ID="POTaxCode" runat="server" ClientIDMode="Static" value='<%# Bind("Tax") %>'/>
                                </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Tax Amt">
+                                <asp:TemplateField HeaderText="Tax Amt"  ControlStyle-Width="50">
                                     <ItemTemplate>
                                         <asp:TextBox ID="POTaxAmt" class="form-control POTaxAmt required" ClientIDMode="Static" runat="server" Text='<%#Eval("TaxAmount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>

@@ -825,8 +825,8 @@ $(document).ready(function () {
             $(".StockAmount").attr('readonly', 'readonly');
         }
     }
-    if (($("#SalesReturnMstId").val() != "" || $("#SalesReturnMstId").val() != "0") && $("#PageStatus").val() != "create") {
-        var obj1 = {};
+    if (($("#SalesReturnMstId").val() != "" || $("#SalesReturnMstId").val() != "0") && $("#PageStatus").val() != "create" && $("#SalesReturnMstId").length>0) {
+        var obj1 = {}; 
         obj1.companyCode = $.trim($("#CompanyCode").val());
         $.ajax({
             type: "POST",
@@ -913,7 +913,7 @@ $(document).ready(function () {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#InvoiceType").val();
-        obj1.priceType = 0;
+        obj1.priceType = 0; 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -978,7 +978,7 @@ $(document).ready(function () {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#InvoiceType").val();
-        obj1.priceType = 0;
+        obj1.priceType = 0; 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1055,11 +1055,11 @@ $(document).ready(function () {
         $(".INetAmt").attr('readonly', 'readonly');
         $(".IUnit").attr('readonly', 'readonly');
     }
-    if (($("#SalesQuotationId").val() != "" || $("#SalesQuotationId").val() != "0") && $("#PageStatus").val() != "create") {
+    if (($("#SalesQuotationId").val() != "" || $("#SalesQuotationId").val() != "0") && $("#PageStatus").val() != "create" && $("#SalesQuotationId").length>0) {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#QuotationType").val();
-        obj1.priceType = 0;
+        obj1.priceType = 0; 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -1117,12 +1117,12 @@ $(document).ready(function () {
             $(".SQName").attr('readonly', 'readonly');
         }
     }
-    if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create") {
+    if (($("#PurchaseOrderId").val() != "" || $("#PurchaseOrderId").val() != "0") && $("#PageStatus").val() != "create" && $("#PurchaseOrderId").length>0) {
 
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.orderType = $("#OrderType").val();
-        obj1.priceType = 1;
+        obj1.priceType = 1; 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -2023,7 +2023,7 @@ $(document).on("keydown", "#CustomerId", function (e) {
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.orderType = item[2];
-                obj1.priceType = 0;
+                obj1.priceType = 0; 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -2102,7 +2102,7 @@ $(document).on("keydown", "#SRCustomerId", function (e) {
                         $("#SRSequenceNoID").val(j.id);
                     }
                 });
-                var obj1 = {};
+                var obj1 = {}; 
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 $.ajax({
                     type: "POST",
@@ -2981,7 +2981,7 @@ function iSQuantityAvailableI(txtBox) {
             var obj1 = {};
             obj1.companyCode = $.trim($("#CompanyCode").val());
             obj1.orderType = item[2];
-            obj1.priceType = 0;
+            obj1.priceType = 0; 
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -3810,7 +3810,7 @@ function iSQuantityAvailablePO(txtBox) {
             var obj1 = {};
             obj1.companyCode = $.trim($("#CompanyCode").val());
             obj1.orderType = item[2];
-            obj1.priceType = 0;
+            obj1.priceType = 0; 
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -5001,7 +5001,7 @@ $(document).on("keydown", "#CustomerIdMI", function (e) {
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.orderType = item[2];
-                obj1.priceType = 0;
+                obj1.priceType = 0; 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -5074,7 +5074,7 @@ $(document).on("keydown", "#CustomerIdSI", function (e) {
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.orderType = item[2];
-                obj1.priceType = 0;
+                obj1.priceType = 0; 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -5149,7 +5149,7 @@ $(document).on("keydown", "#SupplierId", function (e) {
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.orderType = item[2];
-                obj1.priceType = 1;
+                obj1.priceType = 1; 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
