@@ -94,7 +94,7 @@
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Amount</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
                         <span id="currencyCode1" runat="server" />
-                        <asp:TextBox runat="server" ID="Amount" class="form-control required" ReadOnly="true" placeholder="Validity" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Amount" class="form-control required" ReadOnly="true" placeholder="Amount" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
 

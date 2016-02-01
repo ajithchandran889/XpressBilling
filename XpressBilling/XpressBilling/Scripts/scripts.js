@@ -2128,7 +2128,7 @@ $(document).on("keydown", "#SRCustomerId", function (e) {
                     }
                 });
                 var obj2 = {};
-                obj2.bpCode = val;
+                obj2.bpCode = item[3];
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",

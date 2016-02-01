@@ -69,7 +69,7 @@ namespace XpressBilling.Account
                         }
                         else if (row["PriceType"].ToString() == "1")
                         {
-                            OrderType_1.Items.Remove(OrderType_0.Items.FindByValue(row["OrderType"].ToString()));
+                            OrderType_1.Items.Remove(OrderType_1.Items.FindByValue(row["OrderType"].ToString()));
                         }
                     }
                         
