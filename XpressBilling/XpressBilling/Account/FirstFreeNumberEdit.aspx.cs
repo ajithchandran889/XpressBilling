@@ -564,6 +564,30 @@ namespace XpressBilling.Account
                     }
                     value++;
                 }
+                if(Transaction.SelectedValue!="")
+                {
+                    FirstFreeDetail.Visible = true;
+                    if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
+                    {
+                        SetInitialRowWithCashCreditOptions();
+                    }
+                    else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
+                    {
+                        SetInitialRowWithAgainstManualOptions();
+                    }
+                    else if (Transaction.SelectedValue == "5")
+                    {
+                        SetInitialRowWithAddtionDeductionOpeningOptions();
+                    }
+                    else if (Transaction.SelectedValue == "4")
+                    {
+                        SetInitialRowWithLocalImportOptions();
+                    }
+                    else if (Transaction.SelectedValue == "8")
+                    {
+                        SetInitialRowWithManualGoodsOptions();
+                    }
+                }
             }
         }
 
