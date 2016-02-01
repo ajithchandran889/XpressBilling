@@ -82,6 +82,21 @@ namespace XpressBilling.Account
             XBDataProvider.BankCode.DeleteBankCodes(ids);
             LoadBankCodeList();
         }
+        //protected void searchbankcodeClick(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+        private void LoadBankCodeListBySearch()
+        {
+            listBankCode.DataSource = XBDataProvider.BankCode.GetBankCode(Session["CompanyCode"].ToString());
+            listBankCode.DataBind();
+        }
 
     }
 }

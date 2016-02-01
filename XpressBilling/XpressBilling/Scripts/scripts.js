@@ -46,6 +46,8 @@ var itemMasterDetailsByName = {};
 //var itemMasterDetailsEditSQ = {};
 var customerCodes = [];
 var customerCodesWithDetails = {};
+var mansupplierCodes = [];
+var mansupplierCodesWithDetails = {};
 var contactArray = [];
 var contactArrayWithName = {};
 var locationArray = [];
@@ -298,6 +300,26 @@ $(document).ready(function () {
                 $.each(data.d, function (i, j) {
                     customerCodes.push(j.name);
                     customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
+    }
+    if ($("#mansupid").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "EditManufacturer.aspx/GetmanSupplierDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                mansupplierCodes = [];
+                mansupplierCodesWithDetails = {};
+                $.each(data.d, function (i, j) {
+                    mansupplierCodes.push(j.name);
+                    mansupplierCodesWithDetails[j.name] = [j.name, j.code];
                 });
             },
             error: function (result) {

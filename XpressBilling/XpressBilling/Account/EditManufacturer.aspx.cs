@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
 namespace XpressBilling.Account
 {
     public partial class EditManufacturer : System.Web.UI.Page
@@ -17,6 +20,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
+                CompanyCode.Value = Session["CompanyCode"].ToString();
                 DataTable dtBusinessPartner = XBDataProvider.Manufacturer.GetAllActiveBusinessPartner();
 
                 ddlBusinessPartner.DataSource = dtBusinessPartner;
@@ -56,6 +60,7 @@ namespace XpressBilling.Account
             Manufacturer.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             ddlBusinessPartner.SelectedValue = row["BusinessPartnerCode"].ToString();
+           // ManSupplierId.Text = row["BusinessPartnerCode"].ToString();
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
             Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy"); //row["CreatedDate"].ToString();
@@ -150,6 +155,38 @@ namespace XpressBilling.Account
 
                 ClearInputs(ctrl.Controls);
             }
+        }
+
+        [WebMethod]
+        public static List<manSupplierDetails> GetmanSupplierDetails(string companyCode)
+        {
+            List<manSupplierDetails> result = new List<manSupplierDetails>();
+            try
+            {
+                DataTable dtTable = XBDataProvider.Manufacturer.GetAllActiveBusinessPartnerSupplierCodes(companyCode);
+                //Session["BPDetails"] = dtTable;
+
+                for (int i = 0; i < dtTable.Rows.Count; i++)
+                {
+                    manSupplierDetails mansupDetails = new manSupplierDetails();
+                    mansupDetails.name = dtTable.Rows[i]["Name"].ToString();
+                    mansupDetails.code = dtTable.Rows[i]["BusinessPartnerCode"].ToString();
+                    result.Add(mansupDetails);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return result;
+        }
+        public class manSupplierDetails
+        {
+            public string code { get; set; }
+            public string name { get; set; }
         }
     }
 }

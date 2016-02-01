@@ -64,12 +64,13 @@
 
                     </div>
                 </div>
-
+                
                 <asp:Panel runat="server" ID="gridDetails">
+                    <hr>
                     <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
 
                         <div class="form-group">
-                            <hr>
+                            
                             <label class="control-label col-xs-12 col-sm-4 col-md-1">Item</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="ItemSearch" class="form-control" placeholder="Item Code" ClientIDMode="Static"></asp:TextBox>
@@ -82,10 +83,11 @@
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="ItemSCSearch" class="form-control" placeholder="Supplier Barcode" ClientIDMode="Static"></asp:TextBox>
                             </div>
-                            <hr>
+                           
                         </div>
                        
                     </div>
+                     <hr>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="grid_wrapper">
 

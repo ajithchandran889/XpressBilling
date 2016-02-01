@@ -110,11 +110,11 @@
                     </div>
 
                 </div>
-            </div>
+            
             <asp:Panel runat="server" ID="gridDetails">
                 <div class="grid_wrapper">
                     <div class="">
-                        <h2 class="pull-left">Transaction</h2>
+                        <h2 class="page-header color-blue">Transaction</h2>
                     </div>
                     <asp:GridView ID="InvoiceDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID"
                         OnRowDataBound="InvoiceDetailRowDataBound">
@@ -292,6 +292,7 @@
                 </div>
             </asp:Panel>
             <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static" />
+                </div>
         </div>
     </div>
 </asp:Content>

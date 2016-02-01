@@ -6,8 +6,6 @@
         <div class="row content-holder">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="page-header">GRN</div>
-<%--                <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                    <ContentTemplate>--%>
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Order Type</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
@@ -85,7 +83,7 @@
                         <asp:Panel runat="server" ID="gridDetails">
                             <div class="grid_wrapper">
                                 <div class="">
-                                    <h2 class="pull-left">Transaction</h2>
+                                    <h2 class="page-header color-blue">Transaction</h2>
                                 </div>
                                 <asp:GridView ID="GRNDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID">
                                     <RowStyle CssClass="Odd" />

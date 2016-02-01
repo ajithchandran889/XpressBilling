@@ -29,13 +29,20 @@ namespace XpressBilling.Account
                 Location.DataBind();
                 ListItem item = new ListItem();
                 item.Text = "Select Location";
-                item.Value = "0";
+                item.Value = "";
                 Location.Items.Insert(0, item);
+                ListItem itemAll = new ListItem();
+                itemAll.Text = "All";
+                itemAll.Value = "1";
+                Location.Items.Insert(0, itemAll);
 
                 DefLocation.DataSource = dtLocation;
                 DefLocation.DataValueField = "LocationCode";
                 DefLocation.DataTextField = "Name";
                 DefLocation.DataBind();
+                ListItem itemdefloc = new ListItem();
+                itemdefloc.Text = "Select Location";
+                itemdefloc.Value = "0";
                 DefLocation.Items.Insert(0, item);
                 DataTable dtCompany = XBDataProvider.Company.GetAllCompanyCode();
                 ddlCompany.DataSource = dtCompany;

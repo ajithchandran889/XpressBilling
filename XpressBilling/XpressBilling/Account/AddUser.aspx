@@ -68,7 +68,7 @@
                     </div>
                     <label for="DefLocation" class="control-label col-xs-2 col-md-2">Default Location</label>
                     <div class="col-xs-10 col-md-2">
-                       <asp:DropDownList  runat="server" ID="DefLocation" class="form-control required" ClientIDMode="Static">
+                       <asp:DropDownList  runat="server" ID="DefLocation" class="form-control" ClientIDMode="Static">
                         </asp:DropDownList>
                     </div>
                    

@@ -66,6 +66,7 @@
 
                     </div>
                 </div>
+                <hr />
                 <asp:GridView ID="FirstFreeDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="true" AutoGenerateColumns="false" DataKeyNames="ID" OnDataBound="listFirstFreeNumberDataBound" OnPreRender="FirstFreeDetailPreRender">
                 <Columns>
                     <asp:TemplateField HeaderText="Order Type">

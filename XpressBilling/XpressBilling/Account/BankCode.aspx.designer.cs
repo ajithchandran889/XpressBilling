@@ -13,6 +13,33 @@ namespace XpressBilling.Account {
     public partial class BankCode {
         
         /// <summary>
+        /// filterArea control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterArea;
+        
+        /// <summary>
+        /// BankSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox BankSearch;
+        
+        /// <summary>
+        /// BankNameSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox BankNameSearch;
+        
+        /// <summary>
         /// deleteRecords control.
         /// </summary>
         /// <remarks>

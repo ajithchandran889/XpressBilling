@@ -42,7 +42,7 @@
                 <asp:Panel runat="server" ID="gridDetails" Visible="false">
                     <div class="grid_wrapper">
                         <div class="grid_header">
-                            <h2 class="pull-left">Transaction</h2>
+                            <h2 class="page-header color-blue">Transaction</h2>
                             <div class="pull-right">
                                 <span class="icon-wrap pull-left"><i class="glyphicon glyphicon-plus "></i></span>
                             </div>

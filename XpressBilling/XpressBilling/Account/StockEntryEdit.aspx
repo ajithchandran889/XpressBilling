@@ -86,7 +86,7 @@
                  <asp:Panel runat="server" ID="gridDetails">
                     <div class="grid_wrapper">
                         <div class="">
-                            <h2 class="pull-left">Transaction</h2>
+                            <h2 class="page-header color-blue">Transaction</h2>
                         </div>
                         <asp:GridView ID="StockEntryDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID"
                             OnRowDataBound="StockEntryDetailRowDataBound">

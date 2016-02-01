@@ -87,7 +87,21 @@ namespace XBDataProvider
 
             return dtTable;
         }
+        public static DataTable GetAllActiveBusinessPartnerSupplierCodes(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBusinessPartnerSupplier");
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return dtTable;
+        }
         public static DataTable GetManufacturerById(int Id)
         {
             DataTable dtTable = new DataTable();
