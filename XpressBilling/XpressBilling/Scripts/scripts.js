@@ -306,7 +306,7 @@ $(document).ready(function () {
                 //alert("Error");
             }
         });
-    }
+    } 
     if ($("#mansupid").length > 0) {
         $.ajax({
             type: "POST",
@@ -1442,6 +1442,32 @@ function CheckItemAlreadyAdded(val) {
     });
     return flag;
 }
+
+$(document).on("keydown", "#ManSupplierId", function (e) {
+    $(this).autocomplete({
+        source: mansupplierCodes,   
+        
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, mansupplierCodes);
+            if (exists < 0) {
+                $(this).val("");
+                $("#mansupid").val("");
+                return false;
+            }
+            else {
+                $("#mansupid").val(mansupplierCodesWithDetails[val]);
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
+});
+
 $(document).on("keydown", "#Description", function (e) {
     $(this).autocomplete({
         source: itemMasterArrayByName,
@@ -5429,3 +5455,14 @@ $("#SalesReturnType").change(function () {
     
     return false;
 });
+
+if ($("#searchbankcodeid").length > 0) {
+    $('.search_textbox').each(function (i) {
+        alert('dfs');
+        $(this).quicksearch("[id*=listBankCode] tr:not(:has(th))", {
+            'testQuery': function (query, txt, row) {                
+                return $(row).children(":eq(" + i + ")").text().toLowerCase().indexOf(query[0].toLowerCase()) != -1;
+            }
+        });
+    });
+}

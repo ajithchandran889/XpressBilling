@@ -93,7 +93,9 @@ namespace XBDataProvider
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBusinessPartnerSupplier");
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBusinessPartnerSupplier", cmd);
             }
             catch (Exception ex)
             {

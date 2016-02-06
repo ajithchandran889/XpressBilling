@@ -33,7 +33,7 @@
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="EditBankCode?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
-                            <asp:BoundField DataField="BankCode" HeaderText="BankCode"></asp:BoundField>                            
+                            <asp:BoundField DataField="BankCode" HeaderText="BankCode"></asp:BoundField>   
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="User"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
@@ -60,4 +60,5 @@
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="searchbankcodeid" ClientIDMode="Static" runat="server" />
 </asp:Content>

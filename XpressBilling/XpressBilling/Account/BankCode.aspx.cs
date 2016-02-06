@@ -33,17 +33,28 @@ namespace XpressBilling.Account
         }
         protected void listBankCodeDataBound(object sender, EventArgs e)
         {
-            //foreach (GridViewRow gvRow in listBankCode.Rows)
-            //{
-            //    DropDownList ddlCompanyUser = gvRow.FindControl("BankCodeDdl") as DropDownList;
-            //    HiddenField hfSelectedValue = gvRow.FindControl("selectedvalue") as HiddenField;
-
-            //    if (ddlCompanyUser != null && hfSelectedValue != null)
-            //    {
-
-            //        ddlCompanyUser.SelectedValue = hfSelectedValue.Value;
-            //    }
-           // }
+            GridViewRow row = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
+            for (int i = 0; i < listBankCode.Columns.Count; i++)
+            {
+                if (listBankCode.Columns[i].HeaderText == "BankCode" || listBankCode.Columns[i].HeaderText == "Name")
+                {
+                    TableHeaderCell cell = new TableHeaderCell();
+                    TextBox txtSearch = new TextBox();
+                    txtSearch.Width = 70;
+                    txtSearch.Attributes["placeholder"] = listBankCode.Columns[i].HeaderText;
+                    //txtSearch.CssClass = "search_textbox";
+                    cell.Controls.Add(txtSearch);
+                    row.Controls.Add(cell);
+                }
+                else
+                {
+                    TableHeaderCell cell = new TableHeaderCell();
+                    Label lbl = new Label();
+                    cell.Controls.Add(lbl);
+                    row.Controls.Add(cell);
+                }
+            }
+            listBankCode.HeaderRow.Parent.Controls.AddAt(1, row);
         }
         //protected void BankCodeDdlSelectedIndexChanged(object sender, EventArgs e)
         //{

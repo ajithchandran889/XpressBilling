@@ -21,16 +21,17 @@ namespace XpressBilling.Account
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
                 CompanyCode.Value = Session["CompanyCode"].ToString();
-                DataTable dtBusinessPartner = XBDataProvider.Manufacturer.GetAllActiveBusinessPartner();
+                
+                //DataTable dtBusinessPartner = XBDataProvider.Manufacturer.GetAllActiveBusinessPartner();
 
-                ddlBusinessPartner.DataSource = dtBusinessPartner;
-                ddlBusinessPartner.DataValueField = "ID";
-                ddlBusinessPartner.DataTextField = "Name";
-                ddlBusinessPartner.DataBind();
-                ListItem item = new ListItem();
-                item.Text = "Select BusinessPartner";
-                item.Value = "0";
-                ddlBusinessPartner.Items.Insert(0, item);
+                //ddlBusinessPartner.DataSource = dtBusinessPartner;
+                //ddlBusinessPartner.DataValueField = "ID";
+                //ddlBusinessPartner.DataTextField = "Name";
+                //ddlBusinessPartner.DataBind();
+                //ListItem item = new ListItem();
+                //item.Text = "Select BusinessPartner";
+                //item.Value = "0";
+                //ddlBusinessPartner.Items.Insert(0, item);
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -59,8 +60,8 @@ namespace XpressBilling.Account
             Manufacturer.Text = row["ManufacturerCode"].ToString();
             Manufacturer.ReadOnly = true;
             Name.Text = row["Name"].ToString();
-            ddlBusinessPartner.SelectedValue = row["BusinessPartnerCode"].ToString();
-           // ManSupplierId.Text = row["BusinessPartnerCode"].ToString();
+            //ddlBusinessPartner.SelectedValue = row["BusinessPartnerCode"].ToString();
+            ManSupplierId.Text = row["BusinessPartnerCode"].ToString();
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
             Date.Text = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy"); //row["CreatedDate"].ToString();
@@ -83,7 +84,7 @@ namespace XpressBilling.Account
                         status = false;
                     else
                         status = true;
-                    msgstatus = XBDataProvider.Manufacturer.UpdateManufacturer(Convert.ToInt32(ManufacturerId.Value), Name.Text, ddlBusinessPartner.SelectedValue, User.Identity.Name, status);
+                    msgstatus = XBDataProvider.Manufacturer.UpdateManufacturer(Convert.ToInt32(ManufacturerId.Value), Name.Text, mansupid.Value, User.Identity.Name, status);
                     if (msgstatus == 1)
                     {
                         SaveSuccess.Visible = false;
@@ -100,7 +101,7 @@ namespace XpressBilling.Account
                 else
                 {
                     string reference = "";
-                    msgstatus = XBDataProvider.Manufacturer.SaveManufacturer(hdncompanycode.Value, Manufacturer.Text, Name.Text, ddlBusinessPartner.SelectedValue, reference, User.Identity.Name, true);
+                    msgstatus = XBDataProvider.Manufacturer.SaveManufacturer(hdncompanycode.Value, Manufacturer.Text, Name.Text, mansupid.Value, reference, User.Identity.Name, true);
                     if (msgstatus == 1)
                     {
                         ClearInputs(Page.Controls);

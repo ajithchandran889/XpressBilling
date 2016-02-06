@@ -47,9 +47,9 @@
                  <div class="form-group"> 
                         <label for="BusinessPartnerCode" runat="server" id="lblBusinessPartner" class="control-label col-xs-2 col-md-2">BusinessPartner</label>
                     <div class="col-xs-10 col-md-2">
-                        <%--<asp:TextBox runat="server" ID="ManSupplierId" class="form-control required" placeholder="Customer Id" ClientIDMode="Static"></asp:TextBox>--%>
-                        <asp:DropDownList runat="server" class="form-control" ID="ddlBusinessPartner" ClientIDMode="Static">                            
-                        </asp:DropDownList>
+                        <asp:TextBox runat="server" ID="ManSupplierId" class="form-control required" placeholder="Customer Id" ClientIDMode="Static"></asp:TextBox>
+                        <%--<asp:DropDownList runat="server" class="form-control" ID="ddlBusinessPartner" ClientIDMode="Static">                            
+                        </asp:DropDownList>--%>
                     </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>
                     <div class="col-xs-10 col-md-2">
@@ -61,7 +61,7 @@
                 </div>  
                 <div class="form-group">
                     <asp:HiddenField ID="ManufacturerId" runat="server" />
-                    <asp:HiddenField ID="mansupid" runat="server" />
+                    <asp:HiddenField ID="mansupid" ClientIDMode="Static" runat="server" />
                     <asp:HiddenField ID="hdncompanycode" runat="server" />
                     <asp:HiddenField ID="hdnreference" runat="server" />
                      <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static" />
