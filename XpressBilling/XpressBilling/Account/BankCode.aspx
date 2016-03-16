@@ -10,12 +10,25 @@
                         <div class="form-group">                            
                             <label class="control-label col-xs-12 col-sm-4 col-md-1">Bank Code</label>
                             <div class="col-xs-12 col-sm-2 col-md-2">
+                                <asp:TextBox runat="server" ID="BankSearch" class="form-control" placeholder="Bank Code" ClientIDMode="Static" onkeyup="SearchGrid('BankSearch', 'listBankCode')"></asp:TextBox>
+                            </div>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="BankNameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('BankNameSearch', 'listBankCode')"></asp:TextBox>
+                            </div> 
+                           <%-- <asp:Button ID="search" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Search" OnClick="searchbankcodeClick" /> --%>                          
+                        </div>                       
+                    </div>
+                <%--<div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">                            
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Bank Code</label>
+                            <div class="col-xs-12 col-sm-2 col-md-2">
                                 <asp:TextBox runat="server" ID="BankSearch" class="form-control" placeholder="Bank Code" ClientIDMode="Static"></asp:TextBox>
                             </div>
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="BankNameSearch" class="form-control" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
-                            </div> 
+                            </div> --%>
                            <%-- <asp:Button ID="search" runat="server" ClientIDMode="Static" class="btn btn-primary pull-left" Text="Search" OnClick="searchbankcodeClick" /> --%>                          
                         </div>                       
                     </div>
