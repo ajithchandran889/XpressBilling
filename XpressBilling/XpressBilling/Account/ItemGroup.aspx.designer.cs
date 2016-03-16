@@ -13,6 +13,42 @@ namespace XpressBilling.Account {
     public partial class ItemGroup {
         
         /// <summary>
+        /// filterArea control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterArea;
+        
+        /// <summary>
+        /// ItemGroupCodeSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ItemGroupCodeSearch;
+        
+        /// <summary>
+        /// NameSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NameSearch;
+        
+        /// <summary>
+        /// TaxCodeNameSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TaxCodeNameSearch;
+        
+        /// <summary>
         /// deleteRecords control.
         /// </summary>
         /// <remarks>

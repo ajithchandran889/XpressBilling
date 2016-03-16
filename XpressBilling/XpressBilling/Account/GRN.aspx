@@ -6,6 +6,23 @@
                 <div class="page-header">
                     GRN             
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">GRN</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="GoodsReceiptNoSearch" class="form-control" placeholder="GRN" ClientIDMode="Static" onkeyup="SearchGrid('GoodsReceiptNoSearch', 'ListGRN')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">GR Date</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="GoodsReceiptDateSearch" class="form-control" placeholder="GR Date" ClientIDMode="Static" onkeyup="SearchGrid('GoodsReceiptDateSearch', 'ListGRN')"></asp:TextBox>
+                            </div>  
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">BPCode</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="BPCodeSearch" class="form-control" placeholder="BPCode" ClientIDMode="Static" onkeyup="SearchGrid('BPCodeSearch', 'ListGRN')"></asp:TextBox>
+                            </div>  
+                                                           
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

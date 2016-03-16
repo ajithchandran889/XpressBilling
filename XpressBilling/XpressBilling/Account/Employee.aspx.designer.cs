@@ -13,6 +13,42 @@ namespace XpressBilling.Account {
     public partial class Employee {
         
         /// <summary>
+        /// filterArea control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterArea;
+        
+        /// <summary>
+        /// EmployeeCodeSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox EmployeeCodeSearch;
+        
+        /// <summary>
+        /// NameSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NameSearch;
+        
+        /// <summary>
+        /// DateofJoiningSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox DateofJoiningSearch;
+        
+        /// <summary>
         /// deleteRecords control.
         /// </summary>
         /// <remarks>

@@ -7,6 +7,18 @@
                     TaxCode               
 
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">                            
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">TaxCode</label>
+                            <div class="col-xs-12 col-sm-2 col-md-2">
+                                <asp:TextBox runat="server" ID="TaxCodeSearch" class="form-control" placeholder="TaxCode" ClientIDMode="Static" onkeyup="SearchGrid('TaxCodeSearch', 'listTaxCode')"></asp:TextBox>
+                            </div>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="BankNameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('BankNameSearch', 'listTaxCode')"></asp:TextBox>
+                            </div>                            
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

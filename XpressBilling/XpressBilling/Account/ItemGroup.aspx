@@ -6,6 +6,22 @@
                 <div class="page-header">
                     Item Group              
                 </div>
+                 <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">ItemGroupCode</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="ItemGroupCodeSearch" class="form-control" placeholder="IGroupCode" ClientIDMode="Static" onkeyup="SearchGrid('ItemGroupCodeSearch', 'listItemGroup')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listItemGroup')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">TaxCodeName</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="TaxCodeNameSearch" class="form-control" placeholder="TaxCodeName" ClientIDMode="Static" onkeyup="SearchGrid('TaxCodeNameSearch', 'listItemGroup')"></asp:TextBox>
+                            </div>                                                                     
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

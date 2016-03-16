@@ -6,6 +6,23 @@
                 <div class="page-header">
                     Manufacturer             
                 </div>
+                 <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Manufacturer</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="ManufacturerCodeSearch" class="form-control" placeholder="Manufacturer" ClientIDMode="Static" onkeyup="SearchGrid('ManufacturerCodeSearch', 'listManufacturer')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listManufacturer')"></asp:TextBox>
+                            </div>    
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">BP Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="BusinessPartnerNameSearch" class="form-control" placeholder="BP Name" ClientIDMode="Static" onkeyup="SearchGrid('BusinessPartnerNameSearch', 'listManufacturer')"></asp:TextBox>
+                            </div> 
+                                                          
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

@@ -6,6 +6,30 @@
                 <div class="page-header">
                     Contact                
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Contact</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="ContactSearch" class="form-control" placeholder="Contact" ClientIDMode="Static" onkeyup="SearchGrid('ContactSearch', 'listContact')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listContact')"></asp:TextBox>
+                            </div>  
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">CompanyName</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="CompanyNameSearch" class="form-control" placeholder="CompName" ClientIDMode="Static" onkeyup="SearchGrid('CompanyNameSearch', 'listContact')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Email</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="EmailSearch" class="form-control" placeholder="Email" ClientIDMode="Static" onkeyup="SearchGrid('EmailSearch', 'listContact')"></asp:TextBox>
+                            </div> 
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Mobile</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="MobileSearch" class="form-control" placeholder="Mobile" ClientIDMode="Static" onkeyup="SearchGrid('MobileSearch', 'listContact')"></asp:TextBox>
+                            </div>                                      
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

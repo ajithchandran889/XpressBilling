@@ -6,6 +6,26 @@
                 <div class="page-header">
                     Manual Invoice               
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesOrderNo</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="SalesOrderNoSearch" class="form-control" placeholder="SO No" ClientIDMode="Static" onkeyup="SearchGrid('SalesOrderNoSearch', 'ListManualInvoice')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Sales Man</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'ListManualInvoice')"></asp:TextBox>
+                            </div>   
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Customer</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="CustomerSearch" class="form-control" placeholder="Customer" ClientIDMode="Static" onkeyup="SearchGrid('CustomerSearch', 'ListManualInvoice')"></asp:TextBox>
+                            </div>  
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Telephone</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="TelephoneSearch" class="form-control" placeholder="Telephone" ClientIDMode="Static" onkeyup="SearchGrid('TelephoneSearch', 'ListManualInvoice')"></asp:TextBox>
+                            </div>                                                                     
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

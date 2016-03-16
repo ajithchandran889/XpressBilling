@@ -6,6 +6,23 @@
                 <div class="page-header">
                     Tax               
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Tax</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="TaxSearch" class="form-control" placeholder="Tax" ClientIDMode="Static" onkeyup="SearchGrid('TaxSearch', 'listTaxMst')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listTaxMst')"></asp:TextBox>
+                            </div>   
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">TaxCode</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="TaxCodeNameSearch" class="form-control" placeholder="TaxCodeName" ClientIDMode="Static" onkeyup="SearchGrid('TaxCodeNameSearch', 'listTaxMst')"></asp:TextBox>
+                            </div>         
+                                           
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

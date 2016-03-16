@@ -6,6 +6,23 @@
                 <div class="page-header">
                     Sales Return               
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesReturnNo</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="SalesReturnNoSearch" class="form-control" placeholder="SR No" ClientIDMode="Static" onkeyup="SearchGrid('SalesReturnNoSearch', 'ListSalesReturn')"></asp:TextBox>
+                            </div>                              
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesMan</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="SalesManNameSearch" class="form-control" placeholder="SalesMan" ClientIDMode="Static" onkeyup="SearchGrid('SalesManNameSearch', 'ListSalesReturn')"></asp:TextBox>
+                            </div> 
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Locationcode</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="LocationcodeSearch" class="form-control" placeholder="Locationcode" ClientIDMode="Static" onkeyup="SearchGrid('LocationcodeSearch', 'ListSalesReturn')"></asp:TextBox>
+                            </div> 
+                                                                                                
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

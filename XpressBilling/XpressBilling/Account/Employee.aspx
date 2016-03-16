@@ -6,6 +6,23 @@
                 <div class="page-header">
                     Employee              
                 </div>
+                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Contact</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="EmployeeCodeSearch" class="form-control" placeholder="EmployeeCode" ClientIDMode="Static" onkeyup="SearchGrid('EmployeeCodeSearch', 'listEmployee')"></asp:TextBox>
+                            </div>  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listEmployee')"></asp:TextBox>
+                            </div>  
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">DOJ</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="DateofJoiningSearch" class="form-control" placeholder="DOJ" ClientIDMode="Static" onkeyup="SearchGrid('DateofJoiningSearch', 'listEmployee')"></asp:TextBox>
+                            </div>  
+                                                           
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>

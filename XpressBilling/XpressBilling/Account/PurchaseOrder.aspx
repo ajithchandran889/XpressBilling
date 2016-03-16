@@ -6,6 +6,22 @@
                 <div class="page-header">
                     Purchase Order              
                 </div>
+                 <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                        <div class="form-group">  
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">PurchaseOrderNo</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="PurchaseOrderNoSearch" class="form-control" placeholder="PO No" ClientIDMode="Static" onkeyup="SearchGrid('PurchaseOrderNoSearch', 'ListPurchaseOrder')"></asp:TextBox>
+                            </div>                              
+                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Buyer</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="BuyerSearch" class="form-control" placeholder="Buyer" ClientIDMode="Static" onkeyup="SearchGrid('BuyerSearch', 'ListPurchaseOrder')"></asp:TextBox>
+                            </div>  
+                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Telephone</label>
+                            <div class="col-xs-12 col-sm-8 col-md-2">
+                                <asp:TextBox runat="server" ID="TelephoneSearch" class="form-control" placeholder="Telephone" ClientIDMode="Static" onkeyup="SearchGrid('TelephoneSearch', 'ListPurchaseOrder')"></asp:TextBox>
+                            </div>                                                                     
+                        </div>                       
+                    </div>
                 <div class="grid_wrapper">
                     <div class="grid_header">
                         <h2 class="pull-left">List View</h2>
