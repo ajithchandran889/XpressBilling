@@ -49,7 +49,7 @@ namespace XpressBilling.Account
                     {
                         Type.SelectedValue = prevType.ToString();
                         Type.Enabled = false;
-                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer" };
+                        string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer", "Receipt" };
                         DataRow row = null;
                         DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
 
@@ -393,6 +393,77 @@ namespace XpressBilling.Account
             }
         }
 
+        private void SetInitialRowWithReceiptOptions()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataRow dr = null;
+                dt.Columns.Add(new DataColumn("ID", typeof(int)));
+                dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
+                dt.Columns.Add(new DataColumn("Digits", typeof(int)));
+                dt.Columns.Add(new DataColumn("EnterpriseUnitCode", typeof(string)));
+                dt.Columns.Add(new DataColumn("Prefix", typeof(string)));
+                //dt.Columns.Add(new DataColumn("Description", typeof(string)));
+                dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
+                dt.Columns.Add(new DataColumn("Status", typeof(int)));
+
+
+                if (Type.SelectedValue == "0")
+                {
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Receipt Against Invoice";
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Advance Receipt";
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Advance Allocation";
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr["OrderType"] = "Credit Note";
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
+                    {
+                        DataRow row = dtLocation.Rows[i];
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Receipt Against Invoice";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Advance Receipt";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Advance Allocation";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+
+                        dr = dt.NewRow();
+                        dr["OrderType"] = "Credit Note";
+                        dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
+                        dt.Rows.Add(dr);
+                    }
+                }
+                FirstFreeDetail.DataSource = dt;
+                FirstFreeDetail.DataBind();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         protected void saveFirstFreeNumber(object sender, EventArgs e)
         {
             try
@@ -535,7 +606,7 @@ namespace XpressBilling.Account
         protected void TypeSelectedIndexChanged(object sender, EventArgs e)
         {
             FirstFreeDetail.Visible = false;
-            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer" };
+            string[] items = new string[] { "Sales Quotation", "Sales Order", "Manual Invoice", "Sales Return", "Purchase Order", "Stock Adjustment", "Material Issue", "Sales Invoice", "Goods Receipt", "Purchase Return", "Stock Transfer", "Receipt" };
             DataRow row = null;
             DataTable dtTable = XBDataProvider.FirstFreeNumber.GetOrderTypeExceptAddedItems(Session["CompanyCode"].ToString());
 
@@ -587,6 +658,10 @@ namespace XpressBilling.Account
                     {
                         SetInitialRowWithManualGoodsOptions();
                     }
+                    else if (Transaction.SelectedValue == "11")
+                    {
+                        SetInitialRowWithReceiptOptions();
+                    }
                 }
             }
         }
@@ -613,6 +688,10 @@ namespace XpressBilling.Account
             else if (Transaction.SelectedValue == "8")
             {
                 SetInitialRowWithManualGoodsOptions();
+            }
+            else if(Transaction.SelectedValue=="11")
+            {
+                SetInitialRowWithReceiptOptions();
             }
         }
     }

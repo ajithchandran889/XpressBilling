@@ -79,6 +79,7 @@ namespace XpressBilling.Account
                 OrderType_0.SelectedValue = row["OrderType"].ToString();
                 OrderType_0.Visible = true;
                 OrderType_1.Visible = false;
+                OrderType_0.Enabled = false;
             }
             else if (row["BusinessPartnerType"].ToString() == "1")
             {
@@ -91,6 +92,7 @@ namespace XpressBilling.Account
                 OrderType_1.SelectedValue = row["OrderType"].ToString();
                 OrderType_0.Visible = false;
                 OrderType_1.Visible = true;
+                OrderType_1.Enabled = false;
             }
             Discount.Text = row["Discount"].ToString();
             

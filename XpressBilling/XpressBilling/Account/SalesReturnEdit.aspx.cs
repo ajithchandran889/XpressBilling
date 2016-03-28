@@ -57,6 +57,7 @@ namespace XpressBilling.Account
                 SalesReturn.Text = row["SalesReturnNo"].ToString();
                 Status.SelectedValue = row["Status"].ToString();
                 Location.Text = row["LocationName"].ToString();
+                LocationHidden.Value = row["LocationCode"].ToString();
                 Name.Text = row["BPName"].ToString();
                 Reference.Text = row["Reference"].ToString();
                 Telephone.Text = row["Telephone"].ToString();
@@ -597,12 +598,12 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<ItemMasteDetailsSQ> GetItemMasters(string companyCode)
+        public static List<ItemMasteDetailsSQ> GetItemMasters(string companyCode,string location)
         {
             List<ItemMasteDetailsSQ> result = new List<ItemMasteDetailsSQ>();
             try
             {
-                DataTable dtTable = XBDataProvider.SalesRetrun.GetItemMasters(companyCode);
+                DataTable dtTable = XBDataProvider.SalesRetrun.GetItemMasters(companyCode,location);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

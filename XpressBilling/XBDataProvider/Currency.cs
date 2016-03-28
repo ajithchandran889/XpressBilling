@@ -185,6 +185,23 @@ namespace XBDataProvider
             }
             return "";
         }
+        public static DataTable GetCurrencyDetailsByCompany(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetCurrencyDetailsByCompany", cmd);
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dtTable;
+        }
         public static int GetCurrencyDecimalByCompany(string companyCode)
         {
             DataTable dtTable = new DataTable();

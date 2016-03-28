@@ -50,6 +50,7 @@
                             <asp:ListItem Value="1" Text="Bank"></asp:ListItem>
                             <asp:ListItem Value="2" Text="Discount"></asp:ListItem>
                             <asp:ListItem Value="3" Text="Round-off"></asp:ListItem>
+                            <asp:ListItem Value="4" Text="Credit note"></asp:ListItem>
                         </asp:DropDownList>
                     </div><div class="col-xs-10 col-md-2"></div>
                     <label for="Status" runat="server" id="lblstatus" class="control-label col-xs-2 col-md-2">Status</label>

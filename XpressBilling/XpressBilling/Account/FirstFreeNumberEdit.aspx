@@ -46,6 +46,7 @@
                                 <asp:ListItem Value="8" Text="Goods Receipt"></asp:ListItem>
                                 <asp:ListItem Value="9" Text="Purchase Return"></asp:ListItem>
                                 <asp:ListItem Value="10" Text="Stock Transfer"></asp:ListItem>
+                                <asp:ListItem Value="11" Text="Receipt"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
 

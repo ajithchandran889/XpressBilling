@@ -72,7 +72,7 @@ namespace XpressBilling.Account
                 Document.ReadOnly = true;
                 Status.SelectedValue = row["Status"].ToString();
                 Status.Enabled = false;
-                Location.Text = row["LocationCode"].ToString();
+                Location.Text = row["Location"].ToString();
                 LocationHidden.Value = row["LocationCode"].ToString();
                 Location.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
@@ -484,12 +484,12 @@ namespace XpressBilling.Account
             return result;
         }
         [WebMethod]
-        public static List<ItemMasteDetailsSE> GetItemMasters(string companyCode)
+        public static List<ItemMasteDetailsSE> GetItemMasters(string companyCode,string location)
         {
             List<ItemMasteDetailsSE> result = new List<ItemMasteDetailsSE>();
             try
             {
-                DataTable dtTable = XBDataProvider.ItemMaster.GetItemMastersSE(companyCode);
+                DataTable dtTable = XBDataProvider.ItemMaster.GetItemMastersSE(companyCode, location);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

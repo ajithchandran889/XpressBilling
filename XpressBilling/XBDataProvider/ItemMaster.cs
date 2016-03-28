@@ -294,7 +294,7 @@ namespace XBDataProvider
             return dtTable;
         }
 
-        public static DataTable GetItemMastersSE(string companyCode)
+        public static DataTable GetItemMastersSE(string companyCode,string location)
         {
             DataTable dtTable = new DataTable();
             try
@@ -302,6 +302,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                cmd.Parameters.Add(new SqlParameter("@location", location));
                 dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMastersSE", cmd);
             }
             catch (Exception ex)

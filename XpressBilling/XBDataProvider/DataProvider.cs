@@ -169,6 +169,35 @@ namespace XBDataProvider
             return returnValue;
         }
 
+        internal static double ExecuteScalarDouble(string connString, string procedureName, SqlCommand sqlCmd)
+        {
+            double returnValue = 0;
+
+            try
+            {
+                sqlCmd.CommandType = CommandType.StoredProcedure;
+                sqlCmd.CommandText = procedureName;
+                sqlCmd.Connection = GetSqlConnection();
+
+                returnValue = (double)sqlCmd.ExecuteScalar();
+            }
+            catch (SqlException ex)
+            {
+                // Rethrow the exception.
+                throw ex;
+            }
+            finally
+            {
+                if (sqlCmd.Connection.State == ConnectionState.Open)
+                {
+
+                    sqlCmd.Connection.Dispose();
+                    //sqlCmd.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
+
         internal static int ExecuteScalarInt(string connString, string procedureName, SqlCommand sqlCmd)
         {
             int returnValue = 0;

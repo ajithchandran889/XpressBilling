@@ -176,7 +176,7 @@ namespace XBDataProvider
 
             return true;
         }
-        public static DataTable GetItemMasters(string companyCode,int orderType,int priceType)
+        public static DataTable GetItemMasters(string companyCode, int orderType, int priceType, string location)
         {
             DataTable dtTable = new DataTable();
             try
@@ -186,6 +186,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
                 cmd.Parameters.Add(new SqlParameter("@orderType", orderType));
                 cmd.Parameters.Add(new SqlParameter("@priceType", priceType));
+                cmd.Parameters.Add(new SqlParameter("@location", location));
                 dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetItemMasters_SQ", cmd);
             }
             catch (Exception ex)

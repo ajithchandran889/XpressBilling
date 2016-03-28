@@ -98,8 +98,9 @@ namespace XpressBilling.Account
                 Telephone.ReadOnly = true;
                 CreatedDate.Text = Convert.ToDateTime(row["PurchaseOrderDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedDate.ReadOnly = true;
-                Location.Text = row["LocationCode"].ToString();
+                Location.Text = row["Location"].ToString();
                 Location.ReadOnly = true;
+                LocationHidden.Value = row["LocationCode"].ToString();
                 if (Convert.ToInt32(row["IsFialized"].ToString()) > 0)
                 {
                     IsFinalized.Value = "1";
@@ -251,7 +252,7 @@ namespace XpressBilling.Account
                         dr["ID"] = PurchaseOrderDetail.DataKeys[i]["ID"]; 
                         DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
+                        dr["LocationCode"] = LocationHidden.Value;
                         dr["PurchaseOrderMstId"] = Convert.ToInt32(PurchaseOrderId.Value);
                         dr["PurchaseOrderNo"] = OrderNo.Text;
                         dr["PurchaseOrderDate"] = date;
@@ -305,7 +306,7 @@ namespace XpressBilling.Account
                             dr["ID"] = DBNull.Value;
                             DateTime date = DateTime.ParseExact(CreatedDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                             dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                            dr["LocationCode"] = Location.Text;
+                            dr["LocationCode"] = LocationHidden.Value;
                             dr["PurchaseOrderMstId"] = Convert.ToInt32(PurchaseOrderId.Value);
                             dr["PurchaseOrderNo"] = OrderNo.Text;
                             dr["PurchaseOrderDate"] = date;

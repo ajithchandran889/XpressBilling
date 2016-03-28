@@ -249,7 +249,7 @@ namespace XpressBilling.Account
                         dr = dt.NewRow();
                         dr["ID"] = SalesQuotationDetail.DataKeys[i]["ID"];
                         dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                        dr["LocationCode"] = Location.Text;
+                        dr["LocationCode"] = LocationHidden.Value;
                         dr["SalesQuotationMstID"] = Convert.ToInt32(SalesQuotationId.Value);
                         dr["SalesQuotationNo"] = Quotation.Text;
                         dr["SalesQuotationDate"] = date;
@@ -298,7 +298,7 @@ namespace XpressBilling.Account
                             dr = dt.NewRow();
                             dr["ID"] = DBNull.Value;
                             dr["CompanyCode"] = Session["CompanyCode"].ToString();
-                            dr["LocationCode"] = Location.Text;
+                            dr["LocationCode"] = LocationHidden.Value;
                             dr["SalesQuotationMstID"] = Convert.ToInt32(SalesQuotationId.Value);
                             dr["SalesQuotationNo"] = Quotation.Text;
                             dr["SalesQuotationDate"] = date;
@@ -543,12 +543,12 @@ namespace XpressBilling.Account
         }
 
         [WebMethod]
-        public static List<ItemMasteDetailsSQ> GetItemMasters(string companyCode, string orderType, string priceType)
+        public static List<ItemMasteDetailsSQ> GetItemMasters(string companyCode, string orderType, string priceType, string location)
         {
             List<ItemMasteDetailsSQ> result = new List<ItemMasteDetailsSQ>();
             try
             {
-                DataTable dtTable = XBDataProvider.SalesQuotation.GetItemMasters(companyCode, Convert.ToInt32(orderType), Convert.ToInt32(priceType));
+                DataTable dtTable = XBDataProvider.SalesQuotation.GetItemMasters(companyCode, Convert.ToInt32(orderType), Convert.ToInt32(priceType),location);
                 DataRow row = null;
                 for (int index = 0; index < dtTable.Rows.Count; index++)
                 {

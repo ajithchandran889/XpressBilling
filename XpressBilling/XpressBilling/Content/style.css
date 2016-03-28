@@ -515,3 +515,6 @@ hr {
     background: #000 url('../Images/loading.gif') center center no-repeat;
     display: none;
 }
+.tableHeaderAlignCenter{
+    text-align:center !important;
+}

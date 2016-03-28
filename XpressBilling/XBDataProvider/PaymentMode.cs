@@ -199,5 +199,41 @@ namespace XBDataProvider
             }
             return dtTable;
         }
+
+        public static DataTable GetAllPaymentModeDetailsWithOutCreditNote(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllPaymentModesWithOutCreditNote", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
+        public static DataTable GetAllPaymentModeDetailsOnlyCreditNote(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllPaymentModesOnlyCreditNote", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
     }
 }

@@ -152,7 +152,6 @@ namespace XpressBilling.Account
                     itemMasteDetails.retailPrice = Convert.ToInt32(row["RetailPrice"].ToString());
                     itemMasteDetails.TaxCode = row["TaxCode"].ToString();
                     itemMasteDetails.TaxPer = row["TaxPercentage"].ToString() != "" ? Convert.ToInt32(row["TaxPercentage"].ToString()) : 0;
-                    itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;
                     result.Add(itemMasteDetails);
                 }
             }

@@ -103,8 +103,9 @@ namespace XpressBilling.Account
                 TotalQty.Text = row["TotalQty"].ToString();
                 CreatedDate.Text = Convert.ToDateTime(row["GoodsReceiptDate"]).ToString("MM'/'dd'/'yyyy");
                 CreatedDate.ReadOnly = true;
-                Location.Text = row["LocationCode"].ToString();
+                Location.Text = row["Location"].ToString();
                 Location.ReadOnly = true;
+                LocationHidden.Value = row["LocationCode"].ToString();
                 if (Status.SelectedValue == "2")
                 {
                     btnConverGRN.Visible = false;
