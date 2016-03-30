@@ -498,6 +498,7 @@ namespace XpressBilling.Account
                     custDetails.code = dtTable.Rows[i]["BusinessPartnerCode"].ToString();
                     custDetails.telephone = dtTable.Rows[i]["Phone"].ToString();
                     custDetails.orderType = dtTable.Rows[i]["OrderType"].ToString();
+                    custDetails.availableCredit = dtTable.Rows[i]["AvailableCredit"].ToString();
                     result.Add(custDetails);
                 }
 
@@ -700,6 +701,7 @@ namespace XpressBilling.Account
         public string name { get; set; }
         public string telephone { get; set; }
         public string orderType { get; set; }
+        public string availableCredit { get; set; }
     }
     public class FirstFreeDetails
     {

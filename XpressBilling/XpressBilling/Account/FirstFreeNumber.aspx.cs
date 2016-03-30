@@ -63,6 +63,10 @@ namespace XpressBilling.Account
                 {
                     row["TransactionType"] = "Goods Receipt";
                 }
+                else if (row["Transactions"].ToString() == "11")
+                {
+                    row["TransactionType"] = "Receipt";
+                }
             }
             ListFirstFreeNumber.DataSource = dtTable;
             ListFirstFreeNumber.DataBind();

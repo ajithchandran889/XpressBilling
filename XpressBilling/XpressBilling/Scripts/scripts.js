@@ -701,7 +701,7 @@ $(document).ready(function () {
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
                     customerCodes.push(j.name);
-                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code, j.availableCredit];
                 });
             },
             error: function (result) {
@@ -2264,7 +2264,11 @@ $(document).on("keydown", "#Location", function (e) {
                             $("#Document").val(j.sequenceNumber);
                             $("#SESequenceNoID").val(j.id);
                         }
-
+                        else if (j.seqType == "0" && j.orderType == $("#AdjustmentType").val()) 
+                        {
+                            $("#Document").val(j.sequenceNumber);
+                            $("#SESequenceNoID").val(j.id);
+                        }
                     });
 
                 }
@@ -3495,6 +3499,7 @@ function iSQuantityAvailableSQ(txtBox) {
         }
         else {
             if (parseInt(itemArr[0]) < parseInt(row.cells[3].getElementsByTagName("input")[0].value)) {
+                row.cells[4].getElementsByTagName("input")[0].focus();
                 $("#alertMessage").text("Insufficient Qty, Available " + itemArr[0] + " " + row.cells[4].getElementsByTagName("input")[0].value);
                 var theDialog = $("#dialog-alert").dialog(opt);
                 theDialog.dialog("open");
@@ -5535,6 +5540,7 @@ $(document).on("keydown", "#CustomerIdSI", function (e) {
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);
                 $("#InvoiceType").val(item[2]);
+                $("#AvailableCredit").val(item[4]);
                 $('#InvoiceType option[value="0"]').attr("selected", null);
                 $('#InvoiceType option[value="1"]').attr("selected", null);
                 $('#InvoiceType option[value="' + item[2] + '"]').attr("selected", "selected");
@@ -5713,7 +5719,10 @@ $("#AdjustmentType").change(function () {
                 $("#Document").val(j.sequenceNumber);
                 $("#SESequenceNoID").val(j.id);
             }
-
+            else if (j.seqType == "0" && j.orderType == $("#AdjustmentType").val()) {
+                $("#Document").val(j.sequenceNumber);
+                $("#SESequenceNoID").val(j.id);
+            }
         });
     }
     return false;

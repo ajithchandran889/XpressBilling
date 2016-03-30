@@ -52,7 +52,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@State", state));
                 cmd.Parameters.Add(new SqlParameter("@Fax", fax));
                 cmd.Parameters.Add(new SqlParameter("@returnvar", rtnvalue));
-                int returnValue = DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_BusinessPartnerMst_xpins", cmd);
+                int returnValue = DataProvider.ExecuteScalarInt(connString, "dbo.sp_BusinessPartnerMst_xpins", cmd);
                 return returnValue;
             }
             catch (Exception ex)

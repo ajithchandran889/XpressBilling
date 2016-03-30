@@ -179,13 +179,15 @@ namespace XpressBilling.Account
                     AddContactCode = AddContactCode.Substring(0, 10);
                     retunValue = XBDataProvider.BussinessPartner.SaveBP(Session["CompanyCode"].ToString(), BussinessPartner.Text, Name.Text, Convert.ToInt32(BusinessPartnerType.SelectedValue), orderType, Convert.ToInt32(Discount.Text), CRlimit, ContactPerson.Text, tinval, Cst.Text, Note.Text, User.Identity.Name,
                                                                      Phone.Text, Mobile.Text, Email.Text, Web.Text, Designation.Text, Address1.Text, Address2.Text, Request.Form[City.UniqueID], Area.Text, Zip.Text, Country.SelectedValue, State.Text, Fax.Text, AddContactCode);
-                    if (retunValue == 2)
+                    if (retunValue == 1)
                     {
                         ClearInputs(Page.Controls);
                         SaveSuccess.Visible = true;
                         UpdateSuccess.Visible = false;
                         failure.Visible = false;
                         alreadyexist.Visible = false;
+                        OrderType_0.Visible = true;
+                        OrderType_1.Visible = false;
                     }
                     else if (retunValue == -1)
                     {
