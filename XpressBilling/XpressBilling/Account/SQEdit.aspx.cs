@@ -24,6 +24,7 @@ namespace XpressBilling.Account
                 }
                 currencyCode.Value = XBDataProvider.Currency.GetCurrencyCodeByCompany(CompanyCode.Value);
                 CompanyCode.Value = Session["CompanyCode"].ToString();
+                hdnCompanyCode.Value = Session["CompanyCode"].ToString();
                 currencyCode1.InnerText = currencyCode.Value;
                 DataRow row = null;
                 int id = Convert.ToInt32(Request.QueryString["Id"]);

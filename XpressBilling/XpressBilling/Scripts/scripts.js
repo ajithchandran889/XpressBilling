@@ -108,6 +108,10 @@ var firstFreeR = [];
 var paymentModeNames = [];
 var paymentModeDetails = {};
 var ReceiptItemRowDetails = [];
+var AccountNos =[];
+var AccountNosWithDetails = {};
+
+
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -124,6 +128,27 @@ $(function () {
 $(document).ready(function () {
     var obj = {};
     obj.companyCode = $.trim($("#CompanyCode").val());
+    if ($("#AccNoid").length > 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "RptSalesQuote.aspx/GetAccountDetails",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            success: function (data) {
+                AccountNos = [];
+                AccountNosWithDetails = {};
+                $.each(data.d, function (i, j) {
+                    AccountNos.push(j.AccountNo);
+                    AccountNosWithDetails[j.AccountNo] = JSON.stringify(j);
+                    //AccountNosWithDetails[j.AccountNo]=[j.AccountNo, j.Name, j.Branch, j.BankCode, j.AccountType, j.IBAN, j.IFSC, j.SWIFT, j.MICR, j.BankName, j.CompanyCode];
+                });
+            },
+            error: function (result) {
+                //alert("Error");
+            }
+        });
+    }
     if ($("#SalesMan").length > 0) {
         $.ajax({
             type: "POST",
@@ -6667,4 +6692,31 @@ $(document).on("click", "#btnSaveDtl,#btnConverOrder", function (e) {
     if (flag == false) {
         return false;
     }
+});
+
+$(document).on("keydown", "#txtAccNoid", function (e) {
+    $(this).autocomplete({
+        source: AccountNos,
+
+        change: function (event, ui) {
+            val = $(this).val();
+            exists = $.inArray(val, AccountNos);
+            if (exists < 0) {
+                $(this).val("");
+                $("#AccNoid").val("");
+                return false;
+            }
+            else {
+                $("#AccNoid").val(AccountNosWithDetails[val]);
+                var objAcc = JSON.parse(AccountNosWithDetails[val]);
+                $("#BankCode").text(objAcc.BankCode);
+            }
+        },
+        response: function (event, ui) {
+            if (!ui.content.length) {
+                var noResult = { value: "", label: "No item found" };
+                ui.content.push(noResult);
+            }
+        }
+    });
 });

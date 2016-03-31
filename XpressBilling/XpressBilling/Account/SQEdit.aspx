@@ -1,6 +1,59 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SQEdit.aspx.cs" Inherits="XpressBilling.Account.sales_quotation" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="../Scripts/jquery-1.8.2.js"></script>
+    <script type="text/javascript" >
+        //function OpenPopup() {
+        //    if (document.getElementById("PopupTest").checked) {
+        //        var myWindow = window.open("PopupRptSQ.aspx", " menubar = no, width = 600, height = 500, toolbar = no, status = no, resizable = no");   // Opens a new window
+
+
+        //    }
+        //}
+
+        function getParameterByName(name) {
+            url = window.location.href;
+            url = url.toLowerCase(); // This is just to avoid case sensitiveness  
+            name = name.replace(/[\[\]]/g, "\\$&").toLowerCase();// This is just to avoid case sensitiveness for query parameter name
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function OpenPopup() {
+            var Id = getParameterByName("Id");
+
+            if (Id == null || id == "") {
+                Id = 0;
+            }
+            var Location = document.getElementById("LocationHidden").value;
+            var Quotation = document.getElementById("Quotation").value;
+            var comapnyCode = document.getElementById("MainContent_hdnCompanyCode").value;
+            var iMyWidth;
+            var iMyHeight;
+            //half the screen width minus half the new window width (plus 5 pixel borders).
+            iMyWidth = (window.screen.width / 2) - (75 + 10);
+            //half the screen height minus half the new window height (plus title and status bars).
+            iMyHeight = (window.screen.height / 2) - (100 + 50);
+            //Open the window.
+            var url = "PopupRptSQ.aspx?Id=" + Id + "&location=" + Location + "&quotation=" + Quotation + "&comapnycode=" + comapnyCode;
+            var win2 = window.open(url, "Window2", "status=no,height=500,width=600,resizable=yes,left=" + iMyWidth + ",top=" + iMyHeight + ",screenX=" + iMyWidth + ",screenY=" + iMyHeight + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+            win2.focus();
+        }
+
+        //function OpenPopup() {
+        //    if (document.getElementById("PopupTest").checked) {
+        //        var sizeString = "dialogWidth:600px; dialogHeight:500px; center:yes; scroll:No;status:no;resizable;no;edge:raised;help:no;"; // Adjust values here to set hight, width, and scroll properties
+        //        var myWindow = window.showModalDialog("PopupTest.aspx", "myWindow", sizeString);   // Opens a new window
+        //    }
+        //}
+
+</script>
+  
+    <input type="hidden" id="hdnCompanyCode"  runat="server" />
+
     <div class="page-content">
         <div class="row content-holder">
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -28,7 +81,7 @@
                 <div id="failureSO" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="Span1" runat="server">Invalid first free for sales order!</span>
                 </div>
-                <div class="page-header">Sales Quotation</div>
+                <div class="page-header">Sales Quotation <input type="checkbox" id="PopupTest" name="PopupTest" value="PopupTest" title="PopupTest" onchange="javascript: OpenPopup()" ></div>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Customer ID</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">
