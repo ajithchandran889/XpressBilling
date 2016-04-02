@@ -173,16 +173,23 @@
     <Content Include="Account\PasswordRecovery.aspx" />
     <Content Include="Account\PaymentMode.aspx" />
     <Content Include="Account\PaymentModeEdit.aspx" />
+    <Content Include="Account\PopupRptSQ.aspx" />
+    <Content Include="Account\PopupTest.aspx" />
     <Content Include="Account\PriceBook.aspx" />
     <Content Include="Account\PriceBookEdit.aspx" />
     <Content Include="Account\PurchaseOrder.aspx" />
     <Content Include="Account\PurchaseOrderEdit.aspx" />
     <Content Include="Account\receipt-edit.aspx" />
+    <Content Include="Account\Receipt.aspx" />
+    <Content Include="Account\ReceiptEdit.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterCompany.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
-    <Content Include="Account\SalesQuotationEdit.aspx" />
+    <Content Include="Account\RptReceipt.aspx" />
+    <Content Include="Account\RptSalesInvoice.aspx" />
+    <Content Include="Account\RptSalesQuote.aspx" />
+    <Content Include="Account\SQEdit.aspx" />
     <Content Include="Account\SalesQuotation.aspx" />
     <Content Include="Account\SalesReturn.aspx" />
     <Content Include="Account\SalesReturnEdit.aspx" />
@@ -270,6 +277,7 @@
     <Content Include="Images\img\favicon.ico" />
     <Content Include="Images\img\user.jpg" />
     <Content Include="Images\like.png" />
+    <Content Include="Images\loading.gif" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />
     <Content Include="Images\orderedList2.png" />
@@ -294,9 +302,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="Account\CrystalReport1.rpt" />
+    <Content Include="Account\CrystalReport2.rpt" />
+    <Content Include="Account\CrystalReport3.rpt" />
+    <None Include="Properties\PublishProfiles\profile.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\ace-elements-mini.js" />
     <Content Include="Scripts\ace-mini.js" />
+    <Content Include="Scripts\ASPSnippets_Pager.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -436,6 +449,9 @@
     <Compile Include="Account\CountryEdit.aspx.designer.cs">
       <DependentUpon>CountryEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\CrystalReport1.cs" />
+    <Compile Include="Account\CrystalReport2.cs" />
+    <Compile Include="Account\CrystalReport3.cs" />
     <Compile Include="Account\Currency.aspx.cs">
       <DependentUpon>Currency.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -653,6 +669,18 @@
     <Compile Include="Account\PaymentModeEdit.aspx.designer.cs">
       <DependentUpon>PaymentModeEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\PopupRptSQ.aspx.cs">
+      <DependentUpon>PopupRptSQ.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\PopupRptSQ.aspx.designer.cs">
+      <DependentUpon>PopupRptSQ.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\PopupTest.aspx.cs">
+      <DependentUpon>PopupTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\PopupTest.aspx.designer.cs">
+      <DependentUpon>PopupTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\PriceBook.aspx.cs">
       <DependentUpon>PriceBook.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -688,6 +716,20 @@
     <Compile Include="Account\receipt-edit.aspx.designer.cs">
       <DependentUpon>receipt-edit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account\Receipt.aspx.cs">
+      <DependentUpon>Receipt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Receipt.aspx.designer.cs">
+      <DependentUpon>Receipt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ReceiptEdit.aspx.cs">
+      <DependentUpon>ReceiptEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ReceiptEdit.aspx.designer.cs">
+      <DependentUpon>ReceiptEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\RegisterCompany.aspx.cs">
       <DependentUpon>RegisterCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -702,12 +744,24 @@
     <Compile Include="Account\ResetPassword.aspx.designer.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Account\SalesQuotationEdit.aspx.cs">
-      <DependentUpon>SalesQuotationEdit.aspx</DependentUpon>
+    <Compile Include="Account\RptReceipt.aspx.cs">
+      <DependentUpon>RptReceipt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\RptReceipt.aspx.designer.cs">
+      <DependentUpon>RptReceipt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\RptSalesInvoice.aspx.cs">
+      <DependentUpon>RptSalesInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\RptSalesInvoice.aspx.designer.cs">
+      <DependentUpon>RptSalesInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SQEdit.aspx.cs">
+      <DependentUpon>SQEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Account\SalesQuotationEdit.aspx.designer.cs">
-      <DependentUpon>SalesQuotationEdit.aspx</DependentUpon>
+    <Compile Include="Account\SQEdit.aspx.designer.cs">
+      <DependentUpon>SQEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\SalesQuotation.aspx.cs">
       <DependentUpon>SalesQuotation.aspx</DependentUpon>

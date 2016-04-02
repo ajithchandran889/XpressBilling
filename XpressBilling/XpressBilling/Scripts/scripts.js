@@ -108,10 +108,6 @@ var firstFreeR = [];
 var paymentModeNames = [];
 var paymentModeDetails = {};
 var ReceiptItemRowDetails = [];
-var AccountNos =[];
-var AccountNosWithDetails = {};
-
-
 $(function () {
     $("#inputDate").datepicker();
     $("#FormationDate").datepicker();
@@ -120,10 +116,11 @@ $(function () {
     $("#Validity").datepicker();
     $("#PeriodFrom").datepicker();
     $("#PeriodTo").datepicker();
-    $("#RDate").datepicker();
-
+    $(".RDate").datepicker();
+    $(".ARDate").datepicker();
+    var AccountNos = [];
+    var AccountNosWithDetails = {};
 });
-
 
 $(document).ready(function () {
     var obj = {};
@@ -1280,7 +1277,11 @@ $(document).ready(function () {
         }
     }
     if (($("#ReceiptId").val() != "" || $("#ReceiptId").val() != "0") && $("#PageStatus").val() == "edit" && $("#ReceiptId").length > 0) {
-        var obj1 = {}; 
+        $(".RNumber").attr('readonly', 'readonly');
+        $(".RDate").attr('readonly', 'readonly');
+        $(".ARNumber").attr('readonly', 'readonly');
+        $(".ARDate").attr('readonly', 'readonly');
+        var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.bpCode = $("#BussinessPartnerCode").val();
         $.ajax({
@@ -2289,8 +2290,7 @@ $(document).on("keydown", "#Location", function (e) {
                             $("#Document").val(j.sequenceNumber);
                             $("#SESequenceNoID").val(j.id);
                         }
-                        else if (j.seqType == "0" && j.orderType == $("#AdjustmentType").val()) 
-                        {
+                        else if (j.seqType == "0" && j.orderType == $("#AdjustmentType").val()) {
                             $("#Document").val(j.sequenceNumber);
                             $("#SESequenceNoID").val(j.id);
                         }
@@ -5486,7 +5486,7 @@ $(document).on("keydown", "#BusinessPartnerR", function (e) {
                 var item = customerCodesWithDetails[val];
                 $("#BusinessPartnerR").val(item[3]);
                 $("#BussinessPartnerCode").val(item[3]);
-                var obj1 = {}; 
+                var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.bpCode = item[3];
                 $.ajax({
@@ -6060,7 +6060,8 @@ $(document).on("keydown", ".RPaymentMode", function (e) {
         $(this).autocomplete({
             source: paymentModeNames,
             select: function (event, ui) {
-                if (!CheckItemAlreadyAddedR(ui.item.label, rowIndex)) {
+                exists = $.inArray(ui.item.label, paymentModeNames);
+                if (!CheckItemAlreadyAddedR(ui.item.label, rowIndex) && exists >= 0) {
                     row.cells[4].getElementsByTagName("input")[0].value = $("#CurrentDueAmount").val();
                     row.cells[1].getElementsByTagName("input")[1].value = paymentModeDetails[$(this).val()];
                 }
@@ -6120,7 +6121,8 @@ $(document).on("keydown", ".ARPaymentMode", function (e) {
         $(this).autocomplete({
             source: paymentModeNames,
             select: function (event, ui) {
-                if (!CheckItemAlreadyAddedAR(ui.item.label, rowIndex)) {
+                exists = $.inArray(ui.item.label, paymentModeNames);
+                if (!CheckItemAlreadyAddedAR(ui.item.label, rowIndex) && exists >= 0) {
                     //row.cells[4].getElementsByTagName("input")[0].value = $("#DueAmount").val();
                     row.cells[1].getElementsByTagName("input")[1].value = paymentModeDetails[$(this).val()];
                 }
@@ -6217,7 +6219,7 @@ function CalculateReceipt(txtBox) {
                             $("#CurrentDueAmount").val(dueAmount - (amount + tdsAmount));
                         }
                     }
-                    
+
                 }
                 else if (i > rowIndex) {
                     var dueAmount = parseFloat($("#CurrentDueAmount").val());
@@ -6225,8 +6227,7 @@ function CalculateReceipt(txtBox) {
                     var amount = parseFloat($("input[id*='RAmount']", $(this)).val());
                     var tdsAmount = parseFloat($("input[id*='TDSAmount']", $(this)).val());
                     var netAmount = parseFloat($("input[id*='RNetAmount']", $(this)).val());
-                    if (!isNaN(netAmount))
-                    {
+                    if (!isNaN(netAmount)) {
                         if (dueAmount < amount + tdsAmount) {
                             $("#CurrentDueAmount").val(0);
                         }
@@ -6235,7 +6236,7 @@ function CalculateReceipt(txtBox) {
                         }
                         ReceiptItemRowDetails[i] = [dueAmount, amount, tdsAmount, parseFloat($("input[id*='RNetAmount']", $(this)).val())];
                     }
-                    
+
                 }
                 i++;
             });
@@ -6394,9 +6395,13 @@ function CreateNewRowReceipt() {
 
         });
     }
+    $(".RDate").datepicker("destroy");
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="RPaymentMode" type="text" id="RPaymentMode" class="form-control RPaymentMode "><input type="hidden" name="RPaymentModeID" id="RPaymentModeID"></td><td><input name="RNumber" type="text" id="RNumber" class="form-control RNumber "></td><td><input name="RDate" type="text" id="RDate" class="form-control RDate  hasDatepicker"></td><td><input name="RDueAmount" type="text" id="RDueAmount" class="form-control RDueAmount" readonly="readonly"></td><td><input name="RAmount" type="text" id="RAmount" class="form-control RAmount "></td><td><input name="TDSAmount" type="text" id="TDSAmount" class="form-control TDSAmount "></td><td><input name="RNetAmount" type="text" id="RNetAmount" class="form-control RNetAmount " readonly="readonly"></td><td><a id="lnkDeleteR" data-id="0" href="">Delete</a></td></tr>';
+    var row = '<tr class="Odd"><td><span>' + $("#rowCount").val() + '</span></td><td><input name="RPaymentMode" type="text" id="RPaymentMode" class="form-control RPaymentMode "><input type="hidden" name="RPaymentModeID" id="RPaymentModeID"></td><td><input name="RNumber" type="text" id="RNumber" class="form-control RNumber "></td><td><input name="RDate" type="text" id="RDate' + $("#rowCountDatePicker").val() + '" class="form-control RDate"></td><td><input name="RDueAmount" type="text" id="RDueAmount" class="form-control RDueAmount" readonly="readonly"></td><td><input name="RAmount" type="text" id="RAmount" class="form-control RAmount "></td><td><input name="TDSAmount" type="text" id="TDSAmount" class="form-control TDSAmount "></td><td><input name="RNetAmount" type="text" id="RNetAmount" class="form-control RNetAmount " readonly="readonly"></td><td><a id="lnkDeleteR" data-id="0" href="">Delete</a></td></tr>';
     $("#ReceiptDetail tbody").append(row);
+    $(".RDate").datepicker();
+    $(".RDate").datepicker("refresh");
+    $("#rowCountDatePicker").val(parseInt($("#rowCountDatePicker").val()) + 1);
 }
 function CreateNewRowAReceipt() {
     if (parseInt($("#rowCountAR").val()) == 1) {
@@ -6409,9 +6414,13 @@ function CreateNewRowAReceipt() {
 
         });
     }
+    $(".ARDate").datepicker("destroy");
     $("#rowCountAR").val(parseInt($("#rowCountAR").val()) + 1);
-    var row = '<tr class="Odd"><td><span>' + $("#rowCountAR").val() + '</span></td><td><input name="ARPaymentMode" type="text" id="ARPaymentMode" class="form-control ARPaymentMode "><input type="hidden" name="ARPaymentModeID" id="ARPaymentModeID"></td><td><input name="ARNumber" type="text" id="ARNumber" class="form-control ARNumber "></td><td><input name="ARDate" type="text" id="ARDate" class="form-control ARDate  hasDatepicker"></td><td><input name="ARAmount" type="text" id="ARAmount" class="form-control ARAmount "></td><td><input name="ATDSAmount" type="text" id="ATDSAmount" class="form-control ATDSAmount "></td><td><input name="ARNetAmount" type="text" id="ARNetAmount" class="form-control ARNetAmount " readonly="readonly"></td><td><a id="lnkDeleteAR" data-id="0" href="">Delete</a></td></tr>';
+    var row = '<tr class="Odd"><td><span>' + $("#rowCountAR").val() + '</span></td><td><input name="ARPaymentMode" type="text" id="ARPaymentMode" class="form-control ARPaymentMode "><input type="hidden" name="ARPaymentModeID" id="ARPaymentModeID"></td><td><input name="ARNumber" type="text" id="ARNumber" class="form-control ARNumber "></td><td><input name="ARDate" type="text" id="ARDate' + $("#rowCountDatePicker").val() + '" class="form-control ARDate"></td><td><input name="ARAmount" type="text" id="ARAmount" class="form-control ARAmount "></td><td><input name="ATDSAmount" type="text" id="ATDSAmount" class="form-control ATDSAmount "></td><td><input name="ARNetAmount" type="text" id="ARNetAmount" class="form-control ARNetAmount " readonly="readonly"></td><td><a id="lnkDeleteAR" data-id="0" href="">Delete</a></td></tr>';
     $("#ReceiptDetailAdvanceReceipt tbody").append(row);
+    $(".ARDate").datepicker();
+    $(".ARDate").datepicker("refresh");
+    $("#rowCountDatePicker").val(parseInt($("#rowCountDatePicker").val()) + 1);
 }
 $(document).on("click", "#lnkDeleteR", function (e) {
     var oldDueAmount = 0;
@@ -6473,25 +6482,30 @@ $(document).on("click", "#lnkDeleteR", function (e) {
                 var dueAmount = parseFloat($("input[id*='RDueAmount']", $(this)).val());
                 var amount = parseFloat($("input[id*='RAmount']", $(this)).val())
                 var tdsAmount = parseFloat($("input[id*='TDSAmount']", $(this)).val())
-                if (dueAmount < amount + tdsAmount) {
-                    $("#CurrentDueAmount").val(0);
+                if (!isNaN(dueAmount) && !isNaN(amount) && !isNaN(tdsAmount)) {
+                    if (dueAmount < amount + tdsAmount) {
+                        $("#CurrentDueAmount").val(0);
+                    }
+                    else {
+                        $("#CurrentDueAmount").val(dueAmount - (amount + tdsAmount));
+                    }
                 }
-                else {
-                    $("#CurrentDueAmount").val(dueAmount - (amount + tdsAmount));
-                }
+
             }
             else if (i > rowIndex) {
                 var dueAmount = parseFloat($("#CurrentDueAmount").val());
                 $("input[id*='RDueAmount']", $(this)).val(dueAmount);
                 var amount = parseFloat($("input[id*='RAmount']", $(this)).val());
                 var tdsAmount = parseFloat($("input[id*='TDSAmount']", $(this)).val());
-                if (dueAmount < amount + tdsAmount) {
-                    $("#CurrentDueAmount").val(0);
+                if (!isNaN(dueAmount) && !isNaN(amount) && !isNaN(tdsAmount)) {
+                    if (dueAmount < amount + tdsAmount) {
+                        $("#CurrentDueAmount").val(0);
+                    }
+                    else {
+                        $("#CurrentDueAmount").val(dueAmount - (amount + tdsAmount));
+                    }
+                    ReceiptItemRowDetails[i] = [dueAmount, amount, tdsAmount, $("input[id*='RNetAmount']", $(this)).val()];
                 }
-                else {
-                    $("#CurrentDueAmount").val(dueAmount - (amount + tdsAmount));
-                }
-                ReceiptItemRowDetails[i] = [dueAmount, amount, tdsAmount, $("input[id*='RNetAmount']", $(this)).val()];
             }
             i++;
         });
@@ -6591,8 +6605,7 @@ function ResetDueAmount() {
             var amount = parseFloat($("input[id*='RAmount']", $(this)).val());
             var tdsAmount = parseFloat($("input[id*='TDSAmount']", $(this)).val());
             var netAmount = parseFloat($("input[id*='RNetAmount']", $(this)).val());
-            if (!isNaN(netAmount))
-            {
+            if (!isNaN(netAmount)) {
                 if (parseFloat($("input[id*='RDueAmount']", $(this)).val()) < amount + tdsAmount) {
                     $("#CurrentDueAmount").val(0);
                 }
@@ -6601,7 +6614,7 @@ function ResetDueAmount() {
                 }
                 ReceiptItemRowDetails[i] = [currentdueAmount, amount, tdsAmount, parseFloat($("input[id*='RNetAmount']", $(this)).val())];
             }
-            
+
         }
         i++;
     });
@@ -6625,8 +6638,7 @@ $(document).on("click", "#btnSaveDtl,#btnConverOrder", function (e) {
                                 $(this).dialog("close");
                                 $("#CurrentDueAmount").val(parseFloat($("#OrginalDueAmount").val()));
                                 ResetDueAmount();
-                                if (e.target.id == "btnConverOrder")
-                                {
+                                if (e.target.id == "btnConverOrder") {
                                     $("#btnConverOrder").attr("disabled", "disabled");
                                 }
                             }
@@ -6635,14 +6647,13 @@ $(document).on("click", "#btnSaveDtl,#btnConverOrder", function (e) {
                     if (e.target.id == "btnConverOrder") {
                         $("#alertMessage").text("Invalid due amount found.Please correct and save before finalize");
                     }
-                    else
-                    {
+                    else {
                         $("#alertMessage").text("Invalid due amount found");
                     }
                     flag = false;
                     var theDialog = $("#dialog-alert").dialog(opt1);
                     theDialog.dialog("open");
-                    
+
                 }
                 else {
                     j = -1;
@@ -6653,21 +6664,21 @@ $(document).on("click", "#btnSaveDtl,#btnConverOrder", function (e) {
                             var tdsAmount = parseFloat($("input[id*='TDSAmount']", $(this)).val());
                             var netAmount = parseFloat($("input[id*='RNetAmount']", $(this)).val());
                             if (!isNaN(netAmount)) {
-                            if (parseFloat($("input[id*='RDueAmount']", $(this)).val()) < amount + tdsAmount) {
-                                $("#alertMessage").text("amount+due amount should be less than due amount");
-                                var theDialog = $("#dialog-alert").dialog(opt);
-                                theDialog.dialog("open");
-                                $("input[id*='RAmount']", $(this)).focus();
-                                flag = false;
+                                if (parseFloat($("input[id*='RDueAmount']", $(this)).val()) < amount + tdsAmount) {
+                                    $("#alertMessage").text("amount+due amount should be less than due amount");
+                                    var theDialog = $("#dialog-alert").dialog(opt);
+                                    theDialog.dialog("open");
+                                    $("input[id*='RAmount']", $(this)).focus();
+                                    flag = false;
+                                }
                             }
-                          }
                         }
                         j++;
                     });
                 }
             }
-            
-                
+
+
             i++;
 
         });
@@ -6693,7 +6704,6 @@ $(document).on("click", "#btnSaveDtl,#btnConverOrder", function (e) {
         return false;
     }
 });
-
 $(document).on("keydown", "#txtAccNoid", function (e) {
     $(this).autocomplete({
         source: AccountNos,
