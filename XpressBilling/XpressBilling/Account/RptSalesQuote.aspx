@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RptSalesQuote.aspx.cs" Inherits="XpressBilling.Account.SalesQuote" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
     <script type="text/javascript">
         //MainContent_
         function ToogleHeader() {
@@ -18,7 +19,7 @@
             else {
                 document.getElementById("Declaration").readOnly = true;
             }
-        }
+        } 
         function ToogleFooter() {
             if (document.getElementById("FooterCB").checked) {
                 document.getElementById("Footer").readOnly = false;
