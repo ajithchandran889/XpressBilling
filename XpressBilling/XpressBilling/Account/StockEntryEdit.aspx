@@ -99,32 +99,32 @@
                                         <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Item" ControlStyle-Width="50">
+                                <asp:TemplateField HeaderText="Item" >
                                     <ItemTemplate>
                                         <asp:TextBox ID="Item" class="form-control StockItem required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Name" ControlStyle-Width="150">
+                                <asp:TemplateField HeaderText="Name">
                                     <ItemTemplate>
                                         <asp:TextBox ID="Name" class="form-control StockName required" ClientIDMode="Static" runat="server" Text='<%# Bind("ItemName") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Quantity" ControlStyle-Width="50">
+                                <asp:TemplateField HeaderText="Quantity">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SEQuantity" class="form-control StockQuantity txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Qty") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Unit" ControlStyle-Width="50">
+                                <asp:TemplateField HeaderText="Unit">
                                     <ItemTemplate>
                                         <asp:TextBox ID="Unit" class="form-control StockUnit required" ClientIDMode="Static" runat="server" Text='<%# Bind("BaseUnitCode") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rate" ControlStyle-Width="50">
+                                <asp:TemplateField HeaderText="Rate">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SERate" class="form-control StockRate txtNumeric required" ClientIDMode="Static" runat="server" Text='<%# Bind("Rate") %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Amount" ControlStyle-Width="50">
+                                <asp:TemplateField HeaderText="Amount">
                                     <ItemTemplate>
                                         <asp:TextBox ID="SEAmount" class="form-control StockAmount required" ClientIDMode="Static" runat="server" Text='<%#Eval("Amount","{0:n}")%>'></asp:TextBox>
                                     </ItemTemplate>

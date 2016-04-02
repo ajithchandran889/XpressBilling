@@ -249,10 +249,10 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSE.length == 0) {
-                    $("#alertMessage").text("Please create first free number for Sales Quotation");
+                    $("#alertMessage").text("Please create first free number for Stock Adjustment");
                     var theDialog = $("#dialog-alert").dialog(opt);
                     theDialog.dialog("open");
-                    $("#SaveBtn").attr("disabled", true);
+                    $("#btnSaveDtl").attr("disabled", true);
                 }
             },
             error: function (result) {
@@ -640,7 +640,7 @@ $(document).ready(function () {
                     $("#alertMessage").text("Please create first free number for Sales Return");
                     var theDialog = $("#dialog-alert").dialog(opt);
                     theDialog.dialog("open");
-                    $("#SaveBtn").attr("disabled", true);
+                    $("#btnSaveDtl").attr("disabled", true);
                 }
                 //else
                 //{
@@ -883,7 +883,7 @@ $(document).ready(function () {
 
                 });
                 if (firstFreeSI.length == 0) {
-                    $("#alertMessage").text("Please create first free number for Sales Quotation");
+                    $("#alertMessage").text("Please create first free number for Sales Invoice");
                     var theDialog = $("#dialog-alert").dialog(opt);
                     theDialog.dialog("open");
                     $("#btnSaveDtl").attr("disabled", true);
@@ -5180,7 +5180,7 @@ function CreateNewRowStockEntry() {
         });
     }
     $("#rowCount").val(parseInt($("#rowCount").val()) + 1);
-    var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" style="width:100px;" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required" style="width:100px;" aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required" style="width:100px;" aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" style="width:100px;" readonly="readonly" aria-required="true"></td><td><a id="lnkDeleteSE" data-id="0">Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
+    var row = '<tr><td><span style="display:inline-block;width:50px;">' + $("#rowCount").val() + '</span></td><td><input name="Item" type="text" id="Item" class="form-control StockItem required" aria-required="true"></td><td><input name="Name" type="text" id="Name" class="form-control StockName required"  aria-required="true"></td><td><input name="SEQuantity" type="text" id="SEQuantity" class="form-control StockQuantity txtNumeric required"  aria-required="true"></td><td><input name="Unit" type="text" id="Unit" class="form-control StockUnit required"  readonly="readonly" aria-required="true"></td><td><input name="SERate" type="text" id="SERate" class="form-control StockRate txtNumeric required"  aria-required="true"></td><td><input name="SEAmount" type="text" id="SEAmount" class="form-control StockAmount required" readonly="readonly" aria-required="true"></td><td><a id="lnkDeleteSE" data-id="0">Delete</a><input type="hidden" name="ID" value="0" /></td></tr>';
     $("#StockEntryDetail tbody").append(row);
 }
 $(document).on("keydown", "#SEAmount", function (e) {

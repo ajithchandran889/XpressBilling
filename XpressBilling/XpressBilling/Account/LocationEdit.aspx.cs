@@ -245,7 +245,7 @@ namespace XpressBilling.Account
                     imgPreview.ImageUrl = absolutePath;
                     inputUpload.SaveAs(path);
                 }
-                DateTime formationDate = DateTime.ParseExact(FormationDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                DateTime formationDate = DateTime.ParseExact(Request.Form[FormationDate.UniqueID], "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 bool status = false;
                 bool dbstatus;
                 if (ddlStatus.SelectedValue == "0")
@@ -285,7 +285,7 @@ namespace XpressBilling.Account
                         UpdateSuccess.Visible = false;
                         failure.Visible = false;
                         alreadyexist.Visible = false;
-                        
+                        FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
                     }
                     else if (retunValue == -1)
                     {
