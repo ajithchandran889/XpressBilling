@@ -44,7 +44,7 @@ var itemMasterArrayByName = [];
 var itemMasterDetailsByName = {};
 //var itemMasterArraySQ = [];
 //var itemMasterDetailsEditSQ = {};
-var customerCodes = [];
+var AvailableCreditcustomerCodes = [];
 var customerCodesWithDetails = {};
 var mansupplierCodes = [];
 var mansupplierCodesWithDetails = {};
@@ -110,14 +110,20 @@ var paymentModeDetails = {};
 var ReceiptItemRowDetails = [];
 $(function () {
     $("#inputDate").datepicker();
-    $("#FormationDate").datepicker();
-    $("#Date").datepicker();
+    if ($("#PageStatus").val() == "create")
+        $("#FormationDate").datepicker();
+    if ($("#PageStatus").val() == "create")
+        $("#Date").datepicker();
     $("#DOJ").datepicker();
     $("#Validity").datepicker();
     $("#PeriodFrom").datepicker();
     $("#PeriodTo").datepicker();
-    $(".RDate").datepicker();
-    $(".ARDate").datepicker();
+    if ($("#PageStatus").val() == "create")
+    {
+        $(".RDate").datepicker();
+        $(".ARDate").datepicker();
+    }
+     
     var AccountNos = [];
     var AccountNosWithDetails = {};
 });
@@ -905,7 +911,7 @@ $(document).ready(function () {
                 customerCodesWithDetails = {};
                 $.each(data.d, function (i, j) {
                     customerCodes.push(j.name);
-                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code];
+                    customerCodesWithDetails[j.name] = [j.name, j.telephone, j.orderType, j.code, j.availableCredit];
                 });
             },
             error: function (result) {
@@ -1284,6 +1290,7 @@ $(document).ready(function () {
         var obj1 = {};
         obj1.companyCode = $.trim($("#CompanyCode").val());
         obj1.bpCode = $("#BussinessPartnerCode").val();
+        GetReceiptDetails($("#BussinessPartnerCode").val());
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -5332,6 +5339,54 @@ function SearchTerm(filterItem) {
         return jQuery.trim($("#ItemSCSearch").val());
     }
 };
+var rowReceipt;
+function OnSuccessReceipt(response) {
+    $("#RecentTransactionGrid").show();
+    var xmlDoc = $.parseXML(response.d);
+    var xml = $(xmlDoc);
+    var receiptDetails = xml.find("Table1");
+    if (row == null) {
+        row = $("#ReceiptRecentTransaction tr:last-child").clone(true);
+    }
+    $("#ReceiptRecentTransaction tr").not($("#ReceiptRecentTransaction tr:first-child")).remove();
+    var index = 0;
+    if (receiptDetails.length > 0) {
+        var row1;
+        $.each(receiptDetails, function () {
+            var receiptDetail = $(this);
+            row1 = '<tr class="Odd"><td><span id="RReceiptNo" style="display:inline-block;width:50px;">' + $(this).find("DocumentNo").text() + '</span> </td><td><span id="ReceiptDate" style="display:inline-block;width:50px;">' + $(this).find("DateString").text() + '</span></td><td><span id="TransactionTypeR" style="display:inline-block;width:50px;">' + $(this).find("TransactionName").text() + '</span></td><td><span id="PaymentModeR" style="display:inline-block;width:50px;">' + $(this).find("PaymentMode").text() + '</span></td><td><span id="ReferenceR" style="display:inline-block;width:50px;">' + $(this).find("Reference").text() + '</span> </td><td><span id="DueAmountR" style="display:inline-block;width:50px;">' + $(this).find("DueAmount").text() + '</span></td><td><span id="ReceivedAmtR" style="display:inline-block;width:50px;">' + $(this).find("Amount").text() + '</span></td><td><span id="TDSAmtR" style="display:inline-block;width:50px;">' + $(this).find("TDSAmount").text() + '</span></td><td><span id="CashierR" style="display:inline-block;width:50px;">' + $(this).find("Cashier").text() + '</span></td><td><span id="EnterpriseUnitR" style="display:inline-block;width:50px;">' + $(this).find("EnterPriseUnit").text() + '</span></td><td><span id="StatusR" style="display:inline-block;width:50px;">' + $(this).find("StatusName").text() + '</span></td></tr>';
+            $("#ReceiptRecentTransaction tbody").append(row1);
+            row = $("#ReceiptRecentTransaction tr:last-child").clone(true);
+        });
+        
+    } else {
+        var empty_row = row.clone(true);
+        $("td:first-child", empty_row).attr("colspan", $("td", row).length);
+        $("td:first-child", empty_row).attr("align", "center");
+        $("td:first-child", empty_row).html("No transactions found.");
+        $("td", empty_row).not($("td:first-child", empty_row)).remove();
+        $("#ReceiptRecentTransaction").append(empty_row);
+    }
+};
+function GetReceiptDetails(bpCode) {
+    var obj1 = {};
+    obj1.BpCode = bpCode;
+    obj1.decPoint = $("#currencyDecimal").val();
+    $.ajax({
+        type: "POST",
+        url: "ReceiptEdit.aspx/GetLastThreeReceiptByBpCode",
+        data: JSON.stringify(obj1),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccessReceipt,
+        failure: function (response) {
+            //alert(response.d);
+        },
+        error: function (response) {
+            //alert(response.d);
+        }
+    });
+}
 function GetPriceBook(pageIndex, filterItem) {
     $.ajax({
         type: "POST",
@@ -5486,6 +5541,7 @@ $(document).on("keydown", "#BusinessPartnerR", function (e) {
                 var item = customerCodesWithDetails[val];
                 $("#BusinessPartnerR").val(item[3]);
                 $("#BussinessPartnerCode").val(item[3]);
+                GetReceiptDetails(item[3]);
                 var obj1 = {};
                 obj1.companyCode = $.trim($("#CompanyCode").val());
                 obj1.bpCode = item[3];
@@ -5560,7 +5616,7 @@ $(document).on("keydown", "#CustomerIdSI", function (e) {
                 return false;
             }
             else {
-                var item = customerCodesWithDetails[val];
+                var item = customerCodesWithDetails[val]; 
                 $("#CustomerIdSI").val(item[3]);
                 $("#Name").val(item[0]);
                 $("#Telephone").val(item[1]);

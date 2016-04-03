@@ -152,7 +152,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tax%" ControlStyle-Width="50">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="SRTaxPer" class="form-control SRTaxPer" ClientIDMode="Static" runat="server" Text='<%# Bind("TaxPercentage") %>'></asp:TextBox>
+                                        <asp:TextBox ID="SRTaxPer" class="form-control SRTaxPer" ClientIDMode="Static" runat="server" Text='<%# Eval("TaxPercentage","{0:n}") %>'></asp:TextBox>
                                         <asp:HiddenField ID="SRTaxCode" runat="server" ClientIDMode="Static" Value='<%# Bind("Tax") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>

@@ -44,7 +44,7 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="LocationEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
                             <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
-                            <asp:BoundField DataField="ContactCode" HeaderText="Contact Person"></asp:BoundField>
+                            <asp:BoundField DataField="ContactName" HeaderText="Contact Person"></asp:BoundField>
                             <asp:BoundField DataField="Mobile" HeaderText="Mobile"></asp:BoundField>
                             <asp:BoundField DataField="City" HeaderText="City"></asp:BoundField>
                             <asp:BoundField DataField="Country" HeaderText="Country"></asp:BoundField>

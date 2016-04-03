@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <a href="" class="btn btn-primary pull-left">Cancel</a>
+                                            <input id="btnCencelDtl" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/';" /> 
                                            <%-- <button type="button" class="btn btn-primary pull-left">Cancel</button>--%>
                                             <asp:Button runat="server" class="btn btn-primary pull-left" CommandName="MoveNext" Text="Register" />
 

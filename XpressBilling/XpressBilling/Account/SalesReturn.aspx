@@ -33,17 +33,21 @@
                             </span>
                         </div>
                     </div>
-                    <asp:GridView ID="ListSalesReturn" runat="server" CssClass="table" AllowPaging="true"
+                    <asp:GridView ID="ListSalesReturn" runat="server" CssClass="table" AllowPaging="true" OnRowDataBound="ListSalesReturnRowDataBound"
                         OnPageIndexChanging="SalesReturnPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="SalesReturnEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="SalesReturnNo" HeaderText="Sales Return"></asp:BoundField>
                             <asp:BoundField DataField="SalesReturnDate" HeaderText="Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
-                            <asp:BoundField DataField="Locationcode" HeaderText="Location"></asp:BoundField>
-                            <asp:BoundField DataField="BusinessPartnerCode" HeaderText="Supplier"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
-                            <asp:BoundField DataField="SalesMan" HeaderText="Sales Man"></asp:BoundField>
+                            <asp:BoundField DataField="LocationName" HeaderText="Location"></asp:BoundField>
+                            <asp:BoundField DataField="SUpplierName" HeaderText="Supplier"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Amount">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="Amount" Text='<%# Bind("Amount") %>'/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="SalesManName" HeaderText="Sales Man"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized")  %></ItemTemplate>
@@ -56,6 +60,7 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+                    <asp:HiddenField ID="currencyDecimal" runat="server" />
                 </div>
             </div>
         </div>

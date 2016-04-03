@@ -29,7 +29,6 @@ namespace XpressBilling.Account
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != 0)
                 {
-                    PageStatus.Value = "edit";
                     DataTable receiptDetails = XBDataProvider.Receipt.GetReceiptById(id);
                     if (receiptDetails.Rows.Count > 0)
                     {
@@ -59,6 +58,7 @@ namespace XpressBilling.Account
                     SetInitialRows();
                    // ReceiptId.Value = "0";
                 }
+                SetInitialRowsReceipt();
             }
         }
 
@@ -89,10 +89,10 @@ namespace XpressBilling.Account
                 Location.ReadOnly = true;
                 LocationHidden.Value = row["EnterPriseUnit"].ToString();
                 Reference.Text = row["Reference"].ToString();
-                
-                Amount.Text = row["Amount"].ToString();
+                int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
                 Amount.ReadOnly = true;
-                UnAllocatedAmount.Text = row["UnallocatedAmount"].ToString();
+                UnAllocatedAmount.Text = Convert.ToDecimal(row["UnallocatedAmount"]).ToString("f" + decimalPoints);
 
                 if (Status.SelectedValue =="2")
                 {
@@ -547,6 +547,26 @@ namespace XpressBilling.Account
                 LinkButton lnkDtn = e.Row.Cells[8].FindControl("lnkDeleteR") as LinkButton;
                 lnkDtn.Style.Add("display", "None");
             }
+            if (e.Row.RowIndex != -1)
+            {
+                TextBox item = e.Row.Cells[1].FindControl("RPaymentMode") as TextBox;
+                if (item.Text != "")
+                {
+                    int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                    TextBox RDueAmount = e.Row.Cells[4].FindControl("RDueAmount") as TextBox;
+                    TextBox Discount = e.Row.Cells[5].FindControl("RAmount") as TextBox;
+                    TextBox TDSAmount = e.Row.Cells[6].FindControl("TDSAmount") as TextBox;
+                    TextBox RNetAmount = e.Row.Cells[7].FindControl("RNetAmount") as TextBox;
+                    double dueAmount = Convert.ToDouble(RDueAmount.Text);
+                    double discountAmt = Convert.ToDouble(Discount.Text);
+                    double tdsAmt = Convert.ToDouble(TDSAmount.Text);
+                    double netAmount = Convert.ToDouble(RNetAmount.Text);
+                    RDueAmount.Text = dueAmount.ToString("f" + decimalPoints);
+                    Discount.Text = discountAmt.ToString("f" + decimalPoints);
+                    TDSAmount.Text = tdsAmt.ToString("f" + decimalPoints);
+                    RNetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                }
+            }
         }
 
         protected void ReceiptDetailRowCreated(object sender, GridViewRowEventArgs e)
@@ -690,6 +710,51 @@ namespace XpressBilling.Account
 
         }
 
+        private void SetInitialRowsReceipt()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataRow dr = null;
+                dt.Columns.Add(new DataColumn("Receipt", typeof(string)));
+                dt.Columns.Add(new DataColumn("Date", typeof(string)));
+                dt.Columns.Add(new DataColumn("Transaction", typeof(string)));
+                dt.Columns.Add(new DataColumn("PaymentMode", typeof(string)));
+                dt.Columns.Add(new DataColumn("Reference", typeof(string)));
+                dt.Columns.Add(new DataColumn("DueAmount", typeof(string)));
+                dt.Columns.Add(new DataColumn("Amount", typeof(string)));
+                dt.Columns.Add(new DataColumn("TDSAmount", typeof(string)));
+                dt.Columns.Add(new DataColumn("Cashier", typeof(string)));
+                dt.Columns.Add(new DataColumn("EU", typeof(string)));
+                dt.Columns.Add(new DataColumn("Status", typeof(string)));
+                for (int i = 0; i < 1; i++)
+                {
+                    dr = dt.NewRow();
+                    dr["Receipt"] = string.Empty;
+                    dr["Date"] = string.Empty;
+                    dr["Transaction"] = string.Empty;
+                    dr["PaymentMode"] = string.Empty;
+                    dr["Reference"] = string.Empty;
+                    dr["DueAmount"] = string.Empty;
+                    dr["Amount"] = string.Empty;
+                    dr["TDSAmount"] = string.Empty;
+                    dr["Cashier"] = string.Empty;
+                    dr["EU"] = string.Empty;
+                    dr["Status"] = string.Empty;
+                    dt.Rows.Add(dr);
+                }
+
+
+                ReceiptRecentTransaction.DataSource = dt;
+                ReceiptRecentTransaction.DataBind();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
+
         protected void ReceiptDetailAdvanceReceiptRowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -698,6 +763,23 @@ namespace XpressBilling.Account
                 {
                     LinkButton lnkDtn = e.Row.Cells[7].FindControl("lnkDeleteAR") as LinkButton;
                     lnkDtn.Style.Add("display", "None");
+                }
+                if (e.Row.RowIndex != -1)
+                {
+                    TextBox item = e.Row.Cells[1].FindControl("ARPaymentMode") as TextBox;
+                    if (item.Text != "")
+                    {
+                        int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                        TextBox Discount = e.Row.Cells[4].FindControl("ARAmount") as TextBox;
+                        TextBox TDSAmount = e.Row.Cells[5].FindControl("ATDSAmount") as TextBox;
+                        TextBox RNetAmount = e.Row.Cells[6].FindControl("ARNetAmount") as TextBox;
+                        double discountAmt = Convert.ToDouble(Discount.Text);
+                        double tdsAmt = Convert.ToDouble(TDSAmount.Text);
+                        double netAmount = Convert.ToDouble(RNetAmount.Text);
+                        Discount.Text = discountAmt.ToString("f" + decimalPoints);
+                        TDSAmount.Text = tdsAmt.ToString("f" + decimalPoints);
+                        RNetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                    }
                 }
             }
             catch(Exception ex)
@@ -800,6 +882,13 @@ namespace XpressBilling.Account
 
             }
             
+        }
+
+        [WebMethod]
+        public static string GetLastThreeReceiptByBpCode(string BpCode, string decPoint)
+        {
+            return XBDataProvider.Receipt.GetLastThreeReceiptByBpCode(BpCode, Convert.ToInt32(decPoint));
+
         }
     }
     public class PaymentModes

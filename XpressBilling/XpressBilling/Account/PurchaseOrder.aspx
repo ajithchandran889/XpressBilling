@@ -39,8 +39,8 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="PurchaseOrderEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="PurchaseOrderNo" HeaderText="Purchase Order"></asp:BoundField>
                             <asp:BoundField DataField="PurchaseOrderDate" HeaderText="Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
-                            <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
-                            <asp:BoundField DataField="Buyer" HeaderText="Buyer"></asp:BoundField>
+                            <asp:BoundField DataField="LocationName" HeaderText="Location"></asp:BoundField>
+                            <asp:BoundField DataField="BuyerName" HeaderText="Buyer"></asp:BoundField>
                             <asp:BoundField DataField="Telephone" HeaderText="Telephone "></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":(Eval("Status").ToString()=="2"?"Finalized":(Eval("Status").ToString()=="4"?"Partially Received":(Eval("Status").ToString()=="5"?"Closed":"Error"))))  %></ItemTemplate>

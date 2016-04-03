@@ -40,8 +40,8 @@
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="GrnEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
                             <asp:BoundField DataField="GoodsReceiptNo" HeaderText="Goods Receipt"></asp:BoundField>
                             <asp:BoundField DataField="GoodsReceiptDate" HeaderText="Date"  DataFormatString="{0:MM/dd/yyyy}"></asp:BoundField>
-                            <asp:BoundField DataField="LocationCode" HeaderText="Location"></asp:BoundField>
-                            <asp:BoundField DataField="BussinessPartnerCode" HeaderText="Supplier"></asp:BoundField>
+                            <asp:BoundField DataField="LocationName" HeaderText="Location"></asp:BoundField>
+                            <asp:BoundField DataField="BpName" HeaderText="Supplier"></asp:BoundField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">

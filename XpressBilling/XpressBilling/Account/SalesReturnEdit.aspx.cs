@@ -66,13 +66,14 @@ namespace XpressBilling.Account
                 Date.ReadOnly = true;
                 SalesMan.Text = row["SalesManName"].ToString();
                 SalesMan.ReadOnly = true;
-                Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("0.00");
+                
                 Amount.ReadOnly = true;
                 SRCustomerId.ReadOnly = true;
                 SRCustomerId.Text = row["BusinessPartnerCode"].ToString();
                 SalesOrderNo.ReadOnly = true;
                 SalesOrderNo.Text = row["SalesOrderNo"].ToString();
                 int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                //Amount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
                 Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
                 SRTotalAmount.Text = Convert.ToDecimal(row["Amount"]).ToString("f" + decimalPoints);
                 SRTotalDiscountAmt.Text = Convert.ToDecimal(row["DiscountAmount"]).ToString("f" + decimalPoints);
@@ -574,7 +575,7 @@ namespace XpressBilling.Account
             }
             if (e.Row.RowIndex != -1)
             {
-                TextBox item = e.Row.Cells[5].FindControl("SRItem") as TextBox;
+                TextBox item = e.Row.Cells[1].FindControl("SRItem") as TextBox;
                 if (item.Text != "")
                 {
                     int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
@@ -582,17 +583,20 @@ namespace XpressBilling.Account
                     TextBox Discount = e.Row.Cells[6].FindControl("SRDiscPer") as TextBox;
                     TextBox DiscountAmt = e.Row.Cells[7].FindControl("SRDiscAmt") as TextBox;
                     TextBox NetAmount = e.Row.Cells[9].FindControl("SRNetAmt") as TextBox;
-                    TextBox TaxAmount = e.Row.Cells[8].FindControl("SRTaxPer") as TextBox;
+                    TextBox TaxPer= e.Row.Cells[8].FindControl("SRTaxPer") as TextBox;
+                    TextBox TaxAmt = e.Row.Cells[8].FindControl("SRTaxAmt") as TextBox;
                     double rate = Convert.ToDouble(Rate.Text);
                     double discount = Convert.ToDouble(Discount.Text);
                     double discountAmt = Convert.ToDouble(DiscountAmt.Text);
                     double netAmount = Convert.ToDouble(NetAmount.Text);
-                    double taxAmount = Convert.ToDouble(TaxAmount.Text);
+                    double taxPer = Convert.ToDouble(TaxPer.Text);
+                    double taxAmount = Convert.ToDouble(TaxAmt.Text);
                     Rate.Text = rate.ToString("f" + decimalPoints);
                     Discount.Text = discount.ToString("f" + decimalPoints);
                     DiscountAmt.Text = discountAmt.ToString("f" + decimalPoints);
                     NetAmount.Text = netAmount.ToString("f" + decimalPoints);
-                    TaxAmount.Text = taxAmount.ToString("f" + decimalPoints);
+                    TaxPer.Text = taxPer.ToString("f" + decimalPoints);
+                    TaxAmt.Text = taxAmount.ToString("f" + decimalPoints);
                 }
             }
         }

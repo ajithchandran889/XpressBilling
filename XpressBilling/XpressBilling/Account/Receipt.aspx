@@ -17,7 +17,7 @@
                             </span>
                         </div>
                     </div>
-                    <asp:GridView ID="ListReceipt" runat="server" CssClass="table" AllowPaging="true"
+                    <asp:GridView ID="ListReceipt" runat="server" CssClass="table" AllowPaging="true" OnRowDataBound="ListReceiptRowDataBound"
                         OnPageIndexChanging="ReceiptPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
@@ -29,7 +29,11 @@
                             </asp:TemplateField>
                             <asp:BoundField DataField="BusinessPartnerName" HeaderText="Business Partner"></asp:BoundField>
                             <asp:BoundField DataField="Location" HeaderText="Location"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Amount">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="Amount" Text='<%# Bind("Amount") %>'/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
                             <asp:BoundField DataField="Cashier" HeaderText="Cashier"></asp:BoundField>
                              <asp:TemplateField HeaderText="Status">
@@ -44,6 +48,7 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+                    <asp:HiddenField ID="currencyDecimal" runat="server" />
                 </div>
             </div>
         </div>

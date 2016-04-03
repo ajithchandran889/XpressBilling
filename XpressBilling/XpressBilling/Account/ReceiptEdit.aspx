@@ -206,74 +206,7 @@
                         </asp:GridView>
                     </div>
                     
-                    <%--<div class="grid_wrapper">
-                        <div class="">
-                            <h2 class="page-header color-blue">Recent Transaction</h2>
-                        </div>
-                        <asp:GridView ID="ReceiptRecentTransaction" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false">
-                            <RowStyle CssClass="Odd" />
-                            <AlternatingRowStyle CssClass="Even" />
-                           
-                            <Columns>
-                                <asp:TemplateField HeaderText="Receipt" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="RReceiptNo" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Date" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="ReceiptDate" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Transaction Type" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="TransactionTypeR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Payment Mode" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="PaymentModeR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Reference" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="ReferenceR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Due Amount" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="DueAmountR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Received Amt" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="ReceivedAmtR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="TDS Amt" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="TDSAmtR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Cashier" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="CashierR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Enterprise Unit" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="EnterpriseUnitR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Status" ControlStyle-Width="50">
-                                    <ItemTemplate>
-                                        <asp:Label ID="StatusR" runat="server" Text='<%# Eval("Name") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                
-                            </Columns>
-                        </asp:GridView>
-                    </div>--%>
+                    
 
                     <div class="col-xs-12 col-sm-12 col-md-12">
 
@@ -296,6 +229,74 @@
                             <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print"  OnClientClick="javascript:window.print();" />
                         </div>
 
+                    </div>
+                    <div class="grid_wrapper" style="display:none" id="RecentTransactionGrid">
+                        <div class="">
+                            <h2 class="page-header color-blue">Recent Transaction</h2>
+                        </div>
+                        <asp:GridView ID="ReceiptRecentTransaction"  runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false">
+                            <RowStyle CssClass="Odd" />
+                            <AlternatingRowStyle CssClass="Even" />
+                           
+                            <Columns>
+                                <asp:TemplateField HeaderText="Receipt" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="RReceiptNo" runat="server" Text='<%# Bind("Receipt") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Date" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="ReceiptDate" runat="server" Text='<%# Bind("Date") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Transaction Type" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="TransactionTypeR" runat="server" Text='<%# Bind("Transaction") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Payment Mode" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="PaymentModeR" runat="server" Text='<%# Bind("PaymentMode") %>'  />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Reference" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="ReferenceR" runat="server" Text='<%# Bind("Reference") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Due Amount" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="DueAmountR" runat="server" Text='<%# Bind("DueAmount") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Received Amt" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="ReceivedAmtR" runat="server" Text='<%# Bind("Amount") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="TDS Amt" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="TDSAmtR" runat="server" Text='<%# Bind("TDSAmount") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cashier" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="CashierR" runat="server" Text='<%# Bind("Cashier") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Enterprise Unit" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="EnterpriseUnitR" runat="server" Text='<%# Bind("EU") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Status" ControlStyle-Width="50">
+                                    <ItemTemplate>
+                                        <asp:Label ID="StatusR" runat="server" Text='<%# Bind("Status") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                
+                            </Columns>
+                        </asp:GridView>
                     </div>
                 </asp:Panel>
                 <asp:HiddenField ID="CompanyCode" runat="server" ClientIDMode="Static"/>

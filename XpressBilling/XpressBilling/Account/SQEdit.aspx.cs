@@ -560,8 +560,8 @@ namespace XpressBilling.Account
                     itemMasteDetails.name = row["Name"].ToString();
                     itemMasteDetails.BaseUnitCode = row["BaseUnitCode"].ToString();
                     itemMasteDetails.supplierBarcode = row["SupplierBarcode"].ToString();
-                    itemMasteDetails.mrp = Convert.ToInt32(row["MRP"].ToString());
-                    itemMasteDetails.retailPrice = Convert.ToInt32(row["RetailPrice"].ToString());
+                    itemMasteDetails.mrp = row["MRP"].ToString()!=""?Convert.ToInt32(row["MRP"].ToString()):0;
+                    itemMasteDetails.retailPrice = row["RetailPrice"].ToString()!=""?Convert.ToInt32(row["RetailPrice"].ToString()):0;
                     itemMasteDetails.TaxCode = row["TaxCode"].ToString();
                     itemMasteDetails.TaxPer = row["TaxPercentage"].ToString() != "" ? Convert.ToInt32(row["TaxPercentage"].ToString()) : 0;
                     itemMasteDetails.Qnty = row["Qnty"].ToString() != "" ? Convert.ToInt32(row["Qnty"].ToString()) : 0;

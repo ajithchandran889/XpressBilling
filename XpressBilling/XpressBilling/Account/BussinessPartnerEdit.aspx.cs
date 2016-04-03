@@ -75,6 +75,7 @@ namespace XpressBilling.Account
                 CreditLimitCust.Visible = false;
                 TinCust.Visible = false;
                 CreditLimit.Text = row["CreditLimit"].ToString();
+                CreditLimit.ReadOnly = true;
                 Tin.Text = row["TaxId1"].ToString();
                 OrderType_0.SelectedValue = row["OrderType"].ToString();
                 OrderType_0.Visible = true;
@@ -84,6 +85,7 @@ namespace XpressBilling.Account
             else if (row["BusinessPartnerType"].ToString() == "1")
             {
                 CreditLimitCust.Text = row["CreditLimit"].ToString();
+                CreditLimitCust.ReadOnly = true;
                 TinCust.Text = row["TaxId1"].ToString();
                 CreditLimit.Visible = false;
                 Tin.Visible = false;
@@ -95,7 +97,7 @@ namespace XpressBilling.Account
                 OrderType_1.Enabled = false;
             }
             Discount.Text = row["Discount"].ToString();
-            
+            Discount.ReadOnly = true;
             Cst.Text = row["TaxId2"].ToString();
             Name.Text = row["Name"].ToString();
             //Name.ReadOnly = true;

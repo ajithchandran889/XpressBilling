@@ -153,6 +153,7 @@
           <asp:HiddenField ID="LocationId" runat="server" />
           <asp:HiddenField ID="ContactId" runat="server" />
           <asp:HiddenField ID="CompanyId" runat="server" />
+          <asp:HiddenField ID="PageStatus" runat="server" ClientIDMode="Static"/>
         </div>
           
           </div>

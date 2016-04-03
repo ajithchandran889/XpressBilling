@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <asp:GridView ID="ListStockEntry" runat="server" CssClass="table" AllowPaging="true"
-                        OnPageIndexChanging="StockEntryPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records">
+                        OnPageIndexChanging="StockEntryPageIndexChanging" PageSize="20" AutoGenerateColumns="false"  EmptyDataText="There are no Records" OnRowDataBound="ListStockEntryDataBound">
                         <PagerStyle HorizontalAlign="Right" />
                         <Columns>
                             <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="StockEntryEdit?Id={0}" HeaderText="" ControlStyle-CssClass="glyphicon glyphicon-pencil" />
@@ -28,7 +28,11 @@
                                 <ItemTemplate><%# Eval("TransactionType").ToString()=="0" ? "Addition" :(Eval("TransactionType").ToString()=="1" ? "Deduction": "Opening") %></ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="Reference" HeaderText="Reference"></asp:BoundField>
-                            <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:n}"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Amount">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="Amount" Text='<%# Bind("Amount") %>'/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:BoundField DataField="CreatedBy" HeaderText="User"></asp:BoundField>
                             <asp:TemplateField HeaderText="Status">
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized")  %></ItemTemplate>
@@ -41,6 +45,7 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+                    <asp:HiddenField ID="currencyDecimal" runat="server" />
                 </div>
             </div>
         </div>

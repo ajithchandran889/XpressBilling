@@ -164,11 +164,12 @@ namespace XpressBilling.Account
                 }
                 else
                 {
+                    PageStatus.Value = "create";
                     CompanyId.Value = "0";
                     lblstatus.Visible = false;
                     ddlStatus.Visible = false;
                     FormationDate.Text = Convert.ToDateTime(DateTime.Now).ToString("MM'/'dd'/'yyyy");
-                    FormationDate.ReadOnly = true;
+                    //FormationDate.ReadOnly = true;
                 }
             }
 
@@ -176,12 +177,14 @@ namespace XpressBilling.Account
 
         public void SetCompanyDetails(DataTable companyDetails)
         {
+            PageStatus.Value = "edit";
             DataRow row = companyDetails.Rows[0];
             LocationCode.Text = row["LocationCode"].ToString();
             LocationCode.ReadOnly = true;
             Name.Text = row["Name"].ToString();
             string formationDate = Convert.ToDateTime(row["FormationDate"]).ToString("MM'/'dd'/'yyyy");
             FormationDate.Text = formationDate;
+            FormationDate.ReadOnly = true;
             TIN.Text = row["TaxId"].ToString();
             RegistrationNo.Text = row["RegistrationNumber"].ToString();
             PAN.Text = row["PermanentAccountNo"].ToString();

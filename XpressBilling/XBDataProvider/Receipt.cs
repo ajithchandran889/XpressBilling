@@ -194,5 +194,37 @@ namespace XBDataProvider
             }
 
         }
+
+        public static string GetLastThreeReceiptByBpCode(string BpCode, int decimalPointCount)
+        {
+            DataTable dtReceipt = new DataTable("ReceiptDetails");
+            DataSet ds = new DataSet();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@BusinessPartner", BpCode);
+                dtReceipt = DataProvider.GetSQLDataTable(connString, "sp_GetLastThreeReceiptByBpCode", cmd);
+                for (int i = 0; i < dtReceipt.Rows.Count; i++)
+                {
+                    int transactionType = Convert.ToInt32(dtReceipt.Rows[i]["TransactionType"].ToString());
+                    int status = Convert.ToInt32(dtReceipt.Rows[i]["Status"].ToString());
+                    dtReceipt.Rows[i]["DateString"] = Convert.ToDateTime(dtReceipt.Rows[i]["DocumentDate"]).ToString("MM'/'dd'/'yyyy");
+                    dtReceipt.Rows[i]["TransactionName"] = transactionType == 0 ? "Receipt Against Invoice" : (transactionType == 1 ? "Advance Receipt" : (transactionType == 2 ? "Advance Allocation" : "Credit Note"));
+                    dtReceipt.Rows[i]["StatusName"] = status == 0 ? "Free" : (status == 1 ? "Open" : (status == 2 ? "Finalized" : "Error"));
+                    dtReceipt.Rows[i]["DueAmount"] = Convert.ToDecimal(dtReceipt.Rows[i]["DueAmount"]).ToString("f" + decimalPointCount);
+                    dtReceipt.Rows[i]["Amount"] = Convert.ToDecimal(dtReceipt.Rows[i]["Amount"]).ToString("f" + decimalPointCount);
+                    dtReceipt.Rows[i]["TDSAmount"] = Convert.ToDecimal(dtReceipt.Rows[i]["TDSAmount"]).ToString("f" + decimalPointCount);
+                }
+                ds.Tables.Add(dtReceipt);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            
+            return ds.GetXml();
+        }
     }
 }

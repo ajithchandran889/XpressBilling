@@ -82,7 +82,8 @@ namespace XpressBilling.Account
                 SupplierId.ReadOnly = true;
                 Reference.Text = row["Reference"].ToString();
                 Reference.ReadOnly = true;
-                SalesMan.Text = row["Buyer"].ToString();
+                SalesManHidden.Value = row["Buyer"].ToString();
+                SalesMan.Text = row["BuyerName"].ToString();
                 SalesMan.ReadOnly = true;
                 int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
                 Amount.Text = Convert.ToDecimal(row["OrderAmount"]).ToString("f" + decimalPoints);
