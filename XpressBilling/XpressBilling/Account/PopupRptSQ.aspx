@@ -31,7 +31,7 @@
                 </div>
                 <div id="failure" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="failureMessage" runat="server">Sorry,Something went wrong!</span>
-                </div>
+                </div></div>
                 <%--<div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="alreadyexistmsg" runat="server">Code Already Exists</span>
                 </div>--%>
@@ -40,7 +40,7 @@
 
                     <label for="Country" class="control-label col-xs-2 col-md-2">Heading</label>
                     <div class="col-xs-10 col-md-2">
-                        <asp:TextBox runat="server" ID="Country" class="form-control required" placeholder="Country" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Country" class="form-control required" placeholder="Heading" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <div class="col-xs-10 col-md-2"></div>
                     <%--<label for="Date" id="lbldate" runat="server" class="control-label col-xs-2 col-md-2">Date</label>
@@ -48,7 +48,7 @@
                         <asp:TextBox runat="server" ID="CreatedDate" class="form-control required" placeholder="Date" ClientIDMode="Static"></asp:TextBox>--%>
                 </div>
 
-            </div>
+            
             <div class="form-group">
 
                 <label for="Name" class="control-label col-xs-2 col-md-2">Line1</label>

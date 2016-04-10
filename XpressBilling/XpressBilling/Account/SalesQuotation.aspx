@@ -11,13 +11,13 @@
                     <input type="checkbox" id="chkFilter" title="Search" onclick="javascript:fnShowSearch(this);" /></span>
                     <div style="clear:both;"></div>   
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea" style="display:none;">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea" style="display:none;">
                         <div class="form-group">  
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesQuotationNo</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="SalesQuotationNoSearch" class="form-control" placeholder="SQ No" ClientIDMode="Static" onkeyup="SearchGrid('SalesQuotationNoSearch', 'ListSalesQuotation')"></asp:TextBox>
                             </div>                              
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesMan</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">SalesMan</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="SalesManNameSearch" class="form-control" placeholder="SalesMan" ClientIDMode="Static" onkeyup="SearchGrid('SalesManNameSearch', 'ListSalesQuotation')"></asp:TextBox>
                             </div>  

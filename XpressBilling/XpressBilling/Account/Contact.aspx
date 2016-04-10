@@ -11,26 +11,26 @@
                     <input type="checkbox" id="chkFilter" title="Search" onclick="javascript:fnShowSearch(this);" /></span>
                     <div style="clear:both;"></div>   
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea" style="display:none;">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea" style="display:none;">
                         <div class="form-group">  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Contact</label>
-                            <div class="col-xs-12 col-sm-8 col-md-2">
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Contact</label>
+                            <div class="col-xs-12 col-sm-8 col-md-1">
                                 <asp:TextBox runat="server" ID="ContactSearch" class="form-control" placeholder="Contact" ClientIDMode="Static" onkeyup="SearchGrid('ContactSearch', 'listContact')"></asp:TextBox>
                             </div>  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Name</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'listContact')"></asp:TextBox>
                             </div>  
-                             <label class="control-label col-xs-12 col-sm-4 col-md-2">CompanyName</label>
+                             <label class="control-label col-xs-12 col-sm-4 col-md-1">CompanyName</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="CompanyNameSearch" class="form-control" placeholder="CompName" ClientIDMode="Static" onkeyup="SearchGrid('CompanyNameSearch', 'listContact')"></asp:TextBox>
                             </div>  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Email</label>
-                            <div class="col-xs-12 col-sm-8 col-md-2">
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Email</label>
+                            <div class="col-xs-12 col-sm-8 col-md-1">
                                 <asp:TextBox runat="server" ID="EmailSearch" class="form-control" placeholder="Email" ClientIDMode="Static" onkeyup="SearchGrid('EmailSearch', 'listContact')"></asp:TextBox>
                             </div> 
-                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Mobile</label>
-                            <div class="col-xs-12 col-sm-8 col-md-2">
+                             <label class="control-label col-xs-12 col-sm-4 col-md-1">Mobile</label>
+                            <div class="col-xs-12 col-sm-8 col-md-1">
                                 <asp:TextBox runat="server" ID="MobileSearch" class="form-control" placeholder="Mobile" ClientIDMode="Static" onkeyup="SearchGrid('MobileSearch', 'listContact')"></asp:TextBox>
                             </div>                                      
                         </div>                       

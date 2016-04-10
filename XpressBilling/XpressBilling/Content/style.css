@@ -518,3 +518,7 @@ hr {
 .tableHeaderAlignCenter{
     text-align:center !important;
 }
+.aspNetDisabled {width:100%!important;    border-radius: 3px!important;
+    box-shadow: 0px 1px 5px #ccc!important;
+    margin-bottom: 3px!important;
+}

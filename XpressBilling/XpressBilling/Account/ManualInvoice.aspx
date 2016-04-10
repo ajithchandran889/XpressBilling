@@ -11,21 +11,21 @@
                     <input type="checkbox" id="chkFilter" title="Search" onclick="javascript:fnShowSearch(this);" /></span>
                     <div style="clear:both;"></div>   
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea" style="display:none;">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea" style="display:none;">
                         <div class="form-group">  
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesOrderNo</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="SalesOrderNoSearch" class="form-control" placeholder="SO No" ClientIDMode="Static" onkeyup="SearchGrid('SalesOrderNoSearch', 'ListManualInvoice')"></asp:TextBox>
                             </div>  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Sales Man</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Sales Man</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'ListManualInvoice')"></asp:TextBox>
                             </div>   
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Customer</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Customer</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="CustomerSearch" class="form-control" placeholder="Customer" ClientIDMode="Static" onkeyup="SearchGrid('CustomerSearch', 'ListManualInvoice')"></asp:TextBox>
                             </div>  
-                             <label class="control-label col-xs-12 col-sm-4 col-md-2">Telephone</label>
+                             <label class="control-label col-xs-12 col-sm-4 col-md-1">Telephone</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="TelephoneSearch" class="form-control" placeholder="Telephone" ClientIDMode="Static" onkeyup="SearchGrid('TelephoneSearch', 'ListManualInvoice')"></asp:TextBox>
                             </div>                                                                     

@@ -61,6 +61,18 @@ namespace XpressBilling.Account
             string TextL3 = TextBox2.Text;
             string TextL4 = TextBox3.Text;
             retunValue = XBDataProvider.PopupRptSQ.SaveSQReport(companyCode, location, quatation, SqId, TextH1, TextL1, TextL2, TextL3, TextL4);
+            if (retunValue == 1)
+            {
+                SaveSuccess.Visible = true;
+                UpdateSuccess.Visible = false;
+                failure.Visible = false;
+            }
+            else
+            {
+                SaveSuccess.Visible = false;
+                UpdateSuccess.Visible = false;
+                failure.Visible = true;
+            }
         }
         #endregion  SaveClick
     }

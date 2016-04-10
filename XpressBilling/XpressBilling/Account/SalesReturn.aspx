@@ -6,7 +6,7 @@
                 <div class="page-header">
                     Sales Return               
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea">
                         <div class="form-group">  
                             <label class="control-label col-xs-12 col-sm-4 col-md-2">SalesReturnNo</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">

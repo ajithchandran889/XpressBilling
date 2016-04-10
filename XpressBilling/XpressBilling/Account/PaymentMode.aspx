@@ -11,21 +11,21 @@
                     <input type="checkbox" id="chkFilter" title="Search" onclick="javascript:fnShowSearch(this);" /></span>
                     <div style="clear:both;"></div>   
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea" style="display:none;">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea" style="display:none;">
                         <div class="form-group">  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">PaymentMode</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">PaymentMode</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="PaymentModeSearch" class="form-control" placeholder="PaymentMode" ClientIDMode="Static" onkeyup="SearchGrid('PaymentModeSearch', 'ListPaymentMode')"></asp:TextBox>
                             </div>  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Name</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="NameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('NameSearch', 'ListPaymentMode')"></asp:TextBox>
                             </div>  
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">BankCode</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">BankCode</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="BankCodeSearch" class="form-control" placeholder="BankCode" ClientIDMode="Static" onkeyup="SearchGrid('BankCodeSearch', 'ListPaymentMode')"></asp:TextBox>
                             </div>      
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Acc No</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Acc No</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="AccNoSearch" class="form-control" placeholder="AccNo" ClientIDMode="Static" onkeyup="SearchGrid('AccNoSearch', 'ListPaymentMode')"></asp:TextBox>
                             </div>                                                                 

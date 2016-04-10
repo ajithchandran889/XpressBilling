@@ -11,13 +11,13 @@
                     <input type="checkbox" id="chkFilter" title="Search" onclick="javascript:fnShowSearch(this);" /></span>
                     <div style="clear:both;"></div>   
                 </div>
-                <div class="col-xs-10 col-md-8" runat="server" id="filterArea" style="display:none;">
+                <div class="col-xs-10 col-md-12" runat="server" id="filterArea" style="display:none;">
                         <div class="form-group">                            
                             <label class="control-label col-xs-12 col-sm-4 col-md-1">TaxCode</label>
                             <div class="col-xs-12 col-sm-2 col-md-2">
                                 <asp:TextBox runat="server" ID="TaxCodeSearch" class="form-control" placeholder="TaxCode" ClientIDMode="Static" onkeyup="SearchGrid('TaxCodeSearch', 'listTaxCode')"></asp:TextBox>
                             </div>
-                            <label class="control-label col-xs-12 col-sm-4 col-md-2">Name</label>
+                            <label class="control-label col-xs-12 col-sm-4 col-md-1">Name</label>
                             <div class="col-xs-12 col-sm-8 col-md-2">
                                 <asp:TextBox runat="server" ID="BankNameSearch" class="form-control" placeholder="Name" ClientIDMode="Static" onkeyup="SearchGrid('BankNameSearch', 'listTaxCode')"></asp:TextBox>
                             </div>                            

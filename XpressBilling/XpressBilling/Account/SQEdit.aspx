@@ -25,7 +25,7 @@
         function OpenPopup() {
             var Id = getParameterByName("Id");
 
-            if (Id == null || id == "") {
+            if (Id == null || Id == "") {
                 Id = 0;
             }
             var Location = document.getElementById("LocationHidden").value;
