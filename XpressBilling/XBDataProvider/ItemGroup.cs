@@ -40,7 +40,7 @@ namespace XBDataProvider
 
         }
 
-        public static int UpdateItemGroup(int id, string name, string updatedBy, bool status)
+        public static int UpdateItemGroup(int id, string name, string TaxCode, string updatedBy, bool status)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace XBDataProvider
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
                 cmd.Parameters.Add(new SqlParameter("@Name", name));
+                cmd.Parameters.Add(new SqlParameter("@TaxCode", TaxCode));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedBy", updatedBy));
                 cmd.Parameters.Add(new SqlParameter("@UpdatedDate", DateTime.Now.Date));
                 cmd.Parameters.Add(new SqlParameter("@status", status));

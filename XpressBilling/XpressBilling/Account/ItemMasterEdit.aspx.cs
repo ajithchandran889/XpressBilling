@@ -32,6 +32,12 @@ namespace XpressBilling.Account
                 }
                 else
                 {
+                    SafetStock.Text = "0";
+                    PurchasePrice.Text = "0";
+                    ReorderQty.Text = "0";
+                    Cost.Text = "0";
+                    MRP.Text = "0";
+                    RetailPrice.Text = "0";
                     ItemMasterId.Value = "0";
                     CreatedUser.Visible = false;
                     CreatedDate.Visible = false;

@@ -15,7 +15,7 @@
                         <h2 class="pull-left">List View</h2>
                         <div class="pull-right"> 
               <span class="icon-wrap pull-left"> <a href="PriceBookEdit"><i class="glyphicon glyphicon-plus" style="color:white;"></i></a></span>
-               <span class="icon-wrap pull-left"> <asp:LinkButton ID="LinkButton1" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>
+               <%--<span class="icon-wrap pull-left"> <asp:LinkButton ID="LinkButton1" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server" ><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton> </span>--%>
               </div>
                     </div>
                     <asp:GridView ID="ListPriceBook" runat="server" CssClass="table" AllowPaging="true"
@@ -44,12 +44,12 @@
                                     <asp:HiddenField ID="selectedvalue" runat="server" Value='<%# Bind("Status") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>--%>
-                            <asp:TemplateField>  
+                            <%--<asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  
                                     <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
                                 </ItemTemplate>  
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                         </Columns>
                     </asp:GridView>
                 </div>

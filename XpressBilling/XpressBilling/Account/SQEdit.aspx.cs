@@ -36,10 +36,12 @@ namespace XpressBilling.Account
                     {
                         SetSalesQuotationDetails(salesQuotationDetails);
                         PageStatus.Value = "edit";
+                        PopupTest.Visible = true;                    
                     }
                 }
                 else
                 {
+                    PopupTest.Visible = false;
                     DataTable dtUser = XBDataProvider.User.GetUserById(Membership.GetUser().ProviderUserKey.ToString());
                     row = dtUser.Rows[0];
                     if (User.IsInRole("User"))

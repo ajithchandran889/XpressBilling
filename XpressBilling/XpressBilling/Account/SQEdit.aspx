@@ -81,7 +81,13 @@
                 <div id="failureSO" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="Span1" runat="server">Invalid first free for sales order!</span>
                 </div>
-                <div class="page-header">Sales Quotation <input type="checkbox" id="PopupTest" name="PopupTest" value="PopupTest" title="PopupTest" onchange="javascript: OpenPopup()" ></div>
+                <div class="page-header"><span style="float:left;">Sales Quotation</span>
+                    <span style="float:right; font-size:11px;">
+                    Terms and Conditions 
+                     <input type="checkbox" id="PopupTest" name="PopupTest" runat="server" value="PopupTest" title="PopupTest" onchange="javascript: OpenPopup()" >
+                        </span>
+                    <div style="clear:both;"></div>
+                        </div>
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4 col-md-2">Customer ID</label>
                     <div class="col-xs-12 col-sm-8 col-md-2">

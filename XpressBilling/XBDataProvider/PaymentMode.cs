@@ -183,7 +183,7 @@ namespace XBDataProvider
             }
             return dtTable;
         }
-        public static DataTable BankcodeAgainstAcc(int id)
+        public static DataTable BankcodeAgainstAcc(string id)
         {
             DataTable dtTable = new DataTable();
             try
@@ -191,7 +191,7 @@ namespace XBDataProvider
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
-                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentMode_GetCodeAgainstBankAccount", cmd);
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_PaymentMode_GetBankCodeAgainstBankAccount", cmd);
 
             }
             catch (Exception ex)

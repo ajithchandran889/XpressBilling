@@ -12,9 +12,9 @@
                         <h2 class="pull-left">List View</h2>
                         <div class="pull-right">
                             <span class="icon-wrap pull-left"><a href="ReceiptEdit"><i class="glyphicon glyphicon-plus" style="color: white;"></i></a></span>
-                            <span class="icon-wrap pull-left">
+                            <%--<span class="icon-wrap pull-left">
                                 <asp:LinkButton ID="deleteRecords" OnClick="deleteRecordsClick" OnClientClick="DeleteConfirm()" ClientIDMode="Static" runat="server"><i class="glyphicon glyphicon-trash" style="color:white;"></i></asp:LinkButton>
-                            </span>
+                            </span>--%>
                         </div>
                     </div>
                     <asp:GridView ID="ListReceipt" runat="server" CssClass="table" AllowPaging="true" OnRowDataBound="ListReceiptRowDataBound"
@@ -40,12 +40,12 @@
                                 <ItemTemplate><%# Eval("Status").ToString()=="0" ? "Free" :(Eval("Status").ToString()=="1"?"Open":"Finalized") %></ItemTemplate>
                             </asp:TemplateField>
                             
-                            <asp:TemplateField>  
+                            <%--<asp:TemplateField>  
                                 <ItemTemplate>  
                                     <asp:CheckBox ID="chkDel"  runat="server" />  
                                     <asp:HiddenField ID="selectedId" runat="server" Value='<%# Bind("ID") %>' />
                                 </ItemTemplate>  
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                         </Columns>
                     </asp:GridView>
                     <asp:HiddenField ID="currencyDecimal" runat="server" />

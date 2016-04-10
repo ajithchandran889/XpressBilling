@@ -84,8 +84,8 @@ namespace XpressBilling.Account
         {
             try
             {
-
-                DataTable dtbankcode = XBDataProvider.PaymentMode.BankcodeAgainstAcc(Convert.ToInt32(Transaction.SelectedValue));
+                DataTable dtbankcode = XBDataProvider.PaymentMode.BankcodeAgainstAcc(ddlBankAccount.SelectedItem.Text);
+                //DataTable dtbankcode = XBDataProvider.PaymentMode.BankcodeAgainstAcc(Convert.ToInt32(ddlBankAccount.SelectedItem));
                 DataRow row = dtbankcode.Rows[0];
                 lblbankcode.InnerText = row["BankCode"].ToString();
                     

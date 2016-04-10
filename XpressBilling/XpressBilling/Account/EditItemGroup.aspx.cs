@@ -79,7 +79,8 @@ namespace XpressBilling.Account
             }
             UserName.Text = row["CreatedBy"].ToString();
             UserName.ReadOnly = true;
-            Date.Text = row["CreatedDate"].ToString();
+            string formationDate = Convert.ToDateTime(row["CreatedDate"]).ToString("MM'/'dd'/'yyyy");
+            Date.Text = formationDate.ToString();
             Date.ReadOnly = true;
             ddlStatus.SelectedValue = row["Status"].ToString();
             ItemId.Value = row["ID"].ToString();
@@ -99,7 +100,7 @@ namespace XpressBilling.Account
                         status = false;
                     else
                         status = true;
-                    msgstatus = XBDataProvider.ItemGroup.UpdateItemGroup(Convert.ToInt32(ItemId.Value), Name.Text, User.Identity.Name, status);
+                    msgstatus = XBDataProvider.ItemGroup.UpdateItemGroup(Convert.ToInt32(ItemId.Value), Name.Text, ddlTaxCode.SelectedValue, User.Identity.Name, status);
                     if (msgstatus != -1)
                     {
                         SaveSuccess.Visible = false;
