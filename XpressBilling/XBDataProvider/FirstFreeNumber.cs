@@ -146,6 +146,25 @@ namespace XBDataProvider
             return dtTable;
         }
 
+
+        public static DataTable GetFirstFreeNewLocations(int Id)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@Id", Id));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetFirstFreenEwLocations", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+
         public static int SaveFirstFreeMasterDetail(DataTable dtFirstFreeDetails)
         {
             try
@@ -167,7 +186,7 @@ namespace XBDataProvider
         public static DataTable GetOrderTypeExceptAddedItems(string companyCode)
         {
 
-            DataTable dtTable =new DataTable();
+            DataTable dtTable = new DataTable();
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -364,11 +383,11 @@ namespace XBDataProvider
 
         public static int GetFirstTimeSelectedType(string companyCode)
         {
-                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                //DataProvider dtProv = new DataProvider();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
-                return DataProvider.ExecuteScalarInt(connString, "dbo.sp_GetFirstTimeSelectedType", cmd);
+            string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //DataProvider dtProv = new DataProvider();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+            return DataProvider.ExecuteScalarInt(connString, "dbo.sp_GetFirstTimeSelectedType", cmd);
 
         }
     }

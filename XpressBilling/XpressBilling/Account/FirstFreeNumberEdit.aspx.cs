@@ -13,7 +13,7 @@ namespace XpressBilling.Account
         DataTable dtLocation = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
             if (!Page.IsPostBack)
             {
 
@@ -31,7 +31,7 @@ namespace XpressBilling.Account
                 {
                     Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
                 }
-                
+
                 int id = Convert.ToInt32(Request.QueryString["Id"]);
                 if (id != null && id != 0)
                 {
@@ -90,7 +90,7 @@ namespace XpressBilling.Account
                     lblDate.Visible = false;
                     lblUser.Visible = false;
                     FirstFreeDetail.Visible = false;
-                    
+
                 }
             }
         }
@@ -119,11 +119,12 @@ namespace XpressBilling.Account
 
         }
 
-        private void SetInitialRowWithAgainstManualOptions()
+        private DataTable SetInitialRowWithAgainstManualOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
+
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -133,7 +134,7 @@ namespace XpressBilling.Account
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
-                if(Type.SelectedValue=="0")
+                if (Type.SelectedValue == "0")
                 {
                     dr = dt.NewRow();
                     dr["OrderType"] = "Against Order";
@@ -145,8 +146,11 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
-                    for(int i=0;i<dtLocation.Rows.Count;i++)
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
+                    for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
                         dr = dt.NewRow();
@@ -160,23 +164,20 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                
-
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
-
+            return dt;
         }
 
-        private void SetInitialRowWithCashCreditOptions()
+        private DataTable SetInitialRowWithCashCreditOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
+
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -187,7 +188,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                
+
                 if (Type.SelectedValue == "0")
                 {
                     dr = dt.NewRow();
@@ -200,7 +201,10 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
                     for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
@@ -215,21 +219,23 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
+
+                //FirstFreeDetail.DataSource = dt;
+                //FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
-
+            return dt;
         }
 
-        private void SetInitialRowWithAddtionDeductionOpeningOptions()
+        private DataTable SetInitialRowWithAddtionDeductionOpeningOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
+
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -239,7 +245,7 @@ namespace XpressBilling.Account
                 //dt.Columns.Add(new DataColumn("Description", typeof(string)));
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
-                
+
                 if (Type.SelectedValue == "0")
                 {
                     dr = dt.NewRow();
@@ -256,7 +262,10 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
                     for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
@@ -276,21 +285,22 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
+                //FirstFreeDetail.DataSource = dt;
+                //FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
-
+            return dt;
         }
 
-        private void SetInitialRowWithLocalImportOptions()
+        private DataTable SetInitialRowWithLocalImportOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
+
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -301,7 +311,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                
+
                 if (Type.SelectedValue == "0")
                 {
                     dr = dt.NewRow();
@@ -314,11 +324,14 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
                     for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
-                        
+
                         dr = dt.NewRow();
                         dr["EnterpriseUnitCode"] = row["LocationCode"].ToString();
                         dr["OrderType"] = "Local";
@@ -330,21 +343,22 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
+                //FirstFreeDetail.DataSource = dt;
+                //FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
-
+            return dt;
         }
 
-        private void SetInitialRowWithManualGoodsOptions()
+        private DataTable SetInitialRowWithManualGoodsOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
+
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -355,7 +369,7 @@ namespace XpressBilling.Account
                 dt.Columns.Add(new DataColumn("SequenceNo", typeof(int)));
                 dt.Columns.Add(new DataColumn("Status", typeof(int)));
 
-                
+
                 if (Type.SelectedValue == "0")
                 {
                     dr = dt.NewRow();
@@ -368,7 +382,10 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
                     for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
@@ -384,20 +401,21 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
+                //FirstFreeDetail.DataSource = dt;
+                //FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
+            return dt;
         }
 
-        private void SetInitialRowWithReceiptOptions()
+        private DataTable SetInitialRowWithReceiptOptions(DataTable dtTemp = null)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = new DataTable();
                 DataRow dr = null;
                 dt.Columns.Add(new DataColumn("ID", typeof(int)));
                 dt.Columns.Add(new DataColumn("OrderType", typeof(string)));
@@ -429,7 +447,10 @@ namespace XpressBilling.Account
                 }
                 else
                 {
-                    dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    if (dtTemp == null)
+                        dtLocation = XBDataProvider.Location.GetAllLocations(Session["CompanyCode"].ToString());
+                    else
+                        dtLocation = dtTemp;
                     for (int i = 0; i < dtLocation.Rows.Count; i++)
                     {
                         DataRow row = dtLocation.Rows[i];
@@ -455,13 +476,14 @@ namespace XpressBilling.Account
                         dt.Rows.Add(dr);
                     }
                 }
-                FirstFreeDetail.DataSource = dt;
-                FirstFreeDetail.DataBind();
+                //FirstFreeDetail.DataSource = dt;
+                //FirstFreeDetail.DataBind();
             }
             catch (Exception e)
             {
 
             }
+            return dt;
         }
 
         protected void saveFirstFreeNumber(object sender, EventArgs e)
@@ -527,7 +549,7 @@ namespace XpressBilling.Account
                     }
 
                 }
-                if(FirstFreeNumberId.Value!="0")
+                if (FirstFreeNumberId.Value != "0")
                 {
                     XBDataProvider.FirstFreeNumber.SaveFirstFreeMasterDetail(dt);
                     failureMessage.Visible = false;
@@ -552,7 +574,7 @@ namespace XpressBilling.Account
                         SaveSuccess.Visible = false;
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -570,12 +592,52 @@ namespace XpressBilling.Account
 
             if (dt.Rows.Count > 0)
             {
+                if (Type.SelectedValue == "1")
+                {
+                    DataTable dtTemp = new DataTable();
+                    DataTable dtLocations = XBDataProvider.FirstFreeNumber.GetFirstFreeNewLocations(Convert.ToInt32(FirstFreeNumberId.Value));
+                    if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
+                    {
+                        dtTemp = SetInitialRowWithCashCreditOptions(dtLocations);
+                    }
+                    else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
+                    {
+                        dtTemp = SetInitialRowWithAgainstManualOptions(dtLocations);
+                    }
+                    else if (Transaction.SelectedValue == "5")
+                    {
+                        dtTemp = SetInitialRowWithAddtionDeductionOpeningOptions(dtLocations);
+                    }
+                    else if (Transaction.SelectedValue == "4")
+                    {
+                        dtTemp = SetInitialRowWithLocalImportOptions(dtLocations);
+                    }
+                    else if (Transaction.SelectedValue == "8")
+                    {
+                        dtTemp = SetInitialRowWithManualGoodsOptions(dtLocations);
+                    }
+                    else if (Transaction.SelectedValue == "11")
+                    {
+                        dtTemp = SetInitialRowWithReceiptOptions(dtLocations);
+                    }
+                    DataRow dr = null;
+                    DataRow row = null;
+                    for(int i=0;i<dtTemp.Rows.Count;i++)
+                    {
+                        dr = dt.NewRow();
+                        row = dtTemp.Rows[i];
+                        dr["OrderType"] = row["OrderType"].ToString();
+                        dr["EnterpriseUnitCode"] = row["EnterpriseUnitCode"].ToString();
+                        dt.Rows.Add(dr);
+                    }
+                }
+
                 FirstFreeDetail.DataSource = dt;
                 FirstFreeDetail.DataBind();
-                return;
+
             }
             //SetInitialRow();
-
+            return;
         }
 
         protected void listFirstFreeNumberDataBound(object sender, EventArgs e)
@@ -635,33 +697,36 @@ namespace XpressBilling.Account
                     }
                     value++;
                 }
-                if(Transaction.SelectedValue!="")
+                if (Transaction.SelectedValue != "")
                 {
+                    DataTable dt = new DataTable();
                     FirstFreeDetail.Visible = true;
                     if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
                     {
-                        SetInitialRowWithCashCreditOptions();
+                        dt = SetInitialRowWithCashCreditOptions();
                     }
                     else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
                     {
-                        SetInitialRowWithAgainstManualOptions();
+                        dt = SetInitialRowWithAgainstManualOptions();
                     }
                     else if (Transaction.SelectedValue == "5")
                     {
-                        SetInitialRowWithAddtionDeductionOpeningOptions();
+                        dt = SetInitialRowWithAddtionDeductionOpeningOptions();
                     }
                     else if (Transaction.SelectedValue == "4")
                     {
-                        SetInitialRowWithLocalImportOptions();
+                        dt = SetInitialRowWithLocalImportOptions();
                     }
                     else if (Transaction.SelectedValue == "8")
                     {
-                        SetInitialRowWithManualGoodsOptions();
+                        dt = SetInitialRowWithManualGoodsOptions();
                     }
                     else if (Transaction.SelectedValue == "11")
                     {
-                        SetInitialRowWithReceiptOptions();
+                        dt = SetInitialRowWithReceiptOptions();
                     }
+                    FirstFreeDetail.DataSource = dt;
+                    FirstFreeDetail.DataBind();
                 }
             }
         }
@@ -669,30 +734,33 @@ namespace XpressBilling.Account
         protected void TransactionSelectedIndexChanged(object sender, EventArgs e)
         {
             FirstFreeDetail.Visible = true;
+            DataTable dt = new DataTable();
             if (Transaction.SelectedValue == "0" || Transaction.SelectedValue == "1" || Transaction.SelectedValue == "2" || Transaction.SelectedValue == "7")
             {
-                SetInitialRowWithCashCreditOptions();
+                dt = SetInitialRowWithCashCreditOptions();
             }
             else if (Transaction.SelectedValue == "3" || Transaction.SelectedValue == "6")
             {
-                SetInitialRowWithAgainstManualOptions();
+                dt = SetInitialRowWithAgainstManualOptions();
             }
             else if (Transaction.SelectedValue == "5")
             {
-                SetInitialRowWithAddtionDeductionOpeningOptions();
+                dt = SetInitialRowWithAddtionDeductionOpeningOptions();
             }
             else if (Transaction.SelectedValue == "4")
             {
-                SetInitialRowWithLocalImportOptions();
+                dt = SetInitialRowWithLocalImportOptions();
             }
             else if (Transaction.SelectedValue == "8")
             {
-                SetInitialRowWithManualGoodsOptions();
+                dt = SetInitialRowWithManualGoodsOptions();
             }
-            else if(Transaction.SelectedValue=="11")
+            else if (Transaction.SelectedValue == "11")
             {
-                SetInitialRowWithReceiptOptions();
+                dt = SetInitialRowWithReceiptOptions();
             }
+            FirstFreeDetail.DataSource = dt;
+            FirstFreeDetail.DataBind();
         }
     }
 }
