@@ -95,7 +95,7 @@
                         <asp:TextBox runat="server" ID="txtAccNoid" name="txtAccNoid" ReadOnly="true" class="form-control" placeholder="Account No" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <%-- Add code for auto lookup --%>
-                    <label ID="BankCode" name="BankCode" class="control-label col-xs-2 col-md-2"></label>
+                   <label for="BankCode" id="lblBankCode" runat="server" class="control-label col-xs-2 col-md-2"></label>
                 </div>
                 <div class="form-group">
                     <label for="NoOfCopies" class="control-label col-xs-2 col-md-2">Number of Copies</label>
