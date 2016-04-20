@@ -390,6 +390,17 @@ namespace XpressBilling.Account
             }
         }
 
+        protected void btnPrintClick(object sender, EventArgs e)
+        {
+            string locationCode = "Bng";
+            string businessPartnerCode = "L101";
+            string salesOrderNo = "SOnum";
+            string companyCode = "Techen";
+            string url = "PrintSalesInvoice.aspx?lc=" + locationCode + "&bpc=" + businessPartnerCode + "&son=" + salesOrderNo + "&cc=" + companyCode;
+            string s = "window.open('" + url + "', 'popup_window', 'width=875,height=600,left=100,top=50,resizable=yes');";
+            ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+        }
+
         protected void btnFinalizeClick(object sender, EventArgs e)
         {
             if (XBDataProvider.Invoice.FinlizeInvoice(Convert.ToInt32(SalesInvoiceId.Value)))
@@ -406,7 +417,14 @@ namespace XpressBilling.Account
                 UpdateSuccess.Visible = false;
                 FinalizeSuccess.Visible = true;
                 failure.Visible = false;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "isActive", "window.print();", true);
+                string locationCode = "Bng";
+                string businessPartnerCode = "L101";
+                string salesOrderNo = "SOnum";
+                string companyCode = "Techen";
+                string url = "PrintSalesInvoice.aspx?lc=" + locationCode + "&bpc=" + businessPartnerCode + "&son=" + salesOrderNo + "&cc=" + companyCode;
+                string s = "window.open('" + url + "', 'popup_window', 'width=875,height=600,left=100,top=50,resizable=yes');";
+                ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
             }
             else
             {
@@ -483,5 +501,130 @@ namespace XpressBilling.Account
                 }
             }
         }
+
+        protected void ReceiptDetailRowCreated(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Header) // If header created
+            {
+                GridView Projectgrid = (GridView)sender;
+
+                // Creating a Row
+                GridViewRow HeaderRow = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Insert);
+                GridViewRow HeaderRow2 = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Insert);
+
+                TableCell HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "No:";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Payment Mode";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Reference";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.ColumnSpan = 2; // Give Colspan 6 to header
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Number";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                // HeaderCell.RowSpan = 1;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow2.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Date";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                //HeaderCell.RowSpan = 1;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow2.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Due Amount";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Amount";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "TDS Amount";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "Net Amount";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                HeaderCell = new TableHeaderCell();
+                HeaderCell.Text = "";
+                HeaderCell.HorizontalAlign = HorizontalAlign.Center;
+                HeaderCell.CssClass = "tableHeaderAlignCenter";
+                HeaderCell.RowSpan = 2;
+                HeaderCell.ColumnSpan = 1;
+                HeaderRow.Cells.Add(HeaderCell);
+
+                Projectgrid.Controls[0].Controls.AddAt(0, HeaderRow);
+                Projectgrid.Controls[0].Controls.AddAt(1, HeaderRow2);
+
+            }
+        }
+        protected void ReceiptDetailRowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowIndex == 0 && Convert.ToInt32(rowCount.Value) == 1)
+            {
+                LinkButton lnkDtn = e.Row.Cells[8].FindControl("lnkDeleteR") as LinkButton;
+                lnkDtn.Style.Add("display", "None");
+            }
+            if (e.Row.RowIndex != -1)
+            {
+                TextBox item = e.Row.Cells[1].FindControl("RPaymentMode") as TextBox;
+                if (item.Text != "")
+                {
+                    int decimalPoints = Convert.ToInt32(currencyDecimal.Value);
+                    TextBox RDueAmount = e.Row.Cells[4].FindControl("RDueAmount") as TextBox;
+                    TextBox Discount = e.Row.Cells[5].FindControl("RAmount") as TextBox;
+                    TextBox TDSAmount = e.Row.Cells[6].FindControl("TDSAmount") as TextBox;
+                    TextBox RNetAmount = e.Row.Cells[7].FindControl("RNetAmount") as TextBox;
+                    double dueAmount = Convert.ToDouble(RDueAmount.Text);
+                    double discountAmt = Convert.ToDouble(Discount.Text);
+                    double tdsAmt = Convert.ToDouble(TDSAmount.Text);
+                    double netAmount = Convert.ToDouble(RNetAmount.Text);
+                    RDueAmount.Text = dueAmount.ToString("f" + decimalPoints);
+                    Discount.Text = discountAmt.ToString("f" + decimalPoints);
+                    TDSAmount.Text = tdsAmt.ToString("f" + decimalPoints);
+                    RNetAmount.Text = netAmount.ToString("f" + decimalPoints);
+                }
+            }
+        }
+
+      
     }
 }

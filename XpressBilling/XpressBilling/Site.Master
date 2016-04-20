@@ -325,7 +325,7 @@
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Receipt"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/RptSalesQuote"><i class="menu-icon fa fa-caret-right"></i>ReportSalesQuotation </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/RptSalesInvoice"><i class="menu-icon fa fa-caret-right"></i>ReportSalesInvoice </a><b class="arrow"></b></li>
                                             <li class=""><a href="/Account/RptReceipt"><i class="menu-icon fa fa-caret-right"></i>ReportReceipt </a><b class="arrow"></b></li>
@@ -342,7 +342,7 @@
                                     </li>
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Licensing</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Receipt"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -429,7 +429,7 @@
                                 <ul class="submenu">
                                     <li class=""><a href="organization.html" class="dropdown-toggle"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">Transaction</span> <b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
                                         <ul class="submenu">
-                                            <li class=""><a href="#"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
+                                            <li class=""><a href="/Account/Receipt"><i class="menu-icon fa fa-caret-right"></i>Receipts </a><b class="arrow"></b></li>
                                         </ul>
                                     </li>
                                 </ul>

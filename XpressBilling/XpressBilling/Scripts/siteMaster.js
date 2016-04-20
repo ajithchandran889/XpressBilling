@@ -440,4 +440,8 @@ function fnBrudCrumb() {
         document.getElementById("breadCrumb_three").style.display = "none";
         document.getElementById("breadCrumb_four").style.display = "none";
     }
+    $('#myTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
 }

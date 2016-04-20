@@ -53,7 +53,7 @@
 
                 <label for="Name" class="control-label col-xs-2 col-md-2">Line1</label>
                 <div class="col-xs-10 col-md-2">
-                    <asp:TextBox runat="server" ID="Name" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="Name" class="form-control required" placeholder="Line1" ClientIDMode="Static"></asp:TextBox>
                 </div>
                 <div class="col-xs-10 col-md-2"></div>
                 <%--<label for="UserName" runat="server" ID="lblusername" placeholder="username" class="control-label col-xs-2 col-md-2">User</label>
@@ -67,7 +67,7 @@
 
                 <label for="Name" class="control-label col-xs-2 col-md-2">Line2</label>
                 <div class="col-xs-10 col-md-2">
-                    <asp:TextBox runat="server" ID="TextBox1" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="TextBox1" class="form-control required" placeholder="Line2" ClientIDMode="Static"></asp:TextBox>
                 </div>
                 <div class="col-xs-10 col-md-2"></div>
                 <%--<label for="UserName" runat="server" ID="lblusername" placeholder="username" class="control-label col-xs-2 col-md-2">User</label>
@@ -80,7 +80,7 @@
 
                 <label for="Name" class="control-label col-xs-2 col-md-2">Line3</label>
                 <div class="col-xs-10 col-md-2">
-                    <asp:TextBox runat="server" ID="TextBox2" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="TextBox2" class="form-control required" placeholder="Line3" ClientIDMode="Static"></asp:TextBox>
                 </div>
                 <div class="col-xs-10 col-md-2"></div>
                 <%--<label for="UserName" runat="server" ID="lblusername" placeholder="username" class="control-label col-xs-2 col-md-2">User</label>
@@ -93,7 +93,7 @@
 
                 <label for="Name" class="control-label col-xs-2 col-md-2">Line4</label>
                 <div class="col-xs-10 col-md-2">
-                    <asp:TextBox runat="server" ID="TextBox3" class="form-control required" placeholder="Name" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="TextBox3" class="form-control required" placeholder="Line4" ClientIDMode="Static"></asp:TextBox>
                 </div>
                 <div class="col-xs-10 col-md-2"></div>
                 <%--<label for="UserName" runat="server" ID="lblusername" placeholder="username" class="control-label col-xs-2 col-md-2">User</label>

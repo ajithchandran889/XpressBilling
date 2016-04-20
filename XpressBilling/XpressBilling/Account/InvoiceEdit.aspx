@@ -116,7 +116,20 @@
                     <div class="">
                         <h2 class="page-header color-blue">Transaction</h2>
                     </div>
-                    <asp:GridView ID="InvoiceDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID"
+                    <div class="for-tab">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#Invoicetab" aria-controls="Invoice" role="tab" data-toggle="tab">Invoice</a></li>
+    <li role="presentation"><a href="#Receipttab" aria-controls="Receipt" role="tab" data-toggle="tab">Receipt</a></li>
+  
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="Invoicetab">
+       <%--Invoice.....--%>
+        <asp:GridView ID="InvoiceDetail" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False" AutoGenerateColumns="false" DataKeyNames="ID"
                         OnRowDataBound="InvoiceDetailRowDataBound">
                         <RowStyle CssClass="Odd" />
                         <AlternatingRowStyle CssClass="Even" />
@@ -187,6 +200,70 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="Receipttab">
+        <%--receipt grid here...--%>
+        <asp:GridView ID="ReceiptDetailinvoice" runat="server" class="table table-fix" ClientIDMode="Static" ShowFooter="False"  AutoGenerateColumns="false" DataKeyNames="ID"
+                            OnRowDataBound="ReceiptDetailRowDataBound" OnRowCreated="ReceiptDetailRowCreated" ShowHeader="false">
+                            <RowStyle CssClass="Odd"/>
+                            <AlternatingRowStyle CssClass="Even" />
+                        
+                            <Columns>
+                                <asp:TemplateField>
+                                    <ItemTemplate >
+                                       <asp:Label runat="server" Text='<%# Container.DataItemIndex + 1 %>'  />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RPaymentMode" class="form-control RPaymentMode " ClientIDMode="Static" runat="server" Text='<%# Bind("PaymentMode") %>'></asp:TextBox>
+                                        <asp:HiddenField ID="RPaymentModeID" runat="server" Value='<%# Eval("PaymentModeID") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RNumber" class="form-control RNumber " ClientIDMode="Static" runat="server" Text='<%# Bind("ReferenceNo") %>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RDate" class="form-control RDate " ClientIDMode="Static" runat="server" Text='<%# Eval("ReferenceDate")==""?"": Convert.ToDateTime(Eval("ReferenceDate")).ToString("MM/dd/yyyy") %>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField >
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RDueAmount" class="form-control RDueAmount"  ClientIDMode="Static" runat="server" Text='<%# Bind("DueAmount") %>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField >
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RAmount" class="form-control RAmount " ClientIDMode="Static" runat="server" Text='<%# Bind("Amount") %>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="TDSAmount" class="form-control TDSAmount " ClientIDMode="Static" runat="server" Text='<%#Eval("TDSAmount","{0:n}")%>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="RNetAmount" class="form-control RNetAmount " ClientIDMode="Static" runat="server" Text='<%#Eval("NetAmount","{0:n}")%>'></asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lnkDeleteR" Text="Delete" data-id='<%# Eval("ID") %>' runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+    </div>
+
+  </div>
+
+</div>
+
+                    
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-8">
                     <div class="form-group ">
@@ -286,7 +363,7 @@
                         <input id="btnCencelDtl" type="button" class="btn btn-primary pull-left" value="Cancel" onclick="location.href = '/Account/Invoice';" />
                         <asp:Button ID="btnSaveDtl" runat="server" ClientIDMode="Static" class="btn btn-primary SalesInvoiceBtnDetail" Text="Save" OnClick="SaveBtnDetailClick" />
                         <asp:Button ID="btnFinalizeI" runat="server" ClientIDMode="Static" class="btn btn-primary" Text="Finalize" Visible="false" OnClick="btnFinalizeClick" />
-                        <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print" OnClientClick="javascript:window.print();" />
+                        <asp:Button ID="btnPrint" runat="server" ClientIDMode="Static" class="btn btn-primary pull-right" Visible="false" Text="Print" OnClientClick="btnPrintClick" />
                     </div>
 
                 </div>

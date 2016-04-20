@@ -295,5 +295,42 @@ namespace XBDataProvider
 
             return dt;
         }
+        /// <summary>
+        /// Gets a disconnected DataSet Object from a Stored Procedure using a SQLCommand Object.
+        /// </summary>
+        /// <param name="connString">String value containing the connection string information.</param>
+        /// <param name="procedureName">String containing the name of the stored procedure that will be executed.</param>
+        /// <param name="sqlCmd">SQLCommand Object containing all the required SQLParameters.</param>
+        /// <returns>Disconnected DataSet Object</returns>
+        internal static DataSet GetSQLDataSet(string connString, string procedureName, SqlCommand sqlCmd)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                sqlCmd.CommandType = CommandType.StoredProcedure;
+                sqlCmd.CommandText = procedureName;
+                sqlCmd.Connection = GetSqlConnection();
+
+                SqlDataAdapter da = new SqlDataAdapter(sqlCmd);
+                da.Fill(ds);
+            }
+            catch (SqlException ex)
+            {
+                // Rethrow the exception.
+
+                throw ex;
+            }
+            finally
+            {
+                if (sqlCmd.Connection.State == ConnectionState.Open)
+                {
+                    sqlCmd.Connection.Dispose();
+                    //sqlCmd.Connection.Close();
+                }
+            }
+
+            return ds;
+        }
     }
 }

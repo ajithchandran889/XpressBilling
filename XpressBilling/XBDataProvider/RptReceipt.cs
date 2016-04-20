@@ -31,7 +31,7 @@ namespace XBDataProvider
         /// <returns></returns>
         public static int SaveRptReceipt(string companyCode, bool header, bool declaration, bool footer, int reportID, int copies,
             string headerText, string declarationText, string footerText, string accountNo, string accountName, string bankCode,
-             string bankName, string branch, string IFSC, string IBAN)
+             string bankName, string branch, string IFSC, string IBAN, string RptName)
         {
             try
             {
@@ -56,6 +56,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Branch", branch));
                 cmd.Parameters.Add(new SqlParameter("@IFSC", IFSC));
                 cmd.Parameters.Add(new SqlParameter("@IBAN", IBAN));
+                cmd.Parameters.Add(new SqlParameter("@RptName", RptName));
 
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_save_ReceiptReport", cmd);
             }

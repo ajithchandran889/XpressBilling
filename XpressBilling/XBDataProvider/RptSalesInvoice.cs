@@ -31,7 +31,7 @@ namespace XBDataProvider
         /// <returns></returns>
         public static int SaveRptSalesInvoice(string companyCode, bool header, bool declaration, bool footer, int reportID, int copies,
             string headerText, string declarationText, string footerText, string accountNo, string accountName, string bankCode,
-             string bankName, string branch, string IFSC, string IBAN)
+             string bankName, string branch, string IFSC, string IBAN, string RptName)
         {
             try
             {
@@ -56,6 +56,7 @@ namespace XBDataProvider
                 cmd.Parameters.Add(new SqlParameter("@Branch", branch));
                 cmd.Parameters.Add(new SqlParameter("@IFSC", IFSC));
                 cmd.Parameters.Add(new SqlParameter("@IBAN", IBAN));
+                cmd.Parameters.Add(new SqlParameter("@RptName", RptName));
 
                 return DataProvider.ExecuteSqlProcedure(connString, "dbo.sp_save_SalesInvoiceReport", cmd);
             }
@@ -78,6 +79,23 @@ namespace XBDataProvider
                 SqlCommand cmd = new SqlCommand();
                 cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
                 dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetAllActiveBankMst", cmd);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dtTable;
+        }
+        public static DataTable GetInvoiceParameters(string companyCode)
+        {
+            DataTable dtTable = new DataTable();
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlCommand cmd = new SqlCommand();
+                cmd.Parameters.Add(new SqlParameter("@companyCode", companyCode));
+                dtTable = DataProvider.GetSQLDataTable(connString, "dbo.sp_GetInvoiceParameters", cmd);
             }
             catch (Exception ex)
             {

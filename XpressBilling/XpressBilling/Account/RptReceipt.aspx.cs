@@ -58,7 +58,7 @@ namespace XpressBilling.Account
 
             retunValue = XBDataProvider.RptReceipt.SaveRptReceipt(CompanyCode.Value, header, declaration, footer, reportID, copies,
              headerText, declarationText, footerText, objAccountDetails.AccountNo, objAccountDetails.name, objAccountDetails.BankCode,
-             objAccountDetails.BankName, objAccountDetails.Branch, objAccountDetails.IFSC, objAccountDetails.IBAN);
+             objAccountDetails.BankName, objAccountDetails.Branch, objAccountDetails.IFSC, objAccountDetails.IBAN,"");//#TBD
         }
         #endregion  SaveClick
 

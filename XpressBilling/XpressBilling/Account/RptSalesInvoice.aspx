@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RptSalesInvoice.aspx.cs" Inherits="XpressBilling.Account.RptSalesInvoice" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
 <script type="text/javascript">
         //MainContent_
         function ToogleHeader() {
@@ -35,6 +36,8 @@
             }
         }
     </script>
+
+    
     <div class="page-content">
         <div class="row content-holder">
             <div class="col-sm-12 col-md-12">
@@ -56,14 +59,14 @@
                 <%-- <div id="alreadyexist" visible="false" class="alert alert-danger" role="alert" runat="server">
                     <span id="alreadyexistmsg" runat="server">UserName Already Exists</span>
                 </div>--%>
-                <div class="page-header">Sales Quotation</div>
+                <div class="page-header">Sales Invoice Report Parameters</div>
                 <div class="form-group">
                     <label for="HeaderCB" class="control-label col-xs-2 col-md-2">Header</label>
                     <div class="col-xs-10 col-md-1">
-                        <asp:CheckBox Checked="false" runat="server" ID="HeaderCB" name="HeaderCB" onchange="javascript: ToogleHeader()" ClientIDMode="Static"></asp:CheckBox>
+                        <asp:CheckBox Checked="false" runat="server" ID="HeaderCB" name="HeaderCB"  onchange="javascript: ToogleHeader()" ClientIDMode="Static"></asp:CheckBox>
                     </div>
                     <div class="col-xs-10 col-md-6">
-                        <asp:TextBox runat="server" ID="Header" name="Header" ReadOnly="true" class="form-control " placeholder="Header" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="Header" name="Header" class="form-control" ReadOnly="true" placeholder="Header" ClientIDMode="Static"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -93,7 +96,7 @@
                         <asp:TextBox runat="server" ID="txtAccNoid" name="txtAccNoid" ReadOnly="true" class="form-control" placeholder="Account No" ClientIDMode="Static"></asp:TextBox>
                     </div>
                     <%-- Add code for auto lookup --%>
-                    <label for="BankCode" class="control-label col-xs-2 col-md-2"></label>
+                    <label for="BankCode" id="lblBankCode" runat="server" class="control-label col-xs-2 col-md-2"></label>
                 </div>
                 <div class="form-group">
                     <label for="NoOfCopies" class="control-label col-xs-2 col-md-2">Number of Copies</label>
