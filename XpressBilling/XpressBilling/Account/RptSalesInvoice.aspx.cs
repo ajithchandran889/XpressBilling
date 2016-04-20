@@ -26,10 +26,9 @@ namespace XpressBilling.Account
             {
                 if (Session["CompanyCode"] == null)
                 {
-                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);
-                    getsavedsalesinvoiceparameters(XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name));
+                    Session["CompanyCode"] = XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name);                   
                 }
-
+                getsavedsalesinvoiceparameters(XBDataProvider.User.GetCompanyCodeByUserId(User.Identity.Name));
                 CompanyCode.Value = Session["CompanyCode"].ToString();
                 
             }
